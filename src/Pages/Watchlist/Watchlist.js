@@ -1,18 +1,18 @@
 import React from 'react'
-import SideNavBar from '../../Components/SideNavBar/SideNavBar'
-import TopNavBar from '../../Components/TopNavBar/TopNavBar'
-import TopNavLink from '../../Components/TopNavBar/TopNavLink/TopNavLink'
-import PageContainer from '../../Components/PageContainer/PageContainer'
+import BasicPage from '../../Components/BasicPage/BasicPage';
+import TopNavTab from '../../Components/TopNavTab/TopNavTab';
 
 export default function Watchlist() {
+  const Tabs = [
+    <TopNavTab label="Home" url="/"/>,
+    <TopNavTab label="Watchlist" url="/watchlist"/>,
+    <TopNavTab label="news" url="/news"/>,
+  ];
+
   return (
-    <div>
-      <SideNavBar />
-      <TopNavBar>
-        <TopNavLink name="Home" url="/"/>
-        <TopNavLink name="Watchlist" url="/watchlist"/>
-      </TopNavBar>
-      <PageContainer/>
-    </div>
+    <BasicPage TopNavTabs={Tabs}>
+        <h1>Watchlist</h1>
+        <p>This is Watchlist page content</p>
+    </BasicPage>
   )
 }

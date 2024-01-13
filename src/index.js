@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import SideNavBar from './Components/SideNavBar/SideNavBar';
 import Watchlist from './Pages/Watchlist/Watchlist';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import Forum from './Pages/Forum/Forum';
 import App from './App';
 import './index.css';
+import BasicPage from './Components/BasicPage/BasicPage';
 
 const router = createBrowserRouter([
   {
@@ -28,27 +28,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/dataVisualization",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   },
   {
     path: "/settings",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   },
   {
     path: "/trade",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   },
   {
     path: "/educatiion",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   },
   {
     path: "/news",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   },
   {
     path: "/alert",
-    element: <SideNavBar />,
+    element: <BasicPage/>,
   }
   
 ]);

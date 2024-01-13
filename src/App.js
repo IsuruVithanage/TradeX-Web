@@ -1,22 +1,19 @@
 import './App.css';
-import TopNavBar from './Components/TopNavBar/TopNavBar';
-import SideNavBar from './Components/SideNavBar/SideNavBar';
-import TopNavLink from './Components/TopNavBar/TopNavLink/TopNavLink';
-import PageContainer from './Components/PageContainer/PageContainer';
+import BasicPage from './Components/BasicPage/BasicPage';
+import TopNavTab from './Components/TopNavTab/TopNavTab';
 
 
 export default function App() {
+  const Tabs = [
+    <TopNavTab label="Home" url="/"/>,
+    <TopNavTab label="Watchlist" url="/watchlist"/>,
+    <TopNavTab label="news" url="/news"/>,
+  ];
+
   return (
-    <>
-    <SideNavBar />
-    <TopNavBar>
-      <TopNavLink name="Home" url="/"/>
-      <TopNavLink name="Watchlist" url="/watchlist"/>
-      <TopNavLink name="Forum" url="/forum"/>
-    </TopNavBar>
-    <PageContainer>
-      <h1>Home</h1>
-    </PageContainer>
-    </>
+    <BasicPage TopNavTabs={Tabs}>
+        <h1>Home</h1>
+        <p>This is Home page content</p>
+    </BasicPage>
   )
 }
