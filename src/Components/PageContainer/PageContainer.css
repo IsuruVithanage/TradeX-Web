@@ -1,0 +1,14 @@
+.background{
+    background-image: url("../../Assets/Images/coverx.png");
+    background-color: #151516;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    top: 6%;
+    left: 6%;
+    width: 94%;
+    height: 94%;
+    overflow-y: auto;
+    padding: 3px;
+}

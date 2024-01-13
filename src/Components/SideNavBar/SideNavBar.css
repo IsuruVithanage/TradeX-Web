@@ -1,0 +1,51 @@
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.side-navbar {
+    width: 6%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.icon-container {
+    padding: 22%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #0E0E0F;
+}
+
+.nav-link {
+    color: #6D6D6D;
+    margin-bottom: 25%;
+    padding: 8px;
+    margin: auto;
+    font-size: 1.3rem;
+}
+
+.nav-link svg {
+    transition: fill 0.3s ease; /* Add a transition for a smoother color change */
+}
+
+.nav-link:hover svg,
+.nav-link.active svg {
+    fill: #21DB9A;
+}
+
+.logo-container {
+    padding-top: 27%;
+    padding-bottom: 23%;
+    text-align: center;
+    background-color: #0E0E0F;
+}
