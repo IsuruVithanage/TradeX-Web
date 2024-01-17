@@ -1,0 +1,21 @@
+p{
+    color : white;
+}
+
+h1{
+    color : white;
+   
+}
+
+::-webkit-scrollbar {
+    width: 12px; /* Set the width of the scrollbar */
+  }
+  
+::-webkit-scrollbar-thumb {
+    background-color: #21db9a; /* Set the color of the scrollbar thumb */
+    border-radius: 6px; /* Set the border-radius of the scrollbar thumb */
+  }
+  
+::-webkit-scrollbar-track {
+    background-color: #3c3c3c; /* Set the color of the scrollbar track */
+  }
