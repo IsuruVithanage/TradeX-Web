@@ -1,7 +1,6 @@
 import './App.css';
 
 import BasicPage from './Components/BasicPage/BasicPage';
-import NumberInput from "./Components/SidePanelItems/SidePanelInput/NumberInput";
 import {useState} from "react";
 import NumberInputBasic from "./Components/SidePanelItems/SidePanelInput/NumberInput";
 
