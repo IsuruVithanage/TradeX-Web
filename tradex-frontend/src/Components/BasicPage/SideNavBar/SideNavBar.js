@@ -61,7 +61,7 @@ export default function SideNavBar() {
             <SlSettings size={23}/>
         </Link>
 
-        <Link to="/trade" className={`nav-link ${isActive("/trade")}`}>
+        <Link to="/simulation" className={`nav-link ${isActive("/simulation")}`}>
             <BiCandles size={23}/>
         </Link>
 
