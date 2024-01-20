@@ -9,6 +9,7 @@ import App from './App';
 import './index.css';
 import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
+import SimulateTradingPlatform from "./Pages/SimulateTradingPlatform/SimulateTradingPlatform";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/portfolio/history",
     element: <Portfolio/>,
+  },
+  {
+    path: "/simulation",
+    element: <SimulateTradingPlatform/>,
   },
   
 ]);
