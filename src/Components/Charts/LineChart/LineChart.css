@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .chartContainer{
-    width: calc(100% - 200px);
+    width: calc(100% - 100px);
+    max-width: 800px;
+    height: 62vh;
     border-radius: 15px;
-    padding: 0 45px 0 30px;
+    padding: 0 30px;
     background-color: #0E0E0F;
     margin: auto;
 }
@@ -12,22 +14,20 @@
     position: fixed;
     top: 6%;
     left: 6%;
-    width: 90%;
+    max-width: 90%;
     height: 100vh;
+    border-radius: 0;
     z-index: 1;
     background-color: #0E0E0F;
 }
 
-#chart canvas {   
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards; /* Define the animation */
+#chart{
+    height: 85%;
+    margin-right: 12px;
 }
 
-@keyframes fadeIn {
-    to {
-        
-        opacity: 1;
-    }
+#chart canvas {   
+   transition: all 0.3s ease-in-out;
 }
 
 .button-container{
@@ -36,7 +36,8 @@
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 2px;
-    padding-top: 20px;
+    padding-top: 25px;
+    padding-right: 15px;
 }
 
 .full-screen-button{

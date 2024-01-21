@@ -28,7 +28,7 @@ export default function LineChart(props) {
 
 		const chart = createChart(chartDiv, {
 			width: chartDiv.clientWidth,
-			height: 350,
+			height: chartDiv.clientHeight,
 
 			crosshair: {
 				vertLine: {
@@ -98,7 +98,7 @@ export default function LineChart(props) {
 
 		handleResize.current = () => {
 			const chartDiv = document.getElementById('chart');
-			chart.applyOptions({ width: chartDiv.clientWidth });
+			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
 		};
 
 		window.addEventListener('resize', handleResize.current);

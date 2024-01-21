@@ -3,6 +3,7 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
+import ValueBar from '../../Components/ValueBar/ValueBar';
 const initialData = require('./portfolio-data.json');
 
 export default function Portfolio() {
@@ -29,7 +30,7 @@ export default function Portfolio() {
           header="Composition" 
           sidePanel = {<BarChart bars={bars}/>}>
           
-            <h1>Portfolio</h1>
+            <ValueBar usd={100000} value={100000}/>
             <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
 
