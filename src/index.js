@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
 import Portfolio from './Pages/Portfolio/Portfolio';
+import Simulation from './Pages/SimulateTradingPlatform/TradingPlatform';
 import Forum from './Pages/Forum/Forum';
 import App from './App';
 import './index.css';
@@ -36,8 +37,8 @@ const router = createBrowserRouter([
     element: <BasicPage/>,
   },
   {
-    path: "/trade",
-    element: <BasicPage/>,
+    path: "/simulate",
+    element: <Simulation/>,
   },
   {
     path: "/education",
