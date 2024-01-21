@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
-import SidePanelInput from '../../Components/SidePanelItems/SidePanelInput/SidePanelInput';
-import {SidePanel, ContainerWithSidePanel} from '../../Components/SidePanelItems/SidePanel/SidePanel';
+import SidePanelInput from '../../Components/SidePanel/SidePanelInput/SidePanelInput';
+import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 
-export default function alert() {
+export default function Alert(props) {
+
     const Tabs = [
       { label:"Home", path:"/"},
       { label:"Watchlist", path:"/watchlist"},
@@ -22,19 +23,18 @@ export default function alert() {
 
     return (
         <BasicPage tabs={Tabs}>
-            <SidePanel header="Add Alert">
-                <SidePanelInput type="dropdown" label='Coin'  placeholder="" options={options}/>
-                <SidePanelInput type="number" label='Price' />
-                <SidePanelInput type="date" label='End Date' />
-                <SidePanelInput type="button" value="Add Alert" style={{marginTop:"40px"}}/>
-            </SidePanel>
+            <SidePanelWithContainer 
+                header = "Add Alert"
+                sidePanel = {<div>
+                    <SidePanelInput type="dropdown" label='Coin'  placeholder="" options={options}/>
+                    <SidePanelInput type="number" label='Price' id="number"/>
+                    <SidePanelInput type="date" label='End Date' />
+                    <SidePanelInput type="button" value="Add Alert" style={{marginTop:"40px"}}/>
+                </div>}>
 
-            <ContainerWithSidePanel>
-              <h1>Alert</h1>
-              <p>
-                This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content This is Home page content 
-              </p>
-            </ContainerWithSidePanel>
+                <h1>Alert</h1>
+                <p>This is Alert page content</p>
+            </SidePanelWithContainer>
         </BasicPage>
     )
 }

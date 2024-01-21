@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.side-panel-and-content-container{
+    margin-top: 1vh;
+    display: flex;
+    width: 100%;
+}
+
+.side-container{
+    padding: 0 0.5%;
+    border-radius: 15px;
+    flex-grow: 1;
+    overflow-y: auto;
+    word-wrap: break-word;
+}
+
+.side-panel{
+    width: 275px;
+    height: 75vh;
+    background-color: #0E0E0F;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    border-radius: 15px;
+    padding: 35px;
+    flex-shrink: 0;
+}
+
+.side-panel-header{
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-align: left;
+    margin: 0 0 0.5rem 0;
+    
+}
+
+.bar{
+    width: 100%;
+    height: 0.005rem;
+    border-color: #3C3C3C;
+    margin: 0.5rem 0;
+}
+
+
+
