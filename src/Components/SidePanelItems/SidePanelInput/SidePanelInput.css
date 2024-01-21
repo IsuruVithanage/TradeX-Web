@@ -1,0 +1,32 @@
+.label-name{
+    color: #9E9E9E;
+    margin: 25px 0 8px 0;
+}
+
+.input-field{
+    width: calc(100% - 16px);   
+}
+
+.input-container input[type="button"] {
+    width: 100%;
+    background-color: #21db9a;
+    color: #ffffff;
+    border: #21db9a;
+}
+
+.input-field{ 
+    background-color: #3c3c3c58;
+    border: none;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 16px;
+    color: #21db9a;
+}
+
+.input-field:focus{
+    outline: none;
+}
+
+.input-container{
+    width: 100%;
+}
