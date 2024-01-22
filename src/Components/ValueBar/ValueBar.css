@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .value-bar{
-    width: calc(100% - 40px);
-    max-width: 860px;
+    width: calc(100%);
+    /* max-width: 860px; */
     height: 20%;
     margin: auto;
     margin-bottom: 2vh;
     border-radius: 15px;
-    background-color: #0E0E0F40;
+    background-color: #0E0E0F00;
     display: flex;
 }
 
