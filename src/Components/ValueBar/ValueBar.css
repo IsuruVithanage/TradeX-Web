@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.value-bar{
+    width: calc(100% - 40px);
+    max-width: 860px;
+    height: 20%;
+    margin: auto;
+    margin-bottom: 2vh;
+    border-radius: 15px;
+    background-color: #0E0E0F40;
+    display: flex;
+}
+
+.usd-card,
+.value-card{
+    background-color: #0E0E0F;
+    border-radius: 15px;
+    padding: 2%;
+    min-width: 22%;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.usd-card{
+    margin-right: auto;
+    text-align: left;
+}
+
+.value-card{
+    margin-left: auto;
+    text-align: right;
+}
+
+.value-card-amount{
+    font-family: 'Inter', sans-serif;
+    margin-top: 1vh;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.value-card-label{
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #9E9E9E;
+}
