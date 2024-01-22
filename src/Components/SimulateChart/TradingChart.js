@@ -66,10 +66,6 @@ export const ChartComponent = props => {
                 rightPriceScale:{
                     borderVisible:false,
                     textColor:"#AAA",
-                    scaleMargins: {
-                        top: 0.1,
-                        bottom: 0.1,
-                    },
                 },
                 localization:{
                   priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
