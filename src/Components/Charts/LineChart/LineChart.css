@@ -3,11 +3,12 @@
 .chartContainer{
     position: relative;
     width: calc(100% - 60px);
-    height: 72vh;
+    /* max-width: 800px; */
+    height: 62vh;
     border-radius: 15px;
     padding: 0 30px;
     background-color: #0E0E0F;
-    margin: 0 auto;
+    margin: auto;
 }
 
 .chartContainer.full-screen {
@@ -22,11 +23,8 @@
 }
 
 #chart{
-    position: relative;
-    z-index: 1;
-    height: 90%;
+    height: 85%;
     margin-right: 12px;
-    padding-top: 3vh;
 }
 
 #chart canvas {   
@@ -35,14 +33,15 @@
 
 .button-container{
     position: absolute;
+    top: 10%;
     z-index: 2;
-    width: calc(100% - 60px);
-    background-color: #0E0E0F;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    padding-top: 15px;
+    margin-bottom: 2px;
+    padding-top: 25px;
+    padding-right: 15px;
 }
 
 .full-screen-button{

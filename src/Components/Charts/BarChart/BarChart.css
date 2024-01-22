@@ -35,7 +35,6 @@
     margin: auto;
     overflow-y: auto;
 }
-
 .bar-chart-labels-list::-webkit-scrollbar {
     width: 0.1em;
 }
