@@ -1,0 +1,24 @@
+
+.sidebar{
+    width: 260px;
+    height: 90%;
+    background-color: #0E0E0F;
+    position: fixed;
+    top: 8%;
+    right: 1%;
+    z-index: 100;
+    border-radius: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 1.8%;
+}
+.sidebar_header{
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-align: left;
+    margin: 0 0 0.5rem 0;
+    
+}
