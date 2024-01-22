@@ -15,17 +15,15 @@ export default function ValueBar(props) {
     return (
         <div className='value-bar'>
             <div className='usd-card'>
-                <div>
-                    <span className='value-card-label'>USD Balance</span>
-                    <p className='value-card-amount' style={{color: '#21DB9A'}}>{usd}</p>  
-                </div>
+                <span className='value-card-label'>USD Balance</span>
+                <br/>
+                <p className='value-card-amount' style={{color: '#21DB9A'}}>{usd}</p>
             </div>
 
             <div className='value-card'>
-                <div>
-                    <span className='value-card-label'>Portfolio Value</span>
-                    <p className='value-card-amount'>{value}</p>
-                </div>
+                <span className='value-card-label'>Portfolio Value</span>
+                <br/>
+                <p className='value-card-amount'>{value}</p>
             </div>
         </div>
     )

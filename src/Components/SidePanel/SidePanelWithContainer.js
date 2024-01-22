@@ -8,7 +8,7 @@ export default function SidePanelWithContainer(props) {
             { props.children }
         </div>
 
-        <div className='side-panel' style={props.style}>
+        <div className='side-panel' >
             <p className='side-panel-header'>{props.header}</p>
             <hr className='line'/>
             { props.sidePanel }
