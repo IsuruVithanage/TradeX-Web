@@ -46,7 +46,7 @@ export default function LineChart(props) {
 				borderVisible: false,
 				scaleMargins: {
 					top: 0.2,
-					bottom: 0.2,
+					bottom: 0.15,
 				},
 			},
 

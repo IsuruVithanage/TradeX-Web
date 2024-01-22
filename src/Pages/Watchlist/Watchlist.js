@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
-import Coin from '../../Components/coin/coin';
 
 export default function Watchlist() {
   const Tabs = [
