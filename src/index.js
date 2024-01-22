@@ -54,7 +54,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/portfolio/history",
-    element: <Portfolio/>,
+    element: <Portfolio />,
   },
   
 ]);
