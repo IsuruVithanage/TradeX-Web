@@ -1,9 +1,11 @@
 import {createChart, ColorType} from 'lightweight-charts';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import io from "socket.io-client";
 import './TradingChart.css'
+import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
 
 export const ChartComponent = props => {
+    const [ activeDuration, setActiveDuration ] = useState('daily');
     const {
         data,
         colors: {
@@ -107,10 +109,45 @@ export const ChartComponent = props => {
         []
     );
 
+    function updateChartData(daily) {
+
+    }
+
     return (
 
         <div id='chartDiv'>
-            <div id="tchart"/>
+                <div className='buttonDiv'>
+                    <button
+                        onClick={() => updateChartData('daily')}
+                        className={`durationButton ${activeDuration === 'daily' ? "active" : ""}`}>
+                        1m
+                    </button>
+
+                    <button
+                        onClick={() => updateChartData('weekly')}
+                        className={`durationButton ${activeDuration === 'weekly' ? "active" : ""}`}>
+                        15m
+                    </button>
+
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1H
+                    </button>
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1D
+                    </button>
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1W
+                    </button>
+
+                </div>
+
+            <div id='tchart' />
         </div>
     );
 };

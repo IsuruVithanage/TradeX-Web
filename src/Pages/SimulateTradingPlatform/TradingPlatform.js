@@ -14,12 +14,12 @@ export default function Portfolio() {
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 header='Trade'
-                style={{height:'530px'}}
+                style={{height: '530px'}}
                 sidePanel={<div>
 
                 </div>}
             >
-                <div style={{width:'50%',height:'15%'}}></div>
+                <div style={{width: '50%', height: '5%'}}></div>
                 <TradingChart/>
             </SidePanelWithContainer>
         </BasicPage>
