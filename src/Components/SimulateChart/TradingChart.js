@@ -40,7 +40,7 @@ export const ChartComponent = props => {
 
     useEffect(
         () => {
-            const chartContainerRef = document.getElementById('chart');
+            const chartContainerRef = document.getElementById('tchart');
 
             const socket = io("http://localhost:8000");
             const handleResize = () => {
@@ -110,7 +110,7 @@ export const ChartComponent = props => {
     return (
 
         <div id='chartDiv'>
-            <div id="chart"/>
+            <div id="tchart"/>
         </div>
     );
 };

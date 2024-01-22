@@ -14,7 +14,7 @@ export default function Portfolio() {
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 header='Trade'
-                style={{height:'20%'}}
+                style={{height:'530px'}}
                 sidePanel={<div>
 
                 </div>}
