@@ -1,17 +1,18 @@
 import {createChart, ColorType} from 'lightweight-charts';
 import React, {useEffect, useRef} from 'react';
 import io from "socket.io-client";
+import './TradingChart.css'
 
 export const ChartComponent = props => {
     const {
         data,
         colors: {
             backgroundColor = '#0E0E0F',
-            textColor = '#AAA',
-            upColor= "#21DB9A",
-            downColor= "#ff0000",
-            wickUpColor= "#21DB9A",
-            wickDownColor= "#ff0000",
+            textColor = '#0E0E0F',
+            upColor = "#21DB9A",
+            downColor = "#ff0000",
+            wickUpColor = "#21DB9A",
+            wickDownColor = "#ff0000",
         } = {},
     } = props;
 
@@ -53,15 +54,31 @@ export const ChartComponent = props => {
                     textColor,
                 },
                 width: chartContainerRef.current.clientWidth,
-                height: 300,
+                height: 400,
                 grid: {
                     vertLines: {
-                        color: "#3C3C3C",
+                        visible: false,
                     },
                     horzLines: {
                         color: "#3C3C3C",
                     },
                 },
+                rightPriceScale:{
+                    borderVisible:false,
+                    textColor:"#AAA",
+                    scaleMargins: {
+                        top: 0.1,
+                        bottom: 0.1,
+                    },
+                },
+                localization:{
+                  priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                },
+                timeScale:{
+                    fixLeftEdge:true,
+                    borderVisible:false,
+                }
+
             });
             chart.timeScale().fitContent();
 
@@ -75,6 +92,9 @@ export const ChartComponent = props => {
 
             // Listen for "update" events from the socket
             socket.on("update", async (updatedData) => {
+                if (!chart) {
+                    return;
+                }
                 newSeries.setData(await processData(updatedData));
             });
 
@@ -84,16 +104,21 @@ export const ChartComponent = props => {
             return () => {
                 window.removeEventListener('resize', handleResize);
 
-                chart.remove();
+                if (chart) {
+                    chart.remove();
+                }
             };
         },
         []
     );
 
     return (
-        <div
-            ref={chartContainerRef}
-        />
+
+        <div style={{width:'70%',height:'50%', backgroundColor:backgroundColor, padding:'40px', borderRadius:'10px'}}>
+            <div
+                ref={chartContainerRef}
+            />
+        </div>
     );
 };
 
