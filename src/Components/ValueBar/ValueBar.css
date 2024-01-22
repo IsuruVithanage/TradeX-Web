@@ -2,8 +2,7 @@
 
 .value-bar{
     width: calc(100%);
-    /* max-width: 860px; */
-    height: 20%;
+    height: 18vh;
     margin: auto;
     margin-bottom: 2vh;
     border-radius: 15px;
@@ -13,9 +12,12 @@
 
 .usd-card,
 .value-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #0E0E0F;
+    padding: 0 0.5vw;
     border-radius: 15px;
-    padding: 2%;
     min-width: 22%;
     width: -moz-fit-content;
     width: fit-content;
@@ -33,7 +35,7 @@
 
 .value-card-amount{
     font-family: 'Inter', sans-serif;
-    margin-top: 1vh;
+    margin: 1vh 0;
     font-size: 2rem;
     font-weight: 500;
     color: #ffffff;
