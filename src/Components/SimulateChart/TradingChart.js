@@ -16,8 +16,6 @@ export const ChartComponent = props => {
         } = {},
     } = props;
 
-    const chartContainerRef = useRef();
-
     //Process the data according to the graph
     const processData = async (newData) => {
         try {
@@ -42,19 +40,20 @@ export const ChartComponent = props => {
 
     useEffect(
         () => {
+            const chartContainerRef = document.getElementById('chart');
 
             const socket = io("http://localhost:8000");
             const handleResize = () => {
-                chart.applyOptions({width: chartContainerRef.current.clientWidth});
+                chart.applyOptions({width: chartContainerRef.clientWidth,height:chartContainerRef.clientHeight});
             };
 
-            const chart = createChart(chartContainerRef.current, {
+            const chart = createChart(chartContainerRef, {
                 layout: {
                     background: {type: ColorType.Solid, color: backgroundColor},
                     textColor,
                 },
-                width: chartContainerRef.current.clientWidth,
-                height: 400,
+                width: chartContainerRef.clientWidth,
+                height: chartContainerRef.clientHeight,
                 grid: {
                     vertLines: {
                         visible: false,
@@ -110,10 +109,8 @@ export const ChartComponent = props => {
 
     return (
 
-        <div style={{width:'70%',height:'50%', backgroundColor:backgroundColor, padding:'40px', borderRadius:'10px'}}>
-            <div
-                ref={chartContainerRef}
-            />
+        <div id='chartDiv'>
+            <div id="chart"/>
         </div>
     );
 };

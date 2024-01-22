@@ -1,4 +1,14 @@
 #chartDiv{
-    width: 80%;
-    height: 60%;
+    width: 97%;
+    height: 75%;
+    background-color: #0E0E0F;
+    padding-left: 2%;
+    padding-right: 1%;
+    padding-top: 6%;
+    border-radius :10px;
+}
+
+#chart{
+    width: 100%;
+    height: 100%;
 }
