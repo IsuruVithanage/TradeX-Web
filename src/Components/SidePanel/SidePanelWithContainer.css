@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .side-panel-and-content-container{
-    margin-top: 1vh;
+    margin-top: 0.5%;
     display: flex;
     width: 100%;
 }
@@ -12,16 +12,20 @@
     flex-grow: 1;
     overflow-y: auto;
     word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
 }
 
 .side-panel{
     width: 275px;
     height: 70vh;
+    min-height: 500px;
     background-color: #0E0E0F;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     border-radius: 15px;
+    margin-right: 0.5%;
     padding: 35px;
     flex-shrink: 0;
 }
