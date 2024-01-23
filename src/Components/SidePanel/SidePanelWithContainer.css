@@ -16,7 +16,7 @@
 
 .side-panel{
     width: 275px;
-    height: calc(92vh - 70px);
+    height: 70vh;
     background-color: #0E0E0F;
     position: -webkit-sticky;
     position: sticky;
@@ -43,16 +43,5 @@
     margin: 0.5rem 0;
 }
 
-.side-container::-webkit-scrollbar {
-    width: 0.1em;
-}
-
-.side-container::-webkit-scrollbar-thumb {
-    background-color: #21DB9A;
-}
-
-.side-container::-webkit-scrollbar-track {
-    background-color: #0E0E0F;
-}
 
 

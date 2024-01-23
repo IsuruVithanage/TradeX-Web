@@ -1,9 +1,7 @@
 import {createChart, ColorType} from 'lightweight-charts';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import io from "socket.io-client";
 import './TradingChart.css'
-import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
-
 export const ChartComponent = props => {
     const [ activeDuration, setActiveDuration ] = useState('daily');
     const {

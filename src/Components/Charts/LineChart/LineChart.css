@@ -3,7 +3,7 @@
 .chartContainer{
     position: relative;
     width: calc(100% - 60px);
-    height: 72vh;
+    height: 62vh;
     border-radius: 15px;
     padding: 0 30px;
     background-color: #0E0E0F;
@@ -24,7 +24,7 @@
 #chart{
     position: relative;
     z-index: 1;
-    height: 90%;
+    height: 85%;
     margin-right: 12px;
     padding-top: 3vh;
 }
