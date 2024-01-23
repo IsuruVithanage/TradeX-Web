@@ -8,6 +8,7 @@
     padding: 0 30px;
     background-color: #0E0E0F;
     margin: 0 auto;
+    flex: 1;
 }
 
 .chartContainer.full-screen {
@@ -26,7 +27,7 @@
     z-index: 1;
     height: 85%;
     margin-right: 12px;
-    padding-top: 3vh;
+    padding-top: 4vh;
 }
 
 #chart canvas {   
