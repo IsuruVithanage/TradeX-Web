@@ -13,30 +13,25 @@ const CoinBar = () => {
     });
 
     return (
-        <div id='coinDiv'>
-            <div className='coin-row'>
-                <div className='coin'>
-                    <img src={bitcoinData.image} alt='crypto' />
-                    <h1>{bitcoinData.name}</h1>
-                    <p className='coin-symbol'>{bitcoinData.symbol}</p>
+        <div className='coinDiv'>
+            <div className='coin-logo'>
+                <div className='coin-logo coin'>
+                    <img src="" alt=""/>
+                    <p>BTC</p>
                 </div>
-                <div className='coin-data'>
-                    <p className='coin-price'>${bitcoinData.price}</p>
-                    <p className='coin-volume'>${bitcoinData.volume.toLocaleString()}</p>
-
-                    {bitcoinData.priceChange < 0 ? (
-                        <p className='coin-percent red'>
-                            {bitcoinData.priceChange.toFixed(2)}%
-                        </p>
-                    ) : (
-                        <p className='coin-percent green'>
-                            {bitcoinData.priceChange.toFixed(2)}%
-                        </p>
-                    )}
-
-                    <p className='coin-marketcap'>
-                        Mkt Cap: ${bitcoinData.marketcap.toLocaleString()}
-                    </p>
+            </div>
+            <div className='coinData'>
+                <div className='cdata'>
+                    <h1>Price</h1>
+                    <p>20000</p>
+                </div>
+                <div className='cdata'>
+                    <h1>24h Change</h1>
+                    <p>20000</p>
+                </div>
+                <div className='cdata'>
+                    <h1>Market Cap</h1>
+                    <p>20000</p>
                 </div>
             </div>
         </div>
