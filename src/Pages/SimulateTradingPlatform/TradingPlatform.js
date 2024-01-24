@@ -2,6 +2,7 @@ import React from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import CoinBar from "../../Components/SimulateChart/CoinBar";
 
 export default function Portfolio() {
 
@@ -19,7 +20,7 @@ export default function Portfolio() {
 
                 </div>}
             >
-                <div style={{width: '50%', height: '5%'}}></div>
+                <CoinBar/>
                 <TradingChart/>
             </SidePanelWithContainer>
         </BasicPage>

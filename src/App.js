@@ -16,7 +16,6 @@ export default function App() {
   return (
     <BasicPage tabs={Tabs}>
 
-        <CoinBar/>
 
       <h1>Home</h1>
       <p>Height : {height}</p>
