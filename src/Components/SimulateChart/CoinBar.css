@@ -1,0 +1,35 @@
+#coinDiv{
+    position: relative;
+    width: 97%;
+    height: 10%;
+    background-color: #0E0E0F;
+    padding-left: 2%;
+    padding-right: 1%;
+    padding-top: 2%;
+    border-radius :10px;
+}
+
+.coin-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    height: 80px;
+    border-bottom: 1px solid #d7d7d7;
+    width: 900px;
+}
+
+.coin {
+    display: flex;
+    align-items: center;
+    padding-right: 24px;
+
+    min-width: 300px;
+}
+
+.coin-data {
+    display: flex;
+    text-align: right;
+    justify-content: space-between;
+    width: 100%;
+}

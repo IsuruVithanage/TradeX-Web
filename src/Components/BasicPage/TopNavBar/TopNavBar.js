@@ -29,7 +29,7 @@ export default function TopNavBar(props) {
       <div className="top-navbar">
           <nav className="links-container">
               {(props.tabs) && props.tabs.map((tab) => (
-                <Link to={tab.path}>
+                <Link key={tab.path} to={tab.path}>
                   <span className={`top-nav-link ${active(tab.path)}`}>
                     {tab.label}
                   </span>

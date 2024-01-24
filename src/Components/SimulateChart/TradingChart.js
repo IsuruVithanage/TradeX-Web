@@ -1,21 +1,20 @@
 import {createChart, ColorType} from 'lightweight-charts';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import io from "socket.io-client";
-
+import './TradingChart.css'
 export const ChartComponent = props => {
+    const [ activeDuration, setActiveDuration ] = useState('daily');
     const {
         data,
         colors: {
             backgroundColor = '#0E0E0F',
-            textColor = '#AAA',
-            upColor= "#21DB9A",
-            downColor= "#ff0000",
-            wickUpColor= "#21DB9A",
-            wickDownColor= "#ff0000",
+            textColor = '#0E0E0F',
+            upColor = "#21DB9A",
+            downColor = "#ff0000",
+            wickUpColor = "#21DB9A",
+            wickDownColor = "#ff0000",
         } = {},
     } = props;
-
-    const chartContainerRef = useRef();
 
     //Process the data according to the graph
     const processData = async (newData) => {
@@ -41,27 +40,40 @@ export const ChartComponent = props => {
 
     useEffect(
         () => {
+            const chartContainerRef = document.getElementById('tchart');
 
             const socket = io("http://localhost:8000");
             const handleResize = () => {
-                chart.applyOptions({width: chartContainerRef.current.clientWidth});
+                chart.applyOptions({width: chartContainerRef.clientWidth,height:chartContainerRef.clientHeight});
             };
 
-            const chart = createChart(chartContainerRef.current, {
+            const chart = createChart(chartContainerRef, {
                 layout: {
                     background: {type: ColorType.Solid, color: backgroundColor},
                     textColor,
                 },
-                width: chartContainerRef.current.clientWidth,
-                height: 300,
+                width: chartContainerRef.clientWidth,
+                height: chartContainerRef.clientHeight,
                 grid: {
                     vertLines: {
-                        color: "#3C3C3C",
+                        visible: false,
                     },
                     horzLines: {
                         color: "#3C3C3C",
                     },
                 },
+                rightPriceScale:{
+                    borderVisible:false,
+                    textColor:"#AAA",
+                },
+                localization:{
+                  priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                },
+                timeScale:{
+                    fixLeftEdge:true,
+                    borderVisible:false,
+                }
+
             });
             chart.timeScale().fitContent();
 
@@ -75,6 +87,9 @@ export const ChartComponent = props => {
 
             // Listen for "update" events from the socket
             socket.on("update", async (updatedData) => {
+                if (!chart) {
+                    return;
+                }
                 newSeries.setData(await processData(updatedData));
             });
 
@@ -84,16 +99,54 @@ export const ChartComponent = props => {
             return () => {
                 window.removeEventListener('resize', handleResize);
 
-                chart.remove();
+                if (chart) {
+                    chart.remove();
+                }
             };
         },
         []
     );
 
+    function updateChartData(daily) {
+
+    }
+
     return (
-        <div
-            ref={chartContainerRef}
-        />
+
+        <div id='chartDiv'>
+                <div className='buttonDiv'>
+                    <button
+                        onClick={() => updateChartData('daily')}
+                        className={`durationButton ${activeDuration === 'daily' ? "active" : ""}`}>
+                        1m
+                    </button>
+
+                    <button
+                        onClick={() => updateChartData('weekly')}
+                        className={`durationButton ${activeDuration === 'weekly' ? "active" : ""}`}>
+                        15m
+                    </button>
+
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1H
+                    </button>
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1D
+                    </button>
+                    <button
+                        onClick={() => updateChartData('monthly')}
+                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                        1W
+                    </button>
+
+                </div>
+
+            <div id='tchart' />
+        </div>
     );
 };
 

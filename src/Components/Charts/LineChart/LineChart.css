@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.chartContainer{
+    position: relative;
+    width: calc(100% - 60px);
+    height: 62vh;
+    border-radius: 15px;
+    padding: 0 30px;
+    background-color: #0E0E0F;
+    margin: 0 auto;
+    flex: 1;
+}
+
+.chartContainer.full-screen {
+    position: fixed;
+    top: 6%;
+    left: 6%;
+    max-width: 90%;
+    height: 100vh;
+    border-radius: 0;
+    z-index: 1;
+    background-color: #0E0E0F;
+}
+
+#chart{
+    position: relative;
+    z-index: 1;
+    height: 85%;
+    margin-right: 12px;
+    padding-top: 4vh;
+}
+
+#chart canvas {   
+    transition: all 0.3s ease-in-out;
+}
+
+.button-container{
+    position: absolute;
+    z-index: 2;
+    width: calc(100% - 60px);
+    background-color: #0E0E0F;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.full-screen-button{
+    color: #9E9E9E;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.full-screen-button:hover{
+    color: #21DB9A;
+}
+
+.duration-button{
+    background-color: #0E0E0F;
+    color: #9E9E9E;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 6px;
+    margin: 0 5px;
+}
+
+.duration-button:hover{
+    background-color: #21DB9A;
+    color: #ffffff;
+
+}
+
+.duration-button.active{
+    background-color: #21DB9A;
+    color: #ffffff;
+}
