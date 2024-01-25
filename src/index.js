@@ -10,6 +10,7 @@ import App from './App';
 import './index.css';
 import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
+import News from './Pages/News/News';
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/news",
-    element: <BasicPage/>,
+    element: <News/>,
   },
   {
     path: "/alert",
