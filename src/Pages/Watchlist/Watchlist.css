@@ -1,0 +1,20 @@
+.coin-search {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 30%; 
+    margin-top: 20%;
+    margin-bottom: 20px; 
+  }
+  
+  .coin-input {
+    color: white;
+    background-color: rgb(37, 37, 37);
+    border: none; 
+    padding: 8px;
+    width: 300px;
+  }
+
+  table{
+    align-items: center;
+  }
+  
