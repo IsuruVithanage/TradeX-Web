@@ -2,6 +2,7 @@ import React from 'react'
 import './SidePanelWithContainer.css'
 
 export default function SidePanelWithContainer(props) {
+  const line = (props.line === undefined) ? true : props.line
   return (
     <div className='side-panel-and-content-container'>
         <div className='side-container'>
@@ -10,7 +11,7 @@ export default function SidePanelWithContainer(props) {
 
         <div className='side-panel' >
             <p className='side-panel-header'>{props.header}</p>
-            <hr className='bar'/>
+            { line && <hr className='line'/> }
             { props.sidePanel }
         </div>
     </div>

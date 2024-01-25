@@ -1,6 +1,8 @@
 import React from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
+import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import CoinBar from "../../Components/SimulateChart/CoinBar";
 
 export default function Portfolio() {
 
@@ -11,8 +13,16 @@ export default function Portfolio() {
 
     return (
         <BasicPage tabs={Tabs}>
-            <div style={{width:'50%',height:'20%'}}></div>
-            <TradingChart/>
+            <SidePanelWithContainer
+                header='Trade'
+                style={{height: '530px'}}
+                sidePanel={<div>
+
+                </div>}
+            >
+                <CoinBar/>
+                <TradingChart/>
+            </SidePanelWithContainer>
         </BasicPage>
     )
 }
