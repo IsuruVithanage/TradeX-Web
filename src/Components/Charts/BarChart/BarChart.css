@@ -19,14 +19,6 @@
     border-radius: 7px;
     margin: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
 }
 
 .bar-chart-labels-list{
@@ -35,6 +27,7 @@
     margin: auto;
     overflow-y: auto;
 }
+
 .bar-chart-labels-list::-webkit-scrollbar {
     width: 0.1em;
 }

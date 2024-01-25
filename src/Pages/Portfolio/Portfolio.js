@@ -4,6 +4,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
+import Table, { TableRaw } from '../../Components/Table/Table';
 const initialData = require('./portfolio-data.json');
 
 export default function Portfolio() {
@@ -34,48 +35,13 @@ export default function Portfolio() {
             <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
 
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            
+            <Table>
+                <TableRaw data={['Symbol', 'Amount', 'Price', 'Value', 'Change']}/>
+                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+            </Table>
+          
     </BasicPage>
   )
 }

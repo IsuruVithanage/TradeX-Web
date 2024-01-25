@@ -1,0 +1,19 @@
+.main-table {
+    width: 100%;
+    color: #ffffff;
+  }
+
+  .table-cell {
+    
+    text-align: left;
+    padding: 8px; /* Adjust the padding as needed */
+    border: 1px solid #ddd; /* Add borders if desired */
+  }
+
+.table-head tr{
+    
+}
+
+.table-body{
+    
+}

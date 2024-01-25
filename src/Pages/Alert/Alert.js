@@ -2,6 +2,7 @@ import React from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelInput from '../../Components/SidePanel/SidePanelInput/SidePanelInput';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
+import Table, { TableRaw } from '../../Components/Table/Table';
 
 export default function Alert(props) {
 
@@ -35,46 +36,14 @@ export default function Alert(props) {
                 <h1>Alert</h1>
                 <p>This is Alert page content</p>
                 <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
-            <p>This is Home page content</p>
+
+                <Table>
+                    <TableRaw data={['Symbol', 'Amount', 'Price', 'Value', 'Change']}/>
+                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                </Table>
+
             </SidePanelWithContainer>
         </BasicPage>
     )

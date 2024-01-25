@@ -41,7 +41,7 @@ export default function LineChart(props) {
 
 			leftPriceScale:{
 				visible: true,
-				mode: 0,
+				mode: 1,
 				textColor: '#ffffff',
 				borderVisible: false,
 				scaleMargins: {

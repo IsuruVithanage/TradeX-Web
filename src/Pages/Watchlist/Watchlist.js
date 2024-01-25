@@ -1,5 +1,3 @@
-// Watchlist1.jsx
-
 import React, { useState, useEffect } from 'react';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import axios from 'axios';
