@@ -1,7 +1,5 @@
 import './App.css';
 import BasicPage from './Components/BasicPage/BasicPage';
-import NewsBar from './Components/News/NewsBar';
-import CoinBar from "./Components/SimulateChart/CoinBar";
 
 
 export default function App() {
@@ -17,7 +15,7 @@ export default function App() {
   return (
     <BasicPage tabs={Tabs}>
 
-        <NewsBar/>
+
 
       <h1>Home</h1>
       <p>Height : {height}</p>
