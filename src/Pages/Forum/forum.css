@@ -1,7 +1,39 @@
 .bar{
-    width: 550px;
+    width: 700px;
     height: 30px;
     flex-shrink: 0;
     border-radius: 15px;
     background: rgba(60, 60, 60, 0.39);
+    color: white;
+}
+.ques-button{
+    color: #FFF;
+
+font-family: Inter;
+font-size: 13px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+letter-spacing: -0.34px;
+border-radius: 11px;
+background: #21DB9A;
+margin-right: 40px;
+
+box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+
+
+width: 120px;
+height: 33px;
+flex-shrink: 0;
+}
+
+.bar{
+    margin-right:40px;
+}
+
+.filter-icon{
+    color: #6D6D6D;
+    padding-top: 10px;
+    margin-right: 40px;
+    size:30;
 }
