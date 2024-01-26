@@ -1,6 +1,6 @@
 .news-container{
-    width: 97%;
+    width: 95%;
     height: 100vh;
-    margin-left: 20px !important;
-    overflow: hidden;
+    margin-left: 20px ;
+    margin-top: 20px;
 }
