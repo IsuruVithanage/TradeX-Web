@@ -1,19 +1,91 @@
-.main-table {
-    width: 100%;
-    color: #ffffff;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-  .table-cell {
-    
-    text-align: left;
-    padding: 8px; /* Adjust the padding as needed */
-    border: 1px solid #ddd; /* Add borders if desired */
-  }
-
-.table-head tr{
-    
+.table-container{
+  width: 99%;
+  margin: auto;
+  border-radius: 15px;
+  box-sizing: border-box;
+  padding: 25px 2vw;
+  background-color: #0E0E0F;
+  overflow-x: auto;
 }
 
-.table-body{
-    
+.table-container 
+.main-table {
+  width: 100%;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  border-collapse: collapse;
+}
+
+.table-container 
+.table-head{
+  border-bottom: 1px solid #3C3C3C;
+  color: #9E9E9E;
+}
+
+.table-container 
+.table-row {
+  position: relative;
+}
+
+.table-container 
+.table-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 15px;
+  z-index: 0;
+}
+
+.table-container 
+.table-body 
+.table-row:nth-child(even)::before {
+  background-color: #151516;
+}
+
+.table-container 
+.table-body.hoverble 
+.table-row:hover::before {
+  background-color: #3C3C3C;
+}
+
+.table-container 
+.table-cell {
+  position: relative;
+  text-align: center;
+  padding: 18px;
+  z-index: 1;
+}
+
+.table-container 
+.table-cell 
+div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container
+.table-cell.first-column{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-left: 20px;
+}
+
+.table-container 
+.table-head
+.table-cell.first-column{
+  padding-left: 30px;
+}
+
+.table-container 
+.coin-icon{
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
