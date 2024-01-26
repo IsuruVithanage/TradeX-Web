@@ -5,24 +5,29 @@ import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRaw } from '../../Components/Table/Table';
-const initialData = require('./portfolio-data.json');
 
 export default function Portfolio() {
-  const bars = [
-      { symbol: 'BTC', presentage: 10 },
-      { symbol: 'ETH', presentage: 15 },
-      { symbol: 'DOGE', presentage: 20 },
-      { symbol: 'ADA', presentage: 25 },
-      { symbol: 'BNB', presentage: 27 },
-      { symbol: 'XRP', presentage: 3 },
 
-  ];
+  const initialData = require('./portfolio-data.json');
+  const assets = require('./assets.json');
+  let totalValue = 0;
 
   const Tabs = [
     { label:"Portfolio", path:"/portfolio"},
     { label:"History", path:"/portfolio/history"},
     { label:"Home", path:"/"},
   ];
+
+  Object.values(assets).forEach(asset => {
+    asset.TotalBalance = asset.spotBalance + asset.futureBalance + asset.fundingBalance;
+    asset.Value = asset.TotalBalance * asset.marketPrice;
+    totalValue += asset.Value;
+  });
+ 
+  const bars = Object.keys(assets).map(assetKey => ({
+    coinName: assetKey,
+    percentage: ((assets[assetKey].Value / totalValue) * 100),
+  }));
 
   return (
     <BasicPage tabs={Tabs}>
@@ -34,13 +39,26 @@ export default function Portfolio() {
             <ValueBar usd={100000} value={100000}/>
             <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
+          
+            <div style={{marginTop:'1vh'}}>
+              <Table>
+                  <TableRaw data={['Coin', 'Spot Balance', 'Future Balance', 'Funding Balance', 'Total Balance', 'Value']}/>
 
-            <Table>
-                <TableRaw data={['Symbol', 'Amount', 'Price', 'Value', 'Change']}/>
-                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
-                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
-                <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
-            </Table>
+                  {Object.keys(assets).map(assetKey => (
+                    <TableRaw 
+                      key={assetKey} 
+                      data={[
+                        [assets[assetKey].symbol, assetKey], 
+                        assets[assetKey].spotBalance, 
+                        assets[assetKey].futureBalance, 
+                        assets[assetKey].fundingBalance, 
+                        assets[assetKey].TotalBalance, 
+                        assets[assetKey].Value
+                      ]} 
+                    />
+                  ))}
+              </Table>
+            </div>
           
     </BasicPage>
   )

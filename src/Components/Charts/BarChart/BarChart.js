@@ -3,13 +3,13 @@ import { FaCircle } from "react-icons/fa6";
 import "./BarChart.css";
 
 export default function BarChart(props) {
-    let bars = props.bars.sort((a, b) => b.presentage - a.presentage);
+    let bars = props.bars.sort((a, b) => b.percentage - a.percentage);
 
     const updateBarProperties = () => {
         let cumulativePercentage = 0;
 
         bars.forEach((bar) => {
-            cumulativePercentage += bar.presentage;
+            cumulativePercentage += bar.percentage;
         });
 
         if(cumulativePercentage === 100){
@@ -17,7 +17,7 @@ export default function BarChart(props) {
             cumulativePercentage = 0;
 
             bars.forEach((bar) => {
-                cumulativePercentage += bar.presentage;
+                cumulativePercentage += bar.percentage;
                 bar.cumulativePercentage = cumulativePercentage;
                 bar.zIndex = bars.length - arrayIndex;
                 bar.color = getRandomColor();
@@ -55,13 +55,15 @@ export default function BarChart(props) {
       </div>
       
       <div className='bar-chart-labels-list'>
-      <table style={{ margin: '0 auto' }}>
+        <table style={{ margin: '0 auto' }}>
           <tbody>
             {(bars) && bars.map((bar) => (
                 <tr key={bar.zIndex}>   
                   <td className='bar-chart-label'><FaCircle style={{color: bar.color}} size={15}></FaCircle></td>
-                  <td className='bar-chart-label'>{bar.symbol}</td>
-                  <td className='bar-chart-label'>{bar.presentage}%</td>
+                  <td className='bar-chart-label'>{bar.coinName}</td>
+                  <td className='bar-chart-label'>
+                    {(Number(bar.percentage) % 1 === 0) ? Number(bar.percentage) : Number(bar.percentage).toFixed(2)}%
+                  </td>
                 </tr>
             ))}
           </tbody>
