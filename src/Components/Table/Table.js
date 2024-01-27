@@ -3,7 +3,7 @@ import './Table.css'
 
 export default function Table(props) {
   return (
-    <div className='table-container'>
+    <div className='table-container' style={props.style}>
         <table className='main-table'>
             <thead className='table-head'>
                 {props.children[0]}
@@ -20,7 +20,8 @@ export function TableRaw({data}) {
   return (
     <tr className='table-row'>
         {(data) && data.map((cell, index) => {
-            if (typeof cell === 'object' && cell[0] !== ( undefined || '' )) {
+            
+            if (Array.isArray(cell) && (cell[0] !== undefined && cell[0] !== '' )) {
               cell = 
                 <div> 
                   <img className='coin-icon' src={cell[0]} alt={cell[1]} /> 
@@ -28,7 +29,7 @@ export function TableRaw({data}) {
                 </div>;
             }
             
-            return <td key={index} className={`table-cell ${(index == 0) ? 'first-column' : ''}`}>{cell}</td>
+            return <td key={index} className={`table-cell ${(index === 0) ? 'first-column' : ''}`}>{cell}</td>
         })}
     </tr> 
   )

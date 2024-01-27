@@ -3,7 +3,6 @@
 .chartContainer{
     position: relative;
     width: calc(100% - 60px);
-    height: 62vh;
     border-radius: 15px;
     padding: 0 30px;
     background-color: #0E0E0F;

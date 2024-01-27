@@ -1,42 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa6";
 import "./BarChart.css";
 
 export default function BarChart(props) {
-    let bars = props.bars.sort((a, b) => b.percentage - a.percentage);
+  const [bars, setBars] = useState([]);
+  console.log(props.bars);
 
-    const updateBarProperties = () => {
-        let cumulativePercentage = 0;
+  useEffect(() => {
+    let cumulativePercentage = 0;
+    
+    props.bars.sort((a, b) => b.percentage - a.percentage);
 
-        bars.forEach((bar) => {
-            cumulativePercentage += bar.percentage;
-        });
+    props.bars.forEach((bar, index) => {
+        cumulativePercentage += bar.percentage;
+        bar.cumulativePercentage = cumulativePercentage;
+        bar.zIndex = props.bars.length - index;
+        bar.color = getRandomColor();
+    });
+    
+    setBars(props.bars)
+    
+  }, [props.bars]);
 
-        if(cumulativePercentage === 100){
-            let arrayIndex = 0;
-            cumulativePercentage = 0;
 
-            bars.forEach((bar) => {
-                cumulativePercentage += bar.percentage;
-                bar.cumulativePercentage = cumulativePercentage;
-                bar.zIndex = bars.length - arrayIndex;
-                bar.color = getRandomColor();
-                arrayIndex += 1;
-            });
-        }
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    updateBarProperties();
-
+    return color;
+  }
 
   return (
     <div className='bar-chart-container'>

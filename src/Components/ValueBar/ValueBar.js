@@ -9,8 +9,8 @@ export default function ValueBar(props) {
         });
     }
 
-    const usd = formatCurrency(props.usd);
-    const value = formatCurrency(props.value);
+    const usd = formatCurrency(props.usdBalance);
+    const value = formatCurrency(props.portfolioValue);
 
     return (
         <div className='value-bar'>

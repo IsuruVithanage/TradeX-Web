@@ -6,9 +6,9 @@ import './LineChart.css';
 export default function LineChart(props) {
 	let handleResize = useRef(null);
 
-	const [ chartData, setChartData ] = useState(props.data.daily);
+	const [ chartData, setChartData ] = useState(props.data[Object.keys(props.data)[0]]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
-	const [ activeDuration, setActiveDuration ] = useState('daily');
+	const [ activeDuration, setActiveDuration ] = useState(Object.keys(props.data)[0]);
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration]);
@@ -113,23 +113,17 @@ export default function LineChart(props) {
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
 			<div className='button-container'>
-				<button 
-					onClick={() => updateChartData('daily')} 
-					className={`duration-button ${activeDuration === 'daily' ? "active" : ""}`}>
-					Day
-				</button>
-
-				<button 
-					onClick={() => updateChartData('weekly')}
-					className={`duration-button ${activeDuration === 'weekly' ? "active" : ""}`}>
-					Week
-				</button>
-
-				<button 
-					onClick={() => updateChartData('monthly')}
-					className={`duration-button ${activeDuration === 'monthly' ? "active" : ""}`}>
-					Month
-				</button>
+				{ 
+					Object.keys(props.data).length > 1 && 
+					Object.keys(props.data).map((duration, index) => (
+						<button 
+							key={index}
+							onClick={() => updateChartData(duration)} 
+							className={`duration-button ${activeDuration === duration ? "active" : ""}`}>
+							{duration}
+						</button>
+					))
+				}	
 
 				<span
 					onClick={ toggleFullScreen }

@@ -7,10 +7,10 @@ import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRaw } from '../../Components/Table/Table';
 
 export default function Portfolio() {
-
   const initialData = require('./portfolio-data.json');
   const assets = require('./assets.json');
-  let totalValue = 0;
+  const usdBalance = assets.USD.spotBalance + assets.USD.futureBalance + assets.USD.fundingBalance;
+  let portfolioValue = 0;
 
   const Tabs = [
     { label:"Portfolio", path:"/portfolio"},
@@ -20,13 +20,13 @@ export default function Portfolio() {
 
   Object.values(assets).forEach(asset => {
     asset.TotalBalance = asset.spotBalance + asset.futureBalance + asset.fundingBalance;
-    asset.Value = asset.TotalBalance * asset.marketPrice;
-    totalValue += asset.Value;
+    asset.value = asset.TotalBalance * asset.marketPrice;
+    portfolioValue += asset.value;
   });
  
   const bars = Object.keys(assets).map(assetKey => ({
     coinName: assetKey,
-    percentage: ((assets[assetKey].Value / totalValue) * 100),
+    percentage: ((assets[assetKey].value / portfolioValue) * 100),
   }));
 
   return (
@@ -35,31 +35,34 @@ export default function Portfolio() {
         <SidePanelWithContainer 
           header="Composition" 
           sidePanel = {<BarChart bars={bars}/>}>
-          
-            <ValueBar usd={100000} value={100000}/>
+            <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
             <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
           
-            <div style={{marginTop:'1vh'}}>
-              <Table>
-                  <TableRaw data={['Coin', 'Spot Balance', 'Future Balance', 'Funding Balance', 'Total Balance', 'Value']}/>
+        <Table style={{marginTop:'1vh'}}>
+            <TableRaw data={[
+                'Coin', 
+                'Spot Balance', 
+                'Future Balance', 
+                'Funding Balance', 
+                'Total Balance', 
+                'Value'
+            ]}/>
 
-                  {Object.keys(assets).map(assetKey => (
-                    <TableRaw 
-                      key={assetKey} 
-                      data={[
-                        [assets[assetKey].symbol, assetKey], 
-                        assets[assetKey].spotBalance, 
-                        assets[assetKey].futureBalance, 
-                        assets[assetKey].fundingBalance, 
-                        assets[assetKey].TotalBalance, 
-                        assets[assetKey].Value
-                      ]} 
-                    />
-                  ))}
-              </Table>
-            </div>
-          
+            { Object.keys(assets).slice(1).map(assetKey => (
+                <TableRaw 
+                    key={assetKey} 
+                    data={[
+                      [assets[assetKey].symbol, assetKey], 
+                      assets[assetKey].spotBalance, 
+                      assets[assetKey].futureBalance, 
+                      assets[assetKey].fundingBalance, 
+                      assets[assetKey].TotalBalance, 
+                      assets[assetKey].value
+                    ]} 
+                />
+            ))}
+        </Table> 
     </BasicPage>
   )
 }
