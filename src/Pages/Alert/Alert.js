@@ -3,7 +3,9 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelInput from '../../Components/SidePanel/SidePanelInput/SidePanelInput';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Table, { TableRaw } from '../../Components/Table/Table';
-import MyTable, { MyTableRaw } from "../../Components/Table/MyTable/MyTable";
+import { DatePicker } from 'antd';
+import './Alert.css';
+// import 'antd/dist/antd.min.css';
 
 export default function Alert(props) {
 
@@ -22,6 +24,13 @@ export default function Alert(props) {
       { value: 'BNB', label: 'BNB' },
       { value: 'XRP', label: 'XRP' },
     ];
+
+    const customPopupStyle = {
+        backgroundColor: '#001529',
+        color: 'white',
+      };
+    
+      const getPopupContainer = (trigger) => trigger.parentNode;
 
     return (
         <BasicPage tabs={Tabs}>
@@ -51,12 +60,18 @@ export default function Alert(props) {
                 </Table>
                 <br/>
                 <br/>
-                <MyTable>
-                    <MyTableRaw data={['Symbol', 'Amount', 'Price', 'Value', 'Change']}/>
-                    <MyTableRaw data={['Btc', '100', '100000', '1000000000000000000000', '100%']}/>
-                    <MyTableRaw data={['Btc', '100', '100000', '1000000000000000000000', '100%']}/>
-                    <MyTableRaw data={['Btc', '100', '100000', '1000000000000000000000', '100%']}/>
-                </MyTable>
+                <DatePicker
+                    style={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        borderColor: 'gray',
+                    }}
+                    popupStyle={customPopupStyle}
+                    getPopupContainer={getPopupContainer}
+                    suffixIcon={<span style={{ color: 'white' }}>Custom Icon</span>}
+                    format="DD-MM-YY"
+                    placement="topLeft"
+                />
 
             </SidePanelWithContainer>
         </BasicPage>
