@@ -30,3 +30,16 @@
 .input-container{
     width: 100%;
 }
+
+input[type="date"] { 
+    color: #21db9a;
+    background-color: #3c3c3c58;
+    border: none;
+    color-scheme: dark;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
