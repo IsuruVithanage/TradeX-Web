@@ -6,7 +6,7 @@ import NewsItem from "./NewsItem";
 
      const [articles,setArticles] = useState([]);
      useEffect(()=>{
-      let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=bc6db274836c4c21aa4569104f316c17`;
+      let url = `https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17`;
       fetch(url).then(response=> response.json()).then(data=> setArticles(data.articles));
 
      },[])
