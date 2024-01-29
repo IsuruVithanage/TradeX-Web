@@ -1,0 +1,51 @@
+{   
+
+    "USD": {
+      "symbol": "",
+      "spotBalance": 50000,
+      "futureBalance": 30000,
+      "fundingBalance": 20000,
+      "marketPrice": 1
+    },
+
+    "BTC": {
+      "symbol": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
+      "spotBalance": 100,
+      "futureBalance": 100,
+      "fundingBalance": 70,
+      "marketPrice": 1000
+    },
+    
+    "ETH": {
+      "symbol": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+      "spotBalance": 100,
+      "futureBalance": 100,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "BNB": {
+      "symbol": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+      "spotBalance": 100,
+      "futureBalance": 50,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "XRP": {
+      "symbol": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442",
+      "spotBalance": 50,
+      "futureBalance": 50,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "ADA": {
+      "symbol": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1696502090",
+      "spotBalance": 10,
+      "futureBalance": 10,
+      "fundingBalance": 10,
+      "marketPrice": 1000
+    }
+
+  }
