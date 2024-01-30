@@ -2,10 +2,10 @@
     display: flex;
     width: 100%;
     height: 150px;
-    background-color: #0E0E0F;
+    background-color: #101012;
     margin: 10px;
     padding: 5px;
-    border-radius: 15px;
+    border-radius: 23px;
 }
 
 .img-container {
@@ -27,7 +27,8 @@
 }
 
 .foter-bar{
-
+ color: white;
+ text-align: left;
 }
 
 .desc-container h1 p {

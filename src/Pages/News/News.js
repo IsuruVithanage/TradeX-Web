@@ -16,7 +16,6 @@ export default function News() {
      </div>      
      <div className='news-container'>
         <NewsBoard />
-       
         <NewsBar/>
         </div> 
 
