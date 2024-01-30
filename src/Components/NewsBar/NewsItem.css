@@ -23,12 +23,20 @@
     justify-content: space-around;
     color: white;
     padding-left: 10px;
+    display: flex;
 
 }
+.news-header-container{
+    width: 95%;
+}
+
 
 .foter-bar{
  color: white;
  text-align: left;
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .desc-container h1 p {
@@ -48,4 +56,16 @@
     height: 100%;
     border-radius: 15px;
     
+}
+
+.favorite-icon-container{
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.like-icon-container{
+    display: flex;
+    justify-content: flex-end;
 }
