@@ -3,12 +3,15 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
+import TopNavBar from "../../Components/BasicPage/TopNavBar/TopNavBar";
+import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 
 export default function Portfolio() {
 
     const Tabs = [
-        {label: "Spot", path: "/simulate"},
-        {label: "Future", path: "/simulate/future"},
+        {label: "Limit", path: "/simulate"},
+        {label: "Market", path: "/"},
+        {label: "StopLimit", path: "/"},
     ];
 
 
@@ -18,6 +21,7 @@ export default function Portfolio() {
                 header='Trade'
                 style={{height: '530px'}}
                 sidePanel={<div>
+                    <ButtonSet tabs={Tabs}/>
 
                 </div>}
             >

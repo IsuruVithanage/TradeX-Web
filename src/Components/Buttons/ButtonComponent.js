@@ -18,6 +18,4 @@ const ButtonComponent = styled(Button)(({ theme }) => ({
     padding: '0'
 }));
 
-
-
 export default ButtonComponent;
