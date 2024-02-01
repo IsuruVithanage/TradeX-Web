@@ -5,7 +5,7 @@ import News from '../../Assets/Images/news.jpg'
 
 const NewsBar = () => {
     return (
-        <a href="">
+        <a href="t">
         <div className='newsbar-container'>
             <div className='img-container'><img src={News}  alt="fffff" /></div>
             <div className='desc-container'>
