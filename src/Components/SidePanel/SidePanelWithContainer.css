@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .side-panel-and-content-container{
-    margin-top: 0.5%;
     display: flex;
     width: 100%;
 }
 
 .side-container{
-    padding: 0 0.5%;
+    padding-right: 0.5%;
     border-radius: 15px;
     flex-grow: 1;
     overflow-y: auto;
@@ -25,7 +24,6 @@
     position: sticky;
     top: 0;
     border-radius: 15px;
-    margin-right: 0.5%;
     padding: 35px;
     flex-shrink: 0;
 }
