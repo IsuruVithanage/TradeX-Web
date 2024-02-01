@@ -46,6 +46,14 @@
       "futureBalance": 10,
       "fundingBalance": 10,
       "marketPrice": 1000
+    },
+
+    "Ash": {
+      "symbol": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1696502090",
+      "spotBalance": 10,
+      "futureBalance": 10,
+      "fundingBalance": 10,
+      "marketPrice": 1000
     }
 
   }

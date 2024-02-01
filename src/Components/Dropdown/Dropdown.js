@@ -1,4 +1,4 @@
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import './Dropdown.css';
 
 export default function Dropdown (props) {
@@ -79,9 +79,9 @@ export default function Dropdown (props) {
 
 
     return (
-        <Select
-            styles={customStyles} 
-            isClearable={true}  
+        <CreatableSelect
+            styles={customStyles}
+            isClearable={true} 
             options={props.options} 
             placeholder={props.placeholder}
             name={props.name}
