@@ -6,9 +6,9 @@ import './LineChart.css';
 export default function LineChart(props) {
 	let handleResize = useRef(null);
 
-	const [ chartData, setChartData ] = useState(props.data[Object.keys(props.data)[0]]);
+	const [ chartData, setChartData ] = useState(props.data ? props.data[Object.keys(props.data)[0]] : []);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
-	const [ activeDuration, setActiveDuration ] = useState(Object.keys(props.data)[0]);
+	const [ activeDuration, setActiveDuration ] = useState(props.data && Object.keys(props.data)[0]);
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration]);
@@ -113,16 +113,16 @@ export default function LineChart(props) {
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
 			<div className='button-container'>
-				{ 
-					Object.keys(props.data).length > 1 && 
-					Object.keys(props.data).map((duration, index) => (
+				{ 	 
+					( props.data && Object.keys(props.data).length > 1  ) && 
+					( Object.keys(props.data).map((duration, index) => (
 						<button 
 							key={index}
 							onClick={() => updateChartData(duration)} 
 							className={`duration-button ${activeDuration === duration ? "active" : ""}`}>
 							{duration}
 						</button>
-					))
+					)))
 				}	
 
 				<span

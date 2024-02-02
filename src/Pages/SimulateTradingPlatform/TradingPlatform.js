@@ -11,6 +11,7 @@ export default function Portfolio() {
         {label: "Future", path: "/simulate/future"},
     ];
 
+
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer

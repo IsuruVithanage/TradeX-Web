@@ -16,9 +16,9 @@
 }
 
 .side-panel{
-    width: 275px;
-    height: 70vh;
+    min-width: 340px;
     min-height: 500px;
+    height: 75vh;
     background-color: #0E0E0F;
     position: -webkit-sticky;
     position: sticky;
@@ -26,6 +26,7 @@
     border-radius: 15px;
     padding: 35px;
     flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .side-panel-header{

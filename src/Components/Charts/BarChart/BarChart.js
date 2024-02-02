@@ -4,7 +4,6 @@ import "./BarChart.css";
 
 export default function BarChart(props) {
   const [bars, setBars] = useState([]);
-  console.log(props.bars);
 
   useEffect(() => {
     let cumulativePercentage = 0;
