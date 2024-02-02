@@ -7,12 +7,6 @@ import Table, { TableRaw } from '../../../Components/Table/Table';
 export default function History() {
     const tradingHistry = require('./TradingHistory.json');
 
-    const Tabs = [
-        { label:"Portfolio", path:"/portfolio"},
-        { label:"History", path:"/portfolio/history"},
-        { label:"Home", path:"/"},
-    ];
-
     const options = [
     { value: 'BTC', label: 'BTC' },
     { value: 'ETH', label: 'ETH' },
@@ -23,7 +17,14 @@ export default function History() {
     ];
 
     return (
-        <BasicPage tabs={Tabs}>
+        <BasicPage 
+            tabs={[
+                { label:"Overview", path:"/portfolio"},
+                { label:"History", path:"/portfolio/history"},
+                { label:"Spot Wallet", path:"/portfolio/spot-wallet"},
+                { label:"Future Wallet", path:"/portfolio/future-wallet"},
+                { label:"Funding Wallet", path:"/portfolio/funding-wallet"},
+            ]}>
             <SidePanelWithContainer 
                 line = {false}
                 sidePanel={
@@ -57,10 +58,11 @@ export default function History() {
                                 row.Amount, 
                                 `$ ${row.Price  * row.Amount}`,
                                 <span 
-                                    style=
-                                        {{ color: ( row.PNL < 0 ) ? 
+                                    style= {{ 
+                                        color: ( row.PNL < 0 ) ? 
                                         '#FF0000' : ( row.PNL > 0 ) ? 
-                                        '#21DB9A' : '' }}>
+                                        '#21DB9A' : '' 
+                                    }}>
                                     {`${row.PNL} %`}
                                 </span>
                             ]} 

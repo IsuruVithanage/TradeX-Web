@@ -77,15 +77,21 @@ export default function Dropdown (props) {
         }),
     }
 
+    const handleChange = (selectedValue) => {
+        props.onChange(selectedValue ? selectedValue.value : undefined, props.valueHolder);
+    };
+
 
     return (
         <Select
-            styles={customStyles} 
-            isClearable={true}  
+            styles={customStyles}
+            isClearable={true} 
             options={props.options} 
-            placeholder={props.placeholder}
+            placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}
+            onChange={props.onChange && handleChange}
+            onFocus={props.onFocus}
         />
     );
 };

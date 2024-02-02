@@ -12,12 +12,6 @@ export default function Portfolio() {
   const usdBalance = assets.USD.spotBalance + assets.USD.futureBalance + assets.USD.fundingBalance;
   let portfolioValue = 0;
 
-  const Tabs = [
-    { label:"Portfolio", path:"/portfolio"},
-    { label:"History", path:"/portfolio/history"},
-    { label:"Home", path:"/"},
-  ];
-
   Object.values(assets).forEach(asset => {
     asset.TotalBalance = asset.spotBalance + asset.futureBalance + asset.fundingBalance;
     asset.value = asset.TotalBalance * asset.marketPrice;
@@ -30,13 +24,20 @@ export default function Portfolio() {
   }));
 
   return (
-    <BasicPage tabs={Tabs}>
+    <BasicPage 
+        tabs={[
+            { label:"Overview", path:"/portfolio"},
+            { label:"History", path:"/portfolio/history"},
+            { label:"Spot Wallet", path:"/portfolio/spot-wallet"},
+            { label:"Future Wallet", path:"/portfolio/future-wallet"},
+            { label:"Funding Wallet", path:"/portfolio/funding-wallet"},
+        ]}>
       
         <SidePanelWithContainer 
-          header="Composition" 
-          sidePanel = {<BarChart bars={bars}/>}>
-            <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
-            <LineChart data={initialData}></LineChart>
+            header="Portfolio Composition" 
+            sidePanel = {<BarChart bars={bars}/>}>
+                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
+                <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
           
         <Table style={{marginTop:'1vh'}}>
@@ -49,7 +50,8 @@ export default function Portfolio() {
                 'Value'
             ]}/>
 
-            { Object.keys(assets).slice(1).map(assetKey => (
+             
+            { assets && Object.keys(assets).slice(1).map(assetKey => (
                 <TableRaw 
                     key={assetKey} 
                     data={[

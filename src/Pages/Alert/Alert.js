@@ -6,7 +6,6 @@ import Table, { TableRaw } from '../../Components/Table/Table';
 import { DatePicker } from 'antd';
 import './Alert.css';
 import ButtonComponent from "../../Components/Buttons/ButtonComponent";
-// import 'antd/dist/antd.min.css';
 
 export default function Alert(props) {
 
@@ -27,7 +26,7 @@ export default function Alert(props) {
     ];
 
     const customPopupStyle = {
-        backgroundColor: '#001529',
+        backgroundColor: '#21db9a',
         color: 'white',
       };
     
