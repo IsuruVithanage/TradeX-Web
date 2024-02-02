@@ -1,24 +1,57 @@
 import React from 'react'
-import './Questionbar.css'
+import DataTable from 'react-data-table-component'
 
 
 function Questionbar() {
+    const columns=[
+      {
+      Topic : 'Topic',
+      selector : row=>row.name
+      },
+      {
+        views : 'Views',
+        selector : row=>row.views
+      },
+      {
+        likes : 'Likes',
+        selector : row=>row.likes
+      },
+      {
+        replies : 'Replies',
+        selector : row=>row.replies
+      }
+    ];
+
+    const data=[
+      {
+        id:1,
+        title:" Understanding Cryptocurrency Wallet Security",
+        views:12,
+        likes:5,
+        replies:3
+      },
+      {
+        id:2,
+        title:" Understanding Cryptocurrency Wallet Security",
+        views:12,
+        likes:5,
+        replies:3
+      },
+      {
+        id:3,
+        title:" Understanding Cryptocurrency Wallet Security",
+        views:12,
+        likes:5,
+        replies:3
+      },
+    ]
+
   return (
-    <div className='question-row'>
-        <div className='side1'>
-           
-            <p className='number'>2 votes</p>
-            <p className='number'>5 likes</p>
-            
-          
-        </div>
-        <div className='side2'>
-            <h3>This is the first title</h3>
-            <p>How should concrete types return an instance of an interface in a loosely-coupled way?</p>
-        </div>
-        <div className='side3'>
-            <p>3 days ago</p>
-        </div>
+    <div className='question'>
+        <DataTable>
+          columns={columns}
+          data={data}
+        </DataTable>
     </div>
   )
 }
