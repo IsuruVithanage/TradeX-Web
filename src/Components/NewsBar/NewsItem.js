@@ -6,9 +6,19 @@ import './NewsItem.css';
 
 const NewsItem = ({ title, description, src, url }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
 
   const handleHeartClick = () => {
     setIsHeartFilled((prevIsHeartFilled) => !prevIsHeartFilled);
+  };
+
+  const handleLikeClick = () => {
+    setLikeCount((prevLikeCount) => prevLikeCount + 1);
+  };
+
+  const handleDislikeClick = () => {
+    setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
   };
 
   return (
@@ -30,8 +40,12 @@ const NewsItem = ({ title, description, src, url }) => {
         </div>
 
         <div className='like-icon-container'>
-          <AiOutlineDislike />
-          <AiOutlineLike />
+          <div onClick={handleLikeClick}>
+            {likeCount}  <AiOutlineLike />
+          </div>
+          <div onClick={handleDislikeClick}>
+             {dislikeCount} <AiOutlineDislike />
+          </div>
         </div>
 
         <div className='foter-bar'>

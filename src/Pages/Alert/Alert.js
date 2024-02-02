@@ -5,6 +5,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
 import Table, { TableRaw } from '../../Components/Table/Table';
 import { DatePicker } from 'antd';
 import './Alert.css';
+import ButtonComponent from "../../Components/Buttons/ButtonComponent";
 // import 'antd/dist/antd.min.css';
 
 export default function Alert(props) {
@@ -45,7 +46,7 @@ export default function Alert(props) {
                     ]}/>
                     <SidePanelInput type="number" label='Price Threshold' id="number"/>
                     <SidePanelInput type="date" label='End Date' />
-                    <SidePanelInput type="button" value="Add Alert" style={{marginTop:"40px"}}/>
+                    <ButtonComponent>Add Alert</ButtonComponent>
                 </div>}>
 
                 <h1>Alert</h1>
@@ -74,6 +75,7 @@ export default function Alert(props) {
                 />
 
             </SidePanelWithContainer>
+            
         </BasicPage>
     )
 }
