@@ -29,7 +29,8 @@ const NewsItem = ({ title, description, src, url }) => {
       <div className='desc-container'>
         <div style={{ display: 'flex' }}>
           <div className='news-header-container'>
-            <a href={url}>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              {/* Add target="_blank" to open in a new tab */}
               <h1>{title}</h1>
             </a>
             <p>{description ? description.slice(0, 90) : "In a rare discovery, scientists reveal the oldest piece of fossilized skin - The Washington Post,"}</p>
