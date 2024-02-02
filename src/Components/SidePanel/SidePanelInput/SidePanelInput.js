@@ -18,7 +18,7 @@ export default function SidePanelInput(props) {
 function InputField(props) {
   return (
       <input  
-        className='input-field' 
+        className={`input-field ${props.className}`} 
         type={props.type}
         value={props.value}
         id={props.id}

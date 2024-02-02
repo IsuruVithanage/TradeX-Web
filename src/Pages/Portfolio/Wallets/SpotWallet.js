@@ -3,7 +3,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import SidePanelInput from '../../../Components/SidePanel/SidePanelInput/SidePanelInput'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table from '../../../Components/Table/Table'
+import Table, { TableRaw } from '../../../Components/Table/Table'
 
 export default function SpotWallet() {
     const assets = require('../walletAssets.json');
@@ -24,18 +24,51 @@ export default function SpotWallet() {
             header="Transfer"
             sidePanel = {
                 <div>
-                    <SidePanelInput type="dropdown" label='Coin' placeholder="" options={[]} />
+                    <SidePanelInput type="dropdown" label='Coin' placeholder="" options={
+                        Object.keys(assets).slice(1).map(assetKey => ({
+                            value: assetKey, 
+                            label: assetKey
+                        }))
+                    }/>
                     <SidePanelInput type="number" label='Quantity' />
                     <SidePanelInput type="dropdown" label='To' placeholder="" options={[
-                        { value: 'spot', label: 'Spot Wallet' },
-                        { value: 'Future', label: 'Future Wallet' },
+                        { value: 'futureWallet', label: 'Future Wallet' },
+                        { value: 'fundingWallet', label: 'Funding Wallet' },
                     ]}/>
                     <SidePanelInput type="button" value="Transfer" style={{marginTop:"40px"}}/>
                 </div>
             }>
 
             <ValueBar usdBalance={assets.USD.quantity} portfolioValue={portfolioValue}/>
-            
+            <Table>
+                <TableRaw data={[
+                    'Coin', 
+                    'Quantity', 
+                    'Market Price', 
+                    'Value', 
+                    'ROI'
+                ]}/>
+
+                { assets && Object.keys(assets).slice(1).map(assetKey => (
+                    <TableRaw 
+                        key={assetKey} 
+                        data={[
+                        [assets[assetKey].symbol, assetKey], 
+                        assets[assetKey].quantity, 
+                        assets[assetKey].marketPrice, 
+                        assets[assetKey].value, 
+                        <span 
+                            style= {{ 
+                                color: ( assets[assetKey].roi < 0 ) ? 
+                                '#FF0000' : ( assets[assetKey].roi > 0 ) ? 
+                                '#21DB9A' : '' 
+                            }}>
+                            {`${assets[assetKey].roi} %`}
+                        </span>
+                        ]} 
+                    />
+                ))}
+            </Table>
         </SidePanelWithContainer>
     </BasicPage>
   )

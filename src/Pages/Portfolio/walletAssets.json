@@ -5,7 +5,7 @@
       "quantity": 1000,
       "marketPrice": 1,
       "value": 1000,
-      "roi": "0.00%"
+      "roi": 0
     },
 
     "BTC": {
@@ -13,7 +13,7 @@
       "quantity": 50,
       "marketPrice": 1000,
       "value": 50000,
-      "roi": "10%"
+      "roi": 10.34
     },
     
     "ETH": {
@@ -21,7 +21,7 @@
       "quantity": 40,
       "marketPrice": 1000,
       "value": 40000,
-      "roi": "15%"
+      "roi": 0
     },
 
     "BNB": {
@@ -29,7 +29,7 @@
       "quantity": 30,
       "marketPrice": 1000,
       "value": 30000,
-      "roi": "18%"
+      "roi": -18.86
     },
 
     "XRP": {
@@ -37,15 +37,15 @@
       "quantity": 20,
       "marketPrice": 1000,
       "value": 20000,
-      "roi": "20%"
+      "roi": 20.78
     },
 
     "ADA": {
       "symbol": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1696502090",
-      "quantity": 10,
+      "quantity": 9,
       "marketPrice": 1000,
-      "value": 10000,
-      "roi": "22%"
+      "value": 9000,
+      "roi": -22.56
     }
 
   }

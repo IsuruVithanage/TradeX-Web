@@ -16,9 +16,11 @@
 }
 
 .side-panel{
+    position: relative;
     min-width: 340px;
-    min-height: 500px;
-    height: 75vh;
+    min-height: 75vh;
+    height: -moz-fit-content;
+    height: fit-content;
     background-color: #0E0E0F;
     position: -webkit-sticky;
     position: sticky;

@@ -9,7 +9,7 @@ import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import SpotWallet from './Pages/Portfolio/Wallets/SpotWallet';
 import FutureWallet from './Pages/Portfolio/Wallets/FutureWallet';
-import FundingWallet from './Pages/Portfolio/Wallets/FundingWallet';
+import FundingWallet from './Pages/Portfolio/Wallets/FundingWallet/FundingWallet';
 
 import Simulation from './Pages/SimulateTradingPlatform/TradingPlatform';
 import Forum from './Pages/Forum/Forum';

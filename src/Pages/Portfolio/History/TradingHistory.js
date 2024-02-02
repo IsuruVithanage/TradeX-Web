@@ -58,10 +58,11 @@ export default function History() {
                                 row.Amount, 
                                 `$ ${row.Price  * row.Amount}`,
                                 <span 
-                                    style=
-                                        {{ color: ( row.PNL < 0 ) ? 
+                                    style= {{ 
+                                        color: ( row.PNL < 0 ) ? 
                                         '#FF0000' : ( row.PNL > 0 ) ? 
-                                        '#21DB9A' : '' }}>
+                                        '#21DB9A' : '' 
+                                    }}>
                                     {`${row.PNL} %`}
                                 </span>
                             ]} 
