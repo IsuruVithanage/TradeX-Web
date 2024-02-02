@@ -4,13 +4,9 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
-
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
-import SpotWallet from './Pages/Portfolio/Wallets/SpotWallet';
-import FutureWallet from './Pages/Portfolio/Wallets/FutureWallet';
-import FundingWallet from './Pages/Portfolio/Wallets/FundingWallet/FundingWallet';
-
+import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
 import Simulation from './Pages/SimulateTradingPlatform/TradingPlatform';
 import Forum from './Pages/Forum/Forum';
 import App from './App';
@@ -38,16 +34,8 @@ const router = createBrowserRouter([
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/spot-wallet",
-    element: <SpotWallet />,
-  },
-  {
-    path: "/portfolio/future-wallet",
-    element: <FutureWallet />,
-  },
-  {
-    path: "/portfolio/funding-wallet",
-    element: <FundingWallet />,
+    path: "/portfolio/portfolio-wallet",
+    element: <PortfolioWallet />,
   },
   {
     path: "/forum",

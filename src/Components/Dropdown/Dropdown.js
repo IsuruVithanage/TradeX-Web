@@ -78,7 +78,7 @@ export default function Dropdown (props) {
     }
 
     const handleChange = (selectedValue) => {
-        props.onChange(selectedValue ? selectedValue.value : undefined, props.valueHolder);
+        props.onChange(selectedValue ? selectedValue.value : undefined);
     };
 
 
@@ -90,7 +90,7 @@ export default function Dropdown (props) {
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}
-            onChange={props.onChange && handleChange}
+            onChange={props.onChange ? handleChange : undefined}
             onFocus={props.onFocus}
         />
     );

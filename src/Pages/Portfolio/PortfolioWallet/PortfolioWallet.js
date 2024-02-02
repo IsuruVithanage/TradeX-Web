@@ -1,29 +1,45 @@
 import React, { useState } from 'react'
-import BasicPage from '../../../../Components/BasicPage/BasicPage'
-import SidePanelWithContainer from '../../../../Components/SidePanel/SidePanelWithContainer'
-import SidePanelInput from '../../../../Components/SidePanel/SidePanelInput/SidePanelInput'
-import ValueBar from '../../../../Components/ValueBar/ValueBar'
-import Table, { TableRaw } from '../../../../Components/Table/Table'
-import './FundingWallet.css'
+import BasicPage from '../../../Components/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import SidePanelInput from '../../../Components/SidePanel/SidePanelInput/SidePanelInput'
+import ValueBar from '../../../Components/ValueBar/ValueBar'
+import Table, { TableRaw } from '../../../Components/Table/Table'
+import './PortfolioWallet.css'
 
 export default function FundingWallet() {
-    const assets = require('../../walletAssets.json');
+    let assets = {};
+    const walletAssets = require('./walletAssets.json');
     const [selectedWallet, setSelectedWallet] = useState(undefined);
-    const portfolioValue = Object.values(assets).reduce((acc, asset) => acc + asset.value, 0);
+    const [selectedPage, setSelectedPage] = useState("Spot Wallet");
+    let portfolioValue = 0;
 
-    const selectOnChange = (selectedValue, valueHolder) => {
-        valueHolder(selectedValue);
-    };
+    switch(selectedPage) {
+        case "Spot Wallet":
+            assets = walletAssets.Spot
+            break;
+        case "Future Wallet":
+            assets = walletAssets.Future
+            break;
+        case "Funding Wallet":
+            assets = walletAssets.Funding
+            break;
+        default:
+            assets = walletAssets.Spot
+    }
+    portfolioValue = Object.values(assets).reduce((acc, asset) => acc + asset.value, 0);
 
     return (
         <BasicPage
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-                { label:"Spot Wallet", path:"/portfolio/spot-wallet"},
-                { label:"Future Wallet", path:"/portfolio/future-wallet"},
-                { label:"Funding Wallet", path:"/portfolio/funding-wallet"},
-            ]}>
+            ]}
+            
+            subPages={{
+                setSelectedPage: setSelectedPage,
+                path: "/portfolio/portfolio-wallet",
+                labels: [ "Spot Wallet", "Future Wallet", "Funding Wallet" ]
+            }}>
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
@@ -37,11 +53,27 @@ export default function FundingWallet() {
                             }))
                         } />
                         <SidePanelInput type="number" label='Quantity' />
-                        <SidePanelInput type="dropdown" label='To' onChange={selectOnChange} valueHolder={setSelectedWallet} id="mySelect" options={[ 
-                            { value: 'spotWallet', label: 'Spot Wallet' },
-                            { value: 'futureWallet', label: 'Future Wallet' },
-                            { value: 'externalWallet', label: 'External Wallet' },
-                        ]}/>
+                        <SidePanelInput type="dropdown" label='To' onChange={setSelectedWallet} 
+                            options={ 
+                                selectedPage === "Spot Wallet"
+                                ? [
+                                    { value: 'futureWallet', label: 'Future Wallet' },
+                                    { value: 'fundingWallet', label: 'Funding Wallet' },
+                                    ]
+                                : selectedPage === "Future Wallet"
+                                ? [
+                                    { value: 'spotWallet', label: 'Spot Wallet' },
+                                    { value: 'fundingWallet', label: 'Funding Wallet' },
+                                    ]
+                                : selectedPage === "Funding Wallet"
+                                ? [
+                                    { value: 'spotWallet', label: 'Spot Wallet' },
+                                    { value: 'futureWallet', label: 'Future Wallet' },
+                                    { value: 'externalWallet', label: 'External Wallet' },
+                                    ]
+                                : []
+                            }
+                        />
                         { selectedWallet === 'externalWallet' &&
                         <div className={'wallet-address-input'} >
                             <SidePanelInput type="text" label='Wallet Address'/> 
@@ -51,7 +83,7 @@ export default function FundingWallet() {
                         </div>
                     </div>
                 }>
-
+                    
                 <ValueBar usdBalance={assets.USD.quantity} portfolioValue={portfolioValue}/>
 
                 <Table>
