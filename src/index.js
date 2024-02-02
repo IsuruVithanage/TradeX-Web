@@ -12,6 +12,8 @@ import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import History from './Pages/Portfolio/History/History';
+import Favourite from './Pages/News/Favourite';
+
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/news",
     element: <News/>,
+  },
+  {
+    path: "/news/favourite",
+    element: <Favourite/>,
   },
   {
     path: "/alert",

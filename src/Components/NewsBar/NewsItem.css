@@ -64,10 +64,12 @@
     justify-content: center;
     margin-top: 22px;
     color:  #21DB9A;
+    font-size: 25px;
 }
 
 .like-icon-container{
     display: flex;
     justify-content: flex-end;
-    
+    color: #21DB9A;
+    font-size: 20px;
 }
