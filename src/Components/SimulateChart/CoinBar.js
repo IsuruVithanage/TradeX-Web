@@ -15,9 +15,9 @@ const CoinBar = () => {
     return (
         <div className='coinDiv'>
             <div className='coin-logo'>
-                <div className='coin-logo coin'>
-                    <img src="" alt=""/>
-                    <p>BTC</p>
+                <div className='coin-logo coinimg'>
+                    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg?v=029" alt=""/>
+                    <p>BTC/USD</p>
                 </div>
             </div>
             <div className='coinData'>

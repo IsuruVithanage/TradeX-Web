@@ -3,11 +3,12 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import { RiSoundModuleLine } from "react-icons/ri";
 
 
+
+
 import './forum.css';
 import { FaSearch } from "react-icons/fa";
-import Questionbar from '../../Components/Questionbar/Questionbar';
 import Detailed from '../../Components/Questionbar/Detailed';
-import Datatable from './Datatable';
+
 
 
 export default function Forum() {
@@ -23,20 +24,29 @@ export default function Forum() {
     <div className='component1'>
       <div className='search_bar'>
         <FaSearch/>
-        <input className='bar' type='text' placeholder='Search'></input>
-        <button className='ques-button'>Ask Question</button>
+        <input className='bar' type='text' placeholder='Search' ></input>
+        <button className ='ques-button'>Ask Question</button>
+        
         <RiSoundModuleLine className="filter-icon"></RiSoundModuleLine>
       </div>
 
      {/* the table 
 
-      <Datatable/>
+    <div className='questionrow'>
+        <div  className="questionarea">
+          <h3>Understanding Cryptocurrency Wallet Security</h3>
+        </div>  
+        <div className='questionstat'><span></span><p>0</p></div>
+        <div className='questionstat'><span></span><p>1</p></div>
+        <div className='questionstat'><span></span><p>2</p></div>
+        
+    </div>
   */}
-
     <Detailed/>
+   
     </div> 
 
-    
+  
     <div className='component2'>
       <h3 className="fav-title">Favourites</h3>
       <p className='sub-title'>Technical Analysis</p>
@@ -45,7 +55,7 @@ export default function Forum() {
 
     </div>
       
-      
+  
 
     </BasicPage>
   );

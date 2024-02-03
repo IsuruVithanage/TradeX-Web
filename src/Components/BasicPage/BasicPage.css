@@ -5,9 +5,11 @@
     background-repeat: no-repeat;
     background-position: center;
     position: fixed;
+    padding: 0.5%;
     top: 6%;
     left: 6%;
     width: 94%;
     height: 94%;
     overflow-y: auto;
+    box-sizing: border-box;
 }

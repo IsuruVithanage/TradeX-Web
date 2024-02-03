@@ -7,12 +7,12 @@
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 12px;
+    font-family: 'Inter', sans-serif;
 }
 
 .coin-logo{
     flex: 1;
     height: 90%;
-    border: 1px solid #343434;
     margin: 5px;
     border-radius: 15px;
     align-items: center;
@@ -27,13 +27,13 @@
     justify-content: space-around;
     color: white;
     align-items: center;
-    padding: 10px 10px;
+    padding: 1% 1%;
 }
 
 .cdata{
     flex: 1;
     margin: 0;
-    padding-left: 15px;
+    padding-left: 4%;
     border-left: 1px solid #343434;
     height: 100%;
 }
@@ -52,4 +52,20 @@
 
 .coin{
     display: flex;
+    height: 89%;
+}
+
+.coinimg{
+    display: flex;
+}
+
+.coinimg img{
+    width: 25%;
+}
+
+.coinimg p{
+    padding-left: 5%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
 }
