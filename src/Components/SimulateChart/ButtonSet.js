@@ -4,34 +4,40 @@ import './ButtonSet.css';
 
 export default function ButtonSet(props) {
 
-    const currentLocation = useLocation().pathname;
+    const [isBtnOne, setIsBtnOne] = useState(true);
+    const [isBtnTwo, setIsBtnTwo] = useState(false);
+    const [isBtnThree, setIsBtnThree] = useState(false);
 
-    const [activeLink, setActiveLink] = useState(currentLocation);
-
-    const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
-
-    const handleProfileIconClick = () => {
-        setProfileMenuVisible(!isProfileMenuVisible);
-    };
-
-    useEffect(() => {
-        setActiveLink(currentLocation);
-    }, [currentLocation]);
-
-    const active = (path) => {
-        return  (path === activeLink) ? "active" : "";
+    const handleButtonClick = (userState) => {
+        if (userState === 1) {
+            setIsBtnOne(true);
+            setIsBtnTwo(false);
+            setIsBtnThree(false);
+        } else if (userState === 2) {
+            setIsBtnTwo(true);
+            setIsBtnOne(false);
+            setIsBtnThree(false);
+        } else if (userState === 3) {
+            setIsBtnThree(true);
+            setIsBtnOne(false);
+            setIsBtnTwo(false);
+        }
     };
 
     return (
         <>
             <div className="top-button-container">
                 <nav className="links-container">
-                    {(props.tabs) && props.tabs.map((tab) => (
-                        <Link key={tab.path} to={tab.path}>
-                  <span className={`top-nav-link ${active(tab.path)}`}>
-                    {tab.label}
-                  </span>
-                        </Link>
+                    {props.priceLimits.map((buttonName, index) => (
+                        <button
+                            key={index}
+                            className={`btn-set-link ${
+                                (index === 0 && isBtnOne) || (index === 1 && isBtnTwo) || (index === 2 && isBtnThree) ? "active" : ""
+                            }`}
+                            onClick={() => handleButtonClick(index + 1)}
+                        >
+                            {buttonName}
+                        </button>
                     ))}
                 </nav>
 
