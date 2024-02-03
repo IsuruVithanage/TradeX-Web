@@ -1,42 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa6";
 import "./BarChart.css";
 
 export default function BarChart(props) {
-    let bars = props.bars.sort((a, b) => b.presentage - a.presentage);
+  const [bars, setBars] = useState([]);
 
-    const updateBarProperties = () => {
-        let cumulativePercentage = 0;
+  useEffect(() => {
+    let cumulativePercentage = 0;
+    
+    props.bars.sort((a, b) => b.percentage - a.percentage);
 
-        bars.forEach((bar) => {
-            cumulativePercentage += bar.presentage;
-        });
+    props.bars.forEach((bar, index) => {
+        cumulativePercentage += bar.percentage;
+        bar.cumulativePercentage = cumulativePercentage;
+        bar.zIndex = props.bars.length - index;
+        bar.color = getRandomColor();
+    });
+    
+    setBars(props.bars)
+    
+  }, [props.bars]);
 
-        if(cumulativePercentage === 100){
-            let arrayIndex = 0;
-            cumulativePercentage = 0;
 
-            bars.forEach((bar) => {
-                cumulativePercentage += bar.presentage;
-                bar.cumulativePercentage = cumulativePercentage;
-                bar.zIndex = bars.length - arrayIndex;
-                bar.color = getRandomColor();
-                arrayIndex += 1;
-            });
-        }
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    updateBarProperties();
-
+    return color;
+  }
 
   return (
     <div className='bar-chart-container'>
@@ -55,13 +48,15 @@ export default function BarChart(props) {
       </div>
       
       <div className='bar-chart-labels-list'>
-      <table style={{ margin: '0 auto' }}>
+        <table style={{ margin: '0 auto' }}>
           <tbody>
             {(bars) && bars.map((bar) => (
                 <tr key={bar.zIndex}>   
                   <td className='bar-chart-label'><FaCircle style={{color: bar.color}} size={15}></FaCircle></td>
-                  <td className='bar-chart-label'>{bar.symbol}</td>
-                  <td className='bar-chart-label'>{bar.presentage}%</td>
+                  <td className='bar-chart-label'>{bar.coinName}</td>
+                  <td className='bar-chart-label'>
+                    {(Number(bar.percentage) % 1 === 0) ? Number(bar.percentage) : Number(bar.percentage).toFixed(2)}%
+                  </td>
                 </tr>
             ))}
           </tbody>

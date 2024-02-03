@@ -1,0 +1,45 @@
+{   
+
+    "USD": {
+      "spotBalance": 50000,
+      "futureBalance": 30000,
+      "fundingBalance": 20000,
+      "marketPrice": 1
+    },
+
+    "BTC": {
+      "spotBalance": 100,
+      "futureBalance": 100,
+      "fundingBalance": 70,
+      "marketPrice": 1000
+    },
+    
+    "ETH": {
+      "spotBalance": 100,
+      "futureBalance": 100,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "BNB": {
+      "spotBalance": 100,
+      "futureBalance": 50,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "XRP": {
+      "spotBalance": 50,
+      "futureBalance": 50,
+      "fundingBalance": 50,
+      "marketPrice": 1000
+    },
+
+    "ADA": {
+      "spotBalance": 10,
+      "futureBalance": 10,
+      "fundingBalance": 10,
+      "marketPrice": 1000
+    }
+
+  }
