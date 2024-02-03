@@ -1,0 +1,10 @@
+.label{
+    color: #9E9E9E;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.125em;
+
+}
+.input-field-container{
+    margin: 1.4375em auto;
+}

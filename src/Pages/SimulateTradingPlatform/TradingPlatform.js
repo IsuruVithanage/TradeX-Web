@@ -3,9 +3,10 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
-import TopNavBar from "../../Components/BasicPage/TopNavBar/TopNavBar";
+import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import DualButtons from "../../Components/SimulateChart/DualButtons";
+import NumberInput from "../../Components/SidePanel/SidePanelInput/NumberInput";
 
 export default function Portfolio() {
 
@@ -28,6 +29,16 @@ export default function Portfolio() {
                     <div>
                         <ButtonSet priceLimits={priceLimits}/>
                         <DualButtons buttonNames={buttonNames}/>
+
+                        <div className='input-field-container'>
+                            <label htmlFor="" className='label'>Price</label>
+                            <NumberInput icon={"$"}/>
+                        </div>
+                        <div className='input-field-container'>
+                            <label htmlFor="" className='label'>Quantity</label>
+                            <NumberInput icon={"BTC"}/>
+                        </div>
+
                     </div>
                 }
             >

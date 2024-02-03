@@ -27,7 +27,6 @@ export default function ButtonSet(props) {
     return (
         <>
             <div className="top-button-container">
-                <nav className="links-container">
                     {props.priceLimits.map((buttonName, index) => (
                         <button
                             key={index}
@@ -39,7 +38,6 @@ export default function ButtonSet(props) {
                             {buttonName}
                         </button>
                     ))}
-                </nav>
 
             </div>
         </>
