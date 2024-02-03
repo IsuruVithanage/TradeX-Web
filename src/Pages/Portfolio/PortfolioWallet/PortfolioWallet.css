@@ -1,0 +1,26 @@
+.transfer-button{
+    transform: translateY(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.transfer-button.down{
+    transform: translateY(80px);
+    transition: transform 0.2s ease-in-out;
+}
+
+.wallet-address-input {
+    position: absolute;
+    width: calc(100% - 70px);
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
