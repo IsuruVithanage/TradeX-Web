@@ -51,7 +51,7 @@ export default function History() {
                        <TableRaw 
                             key={index} 
                             data={[
-                                [row.symbol, row.Coin], 
+                                [require('../../../Assets/Images/Coin Images.json')[row.Coin], row.Coin], 
                                 row.Date, 
                                 row.Type, 
                                 `$ ${row.Price}`, 

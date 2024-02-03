@@ -1,21 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelInput from '../../Components/SidePanel/SidePanelInput/SidePanelInput';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Table, { TableRaw } from '../../Components/Table/Table';
 import { DatePicker } from 'antd';
-import './Alert.css';
 import ButtonComponent from "../../Components/Buttons/ButtonComponent";
+import './Alert.css';
 
-export default function Alert(props) {
+export default function Alert() {
+    let alerts = require('./Alerts.json')
+    const [selectedPage, setSelectedPage] = useState("Activated");
 
-    const Tabs = [
-      { label:"Home", path:"/"},
-      { label:"Watchlist", path:"/watchlist"},
-      { label:"Alert", path:"/alert"},
-      { label:"Portfolio", path:"/portfolio"},
-    ];
-    
+
     const options = [
       { value: 'BTC', label: 'BTC' },
       { value: 'ETH', label: 'ETH' },
@@ -33,10 +29,17 @@ export default function Alert(props) {
       const getPopupContainer = (trigger) => trigger.parentNode;
 
     return (
-        <BasicPage tabs={Tabs}>
+        <BasicPage
+            subPages={{
+                setSelectedPage: setSelectedPage,
+                path: "/alert",
+                labels: ["Activated", "Disabled"],
+            }}
+        >
             <SidePanelWithContainer 
                 header = "Add Alert"
-                sidePanel = {<div>
+                sidePanel = {
+                <div>
                     <SidePanelInput type="dropdown" label='Coin' placeholder="" options={options}/>
                     <SidePanelInput type="dropdown" label='Condition'  placeholder="" options={[
                         { value: 'equls', label: 'equls' },
@@ -46,18 +49,24 @@ export default function Alert(props) {
                     <SidePanelInput type="number" label='Price Threshold' id="number"/>
                     <SidePanelInput type="date" label='End Date' />
                     <ButtonComponent>Add Alert</ButtonComponent>
-                </div>}>
-
-                <h1>Alert</h1>
-                <p>This is Alert page content</p>
-                <p>This is Home page content</p>
+                </div>}>                
 
                 <Table>
-                    <TableRaw data={['Symbol', 'Amount', 'Price', 'Value', 'Change']}/>
-                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
-                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
-                    <TableRaw data={['Btc', '100', '100000', '10000000', '100%']}/>
+                    <TableRaw data={['Coin', 'Price', 'Condition', 'Email', 'Repeat']}/>
+
+                    {alerts.map((alert, index) => {
+                        return (
+                        selectedPage === "Activated" ? alert.Active === true ? 
+                        <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
+                        : null : alert.Active === false ?
+                        <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
+                        : null)
+                    })}
+                    
                 </Table>
+                <br/>
+                <br/>
+                    
                 <br/>
                 <br/>
                 <DatePicker
