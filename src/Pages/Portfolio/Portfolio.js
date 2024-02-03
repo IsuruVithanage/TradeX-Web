@@ -51,16 +51,16 @@ export default function Portfolio() {
             ]}/>
 
              
-            { assets && Object.keys(assets).slice(1).map(assetKey => (
+            { assets && Object.keys(assets).slice(1).map(key => (
                 <TableRaw 
-                    key={assetKey} 
+                    key={key} 
                     data={[
-                      [assets[assetKey].symbol, assetKey], 
-                      assets[assetKey].spotBalance, 
-                      assets[assetKey].futureBalance, 
-                      assets[assetKey].fundingBalance, 
-                      assets[assetKey].TotalBalance, 
-                      assets[assetKey].value
+                      [require('../../Assets/Images/Coin Images.json')[key], key], 
+                      assets[key].spotBalance, 
+                      assets[key].futureBalance, 
+                      assets[key].fundingBalance, 
+                      assets[key].TotalBalance, 
+                      assets[key].value
                     ]} 
                 />
             ))}

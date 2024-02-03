@@ -13,6 +13,8 @@ export default function FundingWallet() {
     const [selectedPage, setSelectedPage] = useState("Spot Wallet");
     let portfolioValue = 0;
 
+    
+
     switch(selectedPage) {
         case "Spot Wallet":
             assets = walletAssets.Spot
@@ -95,21 +97,21 @@ export default function FundingWallet() {
                         'ROI'
                     ]}/>
 
-                    { assets && Object.keys(assets).slice(1).map(assetKey => (
+                    { assets && Object.keys(assets).slice(1).map(key => (
                         <TableRaw 
-                            key={assetKey} 
+                            key={key} 
                             data={[
-                            [assets[assetKey].symbol, assetKey], 
-                            assets[assetKey].quantity, 
-                            assets[assetKey].marketPrice, 
-                            assets[assetKey].value, 
+                            [require('../../../Assets/Images/Coin Images.json')[key], key], 
+                            assets[key].quantity, 
+                            assets[key].marketPrice, 
+                            assets[key].value, 
                             <span 
                                 style= {{ 
-                                    color: ( assets[assetKey].roi < 0 ) ? 
-                                    '#FF0000' : ( assets[assetKey].roi > 0 ) ? 
+                                    color: ( assets[key].roi < 0 ) ? 
+                                    '#FF0000' : ( assets[key].roi > 0 ) ? 
                                     '#21DB9A' : '' 
                                 }}>
-                                {`${assets[assetKey].roi} %`}
+                                {`${assets[key].roi} %`}
                             </span>
                             ]} 
                         />
