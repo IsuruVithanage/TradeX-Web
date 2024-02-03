@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
-import SidePanelInput from '../../../Components/SidePanel/SidePanelInput/SidePanelInput'
+import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRaw } from '../../../Components/Table/Table'
 import './PortfolioWallet.css'
@@ -48,14 +48,14 @@ export default function FundingWallet() {
                 header="Transfer"
                 sidePanel = {
                     <div>
-                        <SidePanelInput type="dropdown" label='Coin' options={
+                        <Input type="dropdown" label='Coin' options={
                             Object.keys(assets).slice(1).map(assetKey => ({
                                 value: assetKey, 
                                 label: assetKey
                             }))
                         } />
-                        <SidePanelInput type="number" label='Quantity' />
-                        <SidePanelInput type="dropdown" label='To' onChange={setSelectedWallet} 
+                        <Input type="number" label='Quantity' />
+                        <Input type="dropdown" label='To' onChange={setSelectedWallet} 
                             options={ 
                                 selectedPage === "Spot Wallet"
                                 ? [
@@ -78,10 +78,10 @@ export default function FundingWallet() {
                         />
                         { selectedWallet === 'externalWallet' &&
                         <div className={'wallet-address-input'} >
-                            <SidePanelInput type="text" label='Wallet Address'/> 
+                            <Input type="text" label='Wallet Address'/> 
                         </div> }
                         <div className={`transfer-button ${selectedWallet === 'externalWallet' ? "down" : ""}`}>
-                            <SidePanelInput type="button" value="Transfer" style={{marginTop:"40px"}}/>
+                            <Input type="button" value="Transfer" style={{marginTop:"40px"}}/>
                         </div>
                     </div>
                 }>
