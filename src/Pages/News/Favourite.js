@@ -6,8 +6,7 @@ import "./News.css"
  import { FaSearch } from "react-icons/fa";
 
 
-
-export default function News() {
+export default function jhx() {
   return (
     <BasicPage 
     tabs={ [
