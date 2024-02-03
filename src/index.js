@@ -16,6 +16,7 @@ import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
     path: "/alert",
     element: <Alert/>,
   },
-  
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
