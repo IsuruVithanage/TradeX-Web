@@ -9,6 +9,10 @@ import './Alert.css';
 export default function Alert() {
     let alerts = require('./Alerts.json')
     const [selectedPage, setSelectedPage] = useState("Activated");
+    const [alertRepeat, setAlertRepeat] = useState(undefined);
+
+    console.log(alertRepeat)
+
 
     const options = [
       { value: 'BTC', label: 'BTC' },
@@ -28,18 +32,30 @@ export default function Alert() {
             }}
         >
             <SidePanelWithContainer 
+                style={{height:"91vh"}}
                 header = "Add Alert"
                 sidePanel = {
                 <div>
-                    <Input type="dropdown" label='Coin' placeholder="" options={options}/>
-                    <Input type="dropdown" label='Condition'  placeholder="" options={[
-                        { value: 'equls', label: 'equls' },
-                        { value: 'above', label: 'above' },
-                        { value: 'below', label: 'below' },
+                    <Input type="dropdown" label='Coin' options={options}/>
+                    <Input type="dropdown" label='Condition' options={[
+                        { value: 'equls', label: 'Equls' },
+                        { value: 'above', label: 'Above' },
+                        { value: 'below', label: 'Below' },
                     ]}/>
                     <Input type="number" label='Price Threshold' id="number"/>
-                    <Input type="date" label='End Date' />
-                    <ButtonComponent>Add Alert</ButtonComponent>
+                    <Input type="dropdown" label='Repeat' onChange={ setAlertRepeat } options={[
+                        { value: false, label: 'Once' },
+                        { value: true, label: 'Repeat' },
+                    ]}/>
+                
+                    { alertRepeat &&
+                        <div className={'date-picker-input'} >
+                            <Input type="date" label='End Date' />
+                        </div> 
+                    }
+                        <div className={`alert-button ${alertRepeat ? "down" : ""}`}>
+                            <ButtonComponent>Add Alert</ButtonComponent>
+                        </div>
                 </div>}>                
 
                 <Table>
