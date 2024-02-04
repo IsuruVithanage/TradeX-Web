@@ -24,6 +24,7 @@ export default function NumberInput(props) {
             onBlur={props.onBlur}
             onChange={props.onChange}
             onInput={handleStep} 
+            step={step}
         />
     );
 }
