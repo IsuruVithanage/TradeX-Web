@@ -38,8 +38,7 @@ export default function FundingWallet() {
             ]}
             
             subPages={{
-                setSelectedPage: setSelectedPage,
-                path: "/portfolio/portfolio-wallet",
+                onClick: setSelectedPage,
                 labels: [ "Spot Wallet", "Future Wallet", "Funding Wallet" ]
             }}>
             

@@ -1,68 +1,92 @@
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-input {
-    color: rgba(255, 255, 255, 0.88);
-    font-size: 1.125em;
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    background-color: #3C3C3C;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-}
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper input.ant-input-number-input {
-    padding: 0.4375em 0.875em;
-}
-
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper {
+.ant-input-number .ant-input-number-input,
+.ant-input-number-affix-wrapper input.ant-input-number-input{
     color: #21DB9A;
-    font-size: 1.125em;
-    padding-inline-start: 7px;
-}
-
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-outlined:hover {
-    /* border-color: #4096ff; */
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
     background-color: #3C3C3C;
-    border: hidden;
+    height: 37px;
+    padding-left: 10px;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-outlined {
-    background: #282828;
-    border: hidden;
-    margin: 0.4375em auto;
+.ant-input-number-affix-wrapper input.ant-input-number-input{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-.ant-input-number-affix-wrapper css-dev-only-do-not-override-1b0bdye ant-input-number-outlined {
-    background-color: #6D6D6D;
+.ant-input-number,
+.ant-input-number-affix-wrapper{
+    padding-inline-start: 0;
+    width: 100%;
 }
 
-.ant-input-number css-dev-only-do-not-override-1b0bdye ant-input-number-focused {
-    background-color: #6D6D6D;
+.ant-input-number-affix-wrapper .ant-input-number-prefix {
+    margin-inline-end: 0;
+    width: 35px;
+    justify-content: center;
+    color: #21DB9A;
+    font-size: 16px;
+    line-height: normal;
+    background-color: #282828;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.ant-input-number-outlined:hover {
+    background-color: #282828;
 }
 
 .ant-input-number-outlined:focus-within {
     border:hidden;
+    outline: none;
     background-color: #282828;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-outlined .ant-input-number-handler-wrap {
-    background: #282828;
+.ant-input-number .ant-input-number-handler-wrap {
+    background-color: transparent ;
+    width: 20px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-right: 8px;
+    align-items: center;
+    
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-handler {
+.ant-input-number .ant-input-number-handler {
+    border-inline-start: hidden;
+}
+
+.ant-input-number 
+.ant-input-number-handler-wrap 
+.ant-input-number-handler 
+.ant-input-number-handler-up-inner, 
+.ant-input-number 
+.ant-input-number-handler-wrap 
+.ant-input-number-handler 
+.ant-input-number-handler-down-inner {
     color: #21db9a;
-    font-weight: bold;
-     border-inline-start: hidden;
+    font-weight: bolder;
+    font-size: 12px;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-handler-up-inner, :where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-handler-down-inner {
-    color: #21db9a;
-    font-weight: bold;
+.ant-input-number 
+.ant-input-number-handler-wrap 
+.ant-input-number-handler{
+    height: 50%;
+    align-items: normal;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-handler-wrap .ant-input-number-handler .ant-input-number-handler-up-inner, :where(.css-dev-only-do-not-override-1b0bdye).ant-input-number .ant-input-number-handler-wrap .ant-input-number-handler .ant-input-number-handler-down-inner {
-    margin-inline-end: 0;
-    font-size: 0.5625em;
+.ant-input-number 
+.ant-input-number-handler-wrap 
+.ant-input-number-handler 
+.ant-input-number-handler-down-inner{
+    border-block-start: 1px solid #282828;
+    width: 20px;
+    justify-content: center; 
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper .ant-input-number-prefix {
-    margin-inline-end: 0.75em;
-    margin-inline-start: 0.4em;
-}
+
+
