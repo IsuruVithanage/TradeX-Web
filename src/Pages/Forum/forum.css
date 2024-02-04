@@ -1,6 +1,8 @@
+
+
 .component1{
     width: 900px;
-    height: 755px;
+    height: 100vh;
     flex-shrink: 0;
     background-color: #0E0E0F;
     position: fixed;
@@ -12,11 +14,12 @@
     display: flex;
     flex-direction: column;
     padding: 1.8%;
+    overflow-y: auto; 
 }
 
 .component2{
     width: 200px;
-    height: 90%;
+    height: 100vh;
     background-color: #0E0E0F;
     position: fixed;
     top: 8%;
@@ -27,6 +30,7 @@
     display: flex;
     flex-direction: column;
     padding: 1.8%;
+    overflow-y: auto; 
 }
 .bar{
     width: 520px;
@@ -39,23 +43,22 @@
 }
 .ques-button{
     color: #FFF;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.34px;
+    border-radius: 11px;
+    background: #21DB9A;
+    margin-right: 40px;
 
-font-family: Inter;
-font-size: 13px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-letter-spacing: -0.34px;
-border-radius: 11px;
-background: #21DB9A;
-margin-right: 40px;
-
-box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
 
-width: 120px;
-height: 33px;
-flex-shrink: 0;
+    width: 120px;
+    height: 33px;
+    flex-shrink: 0;
 }
 
 .bar{
@@ -78,16 +81,62 @@ flex-shrink: 0;
     font-size: 10px;
 }
 
+.topic{
+    width: 480px;
+    margin-left: 5px;
+}
+.topic-row{
+    background-color: #151517;
+    margin: 20px;
+    grid-template-columns: repeat(3,50px) 1fr;
+    color: #FFF;
+    display: flex;
+     
+}
 .questionarea{
     display: inline-block;
     
 }
-.questionstat{
-   display: inline-block;
-   margin-right: 90px;
+.topic-stat{
+    margin-left: auto;
+    text-align: right;
+    margin-right: 10px;
+
 }
-.questionrow{
+.question-stat {
+    margin-left: auto;
+   text-align: right;
+   margin-right: 20px;
+     
+}
+.question-row .author{
+    color: #21DB9A;
+    font-size: 7px;
+    margin-left: 3px;
+}
+.question-stat p{
+    color: #21DB9A;
+}
+
+.question-title h4{
+    margin-left: 10px;
+}
+.question-title p{
+    font-size: 12px;
+    margin-left: 3px;
+}
+.question-row{
     background-color: #151517;
-    padding: 10px 15px ;
+    margin: 20px;
     grid-template-columns: repeat(3,50px) 1fr;
+    color: #FFF;
+    display: flex;
+   
+    
+    
+}
+.question-title{
+    display: inline-block;
+    width: 480px;
+    color:#FFF ;
 }
