@@ -28,9 +28,7 @@ export default function Portfolio() {
         tabs={[
             { label:"Overview", path:"/portfolio"},
             { label:"History", path:"/portfolio/history"},
-            { label:"Spot Wallet", path:"/portfolio/portfolio-wallet"},
-            { label:"Future Wallet", path:"/portfolio/portfolio-wallet"},
-            { label:"Funding Wallet", path:"/portfolio/portfolio-wallet"},
+            { label:"Wallet", path:"/portfolio/portfolio-wallet"},
         ]}>
       
         <SidePanelWithContainer 

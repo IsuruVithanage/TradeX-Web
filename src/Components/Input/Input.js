@@ -4,6 +4,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
 import { DatePicker } from 'antd';
 import Dropdown from '../Dropdown/Dropdown';
+import NumberInput from './NumberInput';
 
 export default function SidePanelInput(props) {
   return (
@@ -12,6 +13,8 @@ export default function SidePanelInput(props) {
         {
            (() => {
               switch (props.type) {
+                case 'number':
+                  return <NumberInput {...props} />;
                 case 'date':
                   return <DateInput {...props} />;
                 case 'dropdown':
@@ -45,7 +48,7 @@ function DateInput(props) {
   return (
     <DatePicker
       style={{
-          backgroundColor: '#1E1E1F',
+          backgroundColor: '#3C3C3C',
           border: 'none',
           height: '40px',
           width: '100%',

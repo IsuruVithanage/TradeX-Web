@@ -5,8 +5,30 @@
     margin: 25px 0 8px 0;
 }
 
+.input-container,
 .input-field{
-    width: calc(100% - 16px);   
+    width: 100%;   
+}
+
+.input-field{ 
+    background-color: #3C3C3C;
+    border: none;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 16px;
+    color: #21db9a;
+    box-sizing: border-box;
+}
+
+.input-field:focus{
+    outline: none;
+}
+
+input[type="date"] { 
+    color: #21db9a;
+    background-color: #3C3C3C;
+    border: none;
+    color-scheme: dark;
 }
 
 .input-container input[type="button"] {
@@ -16,35 +38,7 @@
     border: #21db9a;
 }
 
-.input-field{ 
-    background-color: #3c3c3c58;
-    border: none;
-    border-radius: 6px;
-    padding: 8px;
-    font-size: 16px;
-    color: #21db9a;
-}
 
-.input-field:focus{
-    outline: none;
-}
-
-.input-container{
-    width: 100%;
-}
-
-input[type="date"] { 
-    color: #21db9a;
-    background-color: #3c3c3c58;
-    border: none;
-    color-scheme: dark;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
 
 
 

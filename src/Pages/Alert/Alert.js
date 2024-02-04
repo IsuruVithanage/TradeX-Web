@@ -11,9 +11,6 @@ export default function Alert() {
     const [selectedPage, setSelectedPage] = useState("Activated");
     const [alertRepeat, setAlertRepeat] = useState(undefined);
 
-    console.log(alertRepeat)
-
-
     const options = [
       { value: 'BTC', label: 'BTC' },
       { value: 'ETH', label: 'ETH' },
@@ -26,8 +23,7 @@ export default function Alert() {
     return (
         <BasicPage
             subPages={{
-                setSelectedPage: setSelectedPage,
-                path: "/alert",
+                onClick: setSelectedPage,
                 labels: ["Activated", "Disabled"],
             }}
         >
@@ -42,7 +38,7 @@ export default function Alert() {
                         { value: 'above', label: 'Above' },
                         { value: 'below', label: 'Below' },
                     ]}/>
-                    <Input type="number" label='Price Threshold' id="number"/>
+                    <Input type="number" label='Price' id="number" />
                     <Input type="dropdown" label='Repeat' onChange={ setAlertRepeat } options={[
                         { value: false, label: 'Once' },
                         { value: true, label: 'Repeat' },
@@ -61,7 +57,7 @@ export default function Alert() {
                 <Table>
                     <TableRaw data={['Coin', 'Price', 'Condition', 'Email', 'Repeat']}/>
 
-                    {alerts.map((alert, index) => {
+                    { alerts.map((alert, index) => {
                         return (
                         selectedPage === "Activated" ? alert.Active === true ? 
                         <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
@@ -71,12 +67,6 @@ export default function Alert() {
                     })}
                     
                 </Table>
-                <br/>
-                <br/>
-                    
-                <br/>
-                <br/>
-                
 
             </SidePanelWithContainer>
             
