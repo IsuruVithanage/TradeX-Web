@@ -1,5 +1,4 @@
 import Select from 'react-select';
-import './Dropdown.css';
 
 export default function Dropdown (props) {
 
@@ -9,7 +8,7 @@ export default function Dropdown (props) {
             border: 'none',
             boxShadow: 'none',
             borderRadius: '6px',
-            backgroundColor: '#3C3C3C58',
+            backgroundColor: '#3C3C3C',
             minHeight: '30px',
         }),
 
@@ -30,8 +29,21 @@ export default function Dropdown (props) {
         menuList: (provided) => ({
             ...provided,
             maxHeight: '145px',
-            border: ' 1px solid #21db9a',
+            border: '3px solid #3C3C3C',
             borderRadius: '10px',
+            '::-webkit-scrollbar' : {
+                width: '2px'
+              },
+            
+              '::-webkit-scrollbar-thumb' : {
+                backgroundColor: '#9E9E9E',
+                borderRadius: '6px'
+              },
+            
+              '::-webkit-scrollbar-track' : {
+                backgroundColor: '#0E0E0F',
+                borderRadius: '15px'
+              }
         }),
 
         option: (provided, state) => ({
@@ -40,10 +52,10 @@ export default function Dropdown (props) {
             fontWeight: '500',
             fontSize: '16px',
             borderRadius: '8px',
-            backgroundColor: state.isSelected ? '#21db9a' : null,
-            color: state.isSelected ? '#ffffff' : '#21db9a',
+            backgroundColor: state.isSelected ? '#1e1e1f' : null,
+            color: state.isSelected ? '#21DB9A' : '#9E9E9E',
             ':hover': {
-                backgroundColor: '#3c3c3c',
+                backgroundColor: '#1e1e1f',
                 color: '#ffffff',
             },
         }),

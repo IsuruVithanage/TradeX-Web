@@ -1,23 +1,26 @@
-/* CustomDatePicker.css */
-
-.ant-picker-panel-container{
-    background-color: rgb(110, 90, 90) !important;
-    color: white !important;
+.alert-button{
+    transform: translateY(60px);
+    transition: transform 0.2s ease-in-out;
 }
 
-.ant-picker-dropdown {
-    background-color: black !important;
-    color: white !important;
-  }
-  
-  .ant-picker-content th,
-  .ant-picker-content td {
-    color: white !important;
-    background-color: black !important;
-  }
-  
-  .ant-picker-content .ant-picker-cell:hover,
-  .ant-picker-content .ant-picker-cell-selected {
-    background-color: #434343 !important;
-  }
-  
+.alert-button.down{
+    transform: translateY(150px);
+    transition: transform 0.2s ease-in-out;
+}
+
+.date-picker-input {
+    position: absolute;
+    width: calc(100% - 70px);
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

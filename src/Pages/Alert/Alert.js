@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
-import SidePanelInput from '../../Components/SidePanel/SidePanelInput/SidePanelInput';
+import Input from '../../Components/Input/Input';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Table, { TableRaw } from '../../Components/Table/Table';
-import { DatePicker } from 'antd';
 import ButtonComponent from "../../Components/Buttons/ButtonComponent";
 import './Alert.css';
 
 export default function Alert() {
     let alerts = require('./Alerts.json')
     const [selectedPage, setSelectedPage] = useState("Activated");
-
+    const [alertRepeat, setAlertRepeat] = useState(undefined);
 
     const options = [
       { value: 'BTC', label: 'BTC' },
@@ -21,40 +20,44 @@ export default function Alert() {
       { value: 'XRP', label: 'XRP' },
     ];
 
-    const customPopupStyle = {
-        backgroundColor: '#21db9a',
-        color: 'white',
-      };
-    
-      const getPopupContainer = (trigger) => trigger.parentNode;
-
     return (
         <BasicPage
             subPages={{
-                setSelectedPage: setSelectedPage,
-                path: "/alert",
+                onClick: setSelectedPage,
                 labels: ["Activated", "Disabled"],
             }}
         >
             <SidePanelWithContainer 
+                style={{height:"91vh"}}
                 header = "Add Alert"
                 sidePanel = {
                 <div>
-                    <SidePanelInput type="dropdown" label='Coin' placeholder="" options={options}/>
-                    <SidePanelInput type="dropdown" label='Condition'  placeholder="" options={[
-                        { value: 'equls', label: 'equls' },
-                        { value: 'above', label: 'above' },
-                        { value: 'below', label: 'below' },
+                    <Input type="dropdown" label='Coin' options={options}/>
+                    <Input type="dropdown" label='Condition' options={[
+                        { value: 'equls', label: 'Equls' },
+                        { value: 'above', label: 'Above' },
+                        { value: 'below', label: 'Below' },
                     ]}/>
-                    <SidePanelInput type="number" label='Price Threshold' id="number"/>
-                    <SidePanelInput type="date" label='End Date' />
-                    <ButtonComponent>Add Alert</ButtonComponent>
+                    <Input type="number" label='Price' id="number" />
+                    <Input type="dropdown" label='Repeat' onChange={ setAlertRepeat } options={[
+                        { value: false, label: 'Once' },
+                        { value: true, label: 'Repeat' },
+                    ]}/>
+                
+                    { alertRepeat &&
+                        <div className={'date-picker-input'} >
+                            <Input type="date" label='End Date' />
+                        </div> 
+                    }
+                        <div className={`alert-button ${alertRepeat ? "down" : ""}`}>
+                            <ButtonComponent>Add Alert</ButtonComponent>
+                        </div>
                 </div>}>                
 
                 <Table>
                     <TableRaw data={['Coin', 'Price', 'Condition', 'Email', 'Repeat']}/>
 
-                    {alerts.map((alert, index) => {
+                    { alerts.map((alert, index) => {
                         return (
                         selectedPage === "Activated" ? alert.Active === true ? 
                         <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
@@ -64,23 +67,6 @@ export default function Alert() {
                     })}
                     
                 </Table>
-                <br/>
-                <br/>
-                    
-                <br/>
-                <br/>
-                <DatePicker
-                    style={{
-                        backgroundColor: 'black',
-                        color: 'white',
-                        borderColor: 'gray',
-                    }}
-                    popupStyle={customPopupStyle}
-                    getPopupContainer={getPopupContainer}
-                    suffixIcon={<span style={{ color: 'white' }}>Custom Icon</span>}
-                    format="DD-MM-YY"
-                    placement="topLeft"
-                />
 
             </SidePanelWithContainer>
             
