@@ -57,7 +57,7 @@ export default function SideNavBar() {
             <FaRegFileAlt size={23}/>
         </Link>
 
-        <Link to="/settings" className={`nav-link ${isActive("/settings")}`}>
+        <Link to="/externalwallet" className={`nav-link ${isActive("/externalwallet")}`}>
             <SlSettings size={23}/>
         </Link>
 
