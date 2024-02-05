@@ -13,6 +13,7 @@ import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import History from './Pages/Portfolio/History/History';
 import Favourite from './Pages/News/Favourite';
+import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 
 
 const router = createBrowserRouter([
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: "/alert",
     element: <Alert/>,
+  },
+  {
+    path: "/externalwallet",
+    element: <Welcome/>,
   },
   
 ]);
