@@ -12,12 +12,6 @@ export default function Portfolio() {
   const usdBalance = assets.USD.spotBalance + assets.USD.futureBalance + assets.USD.fundingBalance;
   let portfolioValue = 0;
 
-  const Tabs = [
-    { label:"Portfolio", path:"/portfolio"},
-    { label:"History", path:"/portfolio/history"},
-    { label:"Home", path:"/"},
-  ];
-
   Object.values(assets).forEach(asset => {
     asset.TotalBalance = asset.spotBalance + asset.futureBalance + asset.fundingBalance;
     asset.value = asset.TotalBalance * asset.marketPrice;
@@ -30,13 +24,18 @@ export default function Portfolio() {
   }));
 
   return (
-    <BasicPage tabs={Tabs}>
+    <BasicPage 
+        tabs={[
+            { label:"Overview", path:"/portfolio"},
+            { label:"History", path:"/portfolio/history"},
+            { label:"Wallet", path:"/portfolio/portfolio-wallet"},
+        ]}>
       
         <SidePanelWithContainer 
-          header="Composition" 
-          sidePanel = {<BarChart bars={bars}/>}>
-            <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
-            <LineChart data={initialData}></LineChart>
+            header="Portfolio Composition" 
+            sidePanel = {<BarChart bars={bars}/>}>
+                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
+                <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
           
         <Table style={{marginTop:'1vh'}}>
@@ -49,16 +48,17 @@ export default function Portfolio() {
                 'Value'
             ]}/>
 
-            { Object.keys(assets).slice(1).map(assetKey => (
+             
+            { assets && Object.keys(assets).slice(1).map(key => (
                 <TableRaw 
-                    key={assetKey} 
+                    key={key} 
                     data={[
-                      [assets[assetKey].symbol, assetKey], 
-                      assets[assetKey].spotBalance, 
-                      assets[assetKey].futureBalance, 
-                      assets[assetKey].fundingBalance, 
-                      assets[assetKey].TotalBalance, 
-                      assets[assetKey].value
+                      [require('../../Assets/Images/Coin Images.json')[key], key], 
+                      assets[key].spotBalance, 
+                      assets[key].futureBalance, 
+                      assets[key].fundingBalance, 
+                      assets[key].TotalBalance, 
+                      assets[key].value
                     ]} 
                 />
             ))}

@@ -1,17 +1,11 @@
 import React from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
-import SidePanelInput from '../../../Components/SidePanel/SidePanelInput/SidePanelInput';
+import Input from '../../../Components/Input/Input';
 import Table, { TableRaw } from '../../../Components/Table/Table';
 
 export default function History() {
     const tradingHistry = require('./TradingHistory.json');
-
-    const Tabs = [
-        { label:"Portfolio", path:"/portfolio"},
-        { label:"History", path:"/portfolio/history"},
-        { label:"Home", path:"/"},
-    ];
 
     const options = [
     { value: 'BTC', label: 'BTC' },
@@ -23,22 +17,27 @@ export default function History() {
     ];
 
     return (
-        <BasicPage tabs={Tabs}>
+        <BasicPage 
+            tabs={[
+                { label:"Overview", path:"/portfolio"},
+                { label:"History", path:"/portfolio/history"},
+                { label:"Wallet", path:"/portfolio/portfolio-wallet"},
+            ]}>
             <SidePanelWithContainer 
                 line = {false}
                 sidePanel={
                     <div>
-                        <SidePanelInput type="dropdown" label='Coin' placeholder="" options={options}/>
-                        <SidePanelInput type="dropdown" label='Trading Type'  placeholder="" options={[
+                        <Input type="dropdown" label='Coin' placeholder="" options={options}/>
+                        <Input type="dropdown" label='Trading Type'  placeholder="" options={[
                             { value: 'spot', label: 'Spot Trading' },
                             { value: 'Future', label: 'Future Trading' },
                         ]}/>
-                        <SidePanelInput type="dropdown" label='Trading Action'  placeholder="" options={[
+                        <Input type="dropdown" label='Trading Action'  placeholder="" options={[
                             { value: 'buy', label: 'Buy' },
                             { value: 'sell', label: 'Sell' },
                         ]}/>
-                        <SidePanelInput type="button" value="Show" style={{marginTop:"40px"}}/>
-                        <SidePanelInput type="button" value="Export" />
+                        <Input type="button" value="Show" style={{marginTop:"40px"}}/>
+                        <Input type="button" value="Export" />
                     </div>
                 }
             >   
@@ -50,17 +49,18 @@ export default function History() {
                        <TableRaw 
                             key={index} 
                             data={[
-                                [row.symbol, row.Coin], 
+                                [require('../../../Assets/Images/Coin Images.json')[row.Coin], row.Coin], 
                                 row.Date, 
                                 row.Type, 
                                 `$ ${row.Price}`, 
                                 row.Amount, 
                                 `$ ${row.Price  * row.Amount}`,
                                 <span 
-                                    style=
-                                        {{ color: ( row.PNL < 0 ) ? 
+                                    style= {{ 
+                                        color: ( row.PNL < 0 ) ? 
                                         '#FF0000' : ( row.PNL > 0 ) ? 
-                                        '#21DB9A' : '' }}>
+                                        '#21DB9A' : '' 
+                                    }}>
                                     {`${row.PNL} %`}
                                 </span>
                             ]} 

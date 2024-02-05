@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.label-name{
+    color: #9E9E9E;
+    margin: 25px 0 8px 0;
+}
+
+.input-container,
+.input-field{
+    width: 100%;   
+}
+
+.input-field{ 
+    background-color: #3C3C3C;
+    border: none;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 16px;
+    color: #21db9a;
+    box-sizing: border-box;
+}
+
+.input-field:focus{
+    outline: none;
+}
+
+input[type="date"] { 
+    color: #21db9a;
+    background-color: #3C3C3C;
+    border: none;
+    color-scheme: dark;
+}
+
+.input-container input[type="button"] {
+    width: 100%;
+    background-color: #21db9a;
+    color: #ffffff;
+    border: #21db9a;
+}
+
+
+
+
+
+/* Styles for the date picker */
+
+.ant-picker-input input{
+    color: #21DB9A !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+.ant-picker-panel-container{
+    background-color: #0E0E0F !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell{
+    color: #21DB9A55;
+}
+    
+.ant-picker-cell:hover {
+    background-color: #3C3C3C !important;
+}
+
+.ant-picker-cell-in-view{
+    color: #21DB9A !important;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner{
+    background-color: #21DB9A !important;
+    color: #0E0E0F !important;
+}
+
+.ant-picker-cell-today .ant-picker-cell-inner::before{
+    border: 1px solid #21DB9A !important;
+}
+
+.ant-picker-content th{
+    color: #21DB9A !important;
+}
+
+.ant-picker-header {
+    color: #21DB9A !important;
+}
+
+.ant-picker-header-next-btn,
+.ant-picker-header-prev-btn,
+.ant-picker-header-super-next-btn,
+.ant-picker-header-super-prev-btn,
+.ant-picker-today-btn{
+    color: #21DB9A !important;
+    
+}
+
+.calendar-icon{ 
+    color: #21DB9A;
+    font-size: 18px 
+}
+

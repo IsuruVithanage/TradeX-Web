@@ -1,19 +1,21 @@
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
 import Portfolio from './Pages/Portfolio/Portfolio';
+import TradingHistory from './Pages/Portfolio/History/TradingHistory';
+import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
 import Simulation from './Pages/SimulateTradingPlatform/TradingPlatform';
 import Forum from './Pages/Forum/Forum';
 import App from './App';
-import './index.css';
 import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
-import History from './Pages/Portfolio/History/History';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
+
 
 
 const router = createBrowserRouter([
@@ -31,7 +33,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/portfolio/history",
-    element: <History />,
+    element: <TradingHistory />,
+  },
+  {
+    path: "/portfolio/portfolio-wallet",
+    element: <PortfolioWallet />,
   },
   {
     path: "/forum",
@@ -65,11 +71,11 @@ const router = createBrowserRouter([
     path: "/alert",
     element: <Alert/>,
   },
+
   {
     path: "/externalwallet",
     element: <Welcome/>,
   },
-  
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -1,14 +1,14 @@
-.alert-button{
-    transform: translateY(60px);
+.transfer-button{
+    transform: translateY(0);
     transition: transform 0.2s ease-in-out;
 }
 
-.alert-button.down{
-    transform: translateY(150px);
+.transfer-button.down{
+    transform: translateY(80px);
     transition: transform 0.2s ease-in-out;
 }
 
-.date-picker-input {
+.wallet-address-input {
     position: absolute;
     width: calc(100% - 70px);
     animation: fadeIn 0.2s ease-in-out;
