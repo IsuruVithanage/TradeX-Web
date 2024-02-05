@@ -83,7 +83,7 @@
 
 .topic{
     width: 480px;
-    margin-left: 5px;
+    margin-left: 12px;
 }
 .topic-row{
     background-color: #151517;
@@ -91,7 +91,7 @@
     grid-template-columns: repeat(3,50px) 1fr;
     color: #FFF;
     display: flex;
-     
+    border-radius: 10px;
 }
 .questionarea{
     display: inline-block;
@@ -116,6 +116,7 @@
 }
 .question-stat p{
     color: #21DB9A;
+       
 }
 
 .question-title h4{
@@ -131,7 +132,8 @@
     grid-template-columns: repeat(3,50px) 1fr;
     color: #FFF;
     display: flex;
-   
+    border-radius: 15px;
+    margin-bottom: 1%;
     
     
 }
