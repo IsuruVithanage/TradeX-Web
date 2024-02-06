@@ -4,6 +4,6 @@ import './NumberInput.css'
 
 export default function NumberInput(props) {
     return (
-        <InputNumber prefix={props.icon} style={{ width: '100%' }} />
+        <InputNumber type={"number"} prefix={props.icon} style={{ width: '100%' }} />
     );
 }
