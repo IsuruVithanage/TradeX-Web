@@ -44,7 +44,38 @@
     color: white;
     position: fixed;
     top: 52%;
-    left: -18%;
+    left: -20%;
     transform: translate(34%, -75%);
     font-weight: 900;
+    margin-left: 60px;
+    margin-top: 35px;
+}
+.platform{
+    color: #21db9a;
+    position: fixed;
+    top: 42%;
+    left: -3%;
+    transform: translate(34%, -75%);
+    font-weight: 900;
+    font-size: 28px;
+    margin-top: 10px;
+
+}
+.custom-button {
+    border-radius: 8px;
+    background: #21db9a;
+    width: 126px;
+    height: 42px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 67%;
+    left: 2%;
+    transform: translate(34%, -75%);
+    color: #FFF;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.34px;
 }
