@@ -1,0 +1,11 @@
+.black-background{
+    width: 45%;
+    height: 60%;
+    background-color: black;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 25px;
+
+}

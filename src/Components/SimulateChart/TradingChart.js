@@ -1,7 +1,8 @@
 import {createChart, ColorType} from 'lightweight-charts';
 import React, {useEffect, useState} from 'react';
 import io from "socket.io-client";
-import './TradingChart.css'
+import './TradingChart.css';
+
 export const ChartComponent = props => {
     const [ activeDuration, setActiveDuration ] = useState('daily');
     const {
@@ -15,6 +16,7 @@ export const ChartComponent = props => {
             wickDownColor = "#ff0000",
         } = {},
     } = props;
+
 
     //Process the data according to the graph
     const processData = async (newData) => {
@@ -144,6 +146,7 @@ export const ChartComponent = props => {
                     </button>
 
                 </div>
+
 
             <div id='tchart' />
         </div>

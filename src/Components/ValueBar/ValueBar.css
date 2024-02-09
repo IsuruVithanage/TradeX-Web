@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .value-bar{
-    width: calc(100%);
-    height: 18vh;
-    margin: auto;
+    width: 100%;
+    height: 125px;
+    margin: 0 auto;
     margin-bottom: 1vh;
     border-radius: 15px;
     background-color: #0E0E0F00;
@@ -13,12 +13,12 @@
 .usd-card,
 .value-card{
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
     background-color: #0E0E0F;
-    padding: 0 0.5vw;
+    padding: 0 1.5vw;
     border-radius: 15px;
-    min-width: 22%;
+    min-width: 18%;
     width: -moz-fit-content;
     width: fit-content;
 }
@@ -26,11 +26,13 @@
 .usd-card{
     margin-right: auto;
     text-align: left;
+    box-shadow: 2px 2px 8px #21DB9A20;
 }
 
 .value-card{
     margin-left: auto;
     text-align: right;
+    box-shadow: 2px 2px 8px #FFFFFF20;
 }
 
 .value-card-amount{
