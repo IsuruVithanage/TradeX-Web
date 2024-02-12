@@ -21,11 +21,14 @@ export function TableRaw({data}) {
     <tr className='table-row'>
         {(data) && data.map((cell, index) => {
             
-            if (Array.isArray(cell) && (cell[0] !== undefined && cell[0] !== '' )) {
+            if (Array.isArray(cell) && cell.length === 1) {
               cell = 
                 <div> 
-                  <img className='coin-icon' src={cell[0]} alt={cell[1]} /> 
-                  {cell[1]} 
+                  <img 
+                      className='coin-icon' 
+                      src={require('../../Assets/Images/Coin Images.json')[cell[0]]} 
+                      alt={cell[0]} /> 
+                  {cell[0]} 
                 </div>;
             }
             

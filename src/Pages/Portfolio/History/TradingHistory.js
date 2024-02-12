@@ -21,7 +21,8 @@ export default function History() {
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-                { label:"Wallet", path:"/portfolio/portfolio-wallet"},
+                { label:"Spot Wallet", path:"/portfolio/wallet?spotWallet"},
+                { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
             ]}>
             <SidePanelWithContainer 
                 line = {false}
@@ -49,7 +50,7 @@ export default function History() {
                        <TableRaw 
                             key={index} 
                             data={[
-                                [require('../../../Assets/Images/Coin Images.json')[row.Coin], row.Coin], 
+                                [ row.Coin ],
                                 row.Date, 
                                 row.Type, 
                                 `$ ${row.Price}`, 

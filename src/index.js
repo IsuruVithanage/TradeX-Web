@@ -17,13 +17,7 @@ import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-  
-} from "react-router-dom";
+
 
 
 
