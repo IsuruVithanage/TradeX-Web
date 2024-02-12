@@ -1,6 +1,6 @@
 import React from 'react'
-import BlackBar from '../../../../Components/WalletComponents/BlackBar'
-import Head from '../../../../Components/WalletComponents/Head'
+import BlackBar from '../../../Components/WalletComponents/BlackBar'
+import Head from '../../../Components/WalletComponents/Head'
 
 export default function LoginPage1() {
   return (
