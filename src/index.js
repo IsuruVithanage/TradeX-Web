@@ -15,6 +15,9 @@ import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
+import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
+import AskQuestion from './Pages/Forum/AskQuestion';
+
 
 
 const router = createBrowserRouter([
@@ -35,7 +38,7 @@ const router = createBrowserRouter([
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/wallet",
+    path: "/portfolio/portfolio-wallet",
     element: <PortfolioWallet />,
   },
   {
@@ -75,7 +78,10 @@ const router = createBrowserRouter([
     path: "/externalwallet",
     element: <Welcome/>,
   },
-
+  {
+    path: "/wallet/login",
+    element: <LoginPage1/>,
+  },
 
 ]);
 
