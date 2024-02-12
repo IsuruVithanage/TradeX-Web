@@ -15,6 +15,7 @@ import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
+import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 
 
 
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/externalwallet",
     element: <Welcome/>,
+  },
+  {
+    path: "/wallet/login",
+    element: <LoginPage1/>,
   },
 ]);
 
