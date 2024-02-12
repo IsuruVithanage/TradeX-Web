@@ -16,6 +16,14 @@ import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
+import AskQuestion from './Pages/Forum/AskQuestion';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+  
+} from "react-router-dom";
 
 
 
@@ -77,10 +85,15 @@ const router = createBrowserRouter([
     path: "/externalwallet",
     element: <Welcome/>,
   },
+<<<<<<< HEAD
   {
     path: "/wallet/login",
     element: <LoginPage1/>,
   },
+=======
+
+
+>>>>>>> 4b2be6f6cf7ec0a3bb1800059dec0ae5343bdb66
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
