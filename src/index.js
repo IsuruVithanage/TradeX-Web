@@ -15,14 +15,6 @@ import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
-import AskQuestion from './Pages/Forum/AskQuestion';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-  
-} from "react-router-dom";
 
 
 const router = createBrowserRouter([
@@ -43,7 +35,7 @@ const router = createBrowserRouter([
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/portfolio-wallet",
+    path: "/portfolio/wallet",
     element: <PortfolioWallet />,
   },
   {
