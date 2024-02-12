@@ -85,15 +85,11 @@ const router = createBrowserRouter([
     path: "/externalwallet",
     element: <Welcome/>,
   },
-<<<<<<< HEAD
   {
     path: "/wallet/login",
     element: <LoginPage1/>,
   },
-=======
 
-
->>>>>>> 4b2be6f6cf7ec0a3bb1800059dec0ae5343bdb66
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
