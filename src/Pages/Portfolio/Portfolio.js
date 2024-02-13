@@ -28,7 +28,7 @@ export default function Portfolio() {
         tabs={[
           { label:"Overview", path:"/portfolio"},
           { label:"History", path:"/portfolio/history"},
-          { label:"Spot Wallet", path:"/portfolio/wallet?spotWallet"},
+          { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
           { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
         ]}>
       
