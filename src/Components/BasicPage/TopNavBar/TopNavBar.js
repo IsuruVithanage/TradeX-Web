@@ -6,7 +6,7 @@ import './TopNavBar.css';
 export default function TopNavBar(props) {
   const userName = "Kamal Silva";
 
-  const currentLocation = useLocation().pathname;
+  const currentLocation = useLocation().pathname + useLocation().search;
   
   const [activeLink, setActiveLink] = useState(currentLocation);
 

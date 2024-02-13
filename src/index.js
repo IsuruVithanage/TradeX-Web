@@ -15,6 +15,13 @@ import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
+import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
+import AskQuestion from './Pages/Forum/AskQuestion';
+import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
+import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
+
+
+
 
 
 
@@ -36,7 +43,7 @@ const router = createBrowserRouter([
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/portfolio-wallet",
+    path: "/portfolio/wallet",
     element: <PortfolioWallet />,
   },
   {
@@ -76,6 +83,20 @@ const router = createBrowserRouter([
     path: "/externalwallet",
     element: <Welcome/>,
   },
+  {
+    path: "/wallet/login",
+    element: <LoginPage1/>,
+  },
+  {
+    path: "/wallet/login/changepassword",
+    element: <ChangePassword/>,
+  },
+  {
+    path: "/wallet/login/setpassword",
+    element: <SetPassword/>,
+  },
+
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
