@@ -27,7 +27,7 @@ export default function FundingWallet() {
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-                { label:"Spot Wallet", path:"/portfolio/wallet?spotWallet"},
+                { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
                 { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
             ]}>
             
@@ -51,7 +51,7 @@ export default function FundingWallet() {
                             wallet === "fundingWallet" &&
                             <Input type="dropdown" label='To' onChange={setSelectedWallet} 
                                 options={[
-                                        { value: 'spotWallet', label: 'Spot Wallet' },
+                                        { value: 'tradingWallet', label: 'Trading Wallet' },
                                         { value: 'externalWallet', label: 'External Wallet' },
                                     ]}
                             />

@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/portfolio-wallet",
+    path: "/portfolio/wallet",
     element: <PortfolioWallet />,
   },
   {
