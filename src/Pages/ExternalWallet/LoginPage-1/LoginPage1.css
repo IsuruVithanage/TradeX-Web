@@ -54,6 +54,7 @@
     top: 54%;
     left: 19%;
     transform: translate(34%, -75%);
+    margin-top: 3.5%;
 }
 .arrow-icon{
     color: #21db9a;
@@ -67,7 +68,7 @@
 .w-line{
     background-color: #21db9a;
     border-color: #21db9a;
-    top: 30%;
+    top: 26%;
     position: relative;
     width: 81%;
 }
@@ -87,6 +88,7 @@
     top: 78%;
     left: 18%;
     transform: translate(33%, -90%);
+    margin-top: 3.5%;
 }
 .rec-arrow-icon{
     color: #21db9a;
