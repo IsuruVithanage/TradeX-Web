@@ -10,7 +10,7 @@ import {
   
 } from "react-router-dom";
 
-
+  
 
 import './forum.css';
 import { FaSearch } from "react-icons/fa";
@@ -18,15 +18,16 @@ import Detailed from '../../Components/Questionbar/Detailed';
 import { color } from '@mui/system';
 import Questionset from './Questionset';
 import Input from "../../Components/Input/Input";
-
-
+import AskQuestion from "../Forum/AskQuestion"
+import { GoBell } from "react-icons/go";
 
 
 export default function Forum() {
   const Tabs = [
     { label: "Latest", path: "/" },
-    { label: "Top", path: "/watchlist" },
-    { label: "My Problems", path: "/alert" },
+    { label: "My Problems", path: "/MyProblems" },
+    { label: "My Answers", path: "/alert" },
+    
   ];
 
   
@@ -46,7 +47,9 @@ export default function Forum() {
 
           <div style={{display: "flex", width: "100%" }}>
               <Input type="search" placeholder="Search" style={{width:"600px" ,marginLeft:"20px"}}/>
-              <Input type="button" value="Ask Question" style={{width:"130px" ,marginLeft:"15%"}}/>
+              <Link to="/AskQuestion">
+                <Input type="button" value="Ask Question"  style={{width:"130px" ,marginLeft:"15%"}}/>
+              </Link>
               <RiSoundModuleLine className="filter-icon" style={{color:"#6D6D6D" ,marginLeft:"15%",size:"20px"}}></RiSoundModuleLine>
           </div>
 
