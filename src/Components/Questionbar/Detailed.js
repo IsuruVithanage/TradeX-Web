@@ -2,6 +2,13 @@ import React from 'react'
 import './Detailed.css' 
 import { AiOutlineLike } from "react-icons/ai";
 import { AiOutlineDislike } from "react-icons/ai";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+  
+} from "react-router-dom";
 
 function Detailed() {
  

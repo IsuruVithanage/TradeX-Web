@@ -14,6 +14,7 @@ import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
+import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 
 
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
     element: <Alert/>,
   },
 
+  {
+    path: "/externalwallet",
+    element: <Welcome/>,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

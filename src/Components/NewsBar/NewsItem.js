@@ -40,15 +40,6 @@ const NewsItem = ({ title, description, src, url }) => {
           </div>
         </div>
 
-        {/* <div className='like-icon-container'>
-          <div onClick={handleLikeClick}>
-            {likeCount}  <AiOutlineLike />
-          </div>
-          <div onClick={handleDislikeClick}>
-             {dislikeCount} <AiOutlineDislike />
-          </div>
-        </div> */}
-
         <div className='foter-bar'>
           <p>1 day</p>
           <div className='like-icon-container'>
