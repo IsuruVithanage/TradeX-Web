@@ -17,6 +17,10 @@ import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
+import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
+import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
+
+
 
 
 
@@ -83,6 +87,15 @@ const router = createBrowserRouter([
     path: "/wallet/login",
     element: <LoginPage1/>,
   },
+  {
+    path: "/wallet/login/changepassword",
+    element: <ChangePassword/>,
+  },
+  {
+    path: "/wallet/login/setpassword",
+    element: <SetPassword/>,
+  },
+
 
 ]);
 

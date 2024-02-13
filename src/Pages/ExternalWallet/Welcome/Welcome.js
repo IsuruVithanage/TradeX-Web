@@ -26,7 +26,7 @@ export default function Welcome() {
       <button className='custom-button' onClick={navigateToLogin}>GET START</button>
       </div>
 
-        <img src={WalletImage} alt="Wallet Description" className='wallet-img' />
+        <img src={WalletImage} alt="Wallet Description" className='wallet-image' />
       
     </div>
   );
