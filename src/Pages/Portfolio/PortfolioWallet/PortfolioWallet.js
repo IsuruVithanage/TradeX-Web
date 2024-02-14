@@ -67,7 +67,7 @@ export default function FundingWallet() {
 
 
                         <div className={`transfer-button ${selectedWallet === 'externalWallet' ? "down" : ""}`}>
-                            <Input type="button" value="Transfer" style={{marginTop:"40px"}}/>
+                            <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>                            
                         </div>
                     </div>
                 }>

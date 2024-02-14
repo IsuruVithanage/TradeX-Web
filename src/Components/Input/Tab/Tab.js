@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
-import './Switch.css';
+import React, {useState} from "react";
+import './Tab.css';
 
-export default function DualButtons(props) {
+export default function Tab(props) {
 
     const [selectedButton, setSelectedButton] = useState(props.buttons[0]);
 

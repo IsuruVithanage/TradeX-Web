@@ -4,6 +4,8 @@ import Input from '../../Components/Input/Input';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Table, { TableRaw } from '../../Components/Table/Table';
 import ButtonComponent from "../../Components/Buttons/ButtonComponent";
+import Switch from '@mui/material/Switch';
+import './Alert.css';
 
 export default function Alert() {
     let alerts = require('./Alerts.json')
@@ -37,6 +39,13 @@ export default function Alert() {
                         { value: 'below', label: 'Below' },
                     ]}/>
                     <Input type="number" label='Price' id="number" />
+
+                    <label for="toggle-switch" className="email-switch-container">
+                        <span className="email-label-name">Email Notification</span>
+                        <Switch id='toggle-switch' defaultChecked/>
+                    </label>
+
+                    
     
                     <ButtonComponent style={{marginTop: "50px"}}>Add Alert</ButtonComponent>
                 </div>}>                

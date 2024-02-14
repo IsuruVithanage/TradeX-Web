@@ -64,8 +64,8 @@ export default function History() {
                                 { value: 'sell', label: 'Sell' },
                             ]}/> 
                         }
-                        <Input type="button" value="Show" style={{marginTop:"40px"}}/>
-                        <Input type="button" value="Export" />
+                        <Input type="button" value="Show" style={{marginTop:"50px"}}/>
+                        <Input type="button" value="Export" style={{marginTop:"20px"}} />
                     </div>
                 }>   
 

@@ -3,6 +3,8 @@
 .label-name{
     color: #9E9E9E;
     margin: 25px 0 8px 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
 }
 
 .input-container,
@@ -17,6 +19,7 @@
     padding: 8px;
     font-size: 16px;
     color: #21db9a;
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
 
@@ -96,4 +99,5 @@ input[type="date"] {
     color: #21DB9A;
     font-size: 18px 
 }
+
 

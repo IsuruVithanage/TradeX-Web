@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.css-julti5-MuiSwitch-root{
+    transform: translateX(10px);
+}
+
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked {
+    color: #21DB9A !important;
+}
+
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+    background-color: #21DB9A60 !important;
+}
+
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase{
+    color: #9E9E9E !important;
+}
+
+.css-1yjjitx-MuiSwitch-track{
+    background-color: #3C3C3C !important;
+    opacity: 1 !important;
+    height: 15px !important;
+    width: 40px !important;
+}
+
+.email-switch-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    color: #9E9E9E;
+    cursor: pointer;
+}
+
+.email-label-name{
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}

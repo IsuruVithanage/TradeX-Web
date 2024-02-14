@@ -9,6 +9,15 @@ import { SlSettings } from "react-icons/sl";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import "./SideNavBar.css";
 
+import { VscListUnordered } from "react-icons/vsc";
+import { FaRegChartBar } from "react-icons/fa";
+import { SlBookOpen } from "react-icons/sl";
+import { ImNewspaper } from "react-icons/im";
+import { PiStarFourLight } from "react-icons/pi";
+import { LiaClipboardListSolid } from "react-icons/lia";
+import { FaRegBell } from "react-icons/fa";
+import { SlWallet } from "react-icons/sl";
+
 
 export default function SideNavBar() {
   const currentLocation = useLocation().pathname;
@@ -37,45 +46,47 @@ export default function SideNavBar() {
       </div>
 
       <nav className="icon-container">
-        <Link to="/" className={`nav-link ${isActive("/")}`}>
-          <BiHomeAlt size={23}/>
-        </Link>
 
         <Link to="/watchlist" className={`nav-link ${isActive("/watchlist")}`}>
-          <IoIosMenu size={23} />
+          <VscListUnordered size={23} />
         </Link>
 
         <Link to="/portfolio" className={`nav-link ${isActive("/portfolio")}`}>
-            <BiBarChartAlt size={23}/>
-        </Link>
-
-        <Link to="/forum" className={`nav-link ${isActive("/forum")}`}>
-            <BsChatText size={23}/>
-        </Link>
-
-        <Link to="/dataVisualization" className={`nav-link ${isActive("/dataVisualization")}`}>
-            <FaRegFileAlt size={23}/>
-        </Link>
-
-        <Link to="/externalwallet" className={`nav-link ${isActive("/externalwallet")}`}>
-            <SlSettings size={23}/>
+            <FaRegChartBar size={23}/>
         </Link>
 
         <Link to="/simulate" className={`nav-link ${isActive("/simulate")}`}>
             <BiCandles size={23}/>
         </Link>
 
+        <Link to="/alert" className={`nav-link ${isActive("/alert")}`}>
+            <FaRegBell size={23}/>
+        </Link>
+
+        <Link to="/summary" className={`nav-link ${isActive("/summary")}`}>
+            <LiaClipboardListSolid size={23}/>
+        </Link>
+
         <Link to="/education" className={`nav-link ${isActive("/education")}`}>
-            <IoMdBook size={23}/>
+            <SlBookOpen size={23}/>
+        </Link>
+
+        <Link to="/forum" className={`nav-link ${isActive("/forum")}`}>
+            <BsChatText size={23}/>
         </Link>
 
         <Link to="/news" className={`nav-link ${isActive("/news")}`}>
-            <AiOutlineFileSearch size={23}/>
+            <ImNewspaper size={23}/>
         </Link>
 
-        <Link to="/alert" className={`nav-link ${isActive("/alert")}`}>
-            <GoBell size={23}/>
+        <Link to="/" className={`nav-link ${isActive("/")}`}>
+          <PiStarFourLight size={23}/>
         </Link>
+
+        <Link to="/externalwallet" className={`nav-link ${isActive("/externalwallet")}`}>
+            <SlWallet size={23}/>
+        </Link>
+
       </nav>
     </div>
   );
