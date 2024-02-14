@@ -7,4 +7,15 @@
 }
 .input-field-container{
     margin: 1.4375em auto;
+    width: 17.1875em;
+}
+
+.tradeHeader{
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+side-panel {
+    padding: 22px;
 }
