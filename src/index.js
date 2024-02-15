@@ -19,6 +19,7 @@ import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
 import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
+import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
 
 
 
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
   {
     path: "/wallet/login/setpassword",
     element: <SetPassword/>,
+  },
+  {
+    path: "/wallet/login/setpassword/secretphrase",
+    element: <SecretPhrase/>,
   },
 
 

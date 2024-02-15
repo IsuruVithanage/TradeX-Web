@@ -3,8 +3,9 @@ import './Input.css';
 import { IoCalendarOutline } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
 import { DatePicker } from 'antd';
-import Dropdown from '../Dropdown/Dropdown';
-import NumberInput from './NumberInput';
+import Dropdown from './Dropdown/Dropdown';
+import NumberInput from './NumberInput/NumberInput';
+import Switch from './Switch/Switch';;
 
 export default function SidePanelInput(props) {
   return (
@@ -19,6 +20,8 @@ export default function SidePanelInput(props) {
                   return <DateInput {...props} />;
                 case 'dropdown':
                   return <Dropdown {...props} />;
+                case 'switch':
+                  return <Switch {...props} />;
                 default:
                   return <InputField {...props} />;
               }

@@ -6,7 +6,7 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import DualButtons from "../../Components/SimulateChart/DualButtons";
-import NumberInput from "../../Components/Input/NumberInput";
+import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 
 export default function Portfolio() {
 
