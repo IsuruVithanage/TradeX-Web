@@ -4,7 +4,9 @@ import Input from '../../Components/Input/Input';
 
 import React from 'react'
 
-function MyProblems() {
+export default function MyProblems() {
+    const [selectedPage, setSelectedPage] = useState("Activated");
+    const [alertRepeat, setAlertRepeat] = useState(undefined);
   return (
     <div>
       
