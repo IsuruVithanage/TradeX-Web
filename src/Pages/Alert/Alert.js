@@ -4,12 +4,10 @@ import Input from '../../Components/Input/Input';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Table, { TableRaw } from '../../Components/Table/Table';
 import ButtonComponent from "../../Components/Buttons/ButtonComponent";
-import './Alert.css';
 
 export default function Alert() {
     let alerts = require('./Alerts.json')
-    const [selectedPage, setSelectedPage] = useState("Activated");
-    const [alertRepeat, setAlertRepeat] = useState(undefined);
+    const [selectedPage, setSelectedPage] = useState("Running");
 
     const options = [
       { value: 'BTC', label: 'BTC' },
@@ -24,7 +22,7 @@ export default function Alert() {
         <BasicPage
             subPages={{
                 onClick: setSelectedPage,
-                labels: ["Activated", "Disabled"],
+                labels: ["Running", "Notified"],
             }}
         >
             <SidePanelWithContainer 
@@ -39,30 +37,19 @@ export default function Alert() {
                         { value: 'below', label: 'Below' },
                     ]}/>
                     <Input type="number" label='Price' id="number" />
-                    <Input type="dropdown" label='Repeat' onChange={ setAlertRepeat } options={[
-                        { value: false, label: 'Once' },
-                        { value: true, label: 'Repeat' },
-                    ]}/>
-                
-                    { alertRepeat &&
-                        <div className={'date-picker-input'} >
-                            <Input type="date" label='End Date' />
-                        </div> 
-                    }
-                        <div className={`alert-button ${alertRepeat ? "down" : ""}`}>
-                            <ButtonComponent>Add Alert</ButtonComponent>
-                        </div>
+    
+                    <ButtonComponent style={{marginTop: "50px"}}>Add Alert</ButtonComponent>
                 </div>}>                
 
                 <Table>
-                    <TableRaw data={['Coin', 'Price', 'Condition', 'Email', 'Repeat']}/>
+                    <TableRaw data={['Coin', 'Price', 'Condition', 'Email', 'Action']}/>
 
                     { alerts.map((alert, index) => {
                         return (
-                        selectedPage === "Activated" ? alert.Active === true ? 
-                        <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
-                        : null : alert.Active === false ?
-                        <TableRaw key={index} data={[[require('../../Assets/Images/Coin Images.json')[alert.Coin], alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off", (alert.Repeat) ? alert.EndDate : "Once"]}/>
+                        selectedPage === "Running" ? alert.Running === true ? 
+                        <TableRaw key={index} data={[[alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off"]}/>
+                        : null : alert.Running === false ?
+                        <TableRaw key={index} data={[[alert.Coin], alert.Price, alert.Condition, (alert.Email) ? "On" : "Off"]}/>
                         : null)
                     })}
                     

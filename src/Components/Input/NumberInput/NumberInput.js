@@ -17,6 +17,7 @@ export default function NumberInput(props) {
 
 
     return (
+
         <InputNumber 
             variant='borderless'
             prefix={props.icon} 
@@ -29,5 +30,6 @@ export default function NumberInput(props) {
             onChange={props.onChange}
             onInput={handleStep} 
         />
+
     );
 }

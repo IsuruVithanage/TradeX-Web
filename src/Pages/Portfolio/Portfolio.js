@@ -9,11 +9,11 @@ import Table, { TableRaw } from '../../Components/Table/Table';
 export default function Portfolio() {
   const initialData = require('./portfolio-data.json');
   const assets = require('./assets.json');
-  const usdBalance = assets.USD.spotBalance + assets.USD.futureBalance + assets.USD.fundingBalance;
+  const usdBalance = assets.USD.spotBalance + assets.USD.fundingBalance;
   let portfolioValue = 0;
 
   Object.values(assets).forEach(asset => {
-    asset.TotalBalance = asset.spotBalance + asset.futureBalance + asset.fundingBalance;
+    asset.TotalBalance = asset.spotBalance + asset.fundingBalance;
     asset.value = asset.TotalBalance * asset.marketPrice;
     portfolioValue += asset.value;
   });
@@ -26,9 +26,10 @@ export default function Portfolio() {
   return (
     <BasicPage 
         tabs={[
-            { label:"Overview", path:"/portfolio"},
-            { label:"History", path:"/portfolio/history"},
-            { label:"Wallet", path:"/portfolio/portfolio-wallet"},
+          { label:"Overview", path:"/portfolio"},
+          { label:"History", path:"/portfolio/history"},
+          { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
+          { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
         ]}>
       
         <SidePanelWithContainer 
@@ -42,23 +43,23 @@ export default function Portfolio() {
             <TableRaw data={[
                 'Coin', 
                 'Spot Balance', 
-                'Future Balance', 
                 'Funding Balance', 
                 'Total Balance', 
+                'market Price',
                 'Value'
             ]}/>
 
              
-            { assets && Object.keys(assets).slice(1).map(key => (
+            { assets && Object.keys(assets).slice(1).map(coin => (
                 <TableRaw 
-                    key={key} 
+                    key={coin} 
                     data={[
-                      [require('../../Assets/Images/Coin Images.json')[key], key], 
-                      assets[key].spotBalance, 
-                      assets[key].futureBalance, 
-                      assets[key].fundingBalance, 
-                      assets[key].TotalBalance, 
-                      assets[key].value
+                      [ coin ], 
+                      assets[coin].spotBalance, 
+                      assets[coin].fundingBalance, 
+                      assets[coin].TotalBalance, 
+                      assets[coin].marketPrice, 
+                      assets[coin].value
                     ]} 
                 />
             ))}

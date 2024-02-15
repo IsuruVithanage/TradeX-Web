@@ -3,7 +3,7 @@ import BasicPage from '../../Components/BasicPage/BasicPage'
 import NewsBar from '../../Components/NewsBar/NewsItem'
 import NewsBoard from '../../Components/NewsBar/NewsBoard'
 import "./News.css"
-import { FaSearch } from "react-icons/fa";
+import Input from '../../Components/Input/Input'
 
 
 export default function jhx() {
@@ -15,8 +15,8 @@ export default function jhx() {
     ] }
     >  
            <div className='search_bar'>
-    	<FaSearch/>
-      <input className='bar' type='text' placeholder='Search'></input>  
+           <Input type={"search"} placeholder={"serach"}/>
+
      </div>      
      <div className='news-container'>
         <NewsBoard />
