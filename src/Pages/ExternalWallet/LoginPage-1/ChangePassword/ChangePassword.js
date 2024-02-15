@@ -3,10 +3,22 @@ import BlackBar from '../../../../Components/WalletComponents/BlackBar'
 import Head from '../../../../Components/WalletComponents/Head'
 import "./ChangePassword.css";
 import WalletImage from "../../../../Assets/Images/wallet.png";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 export default function ChangePassword() {
+  const navigete = useNavigate();
+
+  function navigateToRecoverWallet() {
+    navigete('/wallet/login/changepassword/recoverwallet');
+  }
+  const navigete2 = useNavigate();
+
+  function navigateToLogin() {
+    navigete2('/wallet/login');
+  }
   return (
     <div className='main-background'>
       <Head/>
@@ -23,12 +35,12 @@ export default function ChangePassword() {
           <input type="checkbox" id="terms-checkbox" />
           <label htmlFor="terms-checkbox">I have read and agree to the Terms of Service</label>
         </div>
+          <div >
+        <button className='rec-button' onClick={navigateToRecoverWallet} >Next</button>
+        </div>
         <div >
-      <button className='next-button' >Next</button>
-      </div>
-      <div >
-      <button className='back-button' >Back</button>
-      </div>
+        <button className='back-to-login-button' onClick={navigateToLogin}>Back</button>
+        </div>
       </BlackBar>
     </div>
   )

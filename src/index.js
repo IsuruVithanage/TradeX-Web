@@ -22,7 +22,7 @@ import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassw
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
 import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
 import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
-
+import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
 
 
 const router = createBrowserRouter([
@@ -111,7 +111,11 @@ const router = createBrowserRouter([
     path: "/wallet/dashboard",
     element: <DashBoard/>,
   },
-
+ 
+  {
+    path: "/wallet/login/changepassword/recoverwallet",
+    element: <RecoverWallet/>,
+  },
 
 ]);
 
