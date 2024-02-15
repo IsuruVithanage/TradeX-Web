@@ -5,8 +5,10 @@ import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithCont
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
-import DualButtons from "../../Components/SimulateChart/DualButtons";
+import Input from "../../Components/Input/Input";
 import NumberInput from "../../Components/Input/NumberInput/NumberInput";
+import SliderInput from "../../Components/Input/SliderInput/SliderInput";
+import ButtonComponent from "../../Components/Buttons/ButtonComponent";
 
 export default function Portfolio() {
 
@@ -17,18 +19,17 @@ export default function Portfolio() {
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
-    const buttonNames = ['Buy', 'Sell'];
-
 
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
-                header='Trade'
+                line={false}
                 style={{height: '530px'}}
                 sidePanel={
                     <div>
+                        <h1 className="tradeHeader">Trade</h1>
                         <ButtonSet priceLimits={priceLimits}/>
-                        <DualButtons buttonNames={buttonNames}/>
+                        <Input type={"switch"} buttons={["Buy","Sell"]}/>
 
                         <div className='input-field-container'>
                             <label htmlFor="" className='label'>Price</label>
@@ -38,6 +39,15 @@ export default function Portfolio() {
                             <label htmlFor="" className='label'>Quantity</label>
                             <NumberInput icon={"BTC"}/>
                         </div>
+
+                        <SliderInput/>
+
+                        <div className='input-field-container'>
+                            <label htmlFor="" className='label'>Total</label>
+                            <Input type={"text"} placehalder={"Total"}/>
+                        </div>
+
+                        <ButtonComponent>Buy</ButtonComponent>
 
                     </div>
                 }

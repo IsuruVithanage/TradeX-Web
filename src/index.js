@@ -40,6 +40,10 @@ const router = createBrowserRouter([
     element: <Portfolio />,
   },
   {
+    path: "/AskQuestion",
+    element: <AskQuestion />,
+  },
+  {
     path: "/portfolio/history",
     element: <TradingHistory />,
   },
