@@ -3,8 +3,20 @@ import "./SecretPhrase.css";
 import BlackBar from '../../../../../Components/WalletComponents/BlackBar';
 import Head from '../../../../../Components/WalletComponents/Head';
 import WalletImage from "../../../../../Assets/Images/wallet.png";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SecretPhrase() {
+    const navigete = useNavigate();
+
+    function navigateToConfirmSecretPhrase() {
+      navigete('/wallet/login/setpassword/secretphrase/confirmsecretphrase');
+    }
+    const navigete2 = useNavigate();
+  
+    function navigateToSetPassword() {
+      navigete2('/wallet/login/setpassword');
+    }
   return (
     <div className='main-background'>
         <Head/>
@@ -18,10 +30,10 @@ export default function SecretPhrase() {
          <div className='word-box'></div>   
 
          <div >
-      <button className='proceed-button'   >Proceed</button>
+      <button className='proceed-button'onClick={navigateToConfirmSecretPhrase}>Proceed</button>
       </div>
       <div >
-      <button className='cancle-button'>Cancle</button>
+      <button className='cancle-button'onClick={navigateToSetPassword}>Cancle</button>
       </div> 
 
         </BlackBar>
