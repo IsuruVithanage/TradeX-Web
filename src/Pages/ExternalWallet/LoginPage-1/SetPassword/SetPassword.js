@@ -3,8 +3,20 @@ import BlackBar from '../../../../Components/WalletComponents/BlackBar';
 import Head from '../../../../Components/WalletComponents/Head';
 import "./SetPassword.css";
 import WalletImage from "../../../../Assets/Images/wallet.png";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SetPassword() {
+  const navigete = useNavigate();
+
+  function navigateToSecretPhrase() {
+    navigete('/wallet/login/setpassword/secretphrase');
+  }
+  const navigete2 = useNavigate();
+
+  function navigateToLogin() {
+    navigete2('/wallet/login');
+  }
   return (
     <div className='main-background'>
       <Head/>
@@ -22,10 +34,10 @@ export default function SetPassword() {
           <label htmlFor="terms-checkbox">I have read and agree to the Terms of Service</label>
         </div>
         <div >
-      <button className='next-button' >Next</button>
+      <button className='next-button'  onClick={navigateToSecretPhrase} >Next</button>
       </div>
       <div >
-      <button className='back-button' >Back</button>
+      <button className='back-button' onClick={navigateToLogin}>Back</button>
       </div>
       </BlackBar>
     </div>

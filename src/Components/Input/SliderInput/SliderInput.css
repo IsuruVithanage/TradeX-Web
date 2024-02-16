@@ -1,0 +1,63 @@
+#components-slider-demo-mark h4 {
+    margin: 0 0 16px;
+}
+
+#components-slider-demo-mark .ant-slider-with-marks {
+    margin-bottom: 44px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-rail {
+    position: absolute;
+    background-color: rgb(255 255 255 / 31%);
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-track {
+    background-color: #21db9a;
+    border-radius: 2px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #21db9a;
+    box-shadow: 0 0 0 2px #21db9a;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: inset-inline-start 0.2s, inset-block-start 0.2s, width 0.2s, height 0.2s, box-shadow 0.2s;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle:focus::after {
+    box-shadow: 0 0 0 4px #21db9a;
+    width: 12px;
+    height: 12px;
+    inset-inline-start: -1px;
+    inset-block-start: -1px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle:hover::after,
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle:active:after,
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider ant-slider-handle:focus:after {
+    box-shadow: 0 0 0 4px #21db9a
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider:hover .ant-slider-track {
+    background-color: #21db9a;
+}
+
+.percentage-span {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+}
+
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider-horizontal.ant-slider-with-marks {
+    margin-bottom: 14px;
+}
