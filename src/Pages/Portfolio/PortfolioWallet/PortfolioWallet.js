@@ -4,7 +4,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRaw } from '../../../Components/Table/Table'
+import Table, { TableRow } from '../../../Components/Table/Table'
 import './PortfolioWallet.css'
 
 export default function FundingWallet() {
@@ -75,7 +75,7 @@ export default function FundingWallet() {
                 <ValueBar usdBalance={assets.USD.quantity} portfolioValue={portfolioValue}/>
 
                 <Table>
-                    <TableRaw data={[
+                    <TableRow data={[
                         'Coin', 
                         'Quantity', 
                         'Market Price', 
@@ -84,7 +84,7 @@ export default function FundingWallet() {
                     ]}/>
 
                     { assets && Object.keys(assets).slice(1).map(coin => (
-                        <TableRaw 
+                        <TableRow 
                             key={coin} 
                             data={[
                                 [ coin ], 

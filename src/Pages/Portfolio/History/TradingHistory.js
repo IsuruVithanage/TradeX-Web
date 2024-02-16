@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../../Components/Input/Input';
-import Table, { TableRaw } from '../../../Components/Table/Table';
+import Table, { TableRow } from '../../../Components/Table/Table';
 
 export default function History() {
     const tradingHistry = require('./TradingHistory.json');
@@ -72,9 +72,9 @@ export default function History() {
             
                 { selectedSection === "Transaction" ? (
                     <Table style={{marginTop:'0'}}>
-                        <TableRaw data={['Coin', 'Date', 'From', 'To', 'Quantity']} />
+                        <TableRow data={['Coin', 'Date', 'From', 'To', 'Quantity']} />
                         { historyData.map((row, index) => (
-                        <TableRaw 
+                        <TableRow 
                             key={index} 
                             data={[
                             [row.Coin],
@@ -87,9 +87,9 @@ export default function History() {
                     </Table> ) : 
 
                     <Table style={{marginTop:'0'}}>
-                        <TableRaw data={['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']} />
+                        <TableRow data={['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']} />
                         { historyData.map((row, index) => (
-                        <TableRaw 
+                        <TableRow 
                             key={index} 
                             data={[
                             [row.Coin],

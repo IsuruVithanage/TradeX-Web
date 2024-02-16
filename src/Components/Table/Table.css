@@ -70,7 +70,7 @@
 
 .table-container 
 .table-cell 
-div{
+.table-coin-container{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,7 +81,6 @@ div{
   display: flex;
   align-items: center;
   justify-content: left;
-  margin-left: 20px;
 }
 
 .table-container 

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './Tab.css';
+import './TabSwitch.css';
 
 export default function Tab(props) {
 

@@ -4,7 +4,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
-import Table, { TableRaw } from '../../Components/Table/Table';
+import Table, { TableRow } from '../../Components/Table/Table';
 
 export default function Portfolio() {
   const initialData = require('./portfolio-data.json');
@@ -40,7 +40,7 @@ export default function Portfolio() {
         </SidePanelWithContainer>
           
         <Table style={{marginTop:'1vh'}}>
-            <TableRaw data={[
+            <TableRow data={[
                 'Coin', 
                 'Spot Balance', 
                 'Funding Balance', 
@@ -51,7 +51,7 @@ export default function Portfolio() {
 
              
             { assets && Object.keys(assets).slice(1).map(coin => (
-                <TableRaw 
+                <TableRow 
                     key={coin} 
                     data={[
                       [ coin ], 

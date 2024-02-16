@@ -15,9 +15,7 @@ export default function App() {
   return (
     <BasicPage tabs={Tabs}>
 
-
-
-      <h1>Home</h1>
+      <h1>Suggetions</h1>
       <p>Height : {height}</p>
       <p>Width : {width}</p>
       <br/>

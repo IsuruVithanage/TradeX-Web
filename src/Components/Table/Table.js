@@ -4,7 +4,7 @@ import './Table.css'
 export default function Table(props) {
   return (
     <div className='table-container' style={props.style}>
-        <table className='main-table'>
+        <table className='main-table' id={props.id}>
             <thead className='table-head'>
                 {props.children[0]}
             </thead>
@@ -16,14 +16,14 @@ export default function Table(props) {
   )
 }
 
-export function TableRaw({data}) {
+export function TableRow(props) {
   return (
     <tr className='table-row'>
-        {(data) && data.map((cell, index) => {
+        {(props.data) && props.data.map((cell, index) => {
             
             if (Array.isArray(cell) && cell.length === 1) {
               cell = 
-                <div> 
+                <div className='table-coin-container'> 
                   <img 
                       className='coin-icon' 
                       src={require('../../Assets/Images/Coin Images.json')[cell[0]]} 
@@ -32,7 +32,7 @@ export function TableRaw({data}) {
                 </div>;
             }
             
-            return <td key={index} className={`table-cell ${(index === 0) ? 'first-column' : ''}`}>{cell}</td>
+            return <td key={index} className={`table-cell ${(index === 0) ? 'first-column' : ''} ${props.classes && props.classes[index]}`}>{cell}</td>
         })}
     </tr> 
   )

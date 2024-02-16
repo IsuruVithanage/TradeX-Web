@@ -1,0 +1,40 @@
+.ant-modal-root .ant-modal-mask{
+    background-color: #000000ad;
+}
+
+.ant-modal-root .ant-modal-wrap{
+    display: flex;
+    align-items: center;
+}
+
+.ant-modal .ant-modal-content{
+    background-color: #151516;
+    border-radius: 15px;
+    padding: 24px;
+    padding-bottom: 15px;
+    max-width: 95vw;
+    max-height: 95vh;
+    overflow: auto;
+    box-shadow: 3px 3px 10px #000000;
+}
+
+.ant-modal.css-dev-only-do-not-override-1b0bdye{
+    top: 0;
+    padding-bottom: 0;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+}
+
+.ant-modal .ant-modal-close{
+    top: 20px;
+    right: 23px;
+}
+
+.ant-modal .ant-modal-close svg{
+    color: #21DB9A;
+    font-size: 20px;
+}
+
+.ant-modal .ant-modal-close svg:hover{
+    color: #ff0000;
+}

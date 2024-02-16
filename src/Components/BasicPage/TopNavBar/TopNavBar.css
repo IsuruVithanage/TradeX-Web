@@ -13,6 +13,19 @@
     z-index: 2;
 }
 
+.top-navbar-iconholder{
+    background-color: #0E0E0F;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6%;
+    height: 6%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+}
+
 .links-container{
     display: flex;
     flex-direction: row;
