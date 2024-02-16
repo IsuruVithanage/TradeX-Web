@@ -99,10 +99,11 @@ export default function Dropdown (props) {
             styles={customStyles}
             isClearable={true} 
             options={props.options} 
+            defaultValue={props.defaultValue && props.options.filter(opt => opt.label === props.defaultValue)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}
-            onChange={props.onChange ? handleChange : undefined}
+            onChange={props.onChange && handleChange}
             onFocus={props.onFocus}
         />
     );

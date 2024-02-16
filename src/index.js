@@ -55,7 +55,7 @@ const router = createBrowserRouter([
     element: <Forum />,
   },
   {
-    path: "/dataVisualization",
+    path: "/summary",
     element: <BasicPage/>,
   },
   {

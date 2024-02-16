@@ -21,10 +21,12 @@ export default function NumberInput(props) {
         <InputNumber 
             variant='borderless'
             prefix={props.icon} 
+            type='number'
             step={step}  
             style={props.style} 
             id={props.id}
             name={props.name}
+            defaultValue={props.value}
             placeholder={props.placeholder}
             onBlur={props.onBlur}
             onChange={props.onChange}
