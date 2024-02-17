@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
+import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/watchlist",
     element: <Watchlist />,
+  },
+  {
+    path: "/watchlist/customize",
+    element:<CustomizeWatchlist/>
   },
   {
     path: "/portfolio",

@@ -3,6 +3,7 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import axios from 'axios';
 import Input from '../../Components/Input/Input';
 import './Watchlist.css';
+import { display } from '@mui/system';
 
 
 const Watchlist1 = () => {
@@ -40,7 +41,17 @@ const Watchlist1 = () => {
     );
 
     return (
-        <BasicPage>
+        <BasicPage
+            tabs={[
+                { label:"All", path:"/Watchlist"},
+                { label:"Custom", path:"/watchlist/customize"},
+            ]}>
+            <div className="mainbanner" style={{ display: 'flex' }}>
+            <div className='banner'>Top coins</div>
+            <div className='banner'>Top coins</div>
+            <div className='banner'>Top coins</div>
+            <div className='banner'>Top coins</div>
+            </div>
             <div className='watchlist-table-container'>
                 <Input type='search' placeholder='Search' style={{width:"300px"}} onChange={handleChange}/>
 
@@ -49,8 +60,8 @@ const Watchlist1 = () => {
                         <tr>
                             <td colSpan={2}>Coin</td>
                             <td>Price</td>
-                            <td>24 Change</td>
-                            <td>Mkt Cap</td>
+                            <td>24h Change</td>
+                            <td>Market Cap</td>
                         </tr>
 
                     </thead>
