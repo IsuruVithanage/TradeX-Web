@@ -8,7 +8,6 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
-import ButtonComponent from "../../Components/Buttons/ButtonComponent";
 
 export default function Portfolio() {
 
@@ -47,7 +46,7 @@ export default function Portfolio() {
                             <Input type={"text"} placehalder={"Total"}/>
                         </div>
 
-                        <ButtonComponent>Buy</ButtonComponent>
+                        <Input type="button" value="Buy"/>
 
                     </div>
                 }

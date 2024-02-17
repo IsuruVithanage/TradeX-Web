@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BiSolidUserRectangle } from "react-icons/bi";
+import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
 
 export default function TopNavBar(props) {
@@ -34,6 +35,11 @@ export default function TopNavBar(props) {
 
   return (
     <div>
+      { props.sideNavBar === false && 
+          <div className="top-navbar-iconholder">
+              <img src={wallet} alt="Logo" width={45} />
+          </div>
+      }
       <div className="top-navbar">
           <nav className="links-container">
               {(props.tabs) && props.tabs.map((tab) => (

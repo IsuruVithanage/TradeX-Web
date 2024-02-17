@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../../Components/Input/Input';
-import Table, { TableRaw } from '../../../Components/Table/Table';
+import Table, { TableRow } from '../../../Components/Table/Table';
 
 export default function History() {
     const tradingHistry = require('./TradingHistory.json');
@@ -64,17 +64,17 @@ export default function History() {
                                 { value: 'sell', label: 'Sell' },
                             ]}/> 
                         }
-                        <Input type="button" value="Show" style={{marginTop:"40px"}}/>
-                        <Input type="button" value="Export" />
+                        <Input type="button" value="Show" style={{marginTop:"50px"}}/>
+                        <Input type="button" value="Export" style={{marginTop:"20px"}} />
                     </div>
                 }>   
 
             
                 { selectedSection === "Transaction" ? (
                     <Table style={{marginTop:'0'}}>
-                        <TableRaw data={['Coin', 'Date', 'From', 'To', 'Quantity']} />
+                        <TableRow data={['Coin', 'Date', 'From', 'To', 'Quantity']} />
                         { historyData.map((row, index) => (
-                        <TableRaw 
+                        <TableRow 
                             key={index} 
                             data={[
                             [row.Coin],
@@ -87,9 +87,9 @@ export default function History() {
                     </Table> ) : 
 
                     <Table style={{marginTop:'0'}}>
-                        <TableRaw data={['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']} />
+                        <TableRow data={['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']} />
                         { historyData.map((row, index) => (
-                        <TableRaw 
+                        <TableRow 
                             key={index} 
                             data={[
                             [row.Coin],

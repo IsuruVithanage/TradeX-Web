@@ -5,12 +5,13 @@ import { GrClose } from "react-icons/gr";
 import { DatePicker } from 'antd';
 import Dropdown from './Dropdown/Dropdown';
 import NumberInput from './NumberInput/NumberInput';
-import Switch from './Switch/Switch';;
+import TabSwitch from './TabSwitch/TabSwitch';
+import { ButtonComponent, FABComponent, SwitchComponent } from './MUIComponents/MUIComponents';
 
 export default function SidePanelInput(props) {
   return (
     <div className='input-container'>
-        <p className='label-name'>{props.label}</p>
+        { props.label && <p className='label-name'>{props.label}</p> }
         {
            (() => {
               switch (props.type) {
@@ -21,7 +22,13 @@ export default function SidePanelInput(props) {
                 case 'dropdown':
                   return <Dropdown {...props} />;
                 case 'switch':
-                  return <Switch {...props} />;
+                  return <TabSwitch {...props} />;
+                case 'toggle':
+                  return <SwitchComponent {...props} />;
+                case 'fab':
+                  return <FABComponent {...props} />;
+                case 'button':
+                  return <ButtonComponent {...props} />;
                 default:
                   return <InputField {...props} />;
               }
@@ -43,6 +50,7 @@ function InputField(props) {
         style={props.style}
         onBlur={props.onBlur}
         onChange={props.onChange}
+        onClick={props.onClick}
       />
   );
 }
