@@ -19,10 +19,15 @@ import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
 import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
-import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
 import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
 import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
 import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
+import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
+
+
+
+
+
 
 
 const router = createBrowserRouter([
@@ -116,6 +121,7 @@ const router = createBrowserRouter([
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
   },
+
 
 ]);
 
