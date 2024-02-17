@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
@@ -23,12 +23,13 @@ export default function Portfolio() {
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 line={false}
-                style={{height: '530px'}}
+                style={{height: '530px', padding: "1rem"}}
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
                         <ButtonSet priceLimits={priceLimits}/>
-                        <Input type={"switch"} buttons={["Buy","Sell"]}/>
+                        <Input type={"switch"} style={{width: "18rem", marginLeft: "0.6rem"}}
+                               buttons={["Buy", "Sell"]}/>
 
                         <div className='input-field-container'>
                             <label htmlFor="" className='label'>Price</label>
@@ -46,11 +47,14 @@ export default function Portfolio() {
                             <Input type={"text"} placehalder={"Total"}/>
                         </div>
 
-                        <Input type="button" value="Buy"/>
+                        <div className="trade-btn-container">
+                            <Input type="button" style={{padding: "0 1rem 0 1rem"}} value="Buy"/>
+                        </div>
 
                     </div>
                 }
             >
+
                 <CoinBar/>
                 <TradingChart/>
             </SidePanelWithContainer>
