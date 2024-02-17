@@ -1,63 +1,33 @@
 import './App.css';
 import BasicPage from './Components/BasicPage/BasicPage';
-
+import trade from './Assets/Images/trade.png'
+import Input from './Components/Input/Input';
+import { Link } from 'react-router-dom';
 
 export default function App() {
   const height = document.documentElement.clientHeight;
   const width = document.documentElement.clientWidth;
 
-  const Tabs = [
-    { label:"Home", path:"/"},
-    { label:"Watchlist", path:"/watchlist"},
-    { label:"Alert", path:"/alert"},
-  ];
-
   return (
-    <BasicPage tabs={Tabs}>
+    <BasicPage sideNavBar={false} icon={<img src={trade} width="73px" alt='tradex'/>}>
+      <div style={{display:"flex", position:"absolute", bottom:"10px"}}>
+        <p>Height : {height}</p>
+        <p style={{marginLeft:"55px"}}>Width : {width}</p>
+      </div>
 
-      <h1>Suggetions</h1>
-      <p>Height : {height}</p>
-      <p>Width : {width}</p>
-      <br/>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
-      <p>This is Home page content</p>
+      <div style={{marginLeft: "6%", marginTop: "6%"}}>
+        <span style={{fontSize:"73px", color:"#ffffff", fontWeight:"800"}}>CRYPTO</span><span style={{fontSize:"73px", color:"#21DB9A", fontWeight:"800"}}>CURRENCY</span>
+        <p style={{fontSize:"40px", color:"#21DB9A", fontWeight:"700"}}>SIMULATION  PLATFORM</p>
+        <p style={{fontSize:"20px", color:"#ffffff", width:"838px"}}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s         
+        </p>
+
+        <Link to='/watchlist'>
+            <Input type="button" value="Get Started" style={{width:"125px", height:"40px", marginTop: "20px"}}/>
+        </Link>
+      </div>
+      
+      
       
     </BasicPage>
   )
