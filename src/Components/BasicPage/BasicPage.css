@@ -13,3 +13,8 @@
     overflow-y: auto;
     box-sizing: border-box;
 }
+
+.main-container.full-width{
+    left: 0;
+    width: 100%;
+}

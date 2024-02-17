@@ -1,9 +1,9 @@
 {
-    "Spot": [
+    "Trading": [
         {
             "Coin": "BTC",
             "Date": "2021-04-01",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": -22.86
@@ -11,7 +11,7 @@
         {
             "Coin": "ETH",
             "Date": "2021-03-22",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": 22.86
@@ -19,7 +19,7 @@
         {
             "Coin": "BNB",
             "Date": "2021-03-08",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": -22.86
@@ -27,7 +27,7 @@
         {
             "Coin": "XRP",
             "Date": "2021-02-22",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": 22.86
@@ -35,7 +35,7 @@
         {
             "Coin": "ADA",
             "Date": "2021-02-18",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": -22.86
@@ -43,7 +43,7 @@
         {
             "Coin": "BTC",
             "Date": "2021-04-01",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": 0
@@ -51,7 +51,7 @@
         {
             "Coin": "ETH",
             "Date": "2021-04-01",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": -22.86
@@ -59,10 +59,69 @@
         {
             "Coin": "BNB",
             "Date": "2021-04-01",
-            "Type": "Spot Buy",
+            "Type": "Buy",
             "Price": 23475.54,
             "Amount": 25.3642,
             "PNL": 22.86
+        }
+    ],
+
+    "Transaction": [
+        {
+            "Coin": "BTC",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "ETH",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "BNB",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "XRP",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "ADA",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "BTC",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "ETH",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
+        },
+        {
+            "Coin": "BNB",
+            "Date": "2021-04-01",
+            "From": "Trading Wallet",
+            "To": "Funding Wallet",
+            "Quantity": 25.3642
         }
     ]
 }

@@ -13,6 +13,24 @@
     z-index: 2;
 }
 
+.top-navbar.full-width{
+    left: 0;
+    width: 100%;
+}
+
+.top-navbar-iconholder{
+    background-color: #0E0E0F;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6%;
+    height: 6%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .links-container{
     display: flex;
     flex-direction: row;
@@ -20,6 +38,12 @@
     height: 100%;
     width: -moz-fit-content;
     width: fit-content;
+}
+
+.top-link{
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .links-container a{

@@ -6,9 +6,9 @@ import './BasicPage.css'
 export default function BasicPage(props) {
   return (
     <div>
-        <SideNavBar/>
-        <TopNavBar tabs={props.tabs} subPages={props.subPages}/>
-        <div className='main-container'>
+        { props.sideNavBar !== false && <SideNavBar/> }
+        <TopNavBar {...props}/>
+        <div className={`main-container ${props.sideNavBar === false && 'full-width'}`}>
             {props.children}
         </div>
     </div>

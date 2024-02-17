@@ -1,32 +1,24 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
-import SidePanelInput from '../../../Components/SidePanel/SidePanelInput/SidePanelInput'
+import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRaw } from '../../../Components/Table/Table'
+import Table, { TableRow } from '../../../Components/Table/Table'
 import './PortfolioWallet.css'
 
 export default function FundingWallet() {
-    let assets = {};
+    const wallet = new URLSearchParams(useLocation().search).keys().next().value;
     const walletAssets = require('./walletAssets.json');
     const [selectedWallet, setSelectedWallet] = useState(undefined);
-    const [selectedPage, setSelectedPage] = useState("Spot Wallet");
     let portfolioValue = 0;
+    let assets = {};
 
-    
 
-    switch(selectedPage) {
-        case "Spot Wallet":
-            assets = walletAssets.Spot
-            break;
-        case "Future Wallet":
-            assets = walletAssets.Future
-            break;
-        case "Funding Wallet":
-            assets = walletAssets.Funding
-            break;
-        default:
-            assets = walletAssets.Spot
+    if (wallet === "fundingWallet") {
+        assets = walletAssets.Funding
+    }else{
+        assets = walletAssets.Spot
     }
     portfolioValue = Object.values(assets).reduce((acc, asset) => acc + asset.value, 0);
 
@@ -35,53 +27,47 @@ export default function FundingWallet() {
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-            ]}
-            
-            subPages={{
-                setSelectedPage: setSelectedPage,
-                path: "/portfolio/portfolio-wallet",
-                labels: [ "Spot Wallet", "Future Wallet", "Funding Wallet" ]
-            }}>
+                { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
+                { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
+            ]}>
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
                 header="Transfer"
                 sidePanel = {
                     <div>
-                        <SidePanelInput type="dropdown" label='Coin' options={
+                        <Input type="dropdown" label='Coin' options={
                             Object.keys(assets).slice(1).map(assetKey => ({
                                 value: assetKey, 
                                 label: assetKey
                             }))
                         } />
-                        <SidePanelInput type="number" label='Quantity' />
-                        <SidePanelInput type="dropdown" label='To' onChange={setSelectedWallet} 
-                            options={ 
-                                selectedPage === "Spot Wallet"
-                                ? [
-                                    { value: 'futureWallet', label: 'Future Wallet' },
-                                    { value: 'fundingWallet', label: 'Funding Wallet' },
-                                    ]
-                                : selectedPage === "Future Wallet"
-                                ? [
-                                    { value: 'spotWallet', label: 'Spot Wallet' },
-                                    { value: 'fundingWallet', label: 'Funding Wallet' },
-                                    ]
-                                : selectedPage === "Funding Wallet"
-                                ? [
-                                    { value: 'spotWallet', label: 'Spot Wallet' },
-                                    { value: 'futureWallet', label: 'Future Wallet' },
-                                    { value: 'externalWallet', label: 'External Wallet' },
-                                    ]
-                                : []
-                            }
-                        />
-                        { selectedWallet === 'externalWallet' &&
-                        <div className={'wallet-address-input'} >
-                            <SidePanelInput type="text" label='Wallet Address'/> 
-                        </div> }
+
+
+                        <Input type="number" label='Quantity' />
+
+
+                        { 
+                            wallet === "fundingWallet" &&
+                            <Input type="dropdown" label='To' onChange={setSelectedWallet} 
+                                options={[
+                                        { value: 'tradingWallet', label: 'Trading Wallet' },
+                                        { value: 'externalWallet', label: 'External Wallet' },
+                                    ]}
+                            />
+                        }
+
+
+                        { 
+                            selectedWallet === 'externalWallet' &&
+                            <div className={'wallet-address-input'} >
+                                <Input type="text" label='Wallet Address'/> 
+                            </div> 
+                        }
+
+
                         <div className={`transfer-button ${selectedWallet === 'externalWallet' ? "down" : ""}`}>
-                            <SidePanelInput type="button" value="Transfer" style={{marginTop:"40px"}}/>
+                            <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>                            
                         </div>
                     </div>
                 }>
@@ -89,7 +75,7 @@ export default function FundingWallet() {
                 <ValueBar usdBalance={assets.USD.quantity} portfolioValue={portfolioValue}/>
 
                 <Table>
-                    <TableRaw data={[
+                    <TableRow data={[
                         'Coin', 
                         'Quantity', 
                         'Market Price', 
@@ -97,26 +83,26 @@ export default function FundingWallet() {
                         'ROI'
                     ]}/>
 
-                    { assets && Object.keys(assets).slice(1).map(key => (
-                        <TableRaw 
-                            key={key} 
+                    { assets && Object.keys(assets).slice(1).map(coin => (
+                        <TableRow 
+                            key={coin} 
                             data={[
-                            [require('../../../Assets/Images/Coin Images.json')[key], key], 
-                            assets[key].quantity, 
-                            assets[key].marketPrice, 
-                            assets[key].value, 
-                            <span 
-                                style= {{ 
-                                    color: ( assets[key].roi < 0 ) ? 
-                                    '#FF0000' : ( assets[key].roi > 0 ) ? 
-                                    '#21DB9A' : '' 
-                                }}>
-                                {`${assets[key].roi} %`}
-                            </span>
+                                [ coin ], 
+                                assets[coin].quantity, 
+                                assets[coin].marketPrice, 
+                                assets[coin].value, 
+                                <span 
+                                    style= {{ 
+                                        color: ( assets[coin].roi < 0 ) ? 
+                                        '#FF0000' : ( assets[coin].roi > 0 ) ? 
+                                        '#21DB9A' : '' 
+                                    }}>
+                                    {`${assets[coin].roi} %`}
+                                </span>
                             ]} 
                         />
                     ))}
-                </Table>
+                </Table> 
             </SidePanelWithContainer>
         </BasicPage>
     )

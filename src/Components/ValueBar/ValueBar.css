@@ -13,12 +13,12 @@
 .usd-card,
 .value-card{
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
     background-color: #0E0E0F;
-    padding: 0 0.5vw;
+    padding: 0 1.5vw;
     border-radius: 15px;
-    min-width: 22%;
+    min-width: 18%;
     width: -moz-fit-content;
     width: fit-content;
 }
@@ -26,11 +26,13 @@
 .usd-card{
     margin-right: auto;
     text-align: left;
+    box-shadow: 2px 2px 8px #21DB9A20;
 }
 
 .value-card{
     margin-left: auto;
     text-align: right;
+    box-shadow: 2px 2px 8px #FFFFFF20;
 }
 
 .value-card-amount{

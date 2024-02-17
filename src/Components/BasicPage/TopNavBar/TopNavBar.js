@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BiSolidUserRectangle } from "react-icons/bi";
+import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
 
 export default function TopNavBar(props) {
   const userName = "Kamal Silva";
 
-  const currentLocation = useLocation().pathname;
+  const currentLocation = useLocation().pathname + useLocation().search;
   
   const [activeLink, setActiveLink] = useState(currentLocation);
 
@@ -20,7 +21,8 @@ export default function TopNavBar(props) {
 
   const handleSubPagesClick = (label) => {
     setActivePage(label);
-    props.subPages.setSelectedPage(label);
+    props.subPages.onClick &&
+    props.subPages.onClick(label);
   }
 
   const active = (path) => {
@@ -32,11 +34,17 @@ export default function TopNavBar(props) {
   }, [currentLocation]); 
 
   return (
-    <>
-      <div className="top-navbar">
+    <div>
+      { props.sideNavBar === false && props.icon !== false &&
+          <div className="top-navbar-iconholder">
+              { props.icon ? props.icon :
+              <img src={wallet} alt="Logo" width={45} /> }
+          </div>
+      }
+      <div className={`top-navbar ${ props.icon === false && "full-width" }`}>
           <nav className="links-container">
               {(props.tabs) && props.tabs.map((tab) => (
-                <Link key={tab.label} to={tab.path}>
+                <Link key={tab.label} to={tab.path} className="top-link">
                   <span className={`top-nav-link ${active(tab.path)}`}>
                     {tab.label}
                   </span>
@@ -44,13 +52,12 @@ export default function TopNavBar(props) {
               ))}  
 
               {(props.subPages) && props.subPages.labels.map((label) => (
-                  <Link key={label} to={props.subPages.path}>
-                    <span 
-                      className={`top-nav-link ${(activePage === label) ? "active" : ""}`} 
-                      onClick={() => handleSubPagesClick(label)}>
-                      {label}
-                    </span>
-                  </Link>
+                  <span 
+                    key={label}
+                    className={`top-nav-link ${(activePage === label) ? "active" : ""}`} 
+                    onClick={ () => handleSubPagesClick(label)}>
+                    {label}
+                  </span>
               ))}  
           </nav>
 
@@ -63,6 +70,6 @@ export default function TopNavBar(props) {
       <div className={`profile-menu ${isProfileMenuVisible? "active": ""}`}>
         <span>{userName}</span>
       </div>
-    </>
+    </div>
   )
 }

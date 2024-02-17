@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+
+.ant-input-number .ant-input-number-input,
+.ant-input-number-affix-wrapper input.ant-input-number-input {
+    color: #21DB9A;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background-color: #3C3C3C;
+    height: 37px;
+    padding-left: 10px;
+}
+
+.ant-input-number-affix-wrapper input.ant-input-number-input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.ant-input-number,
+.ant-input-number-affix-wrapper {
+    padding-inline-start: 0;
+    width: 100%;
+}
+
+.ant-input-number-affix-wrapper .ant-input-number-prefix {
+    margin-inline-end: 0;
+    width: 35px;
+    justify-content: center;
+    color: #21DB9A;
+    font-size: 14px;
+    line-height: normal;
+    background-color: #282828;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.ant-input-number-outlined:hover {
+    background-color: #282828;
+}
+
+.ant-input-number-outlined:focus-within {
+    border: hidden;
+    outline: none;
+    background-color: #282828;
+}
+
+.ant-input-number .ant-input-number-handler-wrap {
+    background-color: transparent;
+    width: 20px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-right: 8px;
+    align-items: center;
+
+}
+
+.ant-input-number .ant-input-number-handler {
+    border-inline-start: hidden;
+}
+
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
+.ant-input-number-handler-up-inner,
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
+.ant-input-number-handler-down-inner {
+    color: #21db9a;
+    font-weight: bolder;
+    font-size: 12px;
+}
+
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler {
+    height: 50%;
+    align-items: normal;
+}
+
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
+.ant-input-number-handler-down-inner {
+    border-block-start: 1px solid #282828;
+    width: 20px;
+    justify-content: center;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper {
+    margin-top: 0.7rem;
+    font-weight: bold;
+}
+
+

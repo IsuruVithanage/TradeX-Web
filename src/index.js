@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
+import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
@@ -14,6 +15,19 @@ import BasicPage from './Components/BasicPage/BasicPage';
 import Alert from './Pages/Alert/Alert';
 import News from './Pages/News/News';
 import Favourite from './Pages/News/Favourite';
+import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
+import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
+import AskQuestion from './Pages/Forum/AskQuestion';
+import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
+import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
+import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
+import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
+import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
+import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
+
+
+
+
 
 
 
@@ -27,15 +41,23 @@ const router = createBrowserRouter([
     element: <Watchlist />,
   },
   {
+    path: "/watchlist/customize",
+    element:<CustomizeWatchlist/>
+  },
+  {
     path: "/portfolio",
     element: <Portfolio />,
+  },
+  {
+    path: "/AskQuestion",
+    element: <AskQuestion />,
   },
   {
     path: "/portfolio/history",
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/portfolio-wallet",
+    path: "/portfolio/wallet",
     element: <PortfolioWallet />,
   },
   {
@@ -43,7 +65,7 @@ const router = createBrowserRouter([
     element: <Forum />,
   },
   {
-    path: "/dataVisualization",
+    path: "/summary",
     element: <BasicPage/>,
   },
   {
@@ -70,6 +92,44 @@ const router = createBrowserRouter([
     path: "/alert",
     element: <Alert/>,
   },
+  {
+    path: "/suggestion",
+    element: <BasicPage/>,
+  },
+  {
+    path: "/externalwallet",
+    element: <Welcome/>,
+  },
+  {
+    path: "/wallet/login",
+    element: <LoginPage1/>,
+  },
+  {
+    path: "/wallet/login/changepassword",
+    element: <ChangePassword/>,
+  },
+  {
+    path: "/wallet/login/setpassword",
+    element: <SetPassword/>,
+  },
+  {
+    path: "/wallet/login/setpassword/secretphrase",
+    element: <SecretPhrase/>,
+  },
+  {
+    path: "/wallet/login/setpassword/secretphrase/confirmsecretphrase",
+    element: <ConfirmSecretPhrase/>,
+  },
+  {
+    path: "/wallet/dashboard",
+    element: <DashBoard/>,
+  },
+ 
+  {
+    path: "/wallet/login/changepassword/recoverwallet",
+    element: <RecoverWallet/>,
+  },
+
 
 ]);
 
