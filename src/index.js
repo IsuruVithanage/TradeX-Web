@@ -82,7 +82,10 @@ const router = createBrowserRouter([
     path: "/alert",
     element: <Alert/>,
   },
-
+  {
+    path: "/suggestion",
+    element: <BasicPage/>,
+  },
   {
     path: "/externalwallet",
     element: <Welcome/>,

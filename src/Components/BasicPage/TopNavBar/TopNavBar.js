@@ -35,12 +35,13 @@ export default function TopNavBar(props) {
 
   return (
     <div>
-      { props.sideNavBar === false && 
+      { props.sideNavBar === false && props.icon !== false &&
           <div className="top-navbar-iconholder">
-              <img src={wallet} alt="Logo" width={45} />
+              { props.icon ? props.icon :
+              <img src={wallet} alt="Logo" width={45} /> }
           </div>
       }
-      <div className="top-navbar">
+      <div className={`top-navbar ${ props.icon === false && "full-width" }`}>
           <nav className="links-container">
               {(props.tabs) && props.tabs.map((tab) => (
                 <Link key={tab.label} to={tab.path} className="top-link">

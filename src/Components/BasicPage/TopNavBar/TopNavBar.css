@@ -13,6 +13,11 @@
     z-index: 2;
 }
 
+.top-navbar.full-width{
+    left: 0;
+    width: 100%;
+}
+
 .top-navbar-iconholder{
     background-color: #0E0E0F;
     position: fixed;
@@ -23,7 +28,7 @@
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    padding-left: 2%;
+    justify-content: center;
 }
 
 .links-container{

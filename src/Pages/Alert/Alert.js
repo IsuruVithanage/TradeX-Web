@@ -122,7 +122,7 @@ import './Alert.css';
             }}>     
 
                 { selectedPage === 'Running' && <Input type="fab" style={{dispaly: "none"}} onClick={ openAlertSetterModel }/> }
-
+                
                 <Table id="alertTable">
                     <TableRow 
                         data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']}

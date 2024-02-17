@@ -79,8 +79,8 @@ export default function SideNavBar() {
             <ImNewspaper size={23}/>
         </Link>
 
-        <Link to="/" className={`nav-link ${isActive("/")}`}>
-          <PiStarFourLight size={23}/>
+        <Link to="/suggestion" className={`nav-link ${isActive("/suggestion")}`}>
+            <PiStarFourLight size={23}/>
         </Link>
 
         <Link to="/externalwallet" className={`nav-link ${isActive("/externalwallet")}`}>
