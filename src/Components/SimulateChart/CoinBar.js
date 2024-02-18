@@ -4,7 +4,7 @@ import Modal from "../Modal/Modal";
 import Table, {TableRow} from "../Table/Table";
 import axios from "axios";
 
-const CoinBar = () => {
+const CoinBar = ({ onSelectCoin }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [coins, setCoins] = useState([]);
     const [bitcoinData, setBitcoinData] = useState({
@@ -49,10 +49,8 @@ const CoinBar = () => {
             marketcap: formatCurrency(selectedCoin.market_cap),
         }));
         setIsSetterModalOpen(false);
+        onSelectCoin(selectedCoin);
     };
-
-    console.log('Bitcoin Data:', bitcoinData);
-
 
 
 

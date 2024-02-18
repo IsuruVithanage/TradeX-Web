@@ -9,15 +9,21 @@ import Input from "../../Components/Input/Input";
 import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 
-export default function Portfolio() {
+export default function TradingPlatform() {
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
-        {label: "Future", path: "/"},
     ];
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
+
+    const [selectedCoin, setSelectedCoin] = useState(null);
+
+    const handleCoinSelection = (coin) => {
+        // Update the selected coin when a new coin is selected
+        setSelectedCoin(coin);
+    };
 
     return (
         <BasicPage tabs={Tabs}>
@@ -37,7 +43,7 @@ export default function Portfolio() {
                         </div>
                         <div className='input-field-container'>
                             <label htmlFor="" className='label'>Quantity</label>
-                            <NumberInput icon={"BTC"}/>
+                            <NumberInput icon={selectedCoin.symbol}/>
                         </div>
 
                         <SliderInput/>
@@ -55,7 +61,7 @@ export default function Portfolio() {
                 }
             >
 
-                <CoinBar/>
+                <CoinBar onSelectCoin={handleCoinSelection}/>
                 <TradingChart/>
             </SidePanelWithContainer>
         </BasicPage>
