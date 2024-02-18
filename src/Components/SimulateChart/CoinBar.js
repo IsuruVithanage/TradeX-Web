@@ -43,8 +43,10 @@ const CoinBar = () => {
         setBitcoinData((prevData) => ({
             ...prevData,
             name: selectedCoin.name,
-            price: selectedCoin.current_price,
+            price: formatCurrency(selectedCoin.current_price),
             symbol: selectedCoin.image,
+            priceChange: selectedCoin.price_change_percentage_24h,
+            marketcap: formatCurrency(selectedCoin.market_cap),
         }));
         setIsSetterModalOpen(false);
     };
@@ -67,7 +69,7 @@ const CoinBar = () => {
         <div className='coinDiv' onClick={openSetterModel}>
             <div className='coin-logo'>
                 <div className='coin-logo coinimg'>
-                    <img src={bitcoinData.image} alt=""/>
+                    <img src={bitcoinData.symbol} alt=""/>
                     <p>{bitcoinData.name}</p>
                 </div>
             </div>
@@ -77,12 +79,12 @@ const CoinBar = () => {
                     <p>{bitcoinData.price}</p>
                 </div>
                 <div className='cdata'>
-                    <h1>24h Change</h1>
-                    <p>20000</p>
+                    <h1>24h Price Change</h1>
+                    <p style={{color: bitcoinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{bitcoinData.priceChange} %</p>
                 </div>
                 <div className='cdata'>
                     <h1>Market Cap</h1>
-                    <p>20000</p>
+                    <p>{bitcoinData.marketcap}</p>
                 </div>
             </div>
 
