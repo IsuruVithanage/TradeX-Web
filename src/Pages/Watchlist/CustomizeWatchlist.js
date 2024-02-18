@@ -44,7 +44,7 @@ const Watchlist1 = () => {
         <BasicPage
             tabs={[
                 { label:"All", path:"/Watchlist"},
-                { label:"Custom", path:"/Watchlist/Custom"},
+                { label:"Custom", path:"/watchlist/customize"},
             ]}>
             <div className="mainbanner" style={{ display: 'flex' }}>
             <div className='banner'>Top coins</div>
@@ -62,6 +62,7 @@ const Watchlist1 = () => {
                             <td>Price</td>
                             <td>24h Change</td>
                             <td>Market Cap</td>
+                            <td></td>
                         </tr>
 
                     </thead>
@@ -83,6 +84,7 @@ const Watchlist1 = () => {
                             <td>{price}</td>
                             <td style={{color: coin.price_change_percentage_24h > 0 ? "#21DB9A" : "#FF0000"}}>{coin.price_change_percentage_24h} %</td>
                             <td>{mktCap}</td>
+                            <td><Input type="button" value="Remove" outlined red/></td>
                         </tr>
                         )
                     })}
