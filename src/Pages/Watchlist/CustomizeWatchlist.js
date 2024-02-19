@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import axios from 'axios';
 import Input from '../../Components/Input/Input';
-import './Watchlist.css';
-import { display } from '@mui/system';
+import './CustomizeWatchlist.css';
+import { display, width } from '@mui/system';
 
 
 const Watchlist1 = () => {
@@ -45,6 +45,7 @@ const Watchlist1 = () => {
             tabs={[
                 { label:"All", path:"/Watchlist"},
                 { label:"Custom", path:"/watchlist/customize"},
+                { label:"CoinPage", path:"/watchlist/CoinPage"},
             ]}>
             <div className="mainbanner" style={{ display: 'flex' }}>
             <div className='banner'>Top coins</div>
@@ -53,7 +54,9 @@ const Watchlist1 = () => {
             <div className='banner'>Top coins</div>
             </div>
             <div className='watchlist-table-container'>
-                <Input type='search' placeholder='Search' style={{width:"300px"}} onChange={handleChange}/>
+                <div style={{display:"flex", marginLeft:"700px",marginBottom:"0px"}}><Input type='search' placeholder='Search' style={{width:"300px", float:"right",marginRight:"50px"}} onChange={handleChange}/>
+                <Input type="button" value="Add Coin" outlined green style={{width:"150px"}}/></div>
+
 
                 <table className='watchlist-table'>
                     <thead>
@@ -84,7 +87,7 @@ const Watchlist1 = () => {
                             <td>{price}</td>
                             <td style={{color: coin.price_change_percentage_24h > 0 ? "#21DB9A" : "#FF0000"}}>{coin.price_change_percentage_24h} %</td>
                             <td>{mktCap}</td>
-                            <td><Input type="button" value="Remove" outlined red/></td>
+                            <td><Input type="button" value="Remove" outlined red style={{width:"150px"}}/></td>
                         </tr>
                         )
                     })}
