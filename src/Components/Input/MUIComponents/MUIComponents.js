@@ -73,8 +73,6 @@ export function ButtonComponent(props){
 
 
 
-
-
 const StyledFAB = styled(Fab)(() => {
     return {
         position: 'fixed',

@@ -8,6 +8,8 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
+import Table, {TableRow} from "../../Components/Table/Table";
+import assets from "../Portfolio/assets.json";
 
 export default function TradingPlatform() {
 
@@ -21,7 +23,6 @@ export default function TradingPlatform() {
     const [selectedCoin, setSelectedCoin] = useState(null);
 
     const handleCoinSelection = (coin) => {
-        // Update the selected coin when a new coin is selected
         setSelectedCoin(coin);
     };
 
@@ -43,7 +44,7 @@ export default function TradingPlatform() {
                         </div>
                         <div className='input-field-container'>
                             <label htmlFor="" className='label'>Quantity</label>
-                            <NumberInput icon={selectedCoin.symbol}/>
+                            <NumberInput icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}/>
                         </div>
 
                         <SliderInput/>
@@ -64,6 +65,33 @@ export default function TradingPlatform() {
                 <CoinBar onSelectCoin={handleCoinSelection}/>
                 <TradingChart/>
             </SidePanelWithContainer>
+
+            <Table style={{marginTop: '1vh'}}>
+                <TableRow data={[
+                    'Coin',
+                    'Spot Balance',
+                    'Funding Balance',
+                    'Total Balance',
+                    'market Price',
+                    'Value'
+                ]}/>
+
+
+                {assets && Object.keys(assets).slice(1).map(coin => (
+                    <TableRow
+                        key={coin}
+                        data={[
+                            [coin],
+                            assets[coin].spotBalance,
+                            assets[coin].fundingBalance,
+                            assets[coin].TotalBalance,
+                            assets[coin].marketPrice,
+                            assets[coin].value,
+                            <Input type="button" value="Cancel" style={{width:"90px"}} outlined/>
+                            ]}
+                    />
+                ))}
+            </Table>
         </BasicPage>
     )
 }
