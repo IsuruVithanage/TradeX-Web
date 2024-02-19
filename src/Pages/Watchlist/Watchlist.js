@@ -45,6 +45,7 @@ const Watchlist1 = () => {
             tabs={[
                 { label:"All", path:"/Watchlist"},
                 { label:"Custom", path:"/watchlist/customize"},
+                { label:"Coin page", path:"/watchlist/CoinPage"},
             ]}>
             <div className="mainbanner" style={{ display: 'flex' }}>
             <div className='banner'>Top coins</div>
