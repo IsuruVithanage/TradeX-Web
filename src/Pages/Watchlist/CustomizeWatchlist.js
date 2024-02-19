@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import axios from 'axios';
 import Input from '../../Components/Input/Input';
-import './Watchlist.css';
+import './CustomizeWatchlist.css';
 import { display, width } from '@mui/system';
 
 
@@ -45,6 +45,7 @@ const Watchlist1 = () => {
             tabs={[
                 { label:"All", path:"/Watchlist"},
                 { label:"Custom", path:"/watchlist/customize"},
+                { label:"CoinPage", path:"/watchlist/CoinPage"},
             ]}>
             <div className="mainbanner" style={{ display: 'flex' }}>
             <div className='banner'>Top coins</div>
