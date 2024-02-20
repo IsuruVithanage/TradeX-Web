@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom';
 export default function LoginPage1() {
   const navigete1 = useNavigate();
 
-  function navigateToChangePassword() {
-    navigete1('/wallet/login/changepassword');
+  function navigateToHaveAccount() {
+    navigete1('/wallet/login/HaveAccount');
   }
   const navigete2 = useNavigate();
 
@@ -39,8 +39,8 @@ export default function LoginPage1() {
       </div>
 
       <hr className='w-line'/>
-      
-      <div  onClick={navigateToChangePassword} style={{cursor:"pointer"}}>
+
+      <div  onClick={navigateToHaveAccount} style={{cursor:"pointer"}}>
         <p className='rec-wallet'>Already have wallet</p>
         <p className='secret'>Import with your secret phrase</p>
         <  FaArrowRight className='rec-arrow-icon'/>
