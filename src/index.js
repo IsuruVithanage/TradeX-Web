@@ -19,16 +19,13 @@ import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
-import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
 import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
 import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
 import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
 import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
-
-
-
-
+import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
+import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 
 
 
@@ -110,8 +107,8 @@ const router = createBrowserRouter([
     element: <LoginPage1/>,
   },
   {
-    path: "/wallet/login/changepassword",
-    element: <ChangePassword/>,
+    path: "/wallet/login/HaveAccount",
+    element: <HaveAccount/>,
   },
   {
     path: "/wallet/login/setpassword",
@@ -133,6 +130,10 @@ const router = createBrowserRouter([
   {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
+  },
+  {
+    path: "/wallet/login/changepassword",
+    element: <ChangePassword/>,
   },
 
 

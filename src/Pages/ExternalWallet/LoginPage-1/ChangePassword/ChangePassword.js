@@ -16,8 +16,8 @@ export default function ChangePassword() {
   }
   const navigete2 = useNavigate();
 
-  function navigateToLogin() {
-    navigete2('/wallet/login');
+  function navigateToHaveAccount() {
+    navigete2('/wallet/login/haveaccount');
   }
   return (
     <div className='main-background'>
@@ -39,7 +39,7 @@ export default function ChangePassword() {
         <button className='rec-button' onClick={navigateToRecoverWallet} >Next</button>
         </div>
         <div >
-        <button className='back-to-login-button' onClick={navigateToLogin}>Back</button>
+        <button className='back-to-login-button' onClick={navigateToHaveAccount}>Back</button>
         </div>
       </BlackBar>
     </div>
