@@ -37,13 +37,13 @@ export function TableRow(props) {
                           </div>
                       );
                   }
-            
-            return (
-              <td key={index} className={`${props.classes && props.classes[index]}`}>
-                  { cell }
-              </td>
-            );
-        })}
-    </tr> 
-  )
-}
+
+                  return (
+                      <td key={index} className={`${props.classes && props.classes[index]}`}>
+                          {cell}
+                      </td>
+                  );
+              })}
+      </tr>
+  );
+  }
