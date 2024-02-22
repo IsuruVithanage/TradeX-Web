@@ -9,9 +9,11 @@ export default function Table(props) {
                 {props.children[0]}
             </thead>
             <tbody className={`table-body ${(props.hover) ? 'hoverble' : ''}`}>
-                {props.children.slice(1)}
+                { props.children.slice(1) }
             </tbody>
         </table>
+        
+        { props.children[1].length === 0 && <p className='empty-message'>{ props.emptyMessage }</p> }
     </div>
   )
 }
@@ -32,7 +34,7 @@ export function TableRow(props) {
                 </div>;
             }
             
-            return <td key={index} className={`table-cell ${(index === 0) ? 'first-column' : ''} ${props.classes && props.classes[index]}`}>{cell}</td>
+            return <td key={index} className={`${props.classes && props.classes[index]}`}>{cell}</td>
         })}
     </tr> 
   )

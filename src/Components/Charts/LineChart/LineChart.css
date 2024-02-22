@@ -2,19 +2,20 @@
 
 .chartContainer{
     position: relative;
-    width: calc(100% - 60px);
+    width: 100%;
     border-radius: 15px;
     padding: 0 30px;
     background-color: #0E0E0F;
     margin: 0 auto;
     flex: 1;
+    box-sizing: border-box;
 }
 
 .chartContainer.full-screen {
     position: fixed;
     top: 6%;
     left: 6%;
-    max-width: 90%;
+    max-width: 94%;
     height: 100vh;
     border-radius: 0;
     z-index: 2;

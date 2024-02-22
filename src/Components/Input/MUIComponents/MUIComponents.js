@@ -126,6 +126,10 @@ const StyledSwitch = styled(Switch)(() => {
 
 
 export function SwitchComponent(props){
+    const handleChange = (e) => {
+        props.onChange(e.target.checked)
+    }
+
     return (
         <label style={{
                 display: "flex", 
@@ -145,8 +149,8 @@ export function SwitchComponent(props){
             <StyledSwitch
                 id={props.id}
                 name={props.name}
-                defaultChecked={props.checked}
-                onChange={props.onChange}
+                checked={props.checked}
+                onChange={props.onChange && handleChange}
                 onClick={props.onClick}
             />
         </label>
