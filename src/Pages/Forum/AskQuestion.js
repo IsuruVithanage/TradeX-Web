@@ -24,7 +24,7 @@
                     <p className='sub-title'>Technical Analysis</p>
                     <p className='sub-title'>Understanding cryptocurrency</p>
                     <p className='sub-title'>Understanding cryptocurrency wallet</p>
-                  
+                    
                 </div> 
             }>
 
