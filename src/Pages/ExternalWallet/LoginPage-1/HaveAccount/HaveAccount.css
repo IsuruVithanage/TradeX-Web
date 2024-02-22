@@ -1,0 +1,126 @@
+.main-background{
+    background-image: url("../../../../Assets/Images/coverx.png");
+    background-color: #151516;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    padding: 0.5%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.set-pass{
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 520;
+    line-height: normal;
+    margin-top: 30px;
+}
+.para{
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    margin-top: 45px;
+}
+.password-input{
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 45%;
+    left: 1%;
+    transform: translate(34%, -75%);
+    width: 60%;
+    height: 9%;
+    background-color: #3C3C3C4D;
+    border-bottom-color: #21DB9A;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    border-radius: 7px;
+
+}
+
+.terms-checkbox{
+    color: white;
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 73%;
+    left: 10%;
+    transform: translate(34%, -75%);
+    font-size: 85%;
+}
+.back-to-login-button{
+    border-radius: 8px;
+    background: #0E0E0F;
+    width: 120px;
+    height: 38px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 89%;
+    left: 10%;
+    transform: translate(34%, -75%);
+    color: #FFF;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.34px;
+    border: none;
+}
+.reset-button{
+    border-radius: 8px;
+    background: #0E0E0F;
+    width: 120px;
+    height: 38px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 71%;
+    left: 35%;
+    transform: translate(34%, -75%);
+    color: #21db9a;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.34px;
+    border: none;
+}
+.reset-para{
+    color: #FFF;
+    font-family: Inter;
+    display: flex;
+    position: fixed;
+    top: 60%;
+    left: 9%;
+    transform: translate(34%, -75%);
+    text-align: center;
+    font-size: small;
+
+}
+.dash-button{
+    border-radius: 8px;
+    background: #21db9a;
+    width: 120px;
+    height: 38px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 89%;
+    left: 60%;
+    transform: translate(34%, -75%);
+    color: #FFF;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.34px;
+    border: none;
+}

@@ -2,7 +2,7 @@
 
 
 .ant-input-number .ant-input-number-input,
-.ant-input-number-affix-wrapper input.ant-input-number-input{
+.ant-input-number-affix-wrapper input.ant-input-number-input {
     color: #21DB9A;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
@@ -12,13 +12,13 @@
     padding-left: 10px;
 }
 
-.ant-input-number-affix-wrapper input.ant-input-number-input{
+.ant-input-number-affix-wrapper input.ant-input-number-input {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
 .ant-input-number,
-.ant-input-number-affix-wrapper{
+.ant-input-number-affix-wrapper {
     padding-inline-start: 0;
     width: 100%;
 }
@@ -40,53 +40,57 @@
 }
 
 .ant-input-number-outlined:focus-within {
-    border:hidden;
+    border: hidden;
     outline: none;
     background-color: #282828;
 }
 
 .ant-input-number .ant-input-number-handler-wrap {
-    background-color: transparent ;
+    background-color: transparent;
     width: 20px;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     margin-right: 8px;
     align-items: center;
-    
+
 }
 
 .ant-input-number .ant-input-number-handler {
     border-inline-start: hidden;
 }
 
-.ant-input-number 
-.ant-input-number-handler-wrap 
-.ant-input-number-handler 
-.ant-input-number-handler-up-inner, 
-.ant-input-number 
-.ant-input-number-handler-wrap 
-.ant-input-number-handler 
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
+.ant-input-number-handler-up-inner,
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
 .ant-input-number-handler-down-inner {
     color: #21db9a;
     font-weight: bolder;
     font-size: 12px;
 }
 
-.ant-input-number 
-.ant-input-number-handler-wrap 
-.ant-input-number-handler{
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler {
     height: 50%;
     align-items: normal;
 }
 
-.ant-input-number 
-.ant-input-number-handler-wrap 
-.ant-input-number-handler 
-.ant-input-number-handler-down-inner{
+.ant-input-number
+.ant-input-number-handler-wrap
+.ant-input-number-handler
+.ant-input-number-handler-down-inner {
     border-block-start: 1px solid #282828;
     width: 20px;
-    justify-content: center; 
+    justify-content: center;
 }
 
+:where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper {
+    margin-top: 0.7rem;
+    font-weight: bold;
+}
 
 

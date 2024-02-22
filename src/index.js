@@ -5,6 +5,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
 import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
+import CoinPage from './Pages/Watchlist/CoinPage';
+import AdDashboard from './Pages/Watchlist/AdDashboard';
+import ViewAll from './Pages/Watchlist/ViewAll';
+import Users from './Pages/Watchlist/Users';
+import Admin from './Pages/Watchlist/Admin';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
@@ -18,12 +23,13 @@ import Favourite from './Pages/News/Favourite';
 import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import AskQuestion from './Pages/Forum/AskQuestion';
-import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
 import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
 import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
 import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
 import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
+import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
+import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
 
@@ -45,6 +51,26 @@ const router = createBrowserRouter([
   {
     path: "/watchlist/customize",
     element:<CustomizeWatchlist/>
+  },
+  {
+    path: "/watchlist/CoinPage",
+    element:<CoinPage/>
+  },
+  {
+    path: "/watchlist/AdDashboard",
+    element:<AdDashboard/>
+  },
+  {
+    path: "/watchlist/ViewAll",
+    element:<ViewAll/>
+  },
+  {
+    path: "/watchlist/Users",
+    element:<Users/>
+  },
+  {
+    path: "/watchlist/Admin",
+    element:<Admin/>
   },
   {
     path: "/portfolio",
@@ -107,8 +133,8 @@ const router = createBrowserRouter([
     element: <LoginPage1/>,
   },
   {
-    path: "/wallet/login/changepassword",
-    element: <ChangePassword/>,
+    path: "/wallet/login/HaveAccount",
+    element: <HaveAccount/>,
   },
   {
     path: "/wallet/login/setpassword",
@@ -135,6 +161,10 @@ const router = createBrowserRouter([
   {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
+  },
+  {
+    path: "/wallet/login/changepassword",
+    element: <ChangePassword/>,
   },
 
 

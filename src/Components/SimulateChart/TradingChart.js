@@ -1,10 +1,10 @@
-import {createChart, ColorType} from 'lightweight-charts';
+import {ColorType, createChart} from 'lightweight-charts';
 import React, {useEffect, useState} from 'react';
-import io from "socket.io-client";
 import './TradingChart.css';
+import axios from "axios";
 
 export const ChartComponent = props => {
-    const [ activeDuration, setActiveDuration ] = useState('daily');
+    const [activeDuration, setActiveDuration] = useState('daily');
     const {
         data,
         colors: {
@@ -21,10 +21,7 @@ export const ChartComponent = props => {
     //Process the data according to the graph
     const processData = async (newData) => {
         try {
-            const response = newData;
-            console.log(response);
-
-            const transformedData = response.map((item) => ({
+            const transformedData = newData.map((item) => ({
                 open: parseFloat(item[1]),
                 high: parseFloat(item[2]),
                 low: parseFloat(item[3]),
@@ -40,7 +37,7 @@ export const ChartComponent = props => {
         }
     }
 
-    useEffect(
+    /*useEffect(
         () => {
             const chartContainerRef = document.getElementById('tchart');
 
@@ -107,7 +104,82 @@ export const ChartComponent = props => {
             };
         },
         []
-    );
+    );*/
+
+    const fetchData = async () => {
+        try {
+            const res = await axios.get(
+                'https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1m&limit=1000'
+            );
+            return processData(res.data);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(async () => {
+        const chartContainerRef = document.getElementById('tchart');
+        const handleResize = () => {
+            chart.applyOptions({width: chartContainerRef.clientWidth, height: chartContainerRef.clientHeight});
+        };
+
+        const chart = createChart(chartContainerRef, {
+            layout: {
+                background: {type: ColorType.Solid, color: backgroundColor},
+                textColor,
+            },
+            width: chartContainerRef.clientWidth,
+            height: chartContainerRef.clientHeight,
+            grid: {
+                vertLines: {
+                    visible: false,
+                },
+                horzLines: {
+                    color: "#3C3C3C",
+                },
+            },
+            rightPriceScale: {
+                borderVisible: false,
+                textColor: "#AAA",
+            },
+            localization: {
+                priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+            },
+            timeScale: {
+                fixLeftEdge: true,
+                borderVisible: false,
+            }
+        });
+
+        chart.timeScale().fitContent();
+
+        const newSeries = chart.addCandlestickSeries({
+            upColor,
+            downColor,
+            borderVisible: false,
+            wickUpColor,
+            wickDownColor
+        });
+
+        newSeries.setData(await fetchData());
+
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            // Make sure to remove the series before destroying the chart
+            chart.removeSeries(newSeries);
+            // Dispose of the chart
+            chart.remove();
+        };
+    }, []);
+
 
     function updateChartData(daily) {
 
@@ -116,39 +188,39 @@ export const ChartComponent = props => {
     return (
 
         <div id='chartDiv'>
-                <div className='buttonDiv'>
-                    <button
-                        onClick={() => updateChartData('daily')}
-                        className={`durationButton ${activeDuration === 'daily' ? "active" : ""}`}>
-                        1m
-                    </button>
+            <div className='buttonDiv'>
+                <button
+                    onClick={() => updateChartData('daily')}
+                    className={`durationButton ${activeDuration === 'daily' ? "active" : ""}`}>
+                    1m
+                </button>
 
-                    <button
-                        onClick={() => updateChartData('weekly')}
-                        className={`durationButton ${activeDuration === 'weekly' ? "active" : ""}`}>
-                        15m
-                    </button>
+                <button
+                    onClick={() => updateChartData('weekly')}
+                    className={`durationButton ${activeDuration === 'weekly' ? "active" : ""}`}>
+                    15m
+                </button>
 
-                    <button
-                        onClick={() => updateChartData('monthly')}
-                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                        1H
-                    </button>
-                    <button
-                        onClick={() => updateChartData('monthly')}
-                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                        1D
-                    </button>
-                    <button
-                        onClick={() => updateChartData('monthly')}
-                        className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                        1W
-                    </button>
+                <button
+                    onClick={() => updateChartData('monthly')}
+                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                    1H
+                </button>
+                <button
+                    onClick={() => updateChartData('monthly')}
+                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                    1D
+                </button>
+                <button
+                    onClick={() => updateChartData('monthly')}
+                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
+                    1W
+                </button>
 
-                </div>
+            </div>
 
 
-            <div id='tchart' />
+            <div id='tchart'/>
         </div>
     );
 };
