@@ -39,9 +39,9 @@ export function TableRow(props) {
                   }
 
                   return (
-                      <td key={index} className={`${props.classes && props.classes[index]}`}>
-                          {cell}
-                      </td>
+                    <td key={index} className={`table-cell ${(index === 0) ? 'first-column' : ''} ${props.classes && props.classes[index]}`}>
+                        {cell}
+                    </td>
                   );
               })}
       </tr>
