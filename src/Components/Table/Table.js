@@ -6,12 +6,14 @@ export default function Table(props) {
     <div className='table-container' style={props.style}>
         <table className='main-table' id={props.id}>
             <thead className='table-head'>
-                {props.children[0]}
+                { props.children[0] }
             </thead>
             <tbody className={`table-body ${(props.hover) ? 'hoverble' : ''}`}>
-                {props.children.slice(1)}
+                { props.children.slice(1) }
             </tbody>
         </table>
+
+        { props.children[1].length === 0 && <p className='empty-message'>{ props.emptyMessage }</p> }
     </div>
   )
 }
