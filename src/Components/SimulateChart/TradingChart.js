@@ -5,8 +5,9 @@ import axios from "axios";
 
 export const ChartComponent = props => {
     const [activeDuration, setActiveDuration] = useState('daily');
+    const [chart, setChart] = useState(null);
     const {
-        data,
+        selectedCoin,
         colors: {
             backgroundColor = '#0E0E0F',
             textColor = '#0E0E0F',
@@ -16,6 +17,7 @@ export const ChartComponent = props => {
             wickDownColor = "#ff0000",
         } = {},
     } = props;
+    console.log(selectedCoin);
 
 
     //Process the data according to the graph
@@ -37,79 +39,10 @@ export const ChartComponent = props => {
         }
     }
 
-    /*useEffect(
-        () => {
-            const chartContainerRef = document.getElementById('tchart');
-
-            const socket = io("http://localhost:8000");
-            const handleResize = () => {
-                chart.applyOptions({width: chartContainerRef.clientWidth,height:chartContainerRef.clientHeight});
-            };
-
-            const chart = createChart(chartContainerRef, {
-                layout: {
-                    background: {type: ColorType.Solid, color: backgroundColor},
-                    textColor,
-                },
-                width: chartContainerRef.clientWidth,
-                height: chartContainerRef.clientHeight,
-                grid: {
-                    vertLines: {
-                        visible: false,
-                    },
-                    horzLines: {
-                        color: "#3C3C3C",
-                    },
-                },
-                rightPriceScale:{
-                    borderVisible:false,
-                    textColor:"#AAA",
-                },
-                localization:{
-                  priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
-                },
-                timeScale:{
-                    fixLeftEdge:true,
-                    borderVisible:false,
-                }
-
-            });
-            chart.timeScale().fitContent();
-
-            const newSeries = chart.addCandlestickSeries({
-                upColor,
-                downColor,
-                borderVisible: false,
-                wickUpColor,
-                wickDownColor
-            });
-
-            // Listen for "update" events from the socket
-            socket.on("update", async (updatedData) => {
-                if (!chart) {
-                    return;
-                }
-                newSeries.setData(await processData(updatedData));
-            });
-
-
-            window.addEventListener('resize', handleResize);
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-
-                if (chart) {
-                    chart.remove();
-                }
-            };
-        },
-        []
-    );*/
-
     const fetchData = async () => {
         try {
             const res = await axios.get(
-                'https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1m&limit=1000'
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? "BTC" : selectedCoin.symbol.toUpperCase()}USDT&interval=1m&limit=1000`
             );
             return processData(res.data);
 
@@ -118,17 +51,10 @@ export const ChartComponent = props => {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(async () => {
+    const renderChart = () => {
         const chartContainerRef = document.getElementById('tchart');
-        const handleResize = () => {
-            chart.applyOptions({width: chartContainerRef.clientWidth, height: chartContainerRef.clientHeight});
-        };
 
-        const chart = createChart(chartContainerRef, {
+        return createChart(chartContainerRef, {
             layout: {
                 background: {type: ColorType.Solid, color: backgroundColor},
                 textColor,
@@ -155,30 +81,49 @@ export const ChartComponent = props => {
                 borderVisible: false,
             }
         });
+    }
 
-        chart.timeScale().fitContent();
+    const fetchDataAndRenderChart = async () => {
+        const chartContainerRef = document.getElementById('tchart');
+        if (chart) {
+            // If a chart already exists, remove it before creating a new one
+            chart.remove();
+        }
 
-        const newSeries = chart.addCandlestickSeries({
+        const newChart = renderChart();
+        setChart(newChart);
+        newChart.timeScale().fitContent();
+        const handleResize = () => {
+            newChart.applyOptions({
+                width: chartContainerRef.clientWidth,
+                height: chartContainerRef.clientHeight,
+            });
+        };
+
+        const newSeries = newChart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
             wickUpColor,
-            wickDownColor
+            wickDownColor,
         });
 
         newSeries.setData(await fetchData());
-
 
         window.addEventListener('resize', handleResize);
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            // Make sure to remove the series before destroying the chart
-            chart.removeSeries(newSeries);
-            // Dispose of the chart
-            chart.remove();
+            newChart.removeSeries(newSeries);
+            newChart.remove();
         };
-    }, []);
+    };
+
+
+
+    useEffect(() => {
+        fetchDataAndRenderChart();
+    }, [selectedCoin]);
 
 
     function updateChartData(daily) {
