@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
 import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
 import CoinPage from './Pages/Watchlist/CoinPage';
+import AdDashboard from './Pages/Watchlist/AdDashboard';
+import ViewAll from './Pages/Watchlist/ViewAll';
+import Users from './Pages/Watchlist/Users';
+import Admin from './Pages/Watchlist/Admin';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
@@ -48,6 +52,22 @@ const router = createBrowserRouter([
   {
     path: "/watchlist/CoinPage",
     element:<CoinPage/>
+  },
+  {
+    path: "/watchlist/AdDashboard",
+    element:<AdDashboard/>
+  },
+  {
+    path: "/watchlist/ViewAll",
+    element:<ViewAll/>
+  },
+  {
+    path: "/watchlist/Users",
+    element:<Users/>
+  },
+  {
+    path: "/watchlist/Admin",
+    element:<Admin/>
   },
   {
     path: "/portfolio",
