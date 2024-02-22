@@ -19,22 +19,30 @@ export default function Table(props) {
 }
 
 export function TableRow(props) {
+  const handleRowClick = () => {
+      if (props.onClick) {
+          props.onClick();
+      }
+  };
+
   return (
-    <tr className='table-row'>
-        {(props.data) && props.data.map((cell, index) => {
+      <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={handleRowClick}>
+          {props.data &&
+              props.data.map((cell, index) => {
+                  if (Array.isArray(cell) && cell.length === 1) {
+                      cell = (
+                          <div className='table-coin-container'>
+                              <img className='coin-icon' src={require('../../Assets/Images/Coin Images.json')[cell[0]]} alt={cell[0]} />
+                              {cell[0]}
+                          </div>
+                      );
+                  }
             
-            if (Array.isArray(cell) && cell.length === 1) {
-              cell = 
-                <div className='table-coin-container'> 
-                  <img 
-                      className='coin-icon' 
-                      src={require('../../Assets/Images/Coin Images.json')[cell[0]]} 
-                      alt={cell[0]} /> 
-                  {cell[0]} 
-                </div>;
-            }
-            
-            return <td key={index} className={`${props.classes && props.classes[index]}`}>{cell}</td>
+            return (
+              <td key={index} className={`${props.classes && props.classes[index]}`}>
+                  { cell }
+              </td>
+            );
         })}
     </tr> 
   )
