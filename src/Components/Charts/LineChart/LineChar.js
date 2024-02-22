@@ -30,6 +30,10 @@ export default function LineChart(props) {
 			width: chartDiv.clientWidth,
 			height: chartDiv.clientHeight,
 
+			handleScale: {
+				mouseWheel: isFullScreen,	
+			},
+
 			crosshair: {
 				vertLine: {
 					labelBackgroundColor: '#3c3c3c',
