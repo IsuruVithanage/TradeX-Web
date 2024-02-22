@@ -1,0 +1,42 @@
+.info {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 1337px;
+    height: 686px;
+    margin-top: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+    border-radius: 20px;
+    font-size: 25px;
+    padding-left: 30px;
+    padding-top: 20px;
+    margin-bottom: 50px;
+}
+
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.info-table th {
+    color: #9E9E9E;
+    font-size: 18px;
+    border-bottom: 1px solid #3C3C3C;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.info-table td {
+    color: #ffffff;
+    font-size: 17px;
+    padding: 15px;
+    text-align: center;
+}
+
+.info-table th:first-child,
+.info-table td:first-child {
+  text-align: left; 
+}
