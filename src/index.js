@@ -24,6 +24,8 @@ import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/
 import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
 import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
+import MyProblems from './Pages/Forum/MyProblems';
+import Dailysummary from './Pages/Summary/Dailysummary';
 
 
 
@@ -66,7 +68,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/summary",
-    element: <BasicPage/>,
+    element: <Dailysummary/>,
   },
   {
     path: "/settings",
@@ -123,6 +125,11 @@ const router = createBrowserRouter([
   {
     path: "/wallet/dashboard",
     element: <DashBoard/>,
+  },
+  {
+
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
   },
  
   {
