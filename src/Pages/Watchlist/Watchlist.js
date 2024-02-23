@@ -3,7 +3,6 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import "./Watchlist.css";
-import { display } from "@mui/system";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);

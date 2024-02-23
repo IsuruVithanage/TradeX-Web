@@ -38,5 +38,5 @@
 
 .info-table th:first-child,
 .info-table td:first-child {
-  text-align: left; 
+    text-align: left;
 }
