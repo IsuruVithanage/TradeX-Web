@@ -22,7 +22,7 @@ export default function Users() {
     >
       <div>
         <div className="info">
-          <table className="info-table">
+          <table className="user-table">
             <thead>
               <tr>
                 <th>Name</th>

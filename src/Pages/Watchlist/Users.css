@@ -1,7 +1,7 @@
 .user-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .user-table th {
@@ -18,4 +18,8 @@
     font-size: 17px;
     padding: 15px;
     text-align: center;
+}
+.user-table th:first-child,
+.user-table td:first-child {
+    text-align: left;
 }

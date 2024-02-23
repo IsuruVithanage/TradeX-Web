@@ -1,5 +1,6 @@
 import React from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
+import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";
 
@@ -22,7 +23,8 @@ export default function Admin() {
     >
       <div>
         <div className="info">
-          <table className="info-table">
+          <div><Input type="button" value="Create Account" style={{width:"150px", marginLeft:"85%"}}/></div>
+          <table className="Admin-table">
             <thead>
               <tr>
                 <th>Name</th>
