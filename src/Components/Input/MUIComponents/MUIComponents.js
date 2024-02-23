@@ -78,11 +78,11 @@ const StyledFAB = styled(Fab)(() => {
         position: 'fixed',
         bottom: '50px',
         right: '35px',
-        color: '#ffffff',
-        backgroundColor: '#21db9a',
+        color: '#21DB9A',
+        backgroundColor: '#0c281e',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         '&:hover': {
-            backgroundColor: '#12b37b'
+            backgroundColor: '#0f3e2d'
         }
     }
 });

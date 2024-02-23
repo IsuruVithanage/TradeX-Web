@@ -7,9 +7,6 @@ import axios from 'axios';
 import './Alert.css';
 
  export default function Alert() {
-    const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
-    const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
-
     const [selectedPage, setSelectedPage] = useState("Running");
     const [selectedCoin, setSelectedCoin] = useState(undefined);
     const [selectedPrice, setSelectedPrice] = useState(null);
@@ -18,8 +15,11 @@ import './Alert.css';
     
     const [currentAlertId, setCurrentAlertId] = useState(null);
     const [action, setAction] = useState(undefined);
-    const [isInvalid, setIsInvalid] = useState([false, null]);
+    const [isInvalid, setIsInvalid] = useState([true, null]);
     const [alerts, setAlerts] = useState([]);
+
+    const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const backendApiEndpoint = "http://localhost:8081/alert/";
     const userId = 1;
     
@@ -44,17 +44,20 @@ import './Alert.css';
             });
     }, [selectedPage]);
 
+
+
     useEffect(() => {
         let invalidMessage = null;
         let alertCount = 0;
 
-        for (const alert of alerts) {
-            alertCount += 1;
-            if (selectedCoin && selectedCondition && selectedPrice) {
-                setIsInvalid([false, null]);
+        if (selectedCoin && selectedCondition && selectedPrice) {
+            setIsInvalid([false, null]);
 
+            for (const alert of alerts) {
+                alertCount += 1;
+    
                 if 
-                (
+                (   
                     alert.coin === selectedCoin && 
                     alert.condition === selectedCondition && 
                     alert.price === selectedPrice
@@ -66,24 +69,24 @@ import './Alert.css';
                         invalidMessage = "No Changes Made"; ;
                     }
                     break;
-                   
                 }
-            }else{
-                setIsInvalid([true, "Please fill all the fields"]);
-                invalidMessage = "Please fill all the fields"
-
             }
-        };
+        }
+        
+        else{
+            setIsInvalid([true, "Please fill all the fields"]);
+            invalidMessage = "Please fill all the fields"
+        }
 
         if ( invalidMessage ){
             setIsInvalid([true, invalidMessage]);
         }
-       
+
     }, [selectedCoin, selectedCondition, selectedPrice, selectedEmail, currentAlertId, alerts]);
 
 
-    const openAlertSetterModel = (editAlertNo) => {
 
+    const openAlertSetterModel = (editAlertNo) => {
         if (Number.isInteger(editAlertNo)) {
             const selectedAlert = alerts.filter(alert => alert.alertId === editAlertNo)[0];
             setAction("Edit");
@@ -105,6 +108,8 @@ import './Alert.css';
 
         setIsSetterModalOpen(true); 
     }
+
+
 
     const editAlert = () => {
         axios
@@ -136,6 +141,8 @@ import './Alert.css';
         setIsSetterModalOpen(false);
     }
 
+
+
     const addAlert = () => {
         axios
             .post( 
@@ -161,6 +168,8 @@ import './Alert.css';
         setIsSetterModalOpen(false);
     }
 
+
+
     const restoreAlert = (alertId) => {
         axios
             .put(
@@ -184,8 +193,9 @@ import './Alert.css';
             .catch(error => {
                 console.log('Alert Restore fail:\n', error);
             });
-            
     }
+
+
 
     const deleteAlert = () => {
         axios
@@ -208,8 +218,10 @@ import './Alert.css';
                 console.log('Alert Delete fail:\n', error);
             });
 
-        setIsdeleteModalOpen(false);
+        setIsDeleteModalOpen(false);
     }
+
+
 
     const options = [
       { value: 'BTC', label: 'BTC' },
@@ -220,78 +232,89 @@ import './Alert.css';
       { value: 'XRP', label: 'XRP' },
     ];
 
+
+
+
     return (
+    <>
         <BasicPage
             subPages={{
                 onClick: setSelectedPage,
                 labels: ["Running", "Notified"],
             }}>     
 
-                { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
+
+            { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
+
+
+            <Table emptyMessage="No alerts to show">
+                <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
+
+                { alerts.map((alert, index) => {
+                    return (
+                        <TableRow 
+                            key={index} 
+                            data={[
+                                [alert.coin], 
+                                alert.price, 
+                                alert.condition, 
+                                (alert.emailActiveStatus) ? "On" : "Off", 
+                                <div className="alert-table-action-button-container">
+                                    { selectedPage === "Running" ?
+                                    <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => openAlertSetterModel(alert.alertId)} outlined/>  :
+                                    <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => restoreAlert(alert.alertId)} outlined/>
+                                    }
+                                    <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setIsDeleteModalOpen(true); setCurrentAlertId(alert.alertId)}} outlined red/>
+                                </div>
+                            ]}
+                        />
+                    )
+                })}
+            </Table>
                 
-                <Table emptyMessage="No alerts to show">
-                    <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
-
-                    { alerts.map((alert, index) => {
-                        return (
-                            <TableRow 
-                                key={index} 
-                                data={[
-                                    [alert.coin], 
-                                    alert.price, 
-                                    alert.condition, 
-                                    (alert.emailActiveStatus) ? "On" : "Off", 
-                                    <div className="alert-table-action-button-container">
-                                        { selectedPage === "Running" ?
-                                        <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => openAlertSetterModel(alert.alertId)} outlined/>  :
-                                        <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => restoreAlert(alert.alertId)} outlined/>
-                                        }
-                                        <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setIsdeleteModalOpen(true); setCurrentAlertId(alert.alertId)}} outlined red/>
-                                    </div>
-                                ]}
-                            />
-                        )
-                    })}
-                </Table>
-
-                
-                <Modal open={isSetterModalOpen} close={setIsSetterModalOpen}>
-                    <div style={{width:"450px", webkitUserSelect: "none", userSelect: "none"}}>
-                        <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
-                            <h1 style={{textAlign:"center"}}>{`${ action } Alert`}</h1>
-                            <Input type="dropdown" label='Coin' options={options} defaultValue={selectedCoin} onChange={setSelectedCoin}/>
-                            <Input type="dropdown" label='Condition' defaultValue={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
-                                { value: 'Equals', label: 'Equals' },
-                                { value: 'Above', label: 'Above' },
-                                { value: 'Below', label: 'Below' },
-                            ]}/>
-                            <Input type="number" label='Price' id="edit-alert-price" value={selectedPrice} onChange={setSelectedPrice}/>
-
-                            <Input type="toggle" id='edit-alert-email' toggleLabel="Email Notification"  checked={selectedEmail} onChange={setSelectedEmail}/>
-                            
-                            <div className="edit-alert-modal-button-container">
-                                <Input type="button" style={{width:"110px"}} disabled={isInvalid[0]} onClick={ action === 'Edit' ? editAlert : addAlert} value={ action }/>
-                                <Input type="button" style={{width:"110px"}} onClick={() => setIsSetterModalOpen(false)} value="Cancel" red/>
-                            </div>  
-
-                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>        
-                        </div>
-                    </div>
-                </Modal>
-
-
-                <Modal open={isdeleteModalOpen} close={setIsdeleteModalOpen}>
-                    <div style={{width:"450px"}}>
-                        <div style={{width:"300px", margin:"auto", marginBottom:"50px"}}>
-                            <h1 style={{textAlign:"center"}}>Confirm Alert Delete</h1>
-                            <div className="edit-alert-modal-button-container">
-                                <Input type="button" style={{width:"110px"}} onClick={ deleteAlert } value="Delete" red/>
-                                <Input type="button" style={{width:"110px"}} onClick={() => setIsdeleteModalOpen(false)} value="Cancel"/>
-                            </div> 
-                        </div>
-                    </div>
-                </Modal>
-            
         </BasicPage>
-    )
+    
+
+
+
+                
+        <Modal open={isSetterModalOpen} close={setIsSetterModalOpen}>
+            <div style={{width:"450px", WebkitUserSelect: "none", userSelect: "none"}}>
+                <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
+                    <h1 style={{textAlign:"center"}}>{`${ action } Alert`}</h1>
+                    <Input type="dropdown" label='Coin' options={options} defaultValue={selectedCoin} onChange={setSelectedCoin}/>
+                    <Input type="dropdown" label='Condition' defaultValue={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
+                        { value: 'Equals', label: 'Equals' },
+                        { value: 'Above', label: 'Above' },
+                        { value: 'Below', label: 'Below' },
+                    ]}/>
+                    <Input type="number" label='Price' id="edit-alert-price" value={selectedPrice} onChange={setSelectedPrice}/>
+
+                    <Input type="toggle" id='edit-alert-email' toggleLabel="Email Notification"  checked={selectedEmail} onChange={setSelectedEmail}/>
+                    
+                    <div className="edit-alert-modal-button-container">
+                        <Input type="button" style={{width:"110px"}} disabled={isInvalid[0]} onClick={ action === 'Edit' ? editAlert : addAlert} value={ action }/>
+                        <Input type="button" style={{width:"110px"}} onClick={() => setIsSetterModalOpen(false)} value="Cancel" red/>
+                    </div>  
+
+                    <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>        
+                </div>
+            </div>
+        </Modal>
+
+
+
+        <Modal open={isDeleteModalOpen} close={setIsDeleteModalOpen}>
+            <div style={{width:"450px"}}>
+                <div style={{width:"300px", margin:"auto", marginBottom:"50px"}}>
+                    <h1 style={{textAlign:"center"}}>Confirm Alert Delete</h1>
+                    <div className="edit-alert-modal-button-container">
+                        <Input type="button" style={{width:"110px"}} onClick={ deleteAlert } value="Delete" red/>
+                        <Input type="button" style={{width:"110px"}} onClick={() => setIsDeleteModalOpen(false)} value="Cancel"/>
+                    </div> 
+                </div>
+            </div>
+        </Modal>
+
+    </> )
 }
