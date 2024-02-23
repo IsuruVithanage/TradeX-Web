@@ -16,9 +16,9 @@ export default function App() {
       </div>
 
       <div style={{marginLeft: "6%", marginTop: "6%"}}>
-        <span style={{fontSize:"73px", color:"#ffffff", fontWeight:"800"}}>CRYPTO</span><span style={{fontSize:"73px", color:"#21DB9A", fontWeight:"800"}}>CURRENCY</span>
-        <p style={{fontSize:"40px", color:"#21DB9A", fontWeight:"700"}}>SIMULATION  PLATFORM</p>
-        <p style={{fontSize:"20px", color:"#ffffff", width:"838px"}}>
+        <span style={{fontSize:"70px", color:"#ffffff", fontWeight:"800"}}>CRYPTO</span><span style={{fontSize:"70px", color:"#21DB9A", fontWeight:"800"}}>CURRENCY</span>
+        <p style={{fontSize:"35px", color:"#21DB9A", fontWeight:"700"}}>SIMULATION  PLATFORM</p>
+        <p style={{fontSize:"18px", color:"#ffffff", width:"838px"}}>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s         
         </p>
 

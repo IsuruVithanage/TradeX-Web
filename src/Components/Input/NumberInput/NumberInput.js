@@ -29,7 +29,7 @@ export default function NumberInput(props) {
             defaultValue={props.value}
             placeholder={props.placeholder}
             onBlur={props.onBlur}
-            onChange={props.onChange}
+            onChange={props.onChange && props.onChange}
             onInput={handleStep} 
         />
 

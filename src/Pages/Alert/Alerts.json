@@ -1,8 +1,0 @@
-[
-    { "id": 1, "Coin": "BTC", "Price": 10000, "Condition": "Above", "Email": true, "Running": true },
-    { "id": 2, "Coin": "ETH", "Price": 10000, "Condition": "Below", "Email": false, "Running": false },
-    { "id": 3, "Coin": "BTC", "Price": 10000, "Condition": "Equals", "Email": true, "Running": false },
-    { "id": 4, "Coin": "ETH", "Price": 10000, "Condition": "Above", "Email": false, "Running": true },
-    { "id": 5, "Coin": "BTC", "Price": 10000, "Condition": "Below", "Email": true, "Running": true },
-    { "id": 6, "Coin": "ETH", "Price": 10000, "Condition": "Equals", "Email": false, "Running": true }
-]
