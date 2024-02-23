@@ -23,3 +23,22 @@
 .Admin-table td:first-child {
     text-align: left;
 }
+
+.create-admin-btn{
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin: auto;
+    margin-top: 50px;
+}
+.Admin-details{
+    margin-bottom: 15px;
+    color: white;
+    border-bottom: 2px solid #21DB9A;
+    margin-left: -20px;
+    width: 350px;
+
+}
+.Admin-details::placeholder {
+    color: #21DB9A;
+  }
