@@ -1,27 +1,58 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRow } from '../../Components/Table/Table';
+import axios from 'axios';
 
 export default function Portfolio() {
+  const [ assets, setAssets ] = useState([]);
+  const [ usdBalance, setUsdBalance ] = useState(0);
+  const [ portfolioValue, setPortfolioValue ] = useState(0);
   const initialData = require('./portfolio-data.json');
-  const assets = require('./assets.json');
-  const usdBalance = assets.USD.spotBalance + assets.USD.fundingBalance;
-  let portfolioValue = 0;
+  const backendApiEndpoint = 'http://localhost:8081/portfolio/asset/';
+  const userId = 1;
+  
 
-  Object.values(assets).forEach(asset => {
-    asset.TotalBalance = asset.spotBalance + asset.fundingBalance;
-    asset.value = asset.TotalBalance * asset.marketPrice;
-    portfolioValue += asset.value;
-  });
+  useEffect(() => {
+    axios
+        .get(
+            backendApiEndpoint,
+            {
+                params: {
+                    userId: userId
+                }
+            }
+        )
+
+        .then(res => {
+            setAssets(res.data.assets);
+            setPortfolioValue(res.data.portfolioValue.totalPortfolioValue);
+            setUsdBalance( 
+              Object.values(res.data.usdBalance)
+              .reduce((accumulator, value) => accumulator + value, 0)
+            );
+        })
+
+        .catch(err => {
+            console.log(err);
+        });
+  }, []);
+
  
-  const bars = Object.keys(assets).map(assetKey => ({
-    coinName: assetKey,
-    percentage: ((assets[assetKey].value / portfolioValue) * 100),
-  }));
+  const bars = assets.map(asset => ({
+      coinName: asset.symbol,
+      percentage: (asset.value / portfolioValue) * 100
+
+  })).concat( portfolioValue !== 0 ? { 
+      coinName: 'USD', 
+      percentage: (usdBalance / portfolioValue) * 100 
+      
+  } : [] );
+
+
 
   return (
     <BasicPage 
@@ -39,10 +70,10 @@ export default function Portfolio() {
                 <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
           
-        <Table style={{marginTop:'1vh'}}>
+        <Table style={{marginTop:'1vh'}} emptyMessage="No Assets to show">
             <TableRow data={[
                 'Coin', 
-                'Spot Balance', 
+                'Trading Balance', 
                 'Funding Balance', 
                 'Total Balance', 
                 'market Price',
@@ -50,16 +81,16 @@ export default function Portfolio() {
             ]}/>
 
              
-            { assets && Object.keys(assets).slice(1).map(coin => (
+            { assets && assets.map(asset => (
                 <TableRow 
-                    key={coin} 
+                    key={asset.symbol} 
                     data={[
-                      [ coin ], 
-                      assets[coin].spotBalance, 
-                      assets[coin].fundingBalance, 
-                      assets[coin].TotalBalance, 
-                      assets[coin].marketPrice, 
-                      assets[coin].value
+                      [ asset.symbol ], 
+                      asset.tradingBalance + asset.holdingBalance, 
+                      asset.fundingBalance, 
+                      asset.totalBalance, 
+                      `$ ${asset.marketPrice.toFixed(2)}`,
+                      `$ ${asset.value.toFixed(2)}`
                     ]} 
                 />
             ))}
