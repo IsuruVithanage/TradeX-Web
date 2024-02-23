@@ -26,9 +26,9 @@
     position: sticky;
     top: 0;
     border-radius: 15px;
-    padding: 35px;
     flex-shrink: 0;
     box-sizing: border-box;
+    padding: 35px;
 }
 
 .side-panel-header{

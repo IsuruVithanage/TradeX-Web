@@ -49,7 +49,8 @@ export default function History() {
 
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
-                line = {false}
+                header="History"
+                line = {true}
                 sidePanel={
                     <div>
                         <Input type="switch" onClick={setSelectedSection} buttons= {["Trading", "Transaction"]}/>

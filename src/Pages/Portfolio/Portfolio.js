@@ -33,7 +33,7 @@ export default function Portfolio() {
         ]}>
       
         <SidePanelWithContainer 
-            header="Portfolio Composition" 
+            header="Composition" 
             sidePanel = {<BarChart bars={bars}/>}>
                 <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
                 <LineChart data={initialData}></LineChart>
