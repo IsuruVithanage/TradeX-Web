@@ -53,11 +53,12 @@
 .top-nav-link{
     text-decoration: none;
     color: #9E9E9E;
-    border-radius: 7px;
-    padding: 5px 9px 5px 9px;
-    margin: 0 10px;
-    font-weight: 500;
-    font-size: 15px;
+    border-radius: 5px;
+    padding: 4px 7px;
+    margin-right: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
     transition: background-color 0.3s ease;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
@@ -67,7 +68,7 @@
 .top-nav-link:active,
 .top-nav-link.active{
     background-color: #21DB9A;
-    color: white;
+    color: #2d633f;
 }
 
 .user-name{

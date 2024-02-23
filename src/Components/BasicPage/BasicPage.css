@@ -1,17 +1,19 @@
 .main-container{
-    background-image: url("../../Assets/Images/coverx.png");
+    background-image: url("../../Assets/Images/coverx.png"); 
     background-color: #151516;
-    background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
-    position: fixed;
+    background-position: center; 
+    background-size: cover;
+    background-attachment: fixed;
     padding: 0.5%;
-    top: 6%;
+    position: fixed;
     left: 6%;
+    top: 6%;
     width: 94%;
     height: 94%;
     overflow-y: auto;
     box-sizing: border-box;
+    z-index: -1;
 }
 
 .main-container.full-width{
