@@ -26,13 +26,14 @@
 }
 
 .ant-modal .ant-modal-close{
-    top: 20px;
+    top: 12px;
     right: 23px;
 }
 
 .ant-modal .ant-modal-close svg{
     color: #21DB9A;
     font-size: 20px;
+    padding: 10px;
 }
 
 .ant-modal .ant-modal-close svg:hover{
