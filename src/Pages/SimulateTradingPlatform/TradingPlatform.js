@@ -61,7 +61,7 @@ export default function TradingPlatform() {
                 }
             >
 
-                <CoinBar onSelectCoin={handleCoinSelection}/>
+                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
                 <TradingChart selectedCoin={selectedCoin}/>
             </SidePanelWithContainer>
 

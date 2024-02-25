@@ -4,7 +4,7 @@ import Modal from "../Modal/Modal";
 import Table, {TableRow} from "../Table/Table";
 import axios from "axios";
 
-const CoinBar = ({ onSelectCoin }) => {
+const CoinBar = ({ onSelectCoin, enableModel }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [coins, setCoins] = useState([]);
     const [coinData, setcoinData] = useState({
@@ -87,33 +87,30 @@ const CoinBar = ({ onSelectCoin }) => {
                 </div>
             </div>
 
-            <Modal open={isSetterModalOpen} close={setIsSetterModalOpen}>
-                <div style={{width: "450px"}}>
-                    <div style={{width: "100%", marginBottom: "50px"}}>
-                        <h1 style={{textAlign: "center"}}>Select Coin</h1>
-                        <Table style={{marginTop: '1vh'}}>
-                            <TableRow data={[
-                                '',
-                                'Coin',
-                                'Price'
-                            ]}/>
+            {enableModel && (
+                <Modal open={isSetterModalOpen} close={() => setIsSetterModalOpen(false)}>
+                    <div style={{ width: '450px' }}>
+                        <div style={{ width: '100%', marginBottom: '50px' }}>
+                            <h1 style={{ textAlign: 'center' }}>Select Coin</h1>
+                            <Table style={{ marginTop: '1vh' }}>
+                                <TableRow data={['', 'Coin', 'Price']} />
 
-                            {coins.map(coin => (
-                                <TableRow
-                                    key={coin.id}
-                                    data={[
-                                        <img className='coin-image' src={coin.image} alt={coin.symbol}/>,
-                                        coin.name,
-                                        formatCurrency(coin.current_price)
-                                    ]}
-                                    onClick={() => handleRowClick(coin)}
-                                />
-                            ))}
-
-                        </Table>
+                                {coins.map((coin) => (
+                                    <TableRow
+                                        key={coin.id}
+                                        data={[
+                                            <img className='coin-image' src={coin.image} alt={coin.symbol} />,
+                                            coin.name,
+                                            formatCurrency(coin.current_price),
+                                        ]}
+                                        onClick={() => handleRowClick(coin)}
+                                    />
+                                ))}
+                            </Table>
+                        </div>
                     </div>
-                </div>
-            </Modal>
+                </Modal>
+            )}
         </div>
     );
 };
