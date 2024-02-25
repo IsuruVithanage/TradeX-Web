@@ -13,16 +13,18 @@ export default function TopNavBar(props) {
 
   const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
 
-  const [activePage, setActivePage] = useState(props.subPages ? props.subPages.labels[0] : undefined);
+  const [activePage, setActivePage] = useState(props.subPages ? props.subPages.selectedPage || props.subPages.pages[0].value : undefined);
+ 
+  
  
   const handleProfileIconClick = () => {
     setProfileMenuVisible(!isProfileMenuVisible);
   };
 
-  const handleSubPagesClick = (label) => {
-    setActivePage(label);
+  const handleSubPagesClick = (page) => {
+    setActivePage(page);
     props.subPages.onClick &&
-    props.subPages.onClick(label);
+    props.subPages.onClick(page);
   }
 
   const active = (path) => {
@@ -51,12 +53,12 @@ export default function TopNavBar(props) {
                 </Link>
               ))}  
 
-              {(props.subPages) && props.subPages.labels.map((label) => (
+              {(props.subPages) && props.subPages.pages.map((page) => (
                   <span 
-                    key={label}
-                    className={`top-nav-link ${(activePage === label) ? "active" : ""}`} 
-                    onClick={ () => handleSubPagesClick(label)}>
-                    {label}
+                    key={page.value}
+                    className={`top-nav-link ${(activePage === page.value) ? "active" : ""}`} 
+                    onClick={ () => handleSubPagesClick(page.value)}>
+                    {page.label}
                   </span>
               ))}  
           </nav>

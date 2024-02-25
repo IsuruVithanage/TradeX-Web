@@ -5,12 +5,16 @@ import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithC
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow } from '../../../Components/Table/Table'
+import Modal from '../../../Components/Modal/Modal'
 import axios from 'axios';
 import './PortfolioWallet.css'
 
 export default function FundingWallet() {
-    const wallet = new URLSearchParams(useLocation().search).keys().next().value;
-    const [selectedWallet, setSelectedWallet] = useState(undefined);
+    const currentWallet = new URLSearchParams(useLocation().search).keys().next().value;
+    const [ wallet, setWallet ] = useState(currentWallet);
+    const [ selectedCoin, setSelectedCoin ] = useState('');
+    const [ selectedQty, setSelectedQty ] = useState(null);
+    const [ selectedWallet, setSelectedWallet ] = useState(undefined);
     const [ assets, setAssets ] = useState([]);
     const [ usdBalance, setUsdBalance ] = useState(0);
     const [ portfolioValue, setPortfolioValue ] = useState(0);
@@ -21,7 +25,9 @@ export default function FundingWallet() {
     useEffect(() => {
         axios
             .get(
-                backendApiEndpoint,
+                wallet === "tradingWallet" ? 
+                backendApiEndpoint + "trading" :
+                backendApiEndpoint + "funding",
                 {
                     params: {
                         userId: userId
@@ -31,37 +37,33 @@ export default function FundingWallet() {
     
             .then(res => {
                 setAssets(res.data.assets);
-                setPortfolioValue( 
-                    wallet === 'tradingWallet' ? 
-                    res.data.portfolioValue.tradingPortfolioValue : 
-                    res.data.portfolioValue.fundingPortfolioValue
-                );
-
-                setUsdBalance( 
-                    wallet === 'tradingWallet' ? 
-                    res.data.usdBalance.tradingBalance + res.data.usdBalance.holdingBalance : 
-                    res.data.usdBalance.fundingBalance
-                );
+                setUsdBalance( res.data.usdBalance );
+                setPortfolioValue( res.data.portfolioValue);
             })
     
-            .catch(err => {
-                console.log(err);
+            .catch(error => {
+                console.log(error);
+                // alert(error.message + "! \nCheck Your Internet Connection");
             });
       }, [wallet]);
+
+
     
-
-
-
-
-
     return (
         <BasicPage
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-                { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
-                { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
-            ]}>
+            ]}
+
+            subPages={{
+                onClick: setWallet,
+                selectedPage: wallet,
+                pages: [
+                    { label:"Trading Wallet", value:"tradingWallet"},
+                    { label:"Funding Wallet", value:"fundingWallet"},
+                ],
+            }}> 
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
@@ -69,9 +71,9 @@ export default function FundingWallet() {
                 sidePanel = {
                     <div>
                         <Input type="dropdown" label='Coin' options={
-                            Object.keys(assets).slice(1).map(assetKey => ({
-                                value: assetKey, 
-                                label: assetKey
+                            assets.filter(asset => asset.symbol !== 'USD').map(asset => ({
+                                value: asset.symbol, 
+                                label: asset.symbol
                             }))
                         } />
 
@@ -81,32 +83,40 @@ export default function FundingWallet() {
 
                         { 
                             wallet === "fundingWallet" &&
-                            <Input type="dropdown" label='To' onChange={setSelectedWallet} 
-                                options={[
-                                        { value: 'tradingWallet', label: 'Trading Wallet' },
-                                        { value: 'externalWallet', label: 'External Wallet' },
-                                    ]}
-                            />
-                        }
-
-
-                        { 
-                            selectedWallet === 'externalWallet' &&
-                            <div className={'wallet-address-input'} >
-                                <Input type="text" label='Wallet Address'/> 
+                            <div className={'hidden-input'} >
+                                <Input type="dropdown" label='To' onChange={setSelectedWallet} 
+                                    options={[
+                                            { value: 'tradingWallet', label: 'Trading Wallet' },
+                                            { value: 'externalWallet', label: 'External Wallet' },
+                                        ]}
+                                />
                             </div> 
                         }
 
 
-                        <div className={`transfer-button ${selectedWallet === 'externalWallet' ? "down" : ""}`}>
-                            <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>                            
+
+                        <div className={`traveling-input ${wallet === "fundingWallet" ? "goDown" : ""}`}>
+                        { 
+                            wallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
+                            <div className={'hidden-input'} >
+                                <Input type="text" label='Wallet Address' style={{width:"calc(100% + 70px)"}}/> 
+                            </div> 
+                        }
+                            <div className={`traveling-input ${wallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
+                                <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>                            
+                            </div>
                         </div>
                     </div>
                 }>
-                    
-                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
 
-                <Table emptyMessage="No Assets to show">
+                    
+                <ValueBar 
+                    portfolioValue={ portfolioValue }
+                    usdBalance={ usdBalance }
+                />
+
+               
+                <Table emptyMessage="No Assets to show" restart={wallet}>
                     <TableRow data={ wallet === "tradingWallet" ? 
                         [
                             'Coin', 
@@ -125,6 +135,7 @@ export default function FundingWallet() {
                         ]
                     }/>
 
+
                     { assets && assets.map(asset => (
                         <TableRow 
                             key={asset.symbol} 
@@ -133,32 +144,22 @@ export default function FundingWallet() {
                                 [ asset.symbol ], 
                                 asset.tradingBalance,
                                 asset.holdingBalance,
-                                `$ ${asset.marketPrice.toFixed(2)}`, 
-                                `$ ${((asset.tradingBalance + asset.holdingBalance) * asset.marketPrice).toFixed(2)}`,
-                                <span 
-                                    style={{
-                                        color: asset.totalBalance > 0 ? "#21DB9A" : 
-                                        asset.totalBalance < 0 ? "#ff0000" : ''
-                                    }}>
-                                    { asset.totalBalance } %
-                                </span>
+                                asset.marketPrice, 
+                                asset.value,
+                                <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 [ asset.symbol ], 
                                 asset.fundingBalance,
-                                `$ ${asset.marketPrice.toFixed(2)}`, 
-                                `$ ${( asset.fundingBalance * asset.marketPrice ).toFixed(2)}`,
-                                <span 
-                                    style={{
-                                        color: asset.totalBalance > 0 ? "#21DB9A" : 
-                                        asset.totalBalance < 0 ? "#ff0000" : ''
-                                    }}>
-                                    { asset.totalBalance } %
-                                </span>
+                                asset.marketPrice, 
+                                asset.value,
+                                <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>
                     ))}
                 </Table> 
+
+
             </SidePanelWithContainer>
         </BasicPage>
     )

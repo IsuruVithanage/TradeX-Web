@@ -36,11 +36,14 @@ import './Alert.css';
                     }
                 }
             )
+            
             .then(res => {
                 setAlerts(res.data);
             })
+
             .catch(error => {
                 console.log("Initial Data retrieving fail:\n", error)
+                alert(error.message + "! \nCheck Your Internet Connection");
             });
     }, [selectedPage]);
 
@@ -240,8 +243,11 @@ import './Alert.css';
         <BasicPage
             subPages={{
                 onClick: setSelectedPage,
-                labels: ["Running", "Notified"],
-            }}>     
+                pages: [
+                    { label:"Running Alerts", value:"Running"},
+                    { label:"Notified Alerts", value:"Notified"},
+                ],
+            }}>    
 
 
             { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }

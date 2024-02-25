@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Table.css'
 
 export default function Table(props) {
-  return (
-    <div className='table-container' style={props.style}>
-        <table className='main-table' id={props.id}>
-            <thead className='table-head'>
-                { props.children[0] }
-            </thead>
-            <tbody className={`table-body ${(props.hover) ? 'hoverble' : ''}`}>
-                { props.children.slice(1) }
-            </tbody>
-        </table>
 
-        { props.children[1].length === 0 && <p className='empty-message'>{ props.emptyMessage }</p> }
-    </div>
-  )
+
+    useEffect(() => {
+        const table = document.querySelector('.table-container');
+        table.classList.add('restart');
+
+        setTimeout(() => {
+            table.classList.remove('restart');
+        }, 300);    
+        
+    }, [props.restart]);
+
+    return (
+        <div className='table-container' style={props.style}>
+            <table className='main-table' id={props.id}>
+                <thead className='table-head'>
+                    { props.children[0] }
+                </thead>
+                <tbody className={`table-body ${(props.hover) ? 'hoverble' : ''}`}>
+                    { props.children.slice(1) }
+                </tbody>
+            </table>
+
+            { props.children[1].length === 0 && <p className='empty-message'>{ props.emptyMessage }</p> }
+        </div>
+    )
 }
 
 export function TableRow(props) {
