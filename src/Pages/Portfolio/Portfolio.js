@@ -12,7 +12,7 @@ export default function Portfolio() {
   const [ usdBalance, setUsdBalance ] = useState(0);
   const [ portfolioValue, setPortfolioValue ] = useState(0);
   const initialData = require('./portfolio-data.json');
-  const backendApiEndpoint = 'http://localhost:8081/portfolio/asset/';
+  const backendApiEndpoint = 'http://localhost:8081/portfolio/asset/overview';
   const userId = 1;
   
 
@@ -28,16 +28,15 @@ export default function Portfolio() {
         )
 
         .then(res => {
+            console.log(res.data)
             setAssets(res.data.assets);
-            setPortfolioValue(res.data.portfolioValue.totalPortfolioValue);
-            setUsdBalance( 
-              Object.values(res.data.usdBalance)
-              .reduce((accumulator, value) => accumulator + value, 0)
-            );
+            setPortfolioValue(res.data.portfolioValue);
+            setUsdBalance(res.data.usdBalance);
         })
 
-        .catch(err => {
-            console.log(err);
+        .catch(error => {
+            console.log(error);
+            alert(error.message + "! \nCheck Your Internet Connection");
         });
   }, []);
 
@@ -86,10 +85,10 @@ export default function Portfolio() {
                     key={asset.symbol} 
                     data={[
                       [ asset.symbol ], 
-                      asset.tradingBalance + asset.holdingBalance, 
+                      asset.tradingBalance, 
                       asset.fundingBalance, 
                       asset.totalBalance, 
-                      `$ ${asset.marketPrice.toFixed(2)}`,
+                      asset.marketPrice,
                       `$ ${asset.value.toFixed(2)}`
                     ]} 
                 />

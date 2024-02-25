@@ -10,6 +10,22 @@
   overflow-x: auto;
 }
 
+.table-container.restart{
+  animation: tableRestart 0.3s cubic-bezier(1, 0.8, 0, 0.2);
+}
+
+@keyframes tableRestart {
+  from {
+      opacity: 0;
+      transform: translateY(-18px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY()
+  }
+}
+
+
 .table-container 
 .main-table {
   width: 100%;

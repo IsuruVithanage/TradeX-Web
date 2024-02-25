@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Table.css'
 
 export default function Table(props) {
+
+
+    useEffect(() => {
+        console.log("restart");
+
+        console.log("restarting");
+        const table = document.querySelector('.table-container');
+        table.classList.add('restart');
+
+        setTimeout(() => {
+            table.classList.remove('restart');
+        }, 300);    
+        
+
+    }, [props.restart]);
+
   return (
     <div className='table-container' style={props.style}>
         <table className='main-table' id={props.id}>
