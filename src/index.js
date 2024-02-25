@@ -32,6 +32,7 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+import Suggestions from "./Pages/Suggestions/Suggestions";
 
 
 
@@ -122,7 +123,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/suggestion",
-    element: <BasicPage/>,
+    element: <Suggestions/>,
   },
   {
     path: "/externalwallet",

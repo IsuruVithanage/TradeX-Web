@@ -19,7 +19,6 @@ export default function TradingPlatform() {
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
-
     const [selectedCoin, setSelectedCoin] = useState(null);
 
     const handleCoinSelection = (coin) => {
@@ -62,8 +61,8 @@ export default function TradingPlatform() {
                 }
             >
 
-                <CoinBar onSelectCoin={handleCoinSelection}/>
-                <TradingChart/>
+                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
+                <TradingChart selectedCoin={selectedCoin}/>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>
