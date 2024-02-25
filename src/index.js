@@ -30,6 +30,12 @@ import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/Rec
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
 import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
+import MyProblems from './Pages/Forum/MyProblems';
+import Dailysummary from './Pages/Summary/Dailysummary';
+
+
+
+
 
 
 
@@ -88,7 +94,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/summary",
-    element: <BasicPage/>,
+    element: <Dailysummary/>,
   },
   {
     path: "/settings",
@@ -145,6 +151,11 @@ const router = createBrowserRouter([
   {
     path: "/wallet/dashboard",
     element: <DashBoard/>,
+  },
+  {
+
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
   },
  
   {

@@ -1,20 +1,20 @@
-.transfer-button{
+.traveling-input {
     transform: translateY(0);
     transition: transform 0.2s ease-in-out;
 }
 
-.transfer-button.down{
-    transform: translateY(80px);
+.traveling-input.goDown{
+    transform: translateY(90px);
     transition: transform 0.2s ease-in-out;
 }
 
-.wallet-address-input {
+.hidden-input{
     position: absolute;
     width: calc(100% - 70px);
-    animation: fadeIn 0.2s ease-in-out;
+    animation: showInput 0.2s ease-in-out;
 }
 
-@keyframes fadeIn {
+@keyframes showInput {
     from {
         transform: translateY(-20px);
         opacity: 0;

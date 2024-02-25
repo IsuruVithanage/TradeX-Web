@@ -25,7 +25,7 @@ import MyProblems from "../Forum/MyProblems"
 export default function Forum() {
   const Tabs = [
     { label: "Latest", path: "/" },
-    { label: "My Problems", path: "/MyProblems" },
+    { label: "My Problems", path: "/forum/MyProblems" },
     { label: "My Answers", path: "/alert" },
     
   ];

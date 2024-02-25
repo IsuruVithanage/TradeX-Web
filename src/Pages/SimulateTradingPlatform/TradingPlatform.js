@@ -29,7 +29,7 @@ export default function TradingPlatform() {
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 line={false}
-                style={{height: '530px', padding: "1rem"}}
+                style={{height: '530px', padding: "22px"}}
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>

@@ -1,6 +1,5 @@
 import React from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
-import axios from "axios";
 import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
@@ -94,65 +93,67 @@ export default function AdDashboard() {
             <Input type="button" value=" View All" />
           </div>
         </div>
-        <div className="issues">Verification Issues
-        <div>
-        <table className="verify-table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Issue</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>NIC is not matching</td>
-      <td>
-      <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>Phone number is not verified</td>
-      <td>
-      <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>Files are blured</td>
-      <td>
-      <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>NIC is not matching</td>
-      <td>
-      <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>NIC is not matching</td>
-      <td>
-      <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-    <tr>
-      <td>Nimal Rathnayaka</td>
-      <td>Files are blured</td>
-      <td>
-        <Input type="button" value="Review" outlined red/>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <div className="issues">
+          Verification Issues
+          <div>
+            <table className="verify-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Issue</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>NIC is not matching</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>Phone number is not verified</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>Files are blured</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>NIC is not matching</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>NIC is not matching</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nimal Rathnayaka</td>
+                  <td>Files are blured</td>
+                  <td>
+                    <Input type="button" value="Review" outlined red />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div className="ViewAll-btn">
             <Input type="button" value=" View All" />
-          </div></div>
+          </div>
+        </div>
       </div>
     </BasicPage>
   );
