@@ -7,12 +7,14 @@
     },
 
     "BTC": {
+      "name": "bitcoin",
       "spotBalance": 100,
       "fundingBalance": 170,
       "marketPrice": 1000
     },
     
     "ETH": {
+      "name": "ethereum",
       "spotBalance": 100,
       "fundingBalance": 150,
       "marketPrice": 1000

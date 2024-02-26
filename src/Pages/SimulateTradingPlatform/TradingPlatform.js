@@ -15,6 +15,7 @@ export default function TradingPlatform() {
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
+        {label: "Quiz", path: "/quiz"},
     ];
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];

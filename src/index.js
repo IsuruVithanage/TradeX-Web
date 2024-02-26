@@ -33,6 +33,7 @@ import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/Ch
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
 import Suggestions from "./Pages/Suggestions/Suggestions";
+import Quiz from "./Pages/Quiz/Quiz";
 
 
 
@@ -166,6 +167,10 @@ const router = createBrowserRouter([
   {
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
+  },
+  {
+    path: "/quiz",
+    element: <Quiz/>,
   },
 
 
