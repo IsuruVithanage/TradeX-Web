@@ -8,3 +8,15 @@
     color: white;
     padding: 1rem 1rem 1rem 1rem ;
 }
+
+.quiz-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.quiz-top p {
+    font-weight: bold;
+    font-size: 1.7rem;
+    padding-left: 0.5rem;
+}
