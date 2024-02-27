@@ -42,8 +42,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log("Initial Data retrieving fail:\n", error)
-                alert(error.message + "! \nCheck Your Internet Connection");
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
     }, [selectedPage]);
 
@@ -138,7 +139,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Edit fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsSetterModalOpen(false);
@@ -165,7 +168,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.error('Alert Adding fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsSetterModalOpen(false);
@@ -194,7 +199,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Restore fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
     }
 
@@ -218,7 +225,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Delete fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsDeleteModalOpen(false);
@@ -253,7 +262,7 @@ import './Alert.css';
             { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
 
 
-            <Table emptyMessage="No alerts to show">
+            <Table emptyMessage="No alerts to show" restart={selectedPage}>
                 <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
 
                 { alerts.map((alert, index) => {

@@ -11,6 +11,7 @@ export default function Portfolio() {
   const [ assets, setAssets ] = useState([]);
   const [ usdBalance, setUsdBalance ] = useState(0);
   const [ portfolioValue, setPortfolioValue ] = useState(0);
+  const [ percentages, setPercentages ] = useState([]);
   const initialData = require('./portfolio-data.json');
   const backendApiEndpoint = 'http://localhost:8081/portfolio/asset/overview';
   const userId = 1;
@@ -28,29 +29,18 @@ export default function Portfolio() {
         )
 
         .then(res => {
-            console.log(res.data)
             setAssets(res.data.assets);
+            setPercentages(res.data.percentages);
             setPortfolioValue(res.data.portfolioValue);
             setUsdBalance(res.data.usdBalance);
         })
 
         .catch(error => {
-            console.log(error);
-            alert(error.message + "! \nCheck Your Internet Connection");
+            error.response ? alert(error.message + "\n" + error.response.data.message) :
+            alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+            console.log("error", error);
         });
   }, []);
-
- 
-  const bars = assets.map(asset => ({
-      coinName: asset.symbol,
-      percentage: (asset.value / portfolioValue) * 100
-
-  })).concat( portfolioValue !== 0 ? { 
-      coinName: 'USD', 
-      percentage: (usdBalance / portfolioValue) * 100 
-      
-  } : [] );
-
 
 
   return (
@@ -63,8 +53,9 @@ export default function Portfolio() {
         ]}>
       
         <SidePanelWithContainer 
+            style={{height:'75vh'}}
             header="Composition" 
-            sidePanel = {<BarChart bars={bars}/>}>
+            sidePanel = { <BarChart bars={ percentages }/> }>
                 <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
                 <LineChart data={initialData}></LineChart>
         </SidePanelWithContainer>
