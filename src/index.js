@@ -34,6 +34,8 @@ import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
 import Suggestions from "./Pages/Suggestions/Suggestions";
 import Quiz from "./Pages/Quiz/Quiz";
+import UserProfileTab from "./Pages/User/UserProfileTab";
+import VerifyUser from "./Pages/User/VerifyUser";
 
 
 
@@ -172,6 +174,15 @@ const router = createBrowserRouter([
     path: "/quiz",
     element: <Quiz/>,
   },
+  {
+    path: "/profile",
+    element: <UserProfileTab/>,
+  },
+  {
+    path: "/verify",
+    element: <VerifyUser/>,
+  },
+
 
 
 ]);

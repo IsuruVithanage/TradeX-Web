@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {BiSolidUser, BiSolidUserRectangle} from "react-icons/bi";
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
@@ -11,6 +11,8 @@ import {LuLogOut} from "react-icons/lu";
 
 export default function TopNavBar(props) {
     const userName = "Kamal Silva";
+
+    const navigate = useNavigate();
 
     const currentLocation = useLocation().pathname + useLocation().search;
 
@@ -78,16 +80,16 @@ export default function TopNavBar(props) {
                     <FaUserLarge size={22} fill='#21DB9A'/>
                     <span className='row-name'>{userName}</span>
                 </div>
-                <div className='profile-raw'>
+                <div className='profile-raw' onClick={() => navigate('/profile')}>
                     <HiOutlineUserCircle size={28}/>
                     <span className='row-name'>Profile</span>
                 </div>
-                <div className='profile-raw'>
+                <div className='profile-raw' onClick={() => navigate('/verify')}>
                     <PiUserFocus size={28} fill='#6D6D6D'/>
                     <span className='row-name'>Verify User</span>
                 </div>
                 <div className='profile-raw'>
-                    <LuLogOut size={28} />
+                    <LuLogOut size={27} />
                     <span className='row-name'>Logout</span>
                 </div>
 
