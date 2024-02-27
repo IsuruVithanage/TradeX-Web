@@ -8,7 +8,6 @@ function MyTimer({ expiryTimestamp }) {
         onExpire: () => console.warn('onExpire called'),
     });
 
-    // Format minutes and seconds with leading zeros
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = seconds.toString().padStart(2, '0');
 
@@ -24,7 +23,7 @@ function MyTimer({ expiryTimestamp }) {
 
 export default function QuizTimer() {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
+    time.setSeconds(time.getSeconds() + 600);
     return (
         <div>
             <MyTimer expiryTimestamp={time} />

@@ -58,10 +58,18 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: auto 0.5rem;
 }
 
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider-horizontal.ant-slider-with-marks {
     margin-bottom: 14px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider {
+     margin: 0;
+}
+
+.slider-container{
+    width: 100%;
+    margin-top: 26px;
 }

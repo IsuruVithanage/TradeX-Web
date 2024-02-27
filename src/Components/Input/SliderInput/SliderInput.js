@@ -10,7 +10,7 @@ const marks = {
 };
 const App = () => (
     <>
-        <div>
+        <div className='slider-container'>
             <Slider marks={marks} defaultValue={20} />
             <div className="percentage-span">
                 <span style={{ color: "#9E9E9E" }}>0%</span>

@@ -76,3 +76,15 @@
     font-weight: bold;
     font-family: 'Inter', sans-serif;
 }
+
+#myTable .col1{
+    background-color: red;
+}
+
+#myTable .col2{
+    background-color: blue;
+}
+
+#myTable .col3{
+    background-color: green;
+}
