@@ -93,7 +93,7 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
                         <div style={{ width: '100%', marginBottom: '50px' }}>
                             <h1 style={{ textAlign: 'center' }}>Select Coin</h1>
                             <Table style={{ marginTop: '1vh' }}>
-                                <TableRow data={['', 'Coin', 'Price']} />
+                                <TableRow data={['', 'Coin', 'Price']}/>
 
                                 {coins.map((coin) => (
                                     <TableRow
