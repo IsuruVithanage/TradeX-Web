@@ -6,9 +6,16 @@ import './LineChart.css';
 export default function LineChart(props) {
 	let handleResize = useRef(null);
 
-	const [ chartData, setChartData ] = useState(props.data ? props.data[Object.keys(props.data)[0]] : []);
+	const [ chartData, setChartData ] = useState([]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
-	const [ activeDuration, setActiveDuration ] = useState(props.data && Object.keys(props.data)[0]);
+	const [ activeDuration, setActiveDuration ] = useState('');
+
+	useEffect(() => {
+		if(props.data && Object.keys(props.data).length > 0){
+			setChartData(props.data[Object.keys(props.data)[0]]);
+			setActiveDuration(Object.keys(props.data)[0]);
+		}
+	}, [props.data]);
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration]);
@@ -135,6 +142,8 @@ export default function LineChart(props) {
 					{isFullScreen ? <SlSizeActual size={20} /> : <SlSizeFullscreen size={20}/>}
 				</span>
 			</div>
+
+			{ chartData.length === 0 && <p className="empty-message">No data to show</p>}
 			
 			<div id="chart"/>
 
