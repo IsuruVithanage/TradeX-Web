@@ -17,7 +17,6 @@
 .side-panel{
     position: relative;
     width: 340px;
-    min-height: 75vh;
     height: -moz-fit-content;
     height: fit-content;
     background-color: #0E0E0F;
