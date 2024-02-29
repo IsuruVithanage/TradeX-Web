@@ -23,6 +23,7 @@ export default function VerifyUser() {
     const handleCapture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
         setCapturedImage(imageSrc);
+        setIsSetterModalOpen(false);
     };
 
     const openSetterModel = () => {
@@ -69,8 +70,9 @@ export default function VerifyUser() {
                     marginBottom: '12px'
                 }}>Identification Upload</span>
                         <div className='upload-container'>
-                            <Input type='button' value='Upload' icon={<MdOutlineFileUpload size={25} style={{paddingTop:'0.5rem'}}/>}/>
-                            <p style={{paddingTop:'10px'}}>Max 10MB JPG/JPEG or PNG format</p>
+                            <Input type='button' value='Upload'
+                                   icon={<MdOutlineFileUpload size={25} style={{paddingTop: '0.5rem'}}/>}/>
+                            <p style={{paddingTop: '10px'}}>Max 10MB JPG/JPEG or PNG format</p>
                         </div>
                     </div>
 
@@ -85,10 +87,11 @@ export default function VerifyUser() {
                                 <img
                                     src={capturedImage}
                                     alt="Captured"
+                                    width='480'
                                 />
                             ) : (
                                 <>
-                                    <ImCamera size={90} fill='#6D6D6D' onClick={openSetterModel} />
+                                    <ImCamera size={90} fill='#6D6D6D' onClick={openSetterModel}/>
                                     <p>Real-time identification</p>
                                 </>
                             )}
@@ -99,8 +102,13 @@ export default function VerifyUser() {
 
                 <div className='submit-container'>
                     <Input type="button" value='Submit'/>
-                    <div style={{width:'10px'}}></div>
+                    <div style={{ width: '10px' }}></div>
                     <Input type="button" value='Cancel' red/>
+                    {capturedImage && (
+                        <div style={{ marginLeft: 'auto' }}>
+                            <Input type="button" value='Retake' onClick={openSetterModel} />
+                        </div>
+                    )}
                 </div>
 
 
