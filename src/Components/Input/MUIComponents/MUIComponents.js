@@ -60,12 +60,14 @@ const StyledButton = styled(Button)(( props ) => {
 
 export function ButtonComponent(props){
     return (
-        < StyledButton
+        <StyledButton
             style={props.style}
             onClick={props.onClick}
             outlined={props.outlined ? 'true' : 'false'}
-            red={props.red ? 'true' : 'false' } 
-            disabled= {props.disabled && props.disabled}>
+            red={props.red ? 'true' : 'false'}
+            disabled={props.disabled && props.disabled}
+        >
+            {props.icon && <span className="icon">{props.icon}</span>}
             {props.value}
         </StyledButton>
     )
