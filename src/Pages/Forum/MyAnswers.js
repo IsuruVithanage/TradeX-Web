@@ -7,24 +7,18 @@ import './forum.css';
 
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-  
-} from "react-router-dom";
 
 
- function MyProblems() {
+
+ function MyAnswers() {
 
   const Tabs = [
     { label: "Latest", path: "/Forum" },
     { label: "My Problems", path: "/forum/MyProblems" },
-    { label: "My Answers", path: "/forum/MyAnswers" },
+    { label: "My Answers", path: "/alert" },
     
   ];
-
+  
     const [selectedPage, setSelectedPage] = useState("Activated");
     const [alertRepeat, setAlertRepeat] = useState(undefined);
   return (
@@ -43,9 +37,7 @@ import {
 
         <div style={{display: "flex", width: "100%" }}>
             <Input type="search" placeholder="Search" style={{width:"600px" ,marginLeft:"20px"}}/>
-            <Link to="/AskQuestion">
-              <Input type="button" value="Ask Question"  style={{width:"130px" ,marginLeft:"15%"}}/>
-            </Link>
+           
             <RiSoundModuleLine className="filter-icon" style={{color:"#6D6D6D" ,marginLeft:"15%",size:"20px"}}></RiSoundModuleLine>
         </div>
 
@@ -86,4 +78,4 @@ import {
   )
 }
 
-export default MyProblems
+export default MyAnswers

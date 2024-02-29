@@ -7,7 +7,7 @@ import Switch from '@mui/material/Switch';
 function Dailysummary() {
     const Tabs = [
         { label: "Daily", path: "/" },
-        { label: "Monthly", path: "/" },
+        { label: "Monthly", path: "Dailysummary/Monthlysummary" },
        
         
       ];

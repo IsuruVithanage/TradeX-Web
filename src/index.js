@@ -32,6 +32,10 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+import Monthlysummary from './Pages/Summary/Monthlysummary';
+import MyAnswers from './Pages/Forum/MyAnswers';
+import Detailed from './Components/Questionbar/Detailed';
+
 
 
 
@@ -159,12 +163,28 @@ const router = createBrowserRouter([
   },
  
   {
+
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
+  {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
   },
   {
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
+  },
+
+  {
+
+    path: "/Summary/Dailysummary/Monthlysummary",
+    element: <Monthlysummary/>,
   },
 
 
