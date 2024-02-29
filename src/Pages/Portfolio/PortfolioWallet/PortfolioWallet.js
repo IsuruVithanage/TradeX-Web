@@ -42,8 +42,8 @@ export default function FundingWallet() {
             })
     
             .catch(error => {
-                console.log(error);
-                // alert(error.message + "! \nCheck Your Internet Connection");
+                error.response ? alert(error.response.data.message) :
+                console.log("error", error);
             });
       }, [wallet]);
 

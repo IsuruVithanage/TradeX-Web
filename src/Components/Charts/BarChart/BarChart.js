@@ -7,8 +7,6 @@ export default function BarChart(props) {
 
   useEffect(() => {
     let cumulativePercentage = 0;
-    
-    props.bars.sort((a, b) => b.percentage - a.percentage);
 
     props.bars.forEach((bar, index) => {
         cumulativePercentage += bar.percentage;

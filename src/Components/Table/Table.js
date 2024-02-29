@@ -5,7 +5,7 @@ export default function Table(props) {
 
 
     useEffect(() => {
-        const table = document.querySelector('.table-container');
+        const table = document.querySelector('.table-body');
         table.classList.add('restart');
 
         setTimeout(() => {
