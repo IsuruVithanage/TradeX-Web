@@ -1,0 +1,44 @@
+.Admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.Admin-table th {
+    color: #9E9E9E;
+    font-size: 18px;
+    border-bottom: 1px solid #3C3C3C;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.Admin-table td {
+    color: #ffffff;
+    font-size: 17px;
+    padding: 15px;
+    text-align: center;
+}
+.Admin-table th:first-child,
+.Admin-table td:first-child {
+    text-align: left;
+}
+
+.create-admin-btn{
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin: auto;
+    margin-top: 50px;
+}
+.Admin-details{
+    margin-bottom: 15px;
+    color: white;
+    border-bottom: 2px solid #21DB9A;
+    margin-left: -20px;
+    width: 350px;
+
+}
+.Admin-details::placeholder {
+    color: #21DB9A;
+  }

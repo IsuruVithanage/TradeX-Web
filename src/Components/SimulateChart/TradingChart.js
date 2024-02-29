@@ -1,24 +1,25 @@
-import {ColorType, createChart} from 'lightweight-charts';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './TradingChart.css';
-import axios from "axios";
+import { ColorType, createChart } from 'lightweight-charts';
+import axios from 'axios';
 
-export const ChartComponent = props => {
+export const ChartComponent = (props) => {
     const [activeDuration, setActiveDuration] = useState('daily');
+    const [chart, setChart] = useState(null);
+    const chartContainerRef = useRef(null);
+
     const {
-        data,
+        selectedCoin,
         colors: {
             backgroundColor = '#0E0E0F',
             textColor = '#0E0E0F',
-            upColor = "#21DB9A",
-            downColor = "#ff0000",
-            wickUpColor = "#21DB9A",
-            wickDownColor = "#ff0000",
+            upColor = '#21DB9A',
+            downColor = '#ff0000',
+            wickUpColor = '#21DB9A',
+            wickDownColor = '#ff0000',
         } = {},
     } = props;
 
-
-    //Process the data according to the graph
     const processData = async (newData) => {
         try {
             const transformedData = newData.map((item) => ({
@@ -33,200 +34,112 @@ export const ChartComponent = props => {
 
             return transformedData;
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error('Error fetching data:', error);
         }
-    }
-
-    /*useEffect(
-        () => {
-            const chartContainerRef = document.getElementById('tchart');
-
-            const socket = io("http://localhost:8000");
-            const handleResize = () => {
-                chart.applyOptions({width: chartContainerRef.clientWidth,height:chartContainerRef.clientHeight});
-            };
-
-            const chart = createChart(chartContainerRef, {
-                layout: {
-                    background: {type: ColorType.Solid, color: backgroundColor},
-                    textColor,
-                },
-                width: chartContainerRef.clientWidth,
-                height: chartContainerRef.clientHeight,
-                grid: {
-                    vertLines: {
-                        visible: false,
-                    },
-                    horzLines: {
-                        color: "#3C3C3C",
-                    },
-                },
-                rightPriceScale:{
-                    borderVisible:false,
-                    textColor:"#AAA",
-                },
-                localization:{
-                  priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
-                },
-                timeScale:{
-                    fixLeftEdge:true,
-                    borderVisible:false,
-                }
-
-            });
-            chart.timeScale().fitContent();
-
-            const newSeries = chart.addCandlestickSeries({
-                upColor,
-                downColor,
-                borderVisible: false,
-                wickUpColor,
-                wickDownColor
-            });
-
-            // Listen for "update" events from the socket
-            socket.on("update", async (updatedData) => {
-                if (!chart) {
-                    return;
-                }
-                newSeries.setData(await processData(updatedData));
-            });
-
-
-            window.addEventListener('resize', handleResize);
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-
-                if (chart) {
-                    chart.remove();
-                }
-            };
-        },
-        []
-    );*/
+    };
 
     const fetchData = async () => {
         try {
             const res = await axios.get(
-                'https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1m&limit=1000'
+                `https://api.binance.com/api/v3/klines?symbol=${
+                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
+                }USDT&interval=1m&limit=1000`
             );
             return processData(res.data);
-
         } catch (error) {
             console.log(error);
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(async () => {
-        const chartContainerRef = document.getElementById('tchart');
-        const handleResize = () => {
-            chart.applyOptions({width: chartContainerRef.clientWidth, height: chartContainerRef.clientHeight});
-        };
-
-        const chart = createChart(chartContainerRef, {
+    const initializeChart = () => {
+        const newChart = createChart(chartContainerRef.current, {
             layout: {
-                background: {type: ColorType.Solid, color: backgroundColor},
+                background: { type: ColorType.Solid, color: backgroundColor },
                 textColor,
             },
-            width: chartContainerRef.clientWidth,
-            height: chartContainerRef.clientHeight,
+            width: chartContainerRef.current.clientWidth,
+            height: chartContainerRef.current.clientHeight,
             grid: {
                 vertLines: {
                     visible: false,
                 },
                 horzLines: {
-                    color: "#3C3C3C",
+                    color: '#3C3C3C',
                 },
             },
             rightPriceScale: {
                 borderVisible: false,
-                textColor: "#AAA",
+                textColor: '#AAA',
             },
             localization: {
-                priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                priceFormatter: (price) => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
             },
             timeScale: {
                 fixLeftEdge: true,
                 borderVisible: false,
-            }
+            },
         });
 
-        chart.timeScale().fitContent();
-
-        const newSeries = chart.addCandlestickSeries({
+        const newSeries = newChart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
             wickUpColor,
-            wickDownColor
+            wickDownColor,
         });
 
-        newSeries.setData(await fetchData());
+        setChart({ instance: newChart, series: newSeries });
+    };
 
+    const updateChart = async () => {
+        if (!chart || !chart.instance) {
+            return;
+        }
 
-        window.addEventListener('resize', handleResize);
+        try {
+            chart.instance.timeScale().fitContent();
+            chart.series.setData(await fetchData());
+        } catch (error) {
+            console.error('Error updating chart:', error);
+        }
+    };
 
+    useEffect(() => {
+        if (!chart) {
+            initializeChart();
+        } else {
+            updateChart();
+        }
+    }, [selectedCoin]);
+
+    useEffect(() => {
+        // Cleanup function
         return () => {
-            window.removeEventListener('resize', handleResize);
-            // Make sure to remove the series before destroying the chart
-            chart.removeSeries(newSeries);
-            // Dispose of the chart
-            chart.remove();
+            if (chart && chart.instance) {
+                chart.instance.removeSeries(chart.series);
+                chart.instance.remove();
+            }
         };
     }, []);
 
-
-    function updateChartData(daily) {
-
-    }
+    function updateChartData(daily) {}
 
     return (
-
-        <div id='chartDiv'>
-            <div className='buttonDiv'>
+        <div id="chartDiv">
+            <div className="buttonDiv">
                 <button
                     onClick={() => updateChartData('daily')}
-                    className={`durationButton ${activeDuration === 'daily' ? "active" : ""}`}>
+                    className={`durationButton ${activeDuration === 'daily' ? 'active' : ''}`}
+                >
                     1m
                 </button>
-
-                <button
-                    onClick={() => updateChartData('weekly')}
-                    className={`durationButton ${activeDuration === 'weekly' ? "active" : ""}`}>
-                    15m
-                </button>
-
-                <button
-                    onClick={() => updateChartData('monthly')}
-                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                    1H
-                </button>
-                <button
-                    onClick={() => updateChartData('monthly')}
-                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                    1D
-                </button>
-                <button
-                    onClick={() => updateChartData('monthly')}
-                    className={`durationButton ${activeDuration === 'monthly' ? "active" : ""}`}>
-                    1W
-                </button>
-
+                {/* Other buttons... */}
             </div>
-
-
-            <div id='tchart'/>
+            <div id="tchart" ref={chartContainerRef} />
         </div>
     );
 };
 
 export function TradingChart(props) {
-    return (
-        <ChartComponent {...props}></ChartComponent>
-    );
+    return <ChartComponent {...props}></ChartComponent>;
 }

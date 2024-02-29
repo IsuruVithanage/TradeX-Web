@@ -60,12 +60,14 @@ const StyledButton = styled(Button)(( props ) => {
 
 export function ButtonComponent(props){
     return (
-        < StyledButton
+        <StyledButton
             style={props.style}
             onClick={props.onClick}
             outlined={props.outlined ? 'true' : 'false'}
-            red={props.red ? 'true' : 'false' } 
-            disabled= {props.disabled && props.disabled}>
+            red={props.red ? 'true' : 'false'}
+            disabled={props.disabled && props.disabled}
+        >
+            {props.icon && <span className="icon">{props.icon}</span>}
             {props.value}
         </StyledButton>
     )
@@ -78,11 +80,11 @@ const StyledFAB = styled(Fab)(() => {
         position: 'fixed',
         bottom: '50px',
         right: '35px',
-        color: '#ffffff',
-        backgroundColor: '#21db9a',
+        color: '#21DB9A',
+        backgroundColor: '#0c281e',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         '&:hover': {
-            backgroundColor: '#12b37b'
+            backgroundColor: '#0f3e2d'
         }
     }
 });
@@ -124,6 +126,10 @@ const StyledSwitch = styled(Switch)(() => {
 
 
 export function SwitchComponent(props){
+    const handleChange = (e) => {
+        props.onChange(e.target.checked)
+    }
+
     return (
         <label style={{
                 display: "flex", 
@@ -143,8 +149,8 @@ export function SwitchComponent(props){
             <StyledSwitch
                 id={props.id}
                 name={props.name}
-                defaultChecked={props.checked}
-                onChange={props.onChange}
+                checked={props.checked}
+                onChange={props.onChange && handleChange}
                 onClick={props.onClick}
             />
         </label>

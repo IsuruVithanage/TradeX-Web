@@ -10,6 +10,7 @@
     display: flex;
     z-index: 2;
     margin-bottom: 1rem;
+    justify-content: space-between;
 
 }
 
@@ -27,7 +28,6 @@
     color: #9E9E9E;
     border-radius: 7px;
     padding: 0.4rem 0.9rem 0.4rem 0.9rem;
-    margin: 0 0.5rem;
     font-weight: bold;
     transition: background-color 0.3s ease;
     background-color: #151516;

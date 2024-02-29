@@ -1,0 +1,22 @@
+.quiz-container{
+    width: 97%;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #0E0E0F;
+    box-shadow: 8px 9px 7px 0 rgba(0, 0, 0, 0.25);
+    margin-top: 10px;
+    color: white;
+    padding: 1rem 1rem 1rem 1rem ;
+}
+
+.quiz-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.quiz-top p {
+    font-weight: bold;
+    font-size: 1.7rem;
+    padding-left: 0.5rem;
+}

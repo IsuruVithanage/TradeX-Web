@@ -4,10 +4,10 @@ import Modal from "../Modal/Modal";
 import Table, {TableRow} from "../Table/Table";
 import axios from "axios";
 
-const CoinBar = ({ onSelectCoin }) => {
+const CoinBar = ({ onSelectCoin, enableModel }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [coins, setCoins] = useState([]);
-    const [bitcoinData, setBitcoinData] = useState({
+    const [coinData, setcoinData] = useState({
         name: '',
         price: 0,
         symbol: '',
@@ -29,6 +29,7 @@ const CoinBar = ({ onSelectCoin }) => {
             .catch(error => console.log(error));
     }, []);
 
+
     const openSetterModel = () => {
         if (isSetterModalOpen) {
             setIsSetterModalOpen(false);
@@ -40,7 +41,7 @@ const CoinBar = ({ onSelectCoin }) => {
 
     const handleRowClick = (selectedCoin) => {
         console.log('Selected Coin:', selectedCoin);
-        setBitcoinData((prevData) => ({
+        setcoinData((prevData) => ({
             ...prevData,
             name: selectedCoin.name,
             price: formatCurrency(selectedCoin.current_price),
@@ -67,52 +68,49 @@ const CoinBar = ({ onSelectCoin }) => {
         <div className='coinDiv' onClick={openSetterModel}>
             <div className='coin-logo'>
                 <div className='coin-logo coinimg'>
-                    <img src={bitcoinData.symbol} alt=""/>
-                    <p>{bitcoinData.name}</p>
+                    <img src={coinData.symbol} alt=""/>
+                    <p>{coinData.name}</p>
                 </div>
             </div>
             <div className='coinData'>
                 <div className='cdata'>
                     <h1>Price</h1>
-                    <p>{bitcoinData.price}</p>
+                    <p>{coinData.price}</p>
                 </div>
                 <div className='cdata'>
                     <h1>24h Price Change</h1>
-                    <p style={{color: bitcoinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{bitcoinData.priceChange} %</p>
+                    <p style={{color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{coinData.priceChange} %</p>
                 </div>
                 <div className='cdata'>
                     <h1>Market Cap</h1>
-                    <p>{bitcoinData.marketcap}</p>
+                    <p>{coinData.marketcap}</p>
                 </div>
             </div>
 
-            <Modal open={isSetterModalOpen} close={setIsSetterModalOpen}>
-                <div style={{width: "450px"}}>
-                    <div style={{width: "100%", marginBottom: "50px"}}>
-                        <h1 style={{textAlign: "center"}}>Select Coin</h1>
-                        <Table style={{marginTop: '1vh'}}>
-                            <TableRow data={[
-                                '',
-                                'Coin',
-                                'Price'
-                            ]}/>
+            {enableModel && (
+                <Modal open={isSetterModalOpen} close={() => setIsSetterModalOpen(false)}>
+                    <div style={{ width: '450px' }}>
+                        <div style={{ width: '100%', marginBottom: '50px' }}>
+                            <h1 style={{ textAlign: 'center' }}>Select Coin</h1>
+                            <Table style={{ marginTop: '1vh' }}>
+                                <TableRow data={['', 'Coin', 'Price']}/>
 
-                            {coins.map(coin => (
-                                <TableRow
-                                    key={coin.id}
-                                    data={[
-                                        <img className='coin-image' src={coin.image} alt={coin.symbol}/>,
-                                        coin.name,
-                                        formatCurrency(coin.current_price)
-                                    ]}
-                                    onClick={() => handleRowClick(coin)}
-                                />
-                            ))}
-
-                        </Table>
+                                {coins.map((coin) => (
+                                    <TableRow
+                                        key={coin.id}
+                                        data={[
+                                            <img className='coin-image' src={coin.image} alt={coin.symbol} />,
+                                            coin.name,
+                                            formatCurrency(coin.current_price),
+                                        ]}
+                                        onClick={() => handleRowClick(coin)}
+                                    />
+                                ))}
+                            </Table>
+                        </div>
                     </div>
-                </div>
-            </Modal>
+                </Modal>
+            )}
         </div>
     );
 };

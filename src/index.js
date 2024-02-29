@@ -32,6 +32,10 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+import Suggestions from "./Pages/Suggestions/Suggestions";
+import Quiz from "./Pages/Quiz/Quiz";
+import UserProfileTab from "./Pages/User/UserProfileTab";
+import VerifyUser from "./Pages/User/VerifyUser";
 import Monthlysummary from './Pages/Summary/Monthlysummary';
 import MyAnswers from './Pages/Forum/MyAnswers';
 import Detailed from './Components/Questionbar/Detailed';
@@ -126,7 +130,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/suggestion",
-    element: <BasicPage/>,
+    element: <Suggestions/>,
   },
   {
     path: "/externalwallet",
@@ -180,6 +184,19 @@ const router = createBrowserRouter([
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
   },
+  {
+    path: "/quiz",
+    element: <Quiz/>,
+  },
+  {
+    path: "/profile",
+    element: <UserProfileTab/>,
+  },
+  {
+    path: "/verify",
+    element: <VerifyUser/>,
+  },
+
 
   {
 

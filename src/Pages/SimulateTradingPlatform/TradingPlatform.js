@@ -15,10 +15,13 @@ export default function TradingPlatform() {
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
+        {label: "Quiz", path: "/quiz"},
     ];
 
-    const priceLimits = ['Limit', 'Market', 'Stop Limit'];
+    const [orderType,setOrderType] = useState('Buy');
+    console.log(orderType)
 
+    const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [selectedCoin, setSelectedCoin] = useState(null);
 
@@ -30,40 +33,29 @@ export default function TradingPlatform() {
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 line={false}
-                style={{height: '530px', padding: "1rem"}}
+                style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
                         <ButtonSet priceLimits={priceLimits}/>
-                        <Input type={"switch"} style={{width: "18rem", marginLeft: "0.6rem"}}
-                               buttons={["Buy", "Sell"]}/>
+                        <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Price</label>
-                            <NumberInput icon={"$"}/>
-                        </div>
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Quantity</label>
-                            <NumberInput icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}/>
-                        </div>
+                        <Input label={'Price'} type={'number'} icon={"$"}/>
+                        <Input label={'Price'} type={'number'}
+                               icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}/>
 
                         <SliderInput/>
 
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Total</label>
-                            <Input type={"text"} placehalder={"Total"}/>
-                        </div>
+                        <Input label={'Total'} type={"text"} placehalder={"Total"}/>
 
-                        <div className="trade-btn-container">
-                            <Input type="button" style={{padding: "0 1rem 0 1rem"}} value="Buy"/>
-                        </div>
+                        <Input type="button" value={orderType} style={{marginTop:'0.7rem'}}/>
 
                     </div>
                 }
             >
 
-                <CoinBar onSelectCoin={handleCoinSelection}/>
-                <TradingChart/>
+                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
+                <TradingChart selectedCoin={selectedCoin}/>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>
@@ -87,8 +79,8 @@ export default function TradingPlatform() {
                             assets[coin].TotalBalance,
                             assets[coin].marketPrice,
                             assets[coin].value,
-                            <Input type="button" value="Cancel" style={{width:"90px"}} outlined/>
-                            ]}
+                            <Input type="button" value="Cancel" style={{width: "90px"}} outlined/>
+                        ]}
                     />
                 ))}
             </Table>
