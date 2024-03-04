@@ -36,6 +36,10 @@ import Suggestions from "./Pages/Suggestions/Suggestions";
 import Quiz from "./Pages/Quiz/Quiz";
 import UserProfileTab from "./Pages/User/UserProfileTab";
 import VerifyUser from "./Pages/User/VerifyUser";
+import Monthlysummary from './Pages/Summary/Monthlysummary';
+import MyAnswers from './Pages/Forum/MyAnswers';
+import Detailed from './Components/Questionbar/Detailed';
+
 
 
 
@@ -163,6 +167,16 @@ const router = createBrowserRouter([
   },
  
   {
+
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
+  {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
   },
@@ -183,6 +197,12 @@ const router = createBrowserRouter([
     element: <VerifyUser/>,
   },
 
+
+  {
+
+    path: "/Summary/Dailysummary/Monthlysummary",
+    element: <Monthlysummary/>,
+  },
 
 
 ]);
