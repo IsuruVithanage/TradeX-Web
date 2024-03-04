@@ -13,6 +13,16 @@ export default function Quiz() {
         {label: "Quiz", path: "/quiz"},
     ];
 
+    function shuffleArray(array) {
+        const shuffledArray = [...array];
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+        }
+        return shuffledArray;
+    }
+
+
     const loadQuestions = async () => {
         try {
             const result = await axios.get(`http://localhost:8007/quiz/`, {
@@ -20,7 +30,7 @@ export default function Quiz() {
                     'access-token': localStorage.getItem("token")
                 }
             });
-            setQuestions(result.data);
+            setQuestions(shuffleArray(result.data));
         } catch (error) {
             console.error("Error fetching questions:", error);
         }
