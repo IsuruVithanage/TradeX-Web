@@ -96,6 +96,7 @@
     height: 100%;
     width: -moz-fit-content;
     width: fit-content;
+    cursor: pointer;
 }
 
 .profile-menu.active{

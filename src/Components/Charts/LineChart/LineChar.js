@@ -5,10 +5,16 @@ import './LineChart.css';
 
 export default function LineChart(props) {
 	let handleResize = useRef(null);
-
+	const [ timeVisible, setTimeVisible ] = useState(false)
 	const [ chartData, setChartData ] = useState([]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
+
+	useEffect(() => {
+		activeDuration && props.data[activeDuration].length > 0 &&
+		typeof(props.data[activeDuration][0].time) === 'number' ? 
+		setTimeVisible(true) : setTimeVisible(false);
+	}, [activeDuration, props.data])
 
 	useEffect(() => {
 		if(props.data && Object.keys(props.data).length > 0){
@@ -71,6 +77,7 @@ export default function LineChart(props) {
 				fixRightEdge: true,
 				borderVisible: false,
 				lockVisibleTimeRangeOnResize: true,
+				timeVisible: timeVisible,
 			},
 
 			grid: {
@@ -90,6 +97,7 @@ export default function LineChart(props) {
 
 			localization: {
 				priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+				locale: 'en-US',
 			},
 		});
 		
@@ -119,7 +127,7 @@ export default function LineChart(props) {
 
 			chart.remove();
 		};
-	}, [isFullScreen, chartData] );
+	}, [isFullScreen, chartData, timeVisible] );
 
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
