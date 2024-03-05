@@ -12,8 +12,8 @@ export default function Portfolio() {
   const [ usdBalance, setUsdBalance ] = useState(0);
   const [ portfolioValue, setPortfolioValue ] = useState(0);
   const [ percentages, setPercentages ] = useState([]);
-  const initialData = require('./portfolio-data.json');
-  const backendApiEndpoint = 'http://localhost:8081/portfolio/asset/overview';
+  const [ initialData, setInitialData ] = useState([]);
+  const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/overview';
   const userId = 1;
   
 
@@ -31,6 +31,7 @@ export default function Portfolio() {
         .then(res => {
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);
+            setInitialData(res.data.historyData);
             setPortfolioValue(res.data.portfolioValue);
             setUsdBalance(res.data.usdBalance);
         })
@@ -40,6 +41,7 @@ export default function Portfolio() {
             alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
             console.log("error", error);
         });
+
   }, []);
 
 
