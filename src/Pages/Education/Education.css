@@ -1,0 +1,29 @@
+.search {
+    margin-left: 30px;
+    margin-right: 50px;
+    width: 1030px;
+}
+
+.video-list {
+    display: flex;
+    width: 300px;
+    height: 882px;
+    background-color: #101012;
+    margin-top: -45px;
+    margin-right: -150px;
+    border-radius: 23px;
+    color: white;
+}
+
+.video-list ul {
+    list-style: none;
+}
+
+h4{
+    color: #21DB9A;
+    margin-left: 20px;
+}
+
+ul li{
+    color: #bdbdbd;
+}

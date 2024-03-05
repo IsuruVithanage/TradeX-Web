@@ -32,6 +32,9 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+import Education  from './Pages/Education/Education';
+import  Favorites from './Pages/Education/Favorites';
+
 
 
 
@@ -106,7 +109,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/education",
-    element: <BasicPage/>,
+    element: <Education/>,
+  },
+  {
+    path: "/education/Favorites",
+    element: <Favorites/>,
   },
   {
     path: "/news",
@@ -166,6 +173,8 @@ const router = createBrowserRouter([
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
   },
+  
+ 
 
 
 ]);
