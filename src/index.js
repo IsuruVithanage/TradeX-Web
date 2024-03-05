@@ -39,6 +39,7 @@ import VerifyUser from "./Pages/User/VerifyUser";
 import Monthlysummary from './Pages/Summary/Monthlysummary';
 import MyAnswers from './Pages/Forum/MyAnswers';
 import Detailed from './Components/Questionbar/Detailed';
+import History from './Pages/ExternalWallet/History/History';
 
 
 
@@ -159,6 +160,10 @@ const router = createBrowserRouter([
   {
     path: "/wallet/dashboard",
     element: <DashBoard/>,
+  },
+  {
+    path: "/wallet/history",
+    element: <History/>,
   },
   {
 
