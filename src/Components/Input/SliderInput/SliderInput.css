@@ -18,6 +18,10 @@
     border-radius: 2px;
 }
 
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider {
+    margin: 1rem 0.6rem;
+}
+
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle::after {
     content: "";
     position: absolute;
@@ -54,10 +58,18 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 5px;
 }
 
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider-horizontal.ant-slider-with-marks {
     margin-bottom: 14px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-slider {
+     margin: 0;
+}
+
+.slider-container{
+    width: 100%;
+    margin-top: 26px;
 }

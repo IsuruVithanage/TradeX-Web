@@ -2,20 +2,23 @@
     color: #9E9E9E;
     font-weight: bold;
     font-family: 'Inter', sans-serif;
-    font-size: 1.125em;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 
 }
+
 .input-field-container{
-    margin: 1.4375em auto;
-    width: 17.1875em;
+    margin: 1.4375em 0.6rem 1.4375em 0.5rem;
+    width: 18.1875em;
 }
 
 .tradeHeader{
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     font-size: 20px;
 }
 
-side-panel {
-    padding: 22px;
+.trade-btn-container{
+    width: 94%;
+    margin: 0 1rem 0 0.5rem;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../../Components/Input/Input';
@@ -12,14 +12,6 @@ export default function History() {
     const [selectedFrom, setSelectedFrom] = useState(null);
     const [selectedTo, setSelectedTo] = useState(null);
     const historyData = (selectedSection === "Trading") ? tradingHistry.Trading : tradingHistry.Transaction;
-
-    useEffect(() => {
-        console.log(selectedSection);
-        console.log(selectedCoin);
-        console.log(selectedAction);
-        console.log(selectedFrom);
-        console.log(selectedTo);
-    }, [selectedSection, selectedCoin, selectedAction, selectedFrom, selectedTo]);
 
     const options = [
         { value: 'BTC', label: 'BTC' },
@@ -49,7 +41,7 @@ export default function History() {
 
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
-                line = {false}
+                header="History"
                 sidePanel={
                     <div>
                         <Input type="switch" onClick={setSelectedSection} buttons= {["Trading", "Transaction"]}/>
@@ -71,7 +63,7 @@ export default function History() {
 
             
                 { selectedSection === "Transaction" ? (
-                    <Table style={{marginTop:'0'}}>
+                    <Table style={{marginTop:'0'}} restart={selectedSection}>
                         <TableRow data={['Coin', 'Date', 'From', 'To', 'Quantity']} />
                         { historyData.map((row, index) => (
                         <TableRow 
@@ -86,7 +78,7 @@ export default function History() {
                         />))}
                     </Table> ) : 
 
-                    <Table style={{marginTop:'0'}}>
+                    <Table style={{marginTop:'0'}} restart={selectedSection}>
                         <TableRow data={['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']} />
                         { historyData.map((row, index) => (
                         <TableRow 

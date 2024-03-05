@@ -1,13 +1,3 @@
-
-body {
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-}
-
 .side-navbar {
     width: 6%;
     height: 100vh;
@@ -34,8 +24,32 @@ html, body {
     font-size: 1.3rem;
 }
 
+.nav-label{
+    position: absolute;
+    background-color: #0e0e0fe3;
+    height: 8vh;
+    width: 180px;
+    left: 4.6vw;
+    align-items: center;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #21DB9A;
+    display: none;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.nav-link-container{
+    display: flex;
+    align-items: center;
+}
+
 .nav-link svg {
-    transition: fill 0.3s ease; /* Add a transition for a smoother color change */
+    transition: fill 0.3s ease;
+}
+
+.nav-link:hover .nav-label{
+    display: flex;
 }
 
 .nav-link:hover svg,

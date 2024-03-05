@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
@@ -8,52 +8,82 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
+import Table, {TableRow} from "../../Components/Table/Table";
+import assets from "../Portfolio/assets.json";
 
-export default function Portfolio() {
+export default function TradingPlatform() {
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
-        {label: "Future", path: "/"},
+        {label: "Quiz", path: "/quiz"},
     ];
+
+    const [orderType,setOrderType] = useState('Buy');
+    console.log(orderType)
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
+    const [selectedCoin, setSelectedCoin] = useState(null);
+
+    const handleCoinSelection = (coin) => {
+        setSelectedCoin(coin);
+    };
 
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
                 line={false}
-                style={{height: '530px'}}
+                style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
                         <ButtonSet priceLimits={priceLimits}/>
-                        <Input type={"switch"} buttons={["Buy","Sell"]}/>
+                        <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Price</label>
-                            <NumberInput icon={"$"}/>
-                        </div>
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Quantity</label>
-                            <NumberInput icon={"BTC"}/>
-                        </div>
+                        <Input label={'Price'} type={'number'} icon={"$"}/>
+                        <Input label={'Price'} type={'number'}
+                               icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}/>
 
                         <SliderInput/>
 
-                        <div className='input-field-container'>
-                            <label htmlFor="" className='label'>Total</label>
-                            <Input type={"text"} placehalder={"Total"}/>
-                        </div>
+                        <Input label={'Total'} type={"text"} placehalder={"Total"}/>
 
-                        <Input type="button" value="Buy"/>
+                        <Input type="button" value={orderType} style={{marginTop:'0.7rem'}}/>
 
                     </div>
                 }
             >
-                <CoinBar/>
-                <TradingChart/>
+
+                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
+                <TradingChart selectedCoin={selectedCoin}/>
             </SidePanelWithContainer>
+
+            <Table style={{marginTop: '1vh'}}>
+                <TableRow data={[
+                    'Coin',
+                    'Spot Balance',
+                    'Funding Balance',
+                    'Total Balance',
+                    'market Price',
+                    'Value'
+                ]}/>
+
+
+                {assets && Object.keys(assets).slice(1).map(coin => (
+                    <TableRow
+                        key={coin}
+                        data={[
+                            [coin],
+                            assets[coin].spotBalance,
+                            assets[coin].fundingBalance,
+                            assets[coin].TotalBalance,
+                            assets[coin].marketPrice,
+                            assets[coin].value,
+                            <Input type="button" value="Cancel" style={{width: "90px"}} outlined/>
+                        ]}
+                    />
+                ))}
+            </Table>
         </BasicPage>
     )
 }

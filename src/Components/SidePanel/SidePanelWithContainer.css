@@ -7,18 +7,16 @@
 
 .side-container{
     padding-right: 0.5%;
-    border-radius: 15px;
     flex-grow: 1;
-    overflow-y: auto;
     word-wrap: break-word;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .side-panel{
     position: relative;
     width: 340px;
-    min-height: 75vh;
     height: -moz-fit-content;
     height: fit-content;
     background-color: #0E0E0F;
@@ -26,9 +24,10 @@
     position: sticky;
     top: 0;
     border-radius: 15px;
-    padding: 35px;
-    flex-shrink: 0;
     box-sizing: border-box;
+    padding: 35px;
+    z-index: 2;
+    overflow: hidden;
 }
 
 .side-panel-header{

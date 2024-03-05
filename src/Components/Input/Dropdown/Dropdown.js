@@ -10,6 +10,7 @@ export default function Dropdown (props) {
             borderRadius: '6px',
             backgroundColor: '#3C3C3C',
             minHeight: '30px',
+            cursor: 'text',
         }),
 
         singleValue: (provided) => ({
@@ -98,8 +99,9 @@ export default function Dropdown (props) {
         <Select
             styles={customStyles}
             isClearable={true} 
+            isSearchable={props.searchable === undefined ? true : props.searchable}
             options={props.options} 
-            defaultValue={props.defaultValue && props.options.filter(opt => opt.label === props.defaultValue)}
+            defaultValue={props.defaultValue && props.options.filter(opt => opt.value === props.defaultValue)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}

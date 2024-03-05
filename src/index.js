@@ -4,6 +4,12 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Watchlist from './Pages/Watchlist/Watchlist';
+import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
+import CoinPage from './Pages/Watchlist/CoinPage';
+import AdDashboard from './Pages/Watchlist/AdDashboard';
+import ViewAll from './Pages/Watchlist/ViewAll';
+import Users from './Pages/Watchlist/Users';
+import Admin from './Pages/Watchlist/Admin';
 import Portfolio from './Pages/Portfolio/Portfolio';
 import TradingHistory from './Pages/Portfolio/History/TradingHistory';
 import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
@@ -24,6 +30,20 @@ import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/Rec
 import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
 import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
+import MyProblems from './Pages/Forum/MyProblems';
+import Dailysummary from './Pages/Summary/Dailysummary';
+import Suggestions from "./Pages/Suggestions/Suggestions";
+import Quiz from "./Pages/Quiz/Quiz";
+import UserProfileTab from "./Pages/User/UserProfileTab";
+import VerifyUser from "./Pages/User/VerifyUser";
+import Monthlysummary from './Pages/Summary/Monthlysummary';
+import MyAnswers from './Pages/Forum/MyAnswers';
+import Detailed from './Components/Questionbar/Detailed';
+
+
+
+
+
 
 
 
@@ -35,6 +55,30 @@ const router = createBrowserRouter([
   {
     path: "/watchlist",
     element: <Watchlist />,
+  },
+  {
+    path: "/watchlist/customize",
+    element:<CustomizeWatchlist/>
+  },
+  {
+    path: "/watchlist/CoinPage",
+    element:<CoinPage/>
+  },
+  {
+    path: "/watchlist/AdDashboard",
+    element:<AdDashboard/>
+  },
+  {
+    path: "/watchlist/ViewAll",
+    element:<ViewAll/>
+  },
+  {
+    path: "/watchlist/Users",
+    element:<Users/>
+  },
+  {
+    path: "/watchlist/Admin",
+    element:<Admin/>
   },
   {
     path: "/portfolio",
@@ -58,7 +102,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/summary",
-    element: <BasicPage/>,
+    element: <Dailysummary/>,
   },
   {
     path: "/settings",
@@ -84,7 +128,10 @@ const router = createBrowserRouter([
     path: "/alert",
     element: <Alert/>,
   },
-
+  {
+    path: "/suggestion",
+    element: <Suggestions/>,
+  },
   {
     path: "/externalwallet",
     element: <Welcome/>,
@@ -113,7 +160,22 @@ const router = createBrowserRouter([
     path: "/wallet/dashboard",
     element: <DashBoard/>,
   },
+  {
+
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
+  },
  
+  {
+
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
   {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
@@ -121,6 +183,25 @@ const router = createBrowserRouter([
   {
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
+  },
+  {
+    path: "/quiz",
+    element: <Quiz/>,
+  },
+  {
+    path: "/profile",
+    element: <UserProfileTab/>,
+  },
+  {
+    path: "/verify",
+    element: <VerifyUser/>,
+  },
+
+
+  {
+
+    path: "/Summary/Dailysummary/Monthlysummary",
+    element: <Monthlysummary/>,
   },
 
 

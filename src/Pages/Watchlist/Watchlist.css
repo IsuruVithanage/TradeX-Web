@@ -31,12 +31,23 @@
     align-items: flex-start;
   }
 
-  .coin-name{
-
-  }
 
   .coin-symbol{
     color: #9E9E9E;
 
   }
+
+  .banner {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 1300px;
+    height: 120px;
+    margin-bottom: 40px;
+    margin-top: 50px;
+    margin-right: 10px; 
+    margin-left: 10px;
+    border-radius: 20px;
+  }
+
+  
   

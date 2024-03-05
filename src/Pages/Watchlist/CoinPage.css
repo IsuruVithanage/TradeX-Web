@@ -1,0 +1,58 @@
+.Info {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 1005px;
+    height: 291px;
+    margin-top: 20px;
+    margin-right: 10px; 
+    margin-left: 20px;
+    border-radius: 20px;
+  }
+
+  .Info p{
+    color: #9E9E9E;
+  }
+  .convertor{
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 339px;
+    height: 220px;
+    margin-top: 20px;
+    margin-right: 10px; 
+    margin-left: 10px;
+    border-radius: 20px;
+
+  }
+  .graph{
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 1006px;
+    height: 523px;
+    margin-bottom: 40px;
+    margin-top: 1%;
+    margin-right: 10px; 
+    margin-left: 20px;
+    border-radius: 20px;
+  }
+  .price-stat {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 339px;
+    height: 347px;
+    margin-bottom: 40px;
+    margin-top: -60px;
+    margin-right: 10px; 
+    margin-left: 10px;
+    border-radius: 20px;
+  }
+  .price-stat p {
+    color: #9E9E9E;
+  }
+  .Input{
+    width: 314px;
+    height: 28px;
+  }
+  .Stat p{
+    color:#ffffff;
+    margin-left: 70px;
+  }

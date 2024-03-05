@@ -20,13 +20,13 @@ import Questionset from './Questionset';
 import Input from "../../Components/Input/Input";
 import AskQuestion from "../Forum/AskQuestion"
 import { GoBell } from "react-icons/go";
-import MyProblems from "../Forum/MyProblems"
+
 
 export default function Forum() {
   const Tabs = [
     { label: "Latest", path: "/" },
-    { label: "My Problems", path: "/MyProblems" },
-    { label: "My Answers", path: "/alert" },
+    { label: "My Problems", path: "/Forum/MyProblems" },
+    { label: "My Answers", path: "/Forum/MyAnswers" },
     
   ];
 

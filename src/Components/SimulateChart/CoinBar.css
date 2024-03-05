@@ -11,6 +11,11 @@
     margin-bottom: 1vh;
 }
 
+.coinDiv:hover{
+    cursor: pointer;
+    background-color: #0a0a0a;
+}
+
 .coin-logo{
     flex: 1;
     height: 90%;
@@ -28,7 +33,7 @@
     justify-content: space-around;
     color: white;
     align-items: center;
-    padding: 1% 1%;
+    padding: 0.4rem;
 }
 
 .cdata{
@@ -40,7 +45,7 @@
 }
 
 .cdata h1{
-    margin: 0;
+    margin: 0.5rem 0;
     font-size: 1.2rem;
     color: #9E9E9E;
 }
@@ -49,6 +54,7 @@
     margin: 0;
     font-size: 1.1rem;
     color: #21DB9A;
+    font-weight: bold;
 }
 
 .coin{
@@ -69,4 +75,16 @@
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Inter', sans-serif;
+}
+
+#myTable .col1{
+    background-color: red;
+}
+
+#myTable .col2{
+    background-color: blue;
+}
+
+#myTable .col3{
+    background-color: green;
 }
