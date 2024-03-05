@@ -7,10 +7,8 @@ export default function QuestionBar(props) {
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
+        props.getAnswers(e.target.value)
     };
-
-    const questionNumber = 1;
-    console.log(props.questionNumber)
 
     return (
         <div className="question-container">
