@@ -39,6 +39,10 @@ export default function SidePanelInput(props) {
 }
 
 function InputField(props) {
+  const handleChange = (e) => {
+    props.onChange(e.target.value);
+  }
+
   return (
       <input  
         className={`input-field ${props.className}`} 
@@ -49,7 +53,7 @@ function InputField(props) {
         placeholder={props.placeholder}
         style={props.style}
         onBlur={props.onBlur}
-        onChange={props.onChange}
+        onChange={props.onChange ? handleChange : null}
         onClick={props.onClick}
       />
   );
