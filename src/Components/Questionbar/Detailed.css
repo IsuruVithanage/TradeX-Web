@@ -3,7 +3,7 @@ body{
     
 }
 .ques{
-width: 95%;
+width: 80%;
 height: auto;
 flex-shrink: 0;
 margin-top: 20px;
@@ -53,7 +53,7 @@ h2{
     color: aliceblue;
 }
 .answer{
-    width: 95%;
+    width: 80%;
     height: auto;
     flex-shrink: 0;
     margin-top: 20px;
