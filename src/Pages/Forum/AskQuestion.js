@@ -30,18 +30,18 @@
 
               
     
-      <div className="ask-Question">
-        <div className="ask-ques-container">
+      <div className="ask-Question"> 
+        <div className="ask-ques-container"> 
           <h1>Ask Your Question</h1>
           <form>
             <div className="ask-form-container">
               <label className="ask-ques-title">
                 <h2>Title</h2>
                 <p>Be specific and imagine you’re asking a question to another person.</p>
-                <Input type="text" id="ask-ques-title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
+                <Input type="text" id="title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
               </label>
 
-              <label className="ask-ques-body">
+              <label className="body">
                 <h4>Body</h4>
                 <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
                 <textarea id="ask-ques-body" className='text-area' cols="30" rows="10"></textarea>
