@@ -20,7 +20,7 @@ import './Alert.css';
 
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const backendApiEndpoint = "http://localhost:8081/alert/";
+    const backendApiEndpoint = "http://localhost:8003/alert/";
     const userId = 1;
     
     
@@ -256,7 +256,7 @@ import './Alert.css';
                     { label:"Running Alerts", value:"Running"},
                     { label:"Notified Alerts", value:"Notified"},
                 ],
-            }}>    
+            }}>  
 
 
             { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
@@ -297,8 +297,8 @@ import './Alert.css';
             <div style={{width:"450px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
                     <h1 style={{textAlign:"center"}}>{`${ action } Alert`}</h1>
-                    <Input type="dropdown" label='Coin' options={options} defaultValue={selectedCoin} onChange={setSelectedCoin}/>
-                    <Input type="dropdown" label='Condition' defaultValue={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
+                    <Input type="dropdown" label='Coin' options={options} value={selectedCoin} onChange={setSelectedCoin}/>
+                    <Input type="dropdown" label='Condition' value={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
                         { value: 'Equals', label: 'Equals' },
                         { value: 'Above', label: 'Above' },
                         { value: 'Below', label: 'Below' },
