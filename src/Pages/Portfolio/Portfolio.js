@@ -9,8 +9,8 @@ import axios from 'axios';
 
 export default function Portfolio() {
   const [ assets, setAssets ] = useState([]);
-  const [ usdBalance, setUsdBalance ] = useState(0);
-  const [ portfolioValue, setPortfolioValue ] = useState(0);
+  const [ usdBalance, setUsdBalance ] = useState(null);
+  const [ portfolioValue, setPortfolioValue ] = useState(null);
   const [ percentages, setPercentages ] = useState([]);
   const [ initialData, setInitialData ] = useState([]);
   const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/overview';
@@ -37,6 +37,8 @@ export default function Portfolio() {
         })
 
         .catch(error => {
+            setPortfolioValue(0);
+            setUsdBalance(0);
             error.response ? alert(error.message + "\n" + error.response.data.message) :
             alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
             console.log("error", error);
@@ -50,8 +52,8 @@ export default function Portfolio() {
         tabs={[
           { label:"Overview", path:"/portfolio"},
           { label:"History", path:"/portfolio/history"},
-          { label:"Trading Wallet", path:"/portfolio/wallet?tradingWallet"},
-          { label:"Funding Wallet", path:"/portfolio/wallet?fundingWallet"},
+          { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
+          { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
         ]}>
       
         <SidePanelWithContainer 

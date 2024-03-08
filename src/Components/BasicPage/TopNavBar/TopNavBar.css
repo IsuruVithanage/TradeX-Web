@@ -56,7 +56,7 @@
     border-radius: 5px;
     padding: 4px 7px;
     margin-right: 20px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     letter-spacing: 0.5px;
     transition: background-color 0.3s ease;
@@ -68,7 +68,7 @@
 .top-nav-link:active,
 .top-nav-link.active{
     background-color: #21DB9A;
-    color: #2d633f;
+    color: #ffffff;
 }
 
 

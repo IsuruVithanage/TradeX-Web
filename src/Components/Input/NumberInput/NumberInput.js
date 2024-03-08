@@ -23,9 +23,12 @@ export default function NumberInput(props) {
             prefix={props.icon} 
             type='number'
             step={step}  
+            min={props.min}
+            max={props.max}
             style={props.style} 
             id={props.id}
             name={props.name}
+            value={props.value}
             defaultValue={props.value}
             placeholder={props.placeholder}
             onBlur={props.onBlur}

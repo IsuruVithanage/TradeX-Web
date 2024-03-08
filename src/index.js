@@ -42,16 +42,11 @@ import Detailed from './Components/Questionbar/Detailed';
 import History from './Pages/ExternalWallet/History/History';
 
 
-
-
-
-
-
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <App />,
   },
   {
     path: "/watchlist",
@@ -86,15 +81,11 @@ const router = createBrowserRouter([
     element: <Portfolio />,
   },
   {
-    path: "/AskQuestion",
-    element: <AskQuestion />,
-  },
-  {
     path: "/portfolio/history",
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/wallet",
+    path: "/portfolio/:wallet",
     element: <PortfolioWallet />,
   },
   {
@@ -102,8 +93,24 @@ const router = createBrowserRouter([
     element: <Forum />,
   },
   {
+    path: "/AskQuestion",
+    element: <AskQuestion />,
+  },
+  {
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
+  },
+  {
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+  {
     path: "/summary",
     element: <Dailysummary/>,
+  },
+  {
+    path: "/Summary/Dailysummary/Monthlysummary",
+    element: <Monthlysummary/>,
   },
   {
     path: "/settings",
@@ -190,6 +197,10 @@ const router = createBrowserRouter([
     element: <ChangePassword/>,
   },
   {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
+  {
     path: "/quiz",
     element: <Quiz/>,
   },
@@ -201,15 +212,6 @@ const router = createBrowserRouter([
     path: "/verify",
     element: <VerifyUser/>,
   },
-
-
-  {
-
-    path: "/Summary/Dailysummary/Monthlysummary",
-    element: <Monthlysummary/>,
-  },
-
-
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -224,3 +226,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
