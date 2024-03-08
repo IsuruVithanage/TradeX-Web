@@ -14,9 +14,9 @@ import {
 function Detailed() {
  
   const Tabs = [
-    { label: "Latest", path: "/Forum" },
+    { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/MyProblems" },
-    { label: "My Answers", path: "/alert" },
+    { label: "My Answers", path: "/MyAnswers" },
     
   ];
   

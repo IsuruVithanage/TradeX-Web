@@ -39,6 +39,7 @@ import VerifyUser from "./Pages/User/VerifyUser";
 import Monthlysummary from './Pages/Summary/Monthlysummary';
 import MyAnswers from './Pages/Forum/MyAnswers';
 import Detailed from './Components/Questionbar/Detailed';
+import History from './Pages/ExternalWallet/History/History';
 
 
 const router = createBrowserRouter([
@@ -166,6 +167,26 @@ const router = createBrowserRouter([
   {
     path: "/wallet/dashboard",
     element: <DashBoard/>,
+  },
+  {
+    path: "/wallet/history",
+    element: <History/>,
+  },
+  {
+
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
+  },
+ 
+  {
+
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
   },
   {
     path: "/wallet/login/changepassword/recoverwallet",

@@ -35,3 +35,18 @@ h3{
 .default{
     display: flex;
 }
+
+.page-content{
+    display: flex;
+}
+.template{
+    width:20%;
+    height: 40%;
+    background-color: #3C3C3C;
+    box-sizing: border-box;
+}
+.left-side{
+    width: 60%;
+    margin: 0% 0% 0% 0%;
+}
+
