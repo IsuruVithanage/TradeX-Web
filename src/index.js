@@ -32,6 +32,16 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+<<<<<<< HEAD
+import Education  from './Pages/Education/Education';
+import  Favorites from './Pages/Education/Favorites';
+
+
+
+
+
+
+=======
 import Suggestions from "./Pages/Suggestions/Suggestions";
 import Quiz from "./Pages/Quiz/Quiz";
 import UserProfileTab from "./Pages/User/UserProfileTab";
@@ -40,6 +50,7 @@ import Monthlysummary from './Pages/Summary/Monthlysummary';
 import MyAnswers from './Pages/Forum/MyAnswers';
 import Detailed from './Components/Questionbar/Detailed';
 import History from './Pages/ExternalWallet/History/History';
+>>>>>>> 0c9b8e98ec48d0c5e3f13d5ab905390661fd2368
 
 
 const router = createBrowserRouter([
@@ -122,7 +133,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/education",
-    element: <BasicPage/>,
+    element: <Education/>,
+  },
+  {
+    path: "/education/Favorites",
+    element: <Favorites/>,
   },
   {
     path: "/news",
@@ -196,6 +211,12 @@ const router = createBrowserRouter([
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
   },
+<<<<<<< HEAD
+  
+ 
+
+
+=======
   {
     path: "/Questionbar/Detailed",
     element: <Detailed />,
@@ -212,6 +233,7 @@ const router = createBrowserRouter([
     path: "/verify",
     element: <VerifyUser/>,
   },
+>>>>>>> 0c9b8e98ec48d0c5e3f13d5ab905390661fd2368
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
