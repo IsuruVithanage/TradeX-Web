@@ -23,6 +23,7 @@ export default function FundingWallet() {
     const userId = 1;
 
 
+
     useEffect(() => {
 
         if(currentWallet === 'tradingWallet') {
@@ -109,6 +110,13 @@ export default function FundingWallet() {
 
 
     const transfer = () => {
+        setSelectedCoin(null);
+        setSelectedQty(null);
+        currentWallet === 'tradingWallet' ? 
+        setSelectedWallet('fundingWallet') :
+        setSelectedWallet(null);
+
+
         const data = {
             userId: userId,
             coin: selectedCoin,
@@ -135,11 +143,6 @@ export default function FundingWallet() {
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
-                setSelectedCoin(null);
-                setSelectedQty(null);
-                currentWallet === 'tradingWallet' ? 
-                setSelectedWallet('fundingWallet') :
-                setSelectedWallet(null);
             })
     
             .catch(error => {
