@@ -32,6 +32,7 @@ import HaveAccount from './Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAcco
 import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword'
 import MyProblems from './Pages/Forum/MyProblems';
 import Dailysummary from './Pages/Summary/Dailysummary';
+<<<<<<< HEAD
 import Education  from './Pages/Education/Education';
 import  Favorites from './Pages/Education/Favorites';
 
@@ -40,12 +41,23 @@ import  Favorites from './Pages/Education/Favorites';
 
 
 
+=======
+import Suggestions from "./Pages/Suggestions/Suggestions";
+import Quiz from "./Pages/Quiz/Quiz";
+import UserProfileTab from "./Pages/User/UserProfileTab";
+import VerifyUser from "./Pages/User/VerifyUser";
+import Monthlysummary from './Pages/Summary/Monthlysummary';
+import MyAnswers from './Pages/Forum/MyAnswers';
+import Detailed from './Components/Questionbar/Detailed';
+import History from './Pages/ExternalWallet/History/History';
+>>>>>>> 0c9b8e98ec48d0c5e3f13d5ab905390661fd2368
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <App />,
   },
   {
     path: "/watchlist",
@@ -80,15 +92,11 @@ const router = createBrowserRouter([
     element: <Portfolio />,
   },
   {
-    path: "/AskQuestion",
-    element: <AskQuestion />,
-  },
-  {
     path: "/portfolio/history",
     element: <TradingHistory />,
   },
   {
-    path: "/portfolio/wallet",
+    path: "/portfolio/:wallet",
     element: <PortfolioWallet />,
   },
   {
@@ -96,8 +104,24 @@ const router = createBrowserRouter([
     element: <Forum />,
   },
   {
+    path: "/AskQuestion",
+    element: <AskQuestion />,
+  },
+  {
+    path: "/forum/MyProblems",
+    element: <MyProblems/>,
+  },
+  {
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+  {
     path: "/summary",
     element: <Dailysummary/>,
+  },
+  {
+    path: "/Summary/Dailysummary/Monthlysummary",
+    element: <Monthlysummary/>,
   },
   {
     path: "/settings",
@@ -129,7 +153,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/suggestion",
-    element: <BasicPage/>,
+    element: <Suggestions/>,
   },
   {
     path: "/externalwallet",
@@ -160,11 +184,25 @@ const router = createBrowserRouter([
     element: <DashBoard/>,
   },
   {
+    path: "/wallet/history",
+    element: <History/>,
+  },
+  {
 
     path: "/forum/MyProblems",
     element: <MyProblems/>,
   },
  
+  {
+
+    path: "/forum/MyAnswers",
+    element: <MyAnswers/>,
+  },
+
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
   {
     path: "/wallet/login/changepassword/recoverwallet",
     element: <RecoverWallet/>,
@@ -173,10 +211,29 @@ const router = createBrowserRouter([
     path: "/wallet/login/changepassword",
     element: <ChangePassword/>,
   },
+<<<<<<< HEAD
   
  
 
 
+=======
+  {
+    path: "/Questionbar/Detailed",
+    element: <Detailed />,
+  },
+  {
+    path: "/quiz",
+    element: <Quiz/>,
+  },
+  {
+    path: "/profile",
+    element: <UserProfileTab/>,
+  },
+  {
+    path: "/verify",
+    element: <VerifyUser/>,
+  },
+>>>>>>> 0c9b8e98ec48d0c5e3f13d5ab905390661fd2368
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -191,3 +248,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+

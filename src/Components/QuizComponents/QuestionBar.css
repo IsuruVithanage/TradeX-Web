@@ -1,0 +1,57 @@
+.question-container {
+    width: 100%;
+    height: 38%;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #151517;
+    box-shadow: 8px 9px 7px 0 rgba(0, 0, 0, 0.25);
+    margin-top: 10px;
+    color: white;
+}
+
+.question-desc {
+    margin-top: 2rem;
+    display: flex;
+}
+
+.question-desc p {
+    color: white;
+    padding: 1.6rem 5rem 1rem 1rem;
+    font-size: 1.2rem;
+}
+
+.question-desc span {
+    padding-top: 2.2rem;
+    padding-left: 1rem;
+    font-weight: bold;
+
+}
+
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: #9E9E9E;
+    font-size: 1rem;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-space-vertical {
+    padding-left: 2.5rem;
+    padding-bottom: 2rem;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper .ant-radio-inner {
+    background-color: #151517;
+    border-color: #21db9a;
+    border-width: 0.15rem;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper:hover .ant-radio-inner {
+    border-color: #1aab80;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+    border-color: #21db9a;
+    background-color: #21db9a;
+}

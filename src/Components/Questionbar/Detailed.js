@@ -1,7 +1,8 @@
-import React from 'react'
 import './Detailed.css' 
 import { AiOutlineLike } from "react-icons/ai";
 import { AiOutlineDislike } from "react-icons/ai";
+import BasicPage from '../../Components/BasicPage/BasicPage';
+import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,8 +13,28 @@ import {
 
 function Detailed() {
  
+  const Tabs = [
+    { label: "Latest", path: "/forum" },
+    { label: "My Problems", path: "/MyProblems" },
+    { label: "My Answers", path: "/MyAnswers" },
+    
+  ];
+  
+
   
   return (
+    <BasicPage tabs={Tabs}>
+      <SidePanelWithContainer
+            style={{height:"91vh"}}
+            header = "Favourites"
+            sidePanel ={
+                <div >
+                    <p className='sub-title'>Technical Analysis</p>
+                    <p className='sub-title'>Understanding cryptocurrency</p>
+                    <p className='sub-title'>Understanding cryptocurrency wallet</p>
+                    
+                </div> 
+            }>
     <div>
       <div className='ques'>
         <h3>Understanding Cryptocurrency Wallet Security</h3>
@@ -26,7 +47,7 @@ function Detailed() {
         <p className='author'>Created by: </p>
       </div>
 
-      <h2>3 Answers</h2>
+      <h2 className='answer-title'>3 Answers</h2>
       <div className='answer'>
         <h3>Two-factor authentication</h3>
         <h5>Question Explain</h5>
@@ -38,7 +59,10 @@ function Detailed() {
         <p className='author'>Created by: </p>
       </div>
     </div>
-  )
+    </SidePanelWithContainer>
+   </BasicPage>
+    )
+  
 }
 
 

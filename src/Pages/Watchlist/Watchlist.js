@@ -37,6 +37,8 @@ const Watchlist1 = () => {
     coin.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const top4Coins = filteredCoins.slice(0, 4);
+
   return (
     <BasicPage
       tabs={[
@@ -49,11 +51,33 @@ const Watchlist1 = () => {
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
     >
-      <div className="mainbanner" style={{ display: "flex" }}>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
+      <div style={{ display: "flex" }}>
+        {top4Coins.map((coin) => (
+          <div key={coin.id} className="banner">
+            <div style={{ display: "flex" }}>
+              <img
+                className="coin-image-top"
+                src={coin.image}
+                alt={coin.symbol}
+              />
+              <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
+            </div>
+            <div style={{ display: "flex" }}>
+              <p className="price-top">{formatCurrency(coin.current_price)}</p>
+              <p
+                className="price-change-top"
+                style={{
+                  color:
+                    coin.price_change_percentage_24h > 0
+                      ? "#21DB9A"
+                      : "#FF0000",
+                }}
+              >
+                {coin.price_change_percentage_24h.toFixed(2)} %
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="watchlist-table-container">
         <Input

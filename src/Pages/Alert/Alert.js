@@ -20,7 +20,7 @@ import './Alert.css';
 
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const backendApiEndpoint = "http://localhost:8081/alert/";
+    const backendApiEndpoint = "http://localhost:8003/alert/";
     const userId = 1;
     
     
@@ -36,11 +36,15 @@ import './Alert.css';
                     }
                 }
             )
+            
             .then(res => {
                 setAlerts(res.data);
             })
+
             .catch(error => {
-                console.log("Initial Data retrieving fail:\n", error)
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
     }, [selectedPage]);
 
@@ -135,7 +139,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Edit fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsSetterModalOpen(false);
@@ -162,7 +168,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.error('Alert Adding fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsSetterModalOpen(false);
@@ -191,7 +199,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Restore fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
     }
 
@@ -215,7 +225,9 @@ import './Alert.css';
             })
 
             .catch(error => {
-                console.log('Alert Delete fail:\n', error);
+                error.response ? alert(error.message + "\n" + error.response.data.message) :
+                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+                console.log("error", error);
             });
 
         setIsDeleteModalOpen(false);
@@ -240,14 +252,17 @@ import './Alert.css';
         <BasicPage
             subPages={{
                 onClick: setSelectedPage,
-                labels: ["Running", "Notified"],
-            }}>     
+                pages: [
+                    { label:"Running Alerts", value:"Running"},
+                    { label:"Notified Alerts", value:"Notified"},
+                ],
+            }}>  
 
 
             { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
 
 
-            <Table emptyMessage="No alerts to show">
+            <Table emptyMessage="No alerts to show" restart={selectedPage}>
                 <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
 
                 { alerts.map((alert, index) => {
@@ -282,8 +297,8 @@ import './Alert.css';
             <div style={{width:"450px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
                     <h1 style={{textAlign:"center"}}>{`${ action } Alert`}</h1>
-                    <Input type="dropdown" label='Coin' options={options} defaultValue={selectedCoin} onChange={setSelectedCoin}/>
-                    <Input type="dropdown" label='Condition' defaultValue={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
+                    <Input type="dropdown" label='Coin' options={options} value={selectedCoin} onChange={setSelectedCoin}/>
+                    <Input type="dropdown" label='Condition' value={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
                         { value: 'Equals', label: 'Equals' },
                         { value: 'Above', label: 'Above' },
                         { value: 'Below', label: 'Below' },

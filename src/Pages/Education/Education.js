@@ -16,25 +16,32 @@ function Education() {
       <div className="search">
         <Input type={"search"} placeholder={"serach"} />
       </div>
-      <div style={{display:"flex"}}><EducationResources/>
-      <div className="video-list">
-        <div style={{display:"block"}}><h2 style={{color:"white", margin:"10px"}}>Video List</h2>
-        <h4>Market Analysis</h4><ul>
-  <li>Technical Analysis</li>
-  <li>Fundamental Analysis</li>
-  <li>Market Trends and Predictions</li>
-</ul> 
-<h4>Market Analysis</h4><ul>
-  <li>Technical Analysis</li>
-  <li>Fundamental Analysis</li>
-  <li>Market Trends and Predictions</li>
-</ul> 
-<h4>Market Analysis</h4><ul>
-  <li>Technical Analysis</li>
-  <li>Fundamental Analysis</li>
-  <li>Market Trends and Predictions</li>
-</ul></div>
-        </div></div>
+      <div style={{ display: "flex" }}>
+        <EducationResources />
+        <div className="video-list">
+          <div style={{ display: "block" }}>
+            <h2 style={{ color: "white", margin: "10px" }}>Video List</h2>
+            <h4>Market Analysis</h4>
+            <ul>
+              <li>Technical Analysis</li>
+              <li>Fundamental Analysis</li>
+              <li>Market Trends and Predictions</li>
+            </ul>
+            <h4>Market Analysis</h4>
+            <ul>
+              <li>Technical Analysis</li>
+              <li>Fundamental Analysis</li>
+              <li>Market Trends and Predictions</li>
+            </ul>
+            <h4>Market Analysis</h4>
+            <ul>
+              <li>Technical Analysis</li>
+              <li>Fundamental Analysis</li>
+              <li>Market Trends and Predictions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </BasicPage>
   );
 }

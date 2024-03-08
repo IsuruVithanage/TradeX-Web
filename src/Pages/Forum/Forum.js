@@ -10,23 +10,18 @@ import {
   
 } from "react-router-dom";
 
-  
 
 import './forum.css';
-import { FaSearch } from "react-icons/fa";
-import Detailed from '../../Components/Questionbar/Detailed';
-import { color } from '@mui/system';
+
 import Questionset from './Questionset';
 import Input from "../../Components/Input/Input";
-import AskQuestion from "../Forum/AskQuestion"
-import { GoBell } from "react-icons/go";
-import MyProblems from "../Forum/MyProblems"
+
 
 export default function Forum() {
   const Tabs = [
     { label: "Latest", path: "/" },
-    { label: "My Problems", path: "/forum/MyProblems" },
-    { label: "My Answers", path: "/alert" },
+    { label: "My Problems", path: "/Forum/MyProblems" },
+    { label: "My Answers", path: "/Forum/MyAnswers" },
     
   ];
 
@@ -41,8 +36,7 @@ export default function Forum() {
                   <p className='sub-title'>Technical Analysis</p>
                   <p className='sub-title'>Understanding cryptocurrency</p>
                   <p className='sub-title'>Understanding cryptocurrency wallet</p>
-                
-              </div> 
+               </div> 
           }>
 
           <div style={{display: "flex", width: "100%" }}>
@@ -71,15 +65,26 @@ export default function Forum() {
               </div>
           </div>
 
-          <Questionset/>
-          <Questionset/>
-          <Questionset/>
-          <Questionset/>
-          <Questionset/>
-
-
-       
+         <Questionset/>
         
+
+        
+     {/*  {
+          Records && Records.map(record => {
+            return(
+              <div className='question-row' key={record.id}>
+                 <div className='question-title'>
+                  {record.title}<br/><br/>
+                  </div> 
+
+                  <h4>{record.description}</h4><br/><br/>
+                  {record.auther}
+              </div>
+            )
+          }) 
+        }
+       
+      */}
 
          
       </SidePanelWithContainer>

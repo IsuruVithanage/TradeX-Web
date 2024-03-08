@@ -5,10 +5,23 @@ import './LineChart.css';
 
 export default function LineChart(props) {
 	let handleResize = useRef(null);
-
-	const [ chartData, setChartData ] = useState(props.data ? props.data[Object.keys(props.data)[0]] : []);
+	const [ timeVisible, setTimeVisible ] = useState(false)
+	const [ chartData, setChartData ] = useState([]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
-	const [ activeDuration, setActiveDuration ] = useState(props.data && Object.keys(props.data)[0]);
+	const [ activeDuration, setActiveDuration ] = useState('');
+
+	useEffect(() => {
+		activeDuration && props.data[activeDuration].length > 0 &&
+		typeof(props.data[activeDuration][0].time) === 'number' ? 
+		setTimeVisible(true) : setTimeVisible(false);
+	}, [activeDuration, props.data])
+
+	useEffect(() => {
+		if(props.data && Object.keys(props.data).length > 0){
+			setChartData(props.data[Object.keys(props.data)[0]]);
+			setActiveDuration(Object.keys(props.data)[0]);
+		}
+	}, [props.data]);
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration]);
@@ -64,6 +77,7 @@ export default function LineChart(props) {
 				fixRightEdge: true,
 				borderVisible: false,
 				lockVisibleTimeRangeOnResize: true,
+				timeVisible: timeVisible,
 			},
 
 			grid: {
@@ -83,6 +97,7 @@ export default function LineChart(props) {
 
 			localization: {
 				priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+				locale: 'en-US',
 			},
 		});
 		
@@ -112,7 +127,7 @@ export default function LineChart(props) {
 
 			chart.remove();
 		};
-	}, [isFullScreen, chartData] );
+	}, [isFullScreen, chartData, timeVisible] );
 
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
@@ -135,6 +150,8 @@ export default function LineChart(props) {
 					{isFullScreen ? <SlSizeActual size={20} /> : <SlSizeFullscreen size={20}/>}
 				</span>
 			</div>
+
+			{ chartData.length === 0 && <p className="empty-message">No data to show</p>}
 			
 			<div id="chart"/>
 

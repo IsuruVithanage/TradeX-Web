@@ -1,0 +1,76 @@
+.uploaddata-container{
+    width: 97%;
+    height: 91%;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background-color: #0E0E0F;
+    box-shadow: 8px 9px 7px 0 rgba(0, 0, 0, 0.25);
+    margin-top: 10px;
+    padding: 1rem 1rem 1rem 1rem ;
+}
+
+.submit-container{
+    width: 98%;
+    display: flex;
+    margin-top: 1rem;
+}
+.submit-container button{
+    margin: 1rem;
+}
+
+.input-table{
+    width: 100%;
+}
+
+.input-table td{
+    padding: 1rem;
+}
+
+.input-table td p{
+    margin-top: 0;
+}
+
+.uploaddata-container>p{
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #3C3C3C;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.upload-container input {
+    margin-bottom: 10px;
+}
+
+.upload-container p{
+    font-size: 1rem;
+    color: #9E9E9E;
+    font-weight: bold;
+}
+
+
+
+
+.material-container{
+    display: flex;
+    width: 100%;
+    height: 300px;
+}
+
+.material-div{
+    width: 100%;
+    padding: 1rem;
+}

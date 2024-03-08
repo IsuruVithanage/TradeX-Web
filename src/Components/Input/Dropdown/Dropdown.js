@@ -3,14 +3,15 @@ import Select from 'react-select';
 export default function Dropdown (props) {
 
     const customStyles = {
-        control: (provided) => ({
+        control: (provided, state) => ({
             ...provided,
             border: 'none',
             boxShadow: 'none',
             borderRadius: '6px',
+            opacity: state.isDisabled ? '0.6' : '1',
             backgroundColor: '#3C3C3C',
             minHeight: '30px',
-            cursor: 'text',
+            cursor: 'pointer',
         }),
 
         singleValue: (provided) => ({
@@ -93,15 +94,16 @@ export default function Dropdown (props) {
     const handleChange = (selectedValue) => {
         props.onChange(selectedValue ? selectedValue.value : undefined);
     };
-
+    
 
     return (
         <Select
             styles={customStyles}
             isClearable={true} 
             isSearchable={props.searchable === undefined ? true : props.searchable}
+            isDisabled={props.disabled}
             options={props.options} 
-            defaultValue={props.defaultValue && props.options.filter(opt => opt.label === props.defaultValue)}
+            value={(props.value === null ) ? null : props.value && props.options.find(opt => opt.value === props.value)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}

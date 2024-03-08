@@ -2,13 +2,29 @@
 
 .table-container{
   width: 100%;
-  min-width: 700px;
   border-radius: 15px;
   box-sizing: border-box;
   padding: 16px 2vw;
   background-color: #0E0E0F;
   overflow-x: auto;
 }
+
+.table-container 
+.table-body.restart{
+  animation: tableRestart 0.3s cubic-bezier(1, 0.8, 0, 0.2);
+}
+
+@keyframes tableRestart {
+  from {
+      opacity: 0;
+      transform: translateY(-18px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY()
+  }
+}
+
 
 .table-container 
 .main-table {
@@ -81,7 +97,6 @@ td:first-child{
   background-color: #151516;
 }
 
-.table-container 
 .empty-message{
   text-align: center;
   margin-top: 50px;
