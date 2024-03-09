@@ -183,13 +183,11 @@ const router = createBrowserRouter([
     path: "/forum/MyProblems",
     element: <MyProblems/>,
   },
- 
   {
 
     path: "/forum/MyAnswers",
     element: <MyAnswers/>,
   },
-
   {
     path: "/Questionbar/Detailed",
     element: <Detailed />,
