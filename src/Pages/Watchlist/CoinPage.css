@@ -51,6 +51,7 @@
   .Input{
     width: 314px;
     height: 28px;
+    margin-top: 15px;
   }
   .Stat p{
     color:#ffffff;

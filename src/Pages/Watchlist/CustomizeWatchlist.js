@@ -114,6 +114,36 @@ const Watchlist1 = () => {
                     onChange={handleChange}
                   />
                 </div>
+              
+                <table className="watchlist-table-modal">
+                  <thead style={{color:"#dbdbdb", fontSize:"18px", marginBottom:"20px"}}>
+                    <tr>
+                      <td>Coin</td>
+                      <td>Price</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCoins.map((coin) => (
+                      <tr key={coin.id}>
+                        
+                        <td style={{marginLeft:"100px", marginBottom:"50px"}}>
+                          <img
+                            className="coin-image-add"
+                            src={coin.image}
+                            alt={coin.symbol}
+                          />
+                          <span className="coin-symbol-add">
+                            {coin.symbol.toUpperCase()}
+                          </span>
+                      
+                        </td>
+                      
+                        <td className="coin-price-add">{formatCurrency(coin.current_price)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </Modal>
           </div>
