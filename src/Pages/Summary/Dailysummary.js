@@ -3,6 +3,7 @@ import './dailysummary.css'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
 import Switch from '@mui/material/Switch';
+import { Box } from '@mui/system';
 
 
 function Dailysummary() {
@@ -20,8 +21,8 @@ function Dailysummary() {
     
     
     <div className='heading'>Generate Daily Summary</div>
-    <div className='page-content'>
-        <div className='left-side'>
+    <div className='page-content'>        
+    <div className='left-side'>
           <div className='add-items'>
               <div className='add-coins'>
                   <h3>Add Coins</h3>
@@ -61,6 +62,7 @@ function Dailysummary() {
               </div>
 
               <div className='box-container'>
+                
 
               </div>
           </div>
