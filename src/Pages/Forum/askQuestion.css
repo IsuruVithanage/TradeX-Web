@@ -17,9 +17,12 @@
     font-size: 20px;
 
 }
-.ask-ques-body h4{
+.body h4{
     color: white;
     font-size: 20px;
+}
+.body p{
+    color: #9e9e9e ;
 }
 .ask-ques-body p{
     font-size: 15px;
@@ -28,13 +31,14 @@
 
 
   
-    .ask-form-container .text-area{
+    .body .text-area{
         padding:10px;
         border: solid 1px black;
         font-family: 'Roboto',sans-serif;
         width: calc(100% - 20px);
         resize: vertical;
         background-color: #3c3c3c;
+        
     }
     .post-button{
         margin: 50px 0px;

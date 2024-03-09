@@ -41,13 +41,13 @@
                 <Input type="text" id="title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
               </label>
 
-              <label className="body">
+              <div className="body">
                 <h4>Body</h4>
                 <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
                 <textarea id="ask-ques-body" className='text-area' cols="30" rows="10"></textarea>
                 
 
-              </label>
+              </div>
           {/*   <label className="ask-ques-tags">
                 <h4>Tags</h4>
                 <p>Add upto five tags to describe what your question is about. Start typing to see suggestions</p>

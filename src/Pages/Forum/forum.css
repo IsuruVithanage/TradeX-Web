@@ -116,6 +116,7 @@
 }
 .question-stat p{
     color: #21DB9A;
+    padding-top: 8%;
        
 }
 
@@ -141,6 +142,7 @@
     display: inline-block;
     width: 480px;
     color:#FFF ;
+    padding-top: 2%;
 }
 
 /*
