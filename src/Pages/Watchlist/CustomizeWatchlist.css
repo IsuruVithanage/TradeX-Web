@@ -1,54 +1,127 @@
-.watchlist-table-container{
-    background-color: #0E0E0F;
-    width: 95%;
-    margin: 0 auto;
-    padding: 5%;
-    box-sizing: border-box;
-    border-radius: 15px;
-  }
+.watchlist-table-container {
+  background-color: #0E0E0F;
+  width: 95%;
+  margin: 0 auto;
+  padding: 5%;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
 
-  .watchlist-table{
-    color: #ffffff;
-    background-color: #0E0E0F;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    border-collapse: collapse;
-  }
+.watchlist-table {
+  color: #ffffff;
+  background-color: #0E0E0F;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+}
 
-  .watchlist-table tr{
-    border-bottom: 1px solid #3C3C3C;
-    height: 70px;
-  }
+.watchlist-table tr {
+  border-bottom: 1px solid #3C3C3C;
+  height: 70px;
+}
 
-  .coin-image{
-    width: 25px;
-  }
+.coin-image {
+  width: 25px;
+}
 
-  .coin-name-container{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.coin-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 
-  .coin-symbol{
-    color: #9E9E9E;
+.coin-symbol {
+  color: #9E9E9E;
 
-  }
+}
 
-  .banner {
-    color: #ffffff;
-    background-color: #0E0E0F;
-    width: 1300px;
-    height: 120px;
-    margin-bottom: 40px;
-    margin-top: 50px;
-    margin-right: 10px; 
-    margin-left: 10px;
-    border-radius: 20px;
-  }
+.banner {
+  color: #ffffff;
+  background-color: #0E0E0F;
+  width: 1300px;
+  height: 120px;
+  margin-bottom: 40px;
+  margin-top: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 20px;
+}
 
-  
-  
-  
+.coin-image-top {
+  width: 40px;
+  height: 40px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+
+.coin-symbol-top {
+  color: #9E9E9E;
+  font-size: 25px;
+  margin-left: 15px;
+  font-weight: bold;
+  margin-top: 20px;
+
+}
+
+.price-top {
+  font-size: 26px;
+  margin-top: 20px;
+
+}
+
+.price-change-top {
+  font-size: 20px;
+  margin-top: 23px;
+  padding-left: 100px;
+
+}
+
+.add-coin {
+  margin-top: 100px;
+
+}
+
+.watchlist-table-modal {
+  color: #ffffff;
+  background-color: #0E0E0F;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  margin-top: 75px;
+
+}
+
+.watchlist-table-modal thead {
+  margin-bottom: 100px;
+  font-weight: bold;
+}
+
+.watchlist-table-modal tr {
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
+
+.coin-image-add {
+  width: 30px;
+  height: 30px;
+
+}
+
+.coin-symbol-add {
+  font-size: 17px;
+  font-weight: bold;
+  color: #9E9E9E;
+  margin-left: 10px;
+}
+
+.watchlist-table-modal tbody td {
+  padding-top: 10px;
+}
+
+.coin-price-add {
+  font-size: 17px;
+  width: 150px;
+}

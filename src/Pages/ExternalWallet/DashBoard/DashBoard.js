@@ -23,7 +23,7 @@ export default function DashBoard() {
             ]}>
             
             <SidePanelWithContainer 
-                style={{height:"50vh"}}
+                style={{height:"75vh"}}
                 header="Transfer"
                 sidePanel = {
                     <div>

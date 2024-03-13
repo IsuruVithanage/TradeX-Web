@@ -1,0 +1,52 @@
+[
+    {
+        "id":1,
+        "title":"Understanding cryptocurrency wallet",
+        "description":"Discuss best practices for securing cryptocurrency wallets, including the use of hardware wallets, two-factor authentication, and safe storage.",
+        "auther":"Supun Rathnayake",
+        "views":9,
+        "likes":4,
+        "replies":3
+
+    },
+    {
+        "id":2,
+        "title":"How is the future of cryptocurrency",
+        "description":"With the evolution of technology, the definition of money is constantly changing. So, it should not come as a surprise that cryptocurrencies might be considered money in the future.",
+        "auther":"Supun Rathnayake",
+        "views":9,
+        "likes":4,
+        "replies":3
+
+    },
+    {
+        "id":3,
+        "title":"What happens if cryptocurrencies are banned?",
+        "description":"Discuss best practices for securing cryptocurrency wallets, including the use of hardware wallets, two-factor authentication, and safe storage.",
+        "auther":"Supun Rathnayake",
+        "views":9,
+        "likes":4,
+        "replies":3
+
+    },
+    {
+        "id":4,
+        "title":"Understanding cryptocurrency wallet",
+        "description":"Discuss best practices for securing cryptocurrency wallets, including the use of hardware wallets, two-factor authentication, and safe storage.",
+        "auther":"Supun Rathnayake",
+        "views":9,
+        "likes":4,
+        "replies":3
+
+    },
+    {
+        "id":5,
+        "title":"Understanding cryptocurrency wallet",
+        "description":"Discuss best practices for securing cryptocurrency wallets, including the use of hardware wallets, two-factor authentication, and safe storage.",
+        "auther":"Supun Rathnayake",
+        "views":9,
+        "likes":4,
+        "replies":3
+
+    }
+]

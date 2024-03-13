@@ -3,11 +3,12 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import "./CustomizeWatchlist.css";
-import { display, width } from "@mui/system";
+import Modal from "../../Components/Modal/Modal";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
+  const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
 
   useEffect(() => {
     axios
@@ -37,6 +38,7 @@ const Watchlist1 = () => {
   const filteredCoins = coins.filter((coin) =>
     coin.name.toLowerCase().includes(search.toLowerCase())
   );
+  const top4Coins = filteredCoins.slice(0, 4);
 
   return (
     <BasicPage
@@ -50,11 +52,33 @@ const Watchlist1 = () => {
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
     >
-      <div className="mainbanner" style={{ display: "flex" }}>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
-        <div className="banner">Top coins</div>
+      <div style={{ display: "flex" }}>
+        {top4Coins.map((coin) => (
+          <div key={coin.id} className="banner">
+            <div style={{ display: "flex" }}>
+              <img
+                className="coin-image-top"
+                src={coin.image}
+                alt={coin.symbol}
+              />
+              <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
+            </div>
+            <div style={{ display: "flex" }}>
+              <p className="price-top">{formatCurrency(coin.current_price)}</p>
+              <p
+                className="price-change-top"
+                style={{
+                  color:
+                    coin.price_change_percentage_24h > 0
+                      ? "#21DB9A"
+                      : "#FF0000",
+                }}
+              >
+                {coin.price_change_percentage_24h.toFixed(2)} %
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="watchlist-table-container">
         <div
@@ -66,13 +90,63 @@ const Watchlist1 = () => {
             style={{ width: "300px", float: "right", marginRight: "50px" }}
             onChange={handleChange}
           />
-          <Input
-            type="button"
-            value="Add Coin"
-            outlined
-            green
-            style={{ width: "150px" }}
-          />
+          <div>
+            <Input
+              type="button"
+              value="Add Coin"
+              outlined
+              green
+              style={{ width: "150px" }}
+              onClick={() => setIsdeleteModalOpen(true)}
+            />
+            <Modal open={isdeleteModalOpen} close={setIsdeleteModalOpen}>
+              <div style={{ width: "450px" }}>
+                <h2>Select Coin</h2>
+                <div>
+                  <Input
+                    type="search"
+                    placeholder="Search"
+                    style={{
+                      width: "400px",
+                      float: "right",
+                      marginRight: "50px",
+                    }}
+                    onChange={handleChange}
+                  />
+                </div>
+              
+                <table className="watchlist-table-modal">
+                  <thead style={{color:"#dbdbdb", fontSize:"18px", marginBottom:"20px"}}>
+                    <tr>
+                      <td>Coin</td>
+                      <td>Price</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCoins.map((coin) => (
+                      <tr key={coin.id}>
+                        
+                        <td style={{marginLeft:"100px", marginBottom:"50px"}}>
+                          <img
+                            className="coin-image-add"
+                            src={coin.image}
+                            alt={coin.symbol}
+                          />
+                          <span className="coin-symbol-add">
+                            {coin.symbol.toUpperCase()}
+                          </span>
+                      
+                        </td>
+                      
+                        <td className="coin-price-add">{formatCurrency(coin.current_price)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Modal>
+          </div>
         </div>
 
         <table className="watchlist-table">
