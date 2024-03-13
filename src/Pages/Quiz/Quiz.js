@@ -7,6 +7,8 @@ import axios from "axios";
 import QuizTimer from "../../Components/QuizComponents/QuizTImer";
 import Table, {TableRow} from "../../Components/Table/Table";
 import Modal from "../../Components/Modal/Modal";
+import Input from "../../Components/Input/Input";
+import {useNavigate} from "react-router-dom";
 
 export default function Quiz() {
     const [questions, setQuestions] = useState([]);
@@ -14,6 +16,7 @@ export default function Quiz() {
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
     let currentScore = 0;
+    const navigate=useNavigate()
 
 
     const Tabs = [
@@ -45,11 +48,7 @@ export default function Quiz() {
 
     const loadQuestions = async () => {
         try {
-            const result = await axios.get(`http://localhost:8007/quiz/`, {
-                headers: {
-                    'access-token': localStorage.getItem("token")
-                }
-            });
+            const result = await axios.get(`http://localhost:8007/quiz/`);
             setQuestions(shuffleArray(result.data));
         } catch (error) {
             console.error("Error fetching questions:", error);
@@ -75,6 +74,11 @@ export default function Quiz() {
         });
     };
 
+    const startTrade = () => {
+        navigate('/watchlist');
+
+
+    }
 
     return (
         <BasicPage tabs={Tabs}>
@@ -96,7 +100,7 @@ export default function Quiz() {
                             alt="Logo"
                             width={60}
                         />
-                        <h1 style={{marginTop:'0'}}>Welcome</h1>
+                        <h1 style={{marginTop: '0'}}>Welcome</h1>
                     </div>
                     <p>You can now access our Trading Simulation Platform and practice trading in a risk free
                         environment</p>
@@ -115,6 +119,9 @@ export default function Quiz() {
                         <p>Starting Balance</p>
                         <h1>{score >= 5 ? '$ 100,000' : '$ 50,000'}</h1>
                     </div>
+
+                    <Input type="button" value='Get Start' style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}
+                           onClick={startTrade}/>
 
                 </div>
             </Modal>

@@ -13,7 +13,7 @@ h1{
   }
   
 ::-webkit-scrollbar-thumb {
-    background-color: #21db9a; /* Set the color of the scrollbar thumb */
+    background-color: #696969; /* Set the color of the scrollbar thumb */
     border-radius: 6px; /* Set the border-radius of the scrollbar thumb */
   }
   
