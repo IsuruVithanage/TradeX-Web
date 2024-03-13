@@ -4,7 +4,7 @@ import { ColorType, createChart } from 'lightweight-charts';
 import axios from 'axios';
 
 export const ChartComponent = (props) => {
-    const [activeDuration, setActiveDuration] = useState('daily');
+    const [activeDuration, setActiveDuration] = useState('1m');
     const [chart, setChart] = useState(null);
     const chartContainerRef = useRef(null);
 
@@ -122,18 +122,52 @@ export const ChartComponent = (props) => {
         };
     }, []);
 
-    function updateChartData(daily) {}
+    const updateChartDuration = async (duration) => {
+        setActiveDuration(duration);
+        let interval = '1m';
+        if (duration === '1m') {
+            interval = '1m';
+        } else if (duration === '1d') {
+            interval = '1d';
+        } else if (duration === '1w') {
+            interval = '1w';
+        }
+        try {
+            const res = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${
+                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
+                }USDT&interval=${interval}&limit=1000`
+            );
+            const data = await processData(res.data);
+            chart.series.setData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
 
     return (
         <div id="chartDiv">
             <div className="buttonDiv">
                 <button
-                    onClick={() => updateChartData('daily')}
-                    className={`durationButton ${activeDuration === 'daily' ? 'active' : ''}`}
+                    onClick={() => updateChartDuration('1m')}
+                    className={`durationButton ${activeDuration === '1m' ? 'active' : ''}`}
                 >
                     1m
                 </button>
-                {/* Other buttons... */}
+                <button
+                    onClick={() => updateChartDuration('1d')}
+                    className={`durationButton ${activeDuration === '1d' ? 'active' : ''}`}
+                >
+                    1d
+                </button>
+                <button
+                    onClick={() => updateChartDuration('1w')}
+                    className={`durationButton ${activeDuration === '1w' ? 'active' : ''}`}
+                >
+                    1w
+                </button>
             </div>
             <div id="tchart" ref={chartContainerRef} />
         </div>

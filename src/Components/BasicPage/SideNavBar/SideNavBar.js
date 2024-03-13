@@ -1,22 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { BiBarChartAlt, BiCandles, BiHomeAlt } from "react-icons/bi";
 import { BsChatText } from "react-icons/bs";
-import { IoIosMenu, IoMdBook } from "react-icons/io";
-import { GoBell } from "react-icons/go";
-import { FaRegFileAlt } from "react-icons/fa";
-import { SlSettings } from "react-icons/sl";
-import { AiOutlineFileSearch } from "react-icons/ai";
 import "./SideNavBar.css";
-
 import { VscListUnordered } from "react-icons/vsc";
-import { FaRegChartBar } from "react-icons/fa";
-import { SlBookOpen } from "react-icons/sl";
-import { ImNewspaper } from "react-icons/im";
-import { PiStarFourLight } from "react-icons/pi";
-import { LiaClipboardListSolid } from "react-icons/lia";
-import { FaRegBell } from "react-icons/fa";
-import { SlWallet } from "react-icons/sl";
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
