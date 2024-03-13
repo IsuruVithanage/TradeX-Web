@@ -42,6 +42,8 @@ import Monthlysummary from './Pages/Summary/Monthlysummary';
 import MyAnswers from './Pages/Forum/MyAnswers';
 import Detailed from './Components/Questionbar/Detailed';
 import History from './Pages/ExternalWallet/History/History';
+import Login from './Pages/Login&Signin/Login';
+import Signin from './Pages/Login&Signin/Signin';
 
 
 const router = createBrowserRouter([
@@ -187,6 +189,16 @@ const router = createBrowserRouter([
 
     path: "/forum/MyAnswers",
     element: <MyAnswers/>,
+  },
+  {
+
+    path: "/Login&Signin/Login",
+    element: <Login/>,
+  },
+  {
+
+    path: "/Login&Signin/Signin",
+    element: <Signin/>,
   },
   {
     path: "/Questionbar/Detailed",
