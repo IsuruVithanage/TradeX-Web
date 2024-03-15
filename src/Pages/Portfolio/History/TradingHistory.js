@@ -4,7 +4,6 @@ import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithC
 import Input from '../../../Components/Input/Input';
 import Table, { TableRow } from '../../../Components/Table/Table';
 import axios from 'axios';
-import Loading from '../../../Components/Loading/Loading';
 
 export default function History() {
     const [selectedSection, setSelectedSection] = useState("Trading");
@@ -100,6 +99,7 @@ export default function History() {
 
     return (
         <BasicPage 
+            isLoading={isLoading}
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
@@ -107,7 +107,6 @@ export default function History() {
                 { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
             ]}>
 
-            {isLoading && <Loading/>}
 
 
             <SidePanelWithContainer 

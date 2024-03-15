@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import TopNavBar from "./TopNavBar/TopNavBar";
 import './BasicPage.css'
+import { PageLoading } from "../Loading/Loading";
 
 const LazySideNavBar = lazy(() => import("./SideNavBar/SideNavBar"));
 
@@ -12,6 +13,8 @@ export default function BasicPage(props) {
           <LazySideNavBar />
         </Suspense>
       )}
+
+      { props.isLoading && <PageLoading/> }
 
       <TopNavBar {...props}/>
 

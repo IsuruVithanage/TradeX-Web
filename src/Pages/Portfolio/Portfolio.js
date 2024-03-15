@@ -6,7 +6,6 @@ import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRow } from '../../Components/Table/Table';
 import axios from 'axios';
-import Loading from '../../Components/Loading/Loading';
 
 export default function Portfolio() {
   const [ assets, setAssets ] = useState([]);
@@ -54,6 +53,7 @@ export default function Portfolio() {
 
   return (
     <BasicPage 
+        isLoading={isLoading}
         tabs={[
           { label:"Overview", path:"/portfolio"},
           { label:"History", path:"/portfolio/history"},
@@ -61,7 +61,9 @@ export default function Portfolio() {
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
         ]}>
 
-        { isLoading && <Loading/>}
+
+ 
+
       
         <SidePanelWithContainer 
             style={{height:'75vh'}}

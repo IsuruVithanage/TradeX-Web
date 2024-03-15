@@ -5,7 +5,6 @@ import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithC
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow } from '../../../Components/Table/Table'
-import Loading from '../../../Components/Loading/Loading';
 import axios from 'axios';
 import './PortfolioWallet.css'
 
@@ -19,7 +18,7 @@ export default function FundingWallet() {
     const [ assets, setAssets ] = useState([]);
     const [ usdBalance, setUsdBalance ] = useState(null);
     const [ portfolioValue, setPortfolioValue ] = useState(null);
-    const [isInvalid, setIsInvalid] = useState([true, null]);
+    const [ isInvalid, setIsInvalid ] = useState([true, null]);
     const [ isLoading, setIsLoading ] = useState(true);
     const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/';
     const userId = 1;
@@ -82,6 +81,9 @@ export default function FundingWallet() {
         setSelectedWallet(null);
         setSelectedCoin(null);
         setSelectedQty(null);
+        setAssets([]);
+        setUsdBalance(null);
+        setPortfolioValue(null);
         setIsLoading(true);
             
         axios
@@ -114,11 +116,12 @@ export default function FundingWallet() {
 
 
     const transfer = () => {
-        setSelectedCoin(null);
-        setSelectedQty(null);
         currentWallet === 'tradingWallet' ? 
         setSelectedWallet('fundingWallet') :
         setSelectedWallet(null);
+        setSelectedCoin(null);
+        setSelectedQty(null);
+        setIsLoading(true);
 
 
         const data = {
@@ -147,11 +150,13 @@ export default function FundingWallet() {
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
+                setIsLoading(false);
             })
     
             .catch(error => {
                 error.response ? alert(error.response.data.message) :
                 console.log("error", error);
+                setIsLoading(false);
             });
     }
 
@@ -159,6 +164,8 @@ export default function FundingWallet() {
     
     return (
         <BasicPage
+            isLoading={isLoading}
+
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
@@ -173,7 +180,6 @@ export default function FundingWallet() {
                 ],
             }}> 
 
-            { isLoading && <Loading/>}
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}

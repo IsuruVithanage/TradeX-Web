@@ -24,6 +24,19 @@ export default function Loading() {
 
 
 
+export function PageLoading() {
+    return (
+        <div className='loading-background'>      
+            <div className='page-loading-item-container'>        
+                <LinearLoader variant="indeterminate" />
+            </div>
+        </div>
+    );
+}
+
+
+
+
 const LinearLoader = styled(LinearProgress)(() => ({
   height: 3,
   borderRadius: 5,
