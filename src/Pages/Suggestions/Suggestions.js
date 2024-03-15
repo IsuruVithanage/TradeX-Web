@@ -8,8 +8,8 @@ import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import Table, {TableRow} from "../../Components/Table/Table";
-import assets from "../Portfolio/assets.json";
-import initialData from "../Portfolio/portfolio-data.json";
+import assets from "../SimulateTradingPlatform/assets.json";
+import initialData from "./portfolio-data.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 

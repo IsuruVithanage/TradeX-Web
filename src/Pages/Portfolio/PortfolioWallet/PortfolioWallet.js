@@ -5,6 +5,7 @@ import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithC
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow } from '../../../Components/Table/Table'
+import Loading from '../../../Components/Loading/Loading';
 import axios from 'axios';
 import './PortfolioWallet.css'
 
@@ -19,6 +20,7 @@ export default function FundingWallet() {
     const [ usdBalance, setUsdBalance ] = useState(null);
     const [ portfolioValue, setPortfolioValue ] = useState(null);
     const [isInvalid, setIsInvalid] = useState([true, null]);
+    const [ isLoading, setIsLoading ] = useState(true);
     const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/';
     const userId = 1;
 
@@ -80,8 +82,8 @@ export default function FundingWallet() {
         setSelectedWallet(null);
         setSelectedCoin(null);
         setSelectedQty(null);
+        setIsLoading(true);
             
-
         axios
             .get(
                 currentWallet === "tradingWallet" ? 
@@ -98,9 +100,11 @@ export default function FundingWallet() {
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
+                setIsLoading(false);
             })
     
             .catch(error => {
+                setIsLoading(false);
                 setUsdBalance(0);
                 setPortfolioValue(0);
                 error.response ? alert(error.response.data.message) :
@@ -121,7 +125,6 @@ export default function FundingWallet() {
             userId: userId,
             coin: selectedCoin,
             quantity: selectedQty,
-            date: new Date().toLocaleDateString('en-GB').replace(/\//g, '-'),
             sendingWallet: currentWallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet',
             receivingWallet: selectedWallet === 'externalWallet' ? 
             document.getElementById('walletAddress').value : selectedWallet
@@ -140,6 +143,7 @@ export default function FundingWallet() {
             )
     
             .then(res => {
+                console.log(res.data)
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
@@ -168,6 +172,8 @@ export default function FundingWallet() {
                     { label:"Funding Wallet", value:"fundingWallet"},
                 ],
             }}> 
+
+            { isLoading && <Loading/>}
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}

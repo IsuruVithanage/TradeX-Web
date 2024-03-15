@@ -4,6 +4,7 @@ import trade from './Assets/Images/trade.png'
 import Input from './Components/Input/Input';
 import { Link } from 'react-router-dom';
 
+
 export default function App() {
   const height = document.documentElement.clientHeight;
   const width = document.documentElement.clientWidth;

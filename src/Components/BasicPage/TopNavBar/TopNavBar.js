@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {BiSolidUser, BiSolidUserRectangle} from "react-icons/bi";
+import {BiSolidUserRectangle} from "react-icons/bi";
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
-import {FaUser} from "react-icons/fa";
 import {FaUserLarge} from "react-icons/fa6";
 import {HiOutlineUserCircle} from "react-icons/hi";
 import {PiUserFocus} from "react-icons/pi";
