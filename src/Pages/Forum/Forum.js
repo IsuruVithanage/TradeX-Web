@@ -22,6 +22,9 @@ export default function Forum() {
     { label: "Latest", path: "/" },
     { label: "My Problems", path: "/Forum/MyProblems" },
     { label: "My Answers", path: "/Forum/MyAnswers" },
+    { label: "Login", path: "/Login&Signin/Login" },
+    { label: "Signin", path: "/Login&Signin/Signin" }
+
     
   ];
 

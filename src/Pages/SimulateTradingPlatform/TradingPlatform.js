@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
@@ -9,6 +9,7 @@ import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow} from "../../Components/Table/Table";
 import assets from "./assets.json";
+import axios from "axios";
 
 export default function TradingPlatform() {
 
@@ -18,7 +19,7 @@ export default function TradingPlatform() {
     ];
 
     const [orderType,setOrderType] = useState('Buy');
-    console.log(orderType)
+
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
