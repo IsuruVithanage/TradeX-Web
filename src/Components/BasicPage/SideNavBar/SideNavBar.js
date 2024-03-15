@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BsChatText } from "react-icons/bs";
-import "./SideNavBar.css";
+
 import { VscListUnordered } from "react-icons/vsc";
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
@@ -11,7 +11,7 @@ import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
 import CandlestickChartOutlinedIcon from '@mui/icons-material/CandlestickChartOutlined';
 import GppBadOutlinedIcon from '@mui/icons-material/GppBadOutlined';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-
+import "./SideNavBar.css";
 
 export default function SideNavBar() {
   const currentLocation = useLocation().pathname;
@@ -104,7 +104,7 @@ export default function SideNavBar() {
             </div>
         </Link>
 
-        <Link to="/externalwallet" target="blank" className={`nav-link ${isActive("/externalwallet")}`}>
+        <Link to="/wallet" target="blank" className={`nav-link ${isActive("/externalwallet")}`}>
             <div className="nav-link-container">
                 <GppBadOutlinedIcon size={22} style={{fontSize:"25px"}}/>
                 <span className="nav-label">TradeX Wallet</span>

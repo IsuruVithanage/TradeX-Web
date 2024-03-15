@@ -20,12 +20,15 @@ import './Alert.css';
 
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const backendApiEndpoint = "http://localhost:8003/alert/";
     const userId = 1;
     
     
 
     useEffect(() => {
+        setIsLoading(true);
+
         axios
             .get(
                 backendApiEndpoint,
@@ -39,9 +42,11 @@ import './Alert.css';
             
             .then(res => {
                 setAlerts(res.data);
+                setIsLoading(false);
             })
 
             .catch(error => {
+                setIsLoading(false);
                 error.response ? alert(error.message + "\n" + error.response.data.message) :
                 alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
                 console.log("error", error);
@@ -250,6 +255,7 @@ import './Alert.css';
     return (
     <>
         <BasicPage
+            isLoading={isLoading}
             subPages={{
                 onClick: setSelectedPage,
                 pages: [

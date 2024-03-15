@@ -1,0 +1,45 @@
+.loading-background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0E0E0F60;
+    z-index: 3;
+
+}
+
+.loading-item-container{
+    width: 20%;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.loading-logo-container{
+    margin: auto;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.loading-logo{
+    width: 250px;
+    height: 100px;
+    margin-left: 20px;
+}
+
+.loader-container{
+    width: 90%;
+    margin: auto;
+    margin-top: 4vh;
+}
+
+.page-loading-item-container{
+    width: 94vw;
+    position: fixed;
+    top: 0;
+    left: 6vw;
+    z-index: 3;
+}

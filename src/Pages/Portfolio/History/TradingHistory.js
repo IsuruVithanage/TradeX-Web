@@ -13,6 +13,7 @@ export default function History() {
     const [selectedTo, setSelectedTo] = useState(null);
     const [historyData, setHistoryData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     //const backendAPI = (selectedSection === "Trading") ? "" : 'http://localhost:8004/portfolio/history';
     const backendAPI = 'http://localhost:8004/portfolio/history';
     const userId = 1;
@@ -31,6 +32,15 @@ export default function History() {
     ]
 
     useEffect(() => {
+        setHistoryData([]);
+        setFilteredData([]);
+        setSelectedCoin(null);
+        setSelectedAction(null);
+        setSelectedFrom(null);
+        setSelectedTo(null);
+        setIsLoading(true);
+
+
         if(selectedSection === "Transaction"){
         axios
             .get(
@@ -45,6 +55,7 @@ export default function History() {
             .then((res) => {
                 setHistoryData(res.data);
                 setFilteredData(res.data);
+                setIsLoading(false);
             })
 
             .catch((error) => {
@@ -53,21 +64,16 @@ export default function History() {
                 if(error.response){
                     alert(error.response.data.message);
                 }
-
-                setHistoryData([]);
-                setFilteredData([]);
+                setIsLoading(false);
             });
         }
 
         else{
             setHistoryData(require('./TradingHistory.json'));
             setFilteredData(require('./TradingHistory.json'));
+            setIsLoading(false);
         }
 
-        setSelectedCoin(null);
-        setSelectedAction(null);
-        setSelectedFrom(null);
-        setSelectedTo(null);
     }, [selectedSection]);
 
 
@@ -93,12 +99,14 @@ export default function History() {
 
     return (
         <BasicPage 
+            isLoading={isLoading}
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
                 { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
                 { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
             ]}>
+
 
 
             <SidePanelWithContainer 
