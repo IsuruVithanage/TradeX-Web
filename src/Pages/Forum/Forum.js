@@ -41,7 +41,7 @@ export default function Forum() {
 
           <div style={{display: "flex", width: "100%" }}>
               <Input type="search" placeholder="Search" style={{width:"600px" ,marginLeft:"20px"}}/>
-              <Link to="/AskQuestion">
+              <Link to="/forum/AskQuestion">
                 <Input type="button" value="Ask Question"  style={{width:"130px" ,marginLeft:"15%"}}/>
               </Link>
               <RiSoundModuleLine className="filter-icon" style={{color:"#6D6D6D" ,marginLeft:"15%",size:"20px"}}></RiSoundModuleLine>

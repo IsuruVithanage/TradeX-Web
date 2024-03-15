@@ -6,10 +6,9 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
-import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow} from "../../Components/Table/Table";
-import assets from "../Portfolio/assets.json";
+import assets from "./assets.json";
 
 export default function TradingPlatform() {
 

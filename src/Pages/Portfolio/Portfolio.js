@@ -6,6 +6,7 @@ import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRow } from '../../Components/Table/Table';
 import axios from 'axios';
+import Loading from '../../Components/Loading/Loading';
 
 export default function Portfolio() {
   const [ assets, setAssets ] = useState([]);
@@ -13,11 +14,13 @@ export default function Portfolio() {
   const [ portfolioValue, setPortfolioValue ] = useState(null);
   const [ percentages, setPercentages ] = useState([]);
   const [ initialData, setInitialData ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/overview';
   const userId = 1;
   
 
   useEffect(() => {
+    setIsLoading(true);
     axios
         .get(
             backendApiEndpoint,
@@ -34,9 +37,11 @@ export default function Portfolio() {
             setInitialData(res.data.historyData);
             setPortfolioValue(res.data.portfolioValue);
             setUsdBalance(res.data.usdBalance);
+            setIsLoading(false);
         })
 
         .catch(error => {
+            setIsLoading(false);
             setPortfolioValue(0);
             setUsdBalance(0);
             error.response ? alert(error.message + "\n" + error.response.data.message) :
@@ -55,6 +60,8 @@ export default function Portfolio() {
           { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
         ]}>
+
+        { isLoading && <Loading/>}
       
         <SidePanelWithContainer 
             style={{height:'75vh'}}
