@@ -3,7 +3,6 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, { TableRow } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
-import Loading from '../../Components/Loading/Loading';
 import axios from 'axios';
 import './Alert.css';
 
@@ -256,6 +255,7 @@ import './Alert.css';
     return (
     <>
         <BasicPage
+            isLoading={isLoading}
             subPages={{
                 onClick: setSelectedPage,
                 pages: [
@@ -265,7 +265,6 @@ import './Alert.css';
             }}>  
 
 
-            { isLoading && <Loading/>}
             { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
 
 

@@ -74,10 +74,6 @@ export default function Router() {
             element: <Detailed />,
         },
         {
-            path: "/Questionbar/Detailed",
-            element: <Detailed />,
-        },
-        {
             path: "/quiz",
             element: <Quiz />,
         },
