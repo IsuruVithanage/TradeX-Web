@@ -19,7 +19,10 @@ export default function TradingPlatform() {
         {label: "Quiz", path: "/quiz"},
     ];
 
-    const [orderType,setOrderType] = useState('Buy');
+    const [orderType, setOrderType] = useState('Buy');
+    const [price, setPrice] = useState(0);
+    const [quantity, setQuantity] = useState(1);
+    const [total, setTotal] = useState(0);
 
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
@@ -28,6 +31,18 @@ export default function TradingPlatform() {
 
     const handleCoinSelection = (coin) => {
         setSelectedCoin(coin);
+    };
+
+    const handlePriceChange = (value) => {
+        setPrice(value);
+        if (quantity !== 0) {
+            setTotal(value * quantity);
+        }
+    };
+
+    const handleQuantityChange = (value) => {
+        setQuantity(value);
+        setTotal(price * value);
     };
 
     return (
@@ -41,15 +56,15 @@ export default function TradingPlatform() {
                         <ButtonSet priceLimits={priceLimits}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <Input label={'Price'} type={'number'} icon={"$"}/>
-                        <Input label={'Price'} type={'number'}
-                               icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}/>
-
+                        <Input label={'Price'} type={'number'} icon={"$"} value={price} onChange={handlePriceChange}/>
+                        <Input label={'Quantity'} type={'number'} value={quantity}
+                               icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}
+                               onChange={handleQuantityChange}/>
                         <SliderInput/>
 
-                        <Input label={'Total'} type={"text"} placehalder={"Total"}/>
+                        <Input label={'Total'} type={"text"} placehalder={"Total"} value={total}/>
 
-                        <Input type="button" value={orderType} style={{marginTop:'0.7rem'}}/>
+                        <Input type="button" value={orderType} style={{marginTop: '0.7rem'}}/>
 
                     </div>
                 }
