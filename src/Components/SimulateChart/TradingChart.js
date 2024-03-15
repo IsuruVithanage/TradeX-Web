@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const ChartComponent = (props) => {
     const [activeDuration, setActiveDuration] = useState('1m');
-    const [chart, setChart] = useState(null);
+    const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
 
     const {
@@ -51,8 +51,12 @@ export const ChartComponent = (props) => {
         }
     };
 
-    const initializeChart = () => {
-        const newChart = createChart(chartContainerRef.current, {
+    const initializeChart = async () => {
+        if (chartInstance) {
+            chartInstance.remove();
+        }
+
+        const chart = createChart(chartContainerRef.current, {
             layout: {
                 background: { type: ColorType.Solid, color: backgroundColor },
                 textColor,
@@ -64,63 +68,60 @@ export const ChartComponent = (props) => {
                     visible: false,
                 },
                 horzLines: {
-                    color: '#3C3C3C',
+                    color: "#3C3C3C",
                 },
             },
             rightPriceScale: {
                 borderVisible: false,
-                textColor: '#AAA',
+                textColor: "#AAA",
             },
             localization: {
-                priceFormatter: (price) => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
             timeScale: {
                 fixLeftEdge: true,
                 borderVisible: false,
-            },
+            }
         });
 
-        const newSeries = newChart.addCandlestickSeries({
+        chart.timeScale().fitContent();
+
+        const newSeries = chart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
             wickUpColor,
-            wickDownColor,
+            wickDownColor
         });
 
-        setChart({ instance: newChart, series: newSeries });
-    };
+        newSeries.setData(await fetchData());
 
-    const updateChart = async () => {
-        if (!chart || !chart.instance) {
-            return;
-        }
+        // Set interval to fetch and update data every 5 seconds
+        const intervalId = setInterval(async () => {
+            newSeries.setData(await fetchData());
+        }, 5000);
 
-        try {
-            chart.instance.timeScale().fitContent();
-            chart.series.setData(await fetchData());
-        } catch (error) {
-            console.error('Error updating chart:', error);
-        }
-    };
+        setChartInstance(chart);
 
-    useEffect(() => {
-        if (!chart) {
-            initializeChart();
-        } else {
-            updateChart();
-        }
-    }, [selectedCoin]);
-
-    useEffect(() => {
-        // Cleanup function
-        return () => {
-            if (chart && chart.instance) {
-                chart.instance.removeSeries(chart.series);
-                chart.instance.remove();
-            }
+        const handleResize = () => {
+            chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: chartContainerRef.current.clientHeight });
         };
-    }, []);
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            clearInterval(intervalId);
+            window.removeEventListener('resize', handleResize);
+            chart.remove();
+        };
+    };
+
+    useEffect(() => {
+        if (selectedCoin) {
+            initializeChart();
+        }
+
+    }, [selectedCoin]);
 
     const updateChartDuration = async (duration) => {
         setActiveDuration(duration);
@@ -139,13 +140,11 @@ export const ChartComponent = (props) => {
                 }USDT&interval=${interval}&limit=1000`
             );
             const data = await processData(res.data);
-            chart.series.setData(data);
+            chartInstance.series.setData(data);
         } catch (error) {
             console.log(error);
         }
     };
-
-
 
     return (
         <div id="chartDiv">
