@@ -37,47 +37,6 @@
 
 }
 
-.banner {
-  color: #ffffff;
-  background-color: #0E0E0F;
-  width: 1300px;
-  height: 120px;
-  margin-bottom: 40px;
-  margin-top: 50px;
-  margin-right: 10px;
-  margin-left: 10px;
-  border-radius: 20px;
-}
-
-.coin-image-top {
-  width: 40px;
-  height: 40px;
-  margin-left: 20px;
-  margin-top: 10px;
-}
-
-
-.coin-symbol-top {
-  color: #9E9E9E;
-  font-size: 25px;
-  margin-left: 15px;
-  font-weight: bold;
-  margin-top: 20px;
-
-}
-
-.price-top {
-  font-size: 26px;
-  margin-top: 20px;
-
-}
-
-.price-change-top {
-  font-size: 20px;
-  margin-top: 23px;
-  padding-left: 100px;
-
-}
 
 .add-coin {
   margin-top: 100px;

@@ -37,44 +37,49 @@
 
 }
 
+.card-container{
+  display: flex;
+  align-items: center;
+  width: "100%";
+  margin-top: 5vh;
+  margin-bottom: 7vh;
+}
+
 .banner {
   color: #ffffff;
   background-color: #0E0E0F;
-  width: 1300px;
-  height: 150px;
-  margin-bottom: 40px;
-  margin-top: 50px;
-  margin-right: 10px;
-  margin-left: 10px;
-  border-radius: 20px;
+  width: 21vw;
+  min-width: 250px;
+  height: 166px;
+  border-radius: 15px;
+  margin: auto;
+  padding: 22px 25px;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 15px #21db9a30;
 }
 
 .coin-image-top {
   width: 40px;
   height: 40px;
-  margin-left: 20px;
-  margin-top: 10px;
 }
 
 
 .coin-symbol-top {
   color: #9E9E9E;
   font-size: 25px;
-  margin-left: 15px;
+  margin-left: 10px;
   font-weight: bold;
-  margin-top: 20px;
 
 }
 
 .price-top {
-  font-size: 26px;
-  margin-top: 20px;
- 
+  font-size: 29px;
+  margin-top: 29px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .price-change-top {
   font-size: 20px;
-  margin-top: 23px;
-  padding-left: 80px;
-
+  margin-left: auto;
 }
