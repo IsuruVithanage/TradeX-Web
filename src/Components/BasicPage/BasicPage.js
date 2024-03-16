@@ -13,11 +13,12 @@ export default function BasicPage(props) {
           <LazySideNavBar />
         </Suspense>
       )}
-
-      { props.isLoading && <PageLoading/> }
-
+      
       <TopNavBar {...props}/>
 
+      { props.isLoading && <PageLoading/> }
+      { props.isLoading && <div className="page-loading-dimmer"/> }
+      
       <div className={`main-container ${props.sideNavBar === false && 'full-width'}`}>
         {props.children}
       </div>

@@ -5,6 +5,7 @@ import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithC
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow } from '../../../Components/Table/Table'
+import { showMessage } from '../../../Components/Message/Message';
 import axios from 'axios';
 import './PortfolioWallet.css'
 
@@ -109,8 +110,11 @@ export default function FundingWallet() {
                 setIsLoading(false);
                 setUsdBalance(0);
                 setPortfolioValue(0);
-                error.response ? alert(error.response.data.message) :
                 console.log("error", error);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
             });
     }, [ currentWallet ]);
 
@@ -151,12 +155,16 @@ export default function FundingWallet() {
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
                 setIsLoading(false);
+                showMessage('success', 'Transaction Successful..!') ;
             })
     
             .catch(error => {
-                error.response ? alert(error.response.data.message) :
-                console.log("error", error);
                 setIsLoading(false);
+                console.log("error", error);
+                
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Transaction Failed..!') ;
             });
     }
 

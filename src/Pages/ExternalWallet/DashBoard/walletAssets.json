@@ -22,26 +22,13 @@
           "roi": 0
         },
 
-        "BN": {
-          "quantity": 30,
-          "marketPrice": 1000,
-          "value": 30000,
-          "roi": -18.86
-        },
-
-        "BB": {
-          "quantity": 30,
-          "marketPrice": 1000,
-          "value": 30000,
-          "roi": -18.86
-        },
         "BNB": {
           "quantity": 30,
           "marketPrice": 1000,
           "value": 30000,
           "roi": -18.86
         },
-
+        
         "XRP": {
           "quantity": 20,
           "marketPrice": 1000,

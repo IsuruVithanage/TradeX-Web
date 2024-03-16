@@ -3,6 +3,7 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, { TableRow } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
+import { showMessage } from '../../Components/Message/Message'
 import axios from 'axios';
 import './Alert.css';
 
@@ -47,8 +48,11 @@ import './Alert.css';
 
             .catch(error => {
                 setIsLoading(false);
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
+
                 console.log("error", error);
             });
     }, [selectedPage]);
@@ -121,6 +125,8 @@ import './Alert.css';
 
 
     const editAlert = () => {
+        setIsLoading(true);
+
         axios
             .put(
                 backendApiEndpoint,
@@ -141,12 +147,17 @@ import './Alert.css';
 
             .then(res => {
                 setAlerts(res.data);
+                setIsLoading(false);
+                showMessage('success', 'Alert Edit successful..!') ;
             })
 
             .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
                 console.log("error", error);
+                setIsLoading(false);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Alert Edit failed..!') ;
             });
 
         setIsSetterModalOpen(false);
@@ -155,6 +166,8 @@ import './Alert.css';
 
 
     const addAlert = () => {
+        setIsLoading(true);
+
         axios
             .post( 
                 backendApiEndpoint, 
@@ -170,12 +183,17 @@ import './Alert.css';
 
             .then(res => {  
                 setAlerts(res.data);
+                setIsLoading(false);
+                showMessage('success', 'Alert Adding successful..!') ;
             })
 
             .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
                 console.log("error", error);
+                setIsLoading(false);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Alert Adding failed..!') ;
             });
 
         setIsSetterModalOpen(false);
@@ -184,6 +202,8 @@ import './Alert.css';
 
 
     const restoreAlert = (alertId) => {
+        setIsLoading(true);
+
         axios
             .put(
                 backendApiEndpoint,
@@ -201,18 +221,25 @@ import './Alert.css';
 
             .then(res => {
                 setAlerts(res.data);
+                setIsLoading(false);
+                showMessage('success', 'Alert restore successful..!') ;
             })
 
             .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
                 console.log("error", error);
+                setIsLoading(false);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Alert restore failed..!') ;
             });
     }
 
 
 
     const deleteAlert = () => {
+        setIsLoading(true);
+
         axios
             .delete(
                 backendApiEndpoint,
@@ -227,12 +254,17 @@ import './Alert.css';
 
             .then(res => {
                 setAlerts(res.data);
+                setIsLoading(false);
+                showMessage('success', 'Alert delete successfull..!') ;
             })
 
             .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
                 console.log("error", error);
+                setIsLoading(false);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Alert delete failed..!') ;
             });
 
         setIsDeleteModalOpen(false);
