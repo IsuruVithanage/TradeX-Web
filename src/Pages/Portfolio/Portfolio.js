@@ -5,6 +5,7 @@ import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRow } from '../../Components/Table/Table';
+import { showMessage } from '../../Components/Message/Message';
 import axios from 'axios';
 
 export default function Portfolio() {
@@ -43,9 +44,11 @@ export default function Portfolio() {
             setIsLoading(false);
             setPortfolioValue(0);
             setUsdBalance(0);
-            error.response ? alert(error.message + "\n" + error.response.data.message) :
-            alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
             console.log("error", error);
+
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Database connection failed..!') ;
         });
 
   }, []);

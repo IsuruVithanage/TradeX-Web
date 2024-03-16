@@ -20,3 +20,8 @@
     left: 0;
     width: 100%;
 }
+
+.page-loading-dimmer{
+    background-color: #00000030;
+    height: 100vh;
+}
