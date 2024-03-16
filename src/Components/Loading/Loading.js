@@ -7,7 +7,7 @@ import logo from '../../Assets/Images/trade.png'
 
 export default function Loading() {
     return (
-        <div className='loading-background'>
+        <div className='loading-background' style={{backgroundColor: "#000000"}}>
             <div className='loading-item-container'>
                 <div className='loading-logo-container'>
                     <img src={logo} alt="TradeX" className="loading-logo" />
@@ -26,7 +26,7 @@ export default function Loading() {
 
 export function PageLoading() {
     return (
-        <div className='loading-background'>      
+        <div className='loading-background' style={{backgroundColor: "#00000050"}}>      
             <div className='page-loading-item-container'>        
                 <LinearLoader variant="indeterminate" />
             </div>
