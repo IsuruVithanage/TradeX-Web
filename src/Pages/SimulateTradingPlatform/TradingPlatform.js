@@ -22,6 +22,7 @@ export default function TradingPlatform() {
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0);
+    const [latestPrice, setLatestPrice] = useState(0);
 
 
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
@@ -31,6 +32,15 @@ export default function TradingPlatform() {
     const handleCoinSelection = (coin) => {
         setSelectedCoin(coin);
     };
+
+    const updateLastPrice = (newValue) => {
+        setLatestPrice(newValue);
+    };
+
+    useEffect(() => {
+        console.log(latestPrice);
+    }, [latestPrice]);
+
 
     const handlePriceChange = (value) => {
         setPrice(value);
@@ -44,6 +54,11 @@ export default function TradingPlatform() {
         setTotal(price * value);
     };
 
+    const setMarketPrice = () => {
+        setPrice(latestPrice);
+        setTotal(latestPrice * quantity);
+    }
+
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
@@ -52,7 +67,7 @@ export default function TradingPlatform() {
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
-                        <ButtonSet priceLimits={priceLimits}/>
+                        <ButtonSet priceLimits={priceLimits} setMarketPrice={setMarketPrice}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
                         <Input label={'Price'} type={'number'} icon={"$"} value={price} onChange={handlePriceChange}/>
@@ -70,7 +85,7 @@ export default function TradingPlatform() {
             >
 
                 <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
-                <TradingChart selectedCoin={selectedCoin}/>
+                <TradingChart selectedCoin={selectedCoin} updateLastPrice={updateLastPrice}/>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>

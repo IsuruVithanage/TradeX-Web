@@ -8,8 +8,10 @@ export const ChartComponent = (props) => {
     const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
 
+
     const {
         selectedCoin,
+        updateLastPrice,
         colors: {
             backgroundColor = '#0E0E0F',
             textColor = '#0E0E0F',
@@ -28,6 +30,7 @@ export const ChartComponent = (props) => {
                 low: parseFloat(item[3]),
                 close: parseFloat(item[4]),
                 time: item[0] / 1000,
+
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
@@ -45,7 +48,10 @@ export const ChartComponent = (props) => {
                     selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
                 }USDT&interval=1m&limit=1000`
             );
+            const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
+            updateLastPrice(latestPrice);
             return processData(res.data);
+
         } catch (error) {
             console.log(error);
         }
