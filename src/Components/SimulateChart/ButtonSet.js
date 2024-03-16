@@ -15,6 +15,7 @@ export default function ButtonSet(props) {
             setIsBtnThree(false);
         } else if (userState === 2) {
             setIsBtnTwo(true);
+            props.setMarketPrice();
             setIsBtnOne(false);
             setIsBtnThree(false);
         } else if (userState === 3) {
