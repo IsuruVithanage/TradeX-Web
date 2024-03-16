@@ -4,9 +4,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #0E0E0F60;
     z-index: 3;
-
+    background-color: #000000;
 }
 
 .loading-item-container{
@@ -36,10 +35,10 @@
     margin-top: 4vh;
 }
 
-.page-loading-item-container{
-    width: 94vw;
+.page-loader-container{
+    width: 100vw;
     position: fixed;
     top: 0;
-    left: 6vw;
+    left: 0;
     z-index: 3;
 }

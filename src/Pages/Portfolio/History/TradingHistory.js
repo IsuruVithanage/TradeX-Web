@@ -3,6 +3,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../../Components/Input/Input';
 import Table, { TableRow } from '../../../Components/Table/Table';
+import { showMessage } from '../../../Components/Message/Message'
 import axios from 'axios';
 
 export default function History() {
@@ -59,12 +60,12 @@ export default function History() {
             })
 
             .catch((error) => {
-                console.log("Error fetching historyData", error);
-
-                if(error.response){
-                    alert(error.response.data.message);
-                }
                 setIsLoading(false);
+                console.log("Error fetching historyData", error);
+                
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
             });
         }
 
