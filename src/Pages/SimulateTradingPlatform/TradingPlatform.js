@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
@@ -12,7 +12,7 @@ import assets from "./assets.json";
 import {useSelector} from "react-redux";
 
 export default function TradingPlatform() {
-    const user= useSelector(state => state.user);
+    const user = useSelector(state => state.user);
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -20,6 +20,7 @@ export default function TradingPlatform() {
     ];
 
     const [orderType, setOrderType] = useState('Buy');
+    const [orderCato, setOrderCato] = useState('');
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [total, setTotal] = useState(0);
@@ -34,14 +35,14 @@ export default function TradingPlatform() {
         setSelectedCoin(coin);
     };
 
+    const setOrderCatagory = (value) => {
+        setOrderCato(value);
+        console.log(orderCato);
+    };
+
     const updateLastPrice = (newValue) => {
         setLatestPrice(newValue);
     };
-
-    useEffect(() => {
-        console.log(latestPrice);
-        console.log(user);
-    }, [latestPrice]);
 
 
     const handlePriceChange = (value) => {
@@ -61,6 +62,35 @@ export default function TradingPlatform() {
         setTotal(latestPrice * quantity);
     }
 
+    //Create a order object to place a order
+    const placeOrder = () => {
+        return {
+            userId: user.user.id,
+            type: orderType,
+            coin: selectedCoin.symbol,
+            price: price,
+            quantity: quantity,
+            totalPrice: total
+        };
+    }
+
+    const saveOrder = async () => {
+        try {
+            const order=placeOrder();
+            const response = await fetch('http://localhost:8007/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(order)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Failed to save order:', error);
+        }
+    }
+
+
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
@@ -69,7 +99,7 @@ export default function TradingPlatform() {
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
-                        <ButtonSet priceLimits={priceLimits} setMarketPrice={setMarketPrice}/>
+                        <ButtonSet priceLimits={priceLimits} setMarketPrice={setMarketPrice} setOrderCatagory={setOrderCatagory}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
                         <Input label={'Price'} type={'number'} icon={"$"} value={price} onChange={handlePriceChange}/>
@@ -78,9 +108,9 @@ export default function TradingPlatform() {
                                onChange={handleQuantityChange}/>
                         <SliderInput/>
 
-                        <Input label={'Total'} type={"text"} placehalder={"Total"} value={total}/>
+                        <Input label={'Total'} type={"number"} icon={"$"} placehalder={"Total"} value={total}/>
 
-                        <Input type="button" value={orderType} style={{marginTop: '0.7rem'}}/>
+                        <Input type="button" value={orderType} style={{marginTop: '0.7rem'}} onClick={saveOrder}/>
 
                     </div>
                 }
