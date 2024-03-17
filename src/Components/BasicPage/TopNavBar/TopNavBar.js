@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {BiSolidUser, BiSolidUserRectangle} from "react-icons/bi";
+import {BiSolidUserRectangle} from "react-icons/bi";
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
-import {FaUser} from "react-icons/fa";
 import {FaUserLarge} from "react-icons/fa6";
 import {HiOutlineUserCircle} from "react-icons/hi";
 import {PiUserFocus} from "react-icons/pi";
@@ -53,9 +52,9 @@ export default function TopNavBar(props) {
                 <nav className="links-container">
                     {(props.tabs) && props.tabs.map((tab) => (
                         <Link key={tab.label} to={tab.path} className="top-link">
-                  <span className={`top-nav-link ${active(tab.path)}`}>
-                    {tab.label}
-                  </span>
+                            <span className={`top-nav-link ${active(tab.path)}`}>
+                                {tab.label}
+                            </span>
                         </Link>
                     ))}
 
