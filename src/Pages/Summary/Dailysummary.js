@@ -68,9 +68,12 @@ function Dailysummary() {
           </div>
       </div>
 
+    
       <div className='right-side'>
-          <div className='template'>
-              
+          <div className='template'></div>
+          <div className='buttons'>
+            <Input type="button" value="Generate" className="generate-button" style={{width:"87px" }}/>
+            <Input type="button" value="Download" className="download-button" style={{width:"87px" , marginLeft:"28%" }}/>
           </div>
       </div>
     </div>

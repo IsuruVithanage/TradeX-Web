@@ -55,15 +55,15 @@ export default function Forum() {
     
       <div className='topic-row'>
               <div className='topic'>
-                  <h4>Topic</h4>
+                  <h4 style={{marginTop:"-2%"}}>Topic</h4>
               </div>
               <div className='topic-stat'>
                   <h4>Views</h4>
               </div>
-              <div className='topic-stat'>
+              <div className='topic-stat-likes'>
                   <h4>Likes</h4>
               </div>
-              <div className='topic-stat'>
+              <div className='topic-stat-replies'>
                   <h4>Replies</h4>
               </div>
           </div>

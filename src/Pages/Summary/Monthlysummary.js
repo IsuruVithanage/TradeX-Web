@@ -6,7 +6,7 @@ import './Monthlysummary.css'
 
 function Monthlysummary() {
     const Tabs = [
-        { label: "Daily", path: "/Dailysummary" },
+        { label: "Daily", path: "./Summary/Dailysummary" },
         { label: "Monthly", path: "/" },
        
         
@@ -16,58 +16,65 @@ function Monthlysummary() {
       return (
         <BasicPage tabs={Tabs}>
         
-        <div className='page-content'>
-            <div className='heading'>Generate Monthly Summary</div>
-            <div className='add-items'>
-                <div className='add-coins'>
-                    <h3>Add Coins</h3>
-                    <div className='search-bar'>
-                        <Input type="search" placeholder="Search" style={{width:"400px" }}/>
-                        <Input type="button" value="Add" className="add-button" style={{width:"70px",marginLeft:"50%" }}/>
-                    </div>
-                   <div className='chart-table'>
-                        <div className='data'>
-                          <p>Top Gains</p>
-                          <Switch {...label} defaultChecked style={{}} />
-                        </div>  
+        <div className='heading'>Generate Monthly Summary</div>
+    <div className='page-content'>        
+    <div className='left-side'>
+          <div className='add-items'>
+              <div className='add-coins'>
+                  <h3>Add Coins</h3>
+                  <div className='search-bar'>
+                      <Input type="search" placeholder="Search" style={{width:"400px" }}/>
+                      <Input type="button" value="Add" className="add-button" style={{width:"70px",marginLeft:"50%" }}/>
+                  </div>
+                <div className='chart-table'>
+                      <div className='data'>
+                      <Input type="toggle" id='' toggleLabel="Top Gains"/>
+                      </div>  
+
+                      <div className='data'>
+                      <Input type="toggle" id='' toggleLabel="Top Losses"/>
+                      </div> 
+
+                      <div className='data'>
+                      <Input type="toggle" id='' toggleLabel="Trending Coin"/>
+                      </div>
+
+                      <div className='data'>
+                      <Input type="toggle" id='' toggleLabel="Trading History"/>
+                      </div>
+
+                      <div className='data'>
+                      <Input type="toggle" id='' toggleLabel="Trading Suggestion Table"/>
+                      </div>
+
+                      
+                  </div>
+
     
-                        <div className='data'>
-                          <p>Top Losses</p>
-                          <Switch {...label} defaultChecked />
-                        </div> 
-    
-                        <div className='data'>
-                          <p>Trending coin</p>
-                          <Switch {...label} defaultChecked />
-                        </div>
-    
-                        <div className='data'>
-                          <p>Trading History</p>
-                          <Switch {...label} defaultChecked />
-                        </div>
-    
-                        <div className='data'>
-                          <p>Trading Suggestion Table</p>
-                          <Switch {...label} defaultChecked />
-                        </div>
-    
-                        
-                    </div>
-    
-      
-                </div>
+              </div>
+              
+              <div className='default'>
+              <Input type="toggle" id='' toggleLabel="Set this features as default"/>
+              </div>
+
+              <div className='box-container'>
                 
-                <div className='default'>
-                   <p>Set this features as default</p>
-                   <Switch {...label} defaultChecked />
-                </div>
+
+              </div>
+          </div>
+      </div>
+
     
-                <div className='box-container'>
+      <div className='right-side'>
+          <div className='template'></div>
+          <div className='buttons'>
+            <Input type="button" value="Generate" className="generate-button" style={{width:"87px" }}/>
+            <Input type="button" value="Download" className="download-button" style={{width:"87px" , marginLeft:"28%" }}/>
+          </div>
+      </div>
+    </div>
     
-                </div>
-            </div>
     
-        </div>
         
         
     
