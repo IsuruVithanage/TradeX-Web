@@ -9,9 +9,10 @@ import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow} from "../../Components/Table/Table";
 import assets from "./assets.json";
-import axios from "axios";
+import {useSelector} from "react-redux";
 
 export default function TradingPlatform() {
+    const user= useSelector(state => state.user);
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -39,6 +40,7 @@ export default function TradingPlatform() {
 
     useEffect(() => {
         console.log(latestPrice);
+        console.log(user);
     }, [latestPrice]);
 
 
