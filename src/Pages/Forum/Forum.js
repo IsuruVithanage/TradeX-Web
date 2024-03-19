@@ -22,6 +22,9 @@ export default function Forum() {
     { label: "Latest", path: "/" },
     { label: "My Problems", path: "/Forum/MyProblems" },
     { label: "My Answers", path: "/Forum/MyAnswers" },
+    { label: "Login", path: "/Login&Signin/Login" },
+    { label: "Signin", path: "/Login&Signin/Signin" }
+
     
   ];
 
@@ -41,7 +44,7 @@ export default function Forum() {
 
           <div style={{display: "flex", width: "100%" }}>
               <Input type="search" placeholder="Search" style={{width:"600px" ,marginLeft:"20px"}}/>
-              <Link to="/AskQuestion">
+              <Link to="/forum/AskQuestion">
                 <Input type="button" value="Ask Question"  style={{width:"130px" ,marginLeft:"15%"}}/>
               </Link>
               <RiSoundModuleLine className="filter-icon" style={{color:"#6D6D6D" ,marginLeft:"15%",size:"20px"}}></RiSoundModuleLine>
@@ -52,15 +55,15 @@ export default function Forum() {
     
       <div className='topic-row'>
               <div className='topic'>
-                  <h4>Topic</h4>
+                  <h4 style={{marginTop:"-2%"}}>Topic</h4>
               </div>
               <div className='topic-stat'>
                   <h4>Views</h4>
               </div>
-              <div className='topic-stat'>
+              <div className='topic-stat-likes'>
                   <h4>Likes</h4>
               </div>
-              <div className='topic-stat'>
+              <div className='topic-stat-replies'>
                   <h4>Replies</h4>
               </div>
           </div>

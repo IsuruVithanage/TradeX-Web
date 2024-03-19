@@ -30,10 +30,6 @@ const Watchlist1 = () => {
     return "$ " + amountString;
   };
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-    console.log(e.target.value);
-  };
 
   const filteredCoins = coins.filter((coin) =>
     coin.name.toLowerCase().includes(search.toLowerCase())
@@ -52,34 +48,38 @@ const Watchlist1 = () => {
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
     >
-      <div style={{ display: "flex" }}>
+      
+      <div style={{ display: "flex", alignItems: "center", width: "100%", marginTop: "5vh", marginBottom: "7vh"}}>
         {top4Coins.map((coin) => (
-          <div key={coin.id} className="banner">
-            <div style={{ display: "flex" }}>
-              <img
-                className="coin-image-top"
-                src={coin.image}
-                alt={coin.symbol}
-              />
-              <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
-            </div>
-            <div style={{ display: "flex" }}>
-              <p className="price-top">{formatCurrency(coin.current_price)}</p>
+          <div key={coin.symbol} className="banner">
+            <div style={{ display: "flex", alignItems: "center"}}>
+              <div style={{ display: "flex", alignItems: "center"}}>
+                <img
+                  className="coin-image-top"
+                  src={coin.image}
+                  alt={coin.symbol}
+                />
+                <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
+              </div>
+
               <p
                 className="price-change-top"
                 style={{
                   color:
-                    coin.price_change_percentage_24h > 0
-                      ? "#21DB9A"
-                      : "#FF0000",
+                    coin.price_change_percentage_24h > 0 ? "#21DB9A" :
+                    coin.price_change_percentage_24h < 0 ? "#FF0000" : "#FFFFFF"
                 }}
               >
                 {coin.price_change_percentage_24h.toFixed(2)} %
               </p>
             </div>
+
+            <p className="price-top">{formatCurrency(coin.current_price)}</p>
+            
           </div>
         ))}
       </div>
+
       <div className="watchlist-table-container">
         <div
           style={{ display: "flex", marginLeft: "700px", marginBottom: "0px" }}
@@ -88,7 +88,7 @@ const Watchlist1 = () => {
             type="search"
             placeholder="Search"
             style={{ width: "300px", float: "right", marginRight: "50px" }}
-            onChange={handleChange}
+            onChange={setSearch}
           />
           <div>
             <Input
@@ -111,7 +111,7 @@ const Watchlist1 = () => {
                       float: "right",
                       marginRight: "50px",
                     }}
-                    onChange={handleChange}
+                    onChange={setSearch}
                   />
                 </div>
 

@@ -4,137 +4,142 @@ import axios from "axios";
 import Input from "../../Components/Input/Input";
 import "./Watchlist.css";
 
-const Watchlist1 = () => {
-  const [coins, setCoins] = useState([]);
-  const [search, setSearch] = useState("");
+const Watchlist = () => {
+    const symbols = require("../../Assets/Images/Coin Images.json");
+    const symbolsList = '["' + Object.keys(symbols).slice(1).map((symbol) => `${symbol}USDT`).join('","') + '"]';
+    const [isLoading, setIsLoading] = useState(true);
+    const [coins, setCoins] = useState([]);
+    const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    axios
-      .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en"
-      )
-      .then((res) => {
-        setCoins(res.data);
-        console.log(res.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    useEffect(() => {
+        setIsLoading(true);
 
-  const formatCurrency = (amount) => {
-    const amountString = amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 20,
-    });
-    return "$ " + amountString;
-  };
+        axios
+        .get(
+            // "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en"
+            `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbolsList}`
+        )
+        .then((res) => {
+            const data = res.data.map((coin) => {
+                coin.symbol = coin.symbol.slice(0, -4);
+                return coin;
+            }).sort((a, b) => b.quoteVolume - a.quoteVolume);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-    console.log(e.target.value);
-  };
 
-  const filteredCoins = coins.filter((coin) =>
-    coin.name.toLowerCase().includes(search.toLowerCase())
-  );
+            setCoins(data);
+            setIsLoading(false);
+        })
+        .catch((error) => {
+            console.log(error);
+            setIsLoading(false);
+        });
+    }, [symbolsList]);
 
-  const top4Coins = filteredCoins.slice(0, 4);
 
-  return (
-    <BasicPage
-      tabs={[
-        { label: "All", path: "/watchlist" },
-        { label: "Custom", path: "/watchlist/customize" },
-        { label: "CoinPage", path: "/watchlist/CoinPage" },
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "ViewAll", path: "/watchlist/ViewAll" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
-      ]}
-    >
-      <div style={{ display: "flex" }}>
-        {top4Coins.map((coin) => (
-          <div key={coin.id} className="banner">
-            <div style={{ display: "flex" }}>
-              <img
-                className="coin-image-top"
-                src={coin.image}
-                alt={coin.symbol}
-              />
-              <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
-            </div>
-            <div style={{ display: "flex" }}>
-              <p className="price-top">{formatCurrency(coin.current_price)}</p>
-              <p
-                className="price-change-top"
-                style={{
-                  color:
-                    coin.price_change_percentage_24h > 0
-                      ? "#21DB9A"
-                      : "#FF0000",
-                }}
-              >
-                {coin.price_change_percentage_24h.toFixed(2)} %
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="watchlist-table-container">
-        <Input
-          type="search"
-          placeholder="Search"
-          style={{ width: "300px" }}
-          onChange={handleChange}
-        />
+    const formatCurrency = (amount) => {
+        const amountString = parseFloat(amount).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 20,
+        });
+        return "$ " + amountString;
+    };
 
-        <table className="watchlist-table">
-          <thead>
-            <tr>
-              <td colSpan={2}>Coin</td>
-              <td>Price</td>
-              <td>24h Change</td>
-              <td>Market Cap</td>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCoins.map((coin) => {
-              const price = formatCurrency(coin.current_price);
-              const mktCap = formatCurrency(coin.market_cap);
-              return (
-                <tr key={coin.id}>
-                  <td style={{ width: "40px" }}>
-                    <img
-                      className="coin-image"
-                      src={coin.image}
-                      alt={coin.symbol}
-                    />
-                  </td>
-                  <td style={{ width: "150px" }}>
-                    <div className="coin-name-container">
-                      <span className="coin-name">{coin.name}</span>
-                      <span className="coin-symbol">{coin.symbol}</span>
+
+    const filteredCoins = coins.filter((coin) =>
+        coin.symbol.toLowerCase().includes(search.toLowerCase())
+    );
+
+
+    return (
+        <BasicPage
+            isLoading={isLoading}
+            tabs={[
+                { label: "All", path: "/watchlist" },
+                { label: "Custom", path: "/watchlist/customize" },
+                { label: "CoinPage", path: "/watchlist/CoinPage" },
+                { label: "Dashboard", path: "/watchlist/AdDashboard" },
+                { label: "ViewAll", path: "/watchlist/ViewAll" },
+                { label: "Users", path: "/watchlist/Users" },
+                { label: "Admin", path: "/watchlist/Admin" },
+            ]}>
+
+            <div className="card-container">
+                {coins.slice(0, 4).map((coin) => (
+                <div key={coin.symbol} className="banner">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <img
+                            className="coin-image-top"
+                            src={symbols[coin.symbol].img}
+                            alt={coin.symbol}
+                            />
+                            <p className="coin-symbol-top">{coin.symbol}</p>
+                        </div>
+
+                        <p className="price-change-top" style={{
+                            color:
+                                coin.priceChangePercent > 0
+                                ? "#21DB9A"
+                                : coin.priceChangePercent < 0
+                                ? "#FF0000"
+                                : "#FFFFFF",
+                            }}
+                        > {parseFloat(coin.priceChangePercent).toFixed(2)} % </p>
                     </div>
-                  </td>
-                  <td>{price}</td>
-                  <td
-                    style={{
-                      color:
-                        coin.price_change_percentage_24h > 0
-                          ? "#21DB9A"
-                          : "#FF0000",
-                    }}
-                  >
-                    {coin.price_change_percentage_24h} %
-                  </td>
-                  <td>{mktCap}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </BasicPage>
-  );
+
+                    <p className="price-top">{formatCurrency(coin.lastPrice)}</p>
+                </div>
+                ))}
+            </div>
+
+            <div className="watchlist-table-container">
+                <Input type="search" placeholder="Search" style={{ width: "300px" }} onChange={setSearch} />
+
+                <table className="watchlist-table">
+                    <thead>
+                        <tr>
+                            <td colSpan={2}>Coin</td>
+                            <td>Price</td>
+                            <td>24h Change</td>
+                            <td>Value</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredCoins.map((coin) => {
+                        const price = formatCurrency(coin.lastPrice);
+                        const volume = formatCurrency(coin.quoteVolume);
+                        return (
+                            <tr key={coin.symbol}>
+                                <td style={{ width: "40px" }}>
+                                    <img className="coin-image" src={symbols[coin.symbol].img} alt={coin.symbol} />
+                                </td>
+
+                                <td style={{ width: "150px" }}>
+                                    <div className="coin-name-container">
+                                        <span className="coin-name"> {symbols[coin.symbol].name} </span>
+                                        <span className="coin-symbol">{coin.symbol}</span>
+                                    </div>
+                                </td>
+
+                                <td> {price} </td>
+
+                                <td style={{ color:
+                                    coin.priceChangePercent > 0
+                                    ? "#21DB9A"
+                                    : coin.priceChangePercent < 0
+                                    ? "#FF0000"
+                                    : "#FFFFFF",
+                                }} > {coin.priceChangePercent} % </td>
+
+                                <td>{volume}</td>
+                            </tr>
+                        );
+                        })}
+                    </tbody>
+                </table>
+            </div>
+        </BasicPage>
+    );
 };
 
-export default Watchlist1;
+export default Watchlist;

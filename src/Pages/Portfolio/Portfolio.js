@@ -5,6 +5,7 @@ import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, { TableRow } from '../../Components/Table/Table';
+import { showMessage } from '../../Components/Message/Message';
 import axios from 'axios';
 
 export default function Portfolio() {
@@ -13,11 +14,13 @@ export default function Portfolio() {
   const [ portfolioValue, setPortfolioValue ] = useState(null);
   const [ percentages, setPercentages ] = useState([]);
   const [ initialData, setInitialData ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/overview';
   const userId = 1;
   
 
   useEffect(() => {
+    setIsLoading(true);
     axios
         .get(
             backendApiEndpoint,
@@ -34,14 +37,18 @@ export default function Portfolio() {
             setInitialData(res.data.historyData);
             setPortfolioValue(res.data.portfolioValue);
             setUsdBalance(res.data.usdBalance);
+            setIsLoading(false);
         })
 
         .catch(error => {
+            setIsLoading(false);
             setPortfolioValue(0);
             setUsdBalance(0);
-            error.response ? alert(error.message + "\n" + error.response.data.message) :
-            alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
             console.log("error", error);
+
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Database connection failed..!') ;
         });
 
   }, []);
@@ -49,12 +56,17 @@ export default function Portfolio() {
 
   return (
     <BasicPage 
+        isLoading={isLoading}
         tabs={[
           { label:"Overview", path:"/portfolio"},
           { label:"History", path:"/portfolio/history"},
           { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
         ]}>
+
+
+ 
+
       
         <SidePanelWithContainer 
             style={{height:'75vh'}}

@@ -44,7 +44,7 @@ export function TableRow(props) {
                     if (Array.isArray(cell) && cell.length === 1) {
                         cell = (
                             <div className='table-coin-container'>
-                                <img className='coin-icon' src={require('../../Assets/Images/Coin Images.json')[cell[0]]} alt={cell[0]} />
+                                <img className='coin-icon' src={require('../../Assets/Images/Coin Images.json')[cell[0]].img} alt={cell[0]} />
                                 {cell[0]}
                             </div>
                         );

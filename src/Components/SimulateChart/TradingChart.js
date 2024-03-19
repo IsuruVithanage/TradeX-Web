@@ -4,12 +4,14 @@ import { ColorType, createChart } from 'lightweight-charts';
 import axios from 'axios';
 
 export const ChartComponent = (props) => {
-    const [activeDuration, setActiveDuration] = useState('daily');
-    const [chart, setChart] = useState(null);
+    const [activeDuration, setActiveDuration] = useState('1m');
+    const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
+
 
     const {
         selectedCoin,
+        updateLastPrice,
         colors: {
             backgroundColor = '#0E0E0F',
             textColor = '#0E0E0F',
@@ -28,6 +30,7 @@ export const ChartComponent = (props) => {
                 low: parseFloat(item[3]),
                 close: parseFloat(item[4]),
                 time: item[0] / 1000,
+
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
@@ -45,14 +48,21 @@ export const ChartComponent = (props) => {
                     selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
                 }USDT&interval=1m&limit=1000`
             );
+            const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
+            updateLastPrice(latestPrice);
             return processData(res.data);
+
         } catch (error) {
             console.log(error);
         }
     };
 
-    const initializeChart = () => {
-        const newChart = createChart(chartContainerRef.current, {
+    const initializeChart = async () => {
+        if (chartInstance) {
+            chartInstance.remove();
+        }
+
+        const chart = createChart(chartContainerRef.current, {
             layout: {
                 background: { type: ColorType.Solid, color: backgroundColor },
                 textColor,
@@ -64,76 +74,105 @@ export const ChartComponent = (props) => {
                     visible: false,
                 },
                 horzLines: {
-                    color: '#3C3C3C',
+                    color: "#3C3C3C",
                 },
             },
             rightPriceScale: {
                 borderVisible: false,
-                textColor: '#AAA',
+                textColor: "#AAA",
             },
             localization: {
-                priceFormatter: (price) => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
+                priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
             timeScale: {
                 fixLeftEdge: true,
                 borderVisible: false,
-            },
+            }
         });
 
-        const newSeries = newChart.addCandlestickSeries({
+        chart.timeScale().fitContent();
+
+        const newSeries = chart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
             wickUpColor,
-            wickDownColor,
+            wickDownColor
         });
 
-        setChart({ instance: newChart, series: newSeries });
-    };
+        newSeries.setData(await fetchData());
 
-    const updateChart = async () => {
-        if (!chart || !chart.instance) {
-            return;
-        }
+        // Set interval to fetch and update data every 5 seconds
+        const intervalId = setInterval(async () => {
+            newSeries.setData(await fetchData());
+        }, 5000);
 
-        try {
-            chart.instance.timeScale().fitContent();
-            chart.series.setData(await fetchData());
-        } catch (error) {
-            console.error('Error updating chart:', error);
-        }
+        setChartInstance(chart);
+
+        const handleResize = () => {
+            chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: chartContainerRef.current.clientHeight });
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            clearInterval(intervalId);
+            window.removeEventListener('resize', handleResize);
+            chart.remove();
+        };
     };
 
     useEffect(() => {
-        if (!chart) {
+        if (selectedCoin) {
             initializeChart();
-        } else {
-            updateChart();
         }
+
     }, [selectedCoin]);
 
-    useEffect(() => {
-        // Cleanup function
-        return () => {
-            if (chart && chart.instance) {
-                chart.instance.removeSeries(chart.series);
-                chart.instance.remove();
-            }
-        };
-    }, []);
-
-    function updateChartData(daily) {}
+    const updateChartDuration = async (duration) => {
+        setActiveDuration(duration);
+        let interval = '1m';
+        if (duration === '1m') {
+            interval = '1m';
+        } else if (duration === '1d') {
+            interval = '1d';
+        } else if (duration === '1w') {
+            interval = '1w';
+        }
+        try {
+            const res = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${
+                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
+                }USDT&interval=${interval}&limit=1000`
+            );
+            const data = await processData(res.data);
+            chartInstance.series.setData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div id="chartDiv">
             <div className="buttonDiv">
                 <button
-                    onClick={() => updateChartData('daily')}
-                    className={`durationButton ${activeDuration === 'daily' ? 'active' : ''}`}
+                    onClick={() => updateChartDuration('1m')}
+                    className={`durationButton ${activeDuration === '1m' ? 'active' : ''}`}
                 >
                     1m
                 </button>
-                {/* Other buttons... */}
+                <button
+                    onClick={() => updateChartDuration('1d')}
+                    className={`durationButton ${activeDuration === '1d' ? 'active' : ''}`}
+                >
+                    1d
+                </button>
+                <button
+                    onClick={() => updateChartDuration('1w')}
+                    className={`durationButton ${activeDuration === '1w' ? 'active' : ''}`}
+                >
+                    1w
+                </button>
             </div>
             <div id="tchart" ref={chartContainerRef} />
         </div>
