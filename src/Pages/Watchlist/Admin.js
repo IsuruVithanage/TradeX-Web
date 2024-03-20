@@ -127,22 +127,14 @@ export default function Admin() {
             <tbody>
               {adminList.map((admin, index) => (
                 <tr key={index}>
-                  <td>{admin.AdminId}</td>
                   <td>{admin.AdminName}</td>
-                  <td>{admin.email}</td>
-                  <td>{admin.password}</td>
-                  <td>{admin.contact}</td>
+                  <td>{admin.Date}</td>
+                  <td>{admin.NIC}</td>
+                  <td>{admin.Contact}</td>
+                  <td>{admin.Age}</td>
                 </tr>
               ))}
-              {[...Array(5)].map((_, index) => (
-                <tr key={index + 5}>
-                  <td>Kamal Silva</td>
-                  <td>02.01.2023</td>
-                  <td>987654321C</td>
-                  <td>8765432109</td>
-                  <td>30</td>
-                </tr>
-              ))}
+              
             </tbody>
           </table>
         </div>
