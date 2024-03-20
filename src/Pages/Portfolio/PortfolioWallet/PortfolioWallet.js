@@ -4,7 +4,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRow } from '../../../Components/Table/Table'
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import { showMessage } from '../../../Components/Message/Message';
 import axios from 'axios';
 import './PortfolioWallet.css'
@@ -260,7 +260,7 @@ export default function FundingWallet() {
                             key={asset.symbol} 
                             data={ currentWallet === "tradingWallet" ?
                             [
-                                [ asset.symbol ], 
+                                <Coin>{asset.symbol}</Coin>, 
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
@@ -268,7 +268,7 @@ export default function FundingWallet() {
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
-                                [ asset.symbol ], 
+                                <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
                                 `$ ${asset.value.toFixed(2)}`,

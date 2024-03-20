@@ -4,7 +4,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
-import Table, { TableRow } from '../../Components/Table/Table';
+import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import { showMessage } from '../../Components/Message/Message';
 import axios from 'axios';
 
@@ -91,7 +91,7 @@ export default function Portfolio() {
                 <TableRow 
                     key={asset.symbol} 
                     data={[
-                      [ asset.symbol ], 
+                      <Coin>{asset.symbol}</Coin>, 
                       asset.tradingBalance, 
                       asset.fundingBalance, 
                       asset.totalBalance, 

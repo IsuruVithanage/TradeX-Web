@@ -2,14 +2,12 @@ import React, { useEffect } from 'react'
 import './Table.css'
 
 export default function Table(props) {
-
-
     useEffect(() => {
         const table = document.querySelector('.table-body');
         table.classList.add('restart');
 
         setTimeout(() => {
-            table.classList.remove('restart');
+            table.classList.remove('restart');  
         }, 300);    
         
     }, [props.restart]);
@@ -20,7 +18,7 @@ export default function Table(props) {
                 <thead className='table-head'>
                     { props.children[0] }
                 </thead>
-                <tbody className={`table-body ${(props.hover) ? 'hoverble' : ''}`}>
+                <tbody className={`table-body ${(props.hover) ? 'hover' : ''}`}>
                     { props.children.slice(1) }
                 </tbody>
             </table>
@@ -39,23 +37,25 @@ export function TableRow(props) {
 
     return (
         <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={handleRowClick}>
-            {props.data &&
-                props.data.map((cell, index) => {
-                    if (Array.isArray(cell) && cell.length === 1) {
-                        cell = (
-                            <div className='table-coin-container'>
-                                <img className='coin-icon' src={require('../../Assets/Images/Coin Images.json')[cell[0]].img} alt={cell[0]} />
-                                {cell[0]}
-                            </div>
-                        );
-                    }
-
-                    return (
-                        <td key={index} className={`${props.classes && props.classes[index]}`}>
-                            {cell}
-                        </td>
-                    );
-                })}
+            {props.data && props.data.map((cell, index) => (
+                <td key={index} className={`${props.classes && props.classes[index]}`}>
+                    {cell}
+                </td>
+            ))}
         </tr>
+    );
+}
+
+export function Coin(props) {
+    const coinData = require('../../Assets/Images/Coin Images.json')[props.children];	
+
+    return (
+        <div className='table-coin-container'>
+            <img className='table-coin-icon' src={ coinData.img } alt={ props.children } />
+            <div>
+                <p className='table-coin-name'>{ coinData.name }</p>
+                <p className='table-coin-symbol'>{ props.children }</p>
+            </div>            
+        </div>
     );
 }
