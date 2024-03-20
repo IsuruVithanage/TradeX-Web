@@ -7,7 +7,7 @@ import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
-import Table, {TableRow} from "../../Components/Table/Table";
+import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "./assets.json";
 import axios from "axios";
 
@@ -88,7 +88,7 @@ export default function TradingPlatform() {
                     <TableRow
                         key={coin}
                         data={[
-                            [coin],
+                            <Coin>{coin}</Coin>,
                             assets[coin].spotBalance,
                             assets[coin].fundingBalance,
                             assets[coin].TotalBalance,
