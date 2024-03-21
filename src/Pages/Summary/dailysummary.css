@@ -26,7 +26,9 @@
     border-bottom: 1px solid #3C3C3C;
     width: 30%;
     margin-bottom: 1%;
-    
+    color: #FFF;
+    justify-content: center;
+    align-items: center;
     
 }
 

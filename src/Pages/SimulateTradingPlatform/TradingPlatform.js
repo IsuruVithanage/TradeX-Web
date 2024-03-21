@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
@@ -7,7 +7,7 @@ import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
-import Table, {TableRow} from "../../Components/Table/Table";
+import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "./assets.json";
 import {useSelector} from "react-redux";
 
@@ -19,64 +19,111 @@ export default function TradingPlatform() {
         {label: "Quiz", path: "/quiz"},
     ];
 
-    const [orderType, setOrderType] = useState('Buy');
-    const [orderCato, setOrderCato] = useState('');
-    const [price, setPrice] = useState(0);
-    const [quantity, setQuantity] = useState(1);
-    const [total, setTotal] = useState(0);
     const [latestPrice, setLatestPrice] = useState(0);
-
-
+    const [isOrderSet, setIsOrderSet] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
-    const [selectedCoin, setSelectedCoin] = useState(null);
+    const [order, setOrder] = useState({
+        userId: user.id,
+        type: 'Buy',
+        cato: 'Limit',
+        coin: null,
+        price: 0,
+        quantity: 1,
+        total: 0,
+    });
 
     const handleCoinSelection = (coin) => {
-        setSelectedCoin(coin);
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            coin: coin
+        }));
     };
 
     const setOrderCatagory = (value) => {
-        setOrderCato(value);
-        console.log(orderCato);
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            cato: value
+        }));
+        console.log(order.cato)
+        if (value === 'Market') {
+            setMarketPrice();
+        } else if (value === 'Limit') {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                price: 0,
+                total: 0
+            }));
+        } else if (value === 'Stop Limit') {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                price: 0,
+                total: 0
+            }));
+        }
     };
 
     const updateLastPrice = (newValue) => {
         setLatestPrice(newValue);
     };
 
+    useEffect(() => {
+        if (order.cato === 'Market') {
+            handlePriceChange(latestPrice);
+        }
+    }, [order.cato, latestPrice]);
+
 
     const handlePriceChange = (value) => {
-        setPrice(value);
-        if (quantity !== 0) {
-            setTotal(value * quantity);
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            price: value
+        }));
+        if (order.quantity !== 0) {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                total: value * order.quantity
+            }));
         }
     };
 
     const handleQuantityChange = (value) => {
-        setQuantity(value);
-        setTotal(price * value);
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            quantity: value
+        }));
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            total: value * order.price
+        }));
     };
 
     const setMarketPrice = () => {
-        setPrice(latestPrice);
-        setTotal(latestPrice * quantity);
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            price: latestPrice
+        }));
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            total: latestPrice * order.quantity
+        }));
+
+        if (isOrderSet) {
+            setIsOrderSet(false);
+        }
+
     }
 
-    //Create a order object to place a order
-    const placeOrder = () => {
-        return {
-            userId: user.user.id,
-            type: orderType,
-            coin: selectedCoin.symbol,
-            price: price,
-            quantity: quantity,
-            totalPrice: total
-        };
+    const setOrderType = (type) => {
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            type: type
+        }));
     }
+
 
     const saveOrder = async () => {
         try {
-            const order=placeOrder();
             const response = await fetch('http://localhost:8007/order', {
                 method: 'POST',
                 headers: {
@@ -99,25 +146,26 @@ export default function TradingPlatform() {
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Trade</h1>
-                        <ButtonSet priceLimits={priceLimits} setMarketPrice={setMarketPrice} setOrderCatagory={setOrderCatagory}/>
+                        <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <Input label={'Price'} type={'number'} icon={"$"} value={price} onChange={handlePriceChange}/>
-                        <Input label={'Quantity'} type={'number'} value={quantity}
-                               icon={selectedCoin?.symbol ? selectedCoin.symbol.toUpperCase() : ""}
+                        <Input label={'Price'} type={'number'} icon={"$"} value={order.price} onChange={handlePriceChange}/>
+                        <Input label={'Quantity'} type={'number'} value={order.quantity}
+                               icon={order.coin?.symbol ? order.coin.symbol.toUpperCase() : ""}
                                onChange={handleQuantityChange}/>
                         <SliderInput/>
 
-                        <Input label={'Total'} type={"number"} icon={"$"} placehalder={"Total"} value={total}/>
+                        <Input label={'Total'} type={"number"} icon={"$"} placehalder={"Total"} value={order.total}/>
 
-                        <Input type="button" value={orderType} style={{marginTop: '0.7rem'}} onClick={saveOrder}/>
+                        <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isOrderSet}
+                               onClick={saveOrder}/>
 
                     </div>
                 }
             >
 
                 <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
-                <TradingChart selectedCoin={selectedCoin} updateLastPrice={updateLastPrice}/>
+                <TradingChart selectedCoin={order.coin} updateLastPrice={updateLastPrice}/>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>
@@ -135,7 +183,7 @@ export default function TradingPlatform() {
                     <TableRow
                         key={coin}
                         data={[
-                            [coin],
+                            <Coin>{coin}</Coin>,
                             assets[coin].spotBalance,
                             assets[coin].fundingBalance,
                             assets[coin].TotalBalance,

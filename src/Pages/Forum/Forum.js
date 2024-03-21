@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
@@ -15,11 +15,13 @@ import './forum.css';
 
 import Questionset from './Questionset';
 import Input from "../../Components/Input/Input";
+import axios from 'axios';
+import { Shuffle } from '@mui/icons-material';
 
 
 export default function Forum() {
   const Tabs = [
-    { label: "Latest", path: "/" },
+    { label: "Latest", path: "/Forum" },
     { label: "My Problems", path: "/Forum/MyProblems" },
     { label: "My Answers", path: "/Forum/MyAnswers" },
     { label: "Login", path: "/Login&Signin/Login" },
@@ -28,7 +30,26 @@ export default function Forum() {
     
   ];
 
+  const [questionlist,setQuestionList]=useState([]);
+
+  const loadQuestions =async () => {
+    try{
+      const result=await axios.get("http://localhost:8002/forum/getAllQuestions");
+        setQuestionList(result.data);
+        
+        }catch(error){
+      console.error("Error fetching questions",error);
+    }
+    
+
+  };
+
+  useEffect(()=>{
+    loadQuestions();
+  },[])
   
+  console.log(questionlist);
+
   return (
     <BasicPage tabs={Tabs}>
       <SidePanelWithContainer
@@ -55,7 +76,7 @@ export default function Forum() {
     
       <div className='topic-row'>
               <div className='topic'>
-                  <h4 style={{marginTop:"-2%"}}>Topic</h4>
+                  <h4>Topic</h4>
               </div>
               <div className='topic-stat'>
                   <h4>Views</h4>
@@ -68,7 +89,14 @@ export default function Forum() {
               </div>
           </div>
 
-         <Questionset/>
+        {questionlist?( 
+          <Questionset questionlist={questionlist} />
+        ):(
+          <div></div>
+        )
+          
+      }
+         
         
 
         

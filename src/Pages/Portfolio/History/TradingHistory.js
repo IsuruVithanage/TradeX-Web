@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../../Components/Input/Input';
-import Table, { TableRow } from '../../../Components/Table/Table';
+import Table, { TableRow, Coin } from '../../../Components/Table/Table';
 import { showMessage } from '../../../Components/Message/Message'
 import axios from 'axios';
 
@@ -146,14 +146,14 @@ export default function History() {
                         data={
                             selectedSection === "Transaction" ?
                             [
-                                [row.coin],
+                                <Coin>{row.coin}</Coin>,
                                 row.date, 
                                 row.sendingWallet, 
                                 row.receivingWallet, 
                                 row.quantity, 
                             ]   :
                             [
-                                [row.coin],
+                                <Coin>{row.coin}</Coin>,
                                 row.Date, 
                                 row.Type, 
                                 `$ ${row.Price}`, 

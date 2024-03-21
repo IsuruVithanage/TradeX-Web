@@ -1,17 +1,3 @@
-.ant-message 
-.ant-message-notice-wrapper 
-.ant-message-notice-content{
-    color: #FFFFFF;
-    height: 50px;
-    display: flex;
-    width: -moz-fit-content;
-    width: fit-content;
-    margin: auto;
-    align-items: center;
-    padding-right: 15px;
-}
-
-
 .ant-message-notice-wrapper 
 .success-message
 .ant-message-notice-content{
@@ -36,11 +22,28 @@
     background: #6a0000;
 }
 
+
+.ant-message 
+.ant-message-notice-wrapper 
+.ant-message-notice-content{
+    color: #FFFFFF;
+    height: 50px;
+    display: flex;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    align-items: center;
+    padding-right: 15px;
+}
+
+
+.ant-message-notice-wrapper 
 .anticon svg{
     width: 20px;
     height: auto;
     margin-right: 5px;
 }
+
 
 .ant-message-custom-content{
     display: flex;
