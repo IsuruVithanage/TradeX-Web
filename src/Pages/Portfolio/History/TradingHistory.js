@@ -16,7 +16,7 @@ export default function History() {
     const [filteredData, setFilteredData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     //const backendAPI = (selectedSection === "Trading") ? "" : 'http://localhost:8004/portfolio/history';
-    const backendAPI = 'http://localhost:8004/portfolio/history';
+    const backendAPI = 'http://localhost:8011/portfolio/history';
     const userId = 1;
 
 
