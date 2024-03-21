@@ -23,7 +23,6 @@ export default function FundingWallet() {
     const [ isLoading, setIsLoading ] = useState(true);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const userId = 1;
-    const myname = "ashan";
 
 
 
