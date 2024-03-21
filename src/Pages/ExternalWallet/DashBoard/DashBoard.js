@@ -4,7 +4,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRow } from '../../../Components/Table/Table'
+import Table, { TableRow,} from '../../../Components/Table/Table'
 import axios from 'axios';
 
 export default function DashBoard() {
@@ -91,7 +91,7 @@ export default function DashBoard() {
                         <TableRow 
                             key={coin.coin} 
                             data={[
-                                [ coin.coin ], 
+                                coin.coin , 
                                 coin.balance, 
                                 coin.marketPrice, 
                                 coin.value, 
