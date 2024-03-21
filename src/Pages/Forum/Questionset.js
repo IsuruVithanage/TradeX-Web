@@ -2,11 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Records from "./Questionrecords.json";
 
-function Questionset() {
+function Questionset(props) {
+  console.log(props);
   return (
     <div>
         {
-          Records && Records.map(record => {
+          props.questionlist && props.questionlist.map(record => {
               return(
                 <div className='question-row'>
                 <Link to="/Questionbar/Detailed">

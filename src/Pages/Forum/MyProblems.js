@@ -43,7 +43,7 @@ import {
 
         <div style={{display: "flex", width: "100%" }}>
             <Input type="search" placeholder="Search" style={{width:"600px" ,marginLeft:"20px"}}/>
-            <Link to="/AskQuestion">
+            <Link to="/forum/AskQuestion">
               <Input type="button" value="Ask Question"  style={{width:"130px" ,marginLeft:"15%"}}/>
             </Link>
             <RiSoundModuleLine className="filter-icon" style={{color:"#6D6D6D" ,marginLeft:"15%",size:"20px"}}></RiSoundModuleLine>
@@ -59,10 +59,10 @@ import {
             <div className='topic-stat'>
                 <h4>Views</h4>
             </div>
-            <div className='topic-stat'>
+            <div className='topic-stat-likes'>
                 <h4>Likes</h4>
             </div>
-            <div className='topic-stat'>
+            <div className='topic-stat-replies'>
                 <h4>Replies</h4>
             </div>
         </div>

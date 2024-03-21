@@ -1,22 +1,46 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import "./DashBoard.css";
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRow } from '../../../Components/Table/Table'
+import Table, { TableRow,} from '../../../Components/Table/Table'
+import axios from 'axios';
 
 export default function DashBoard() {
 
+
     const [action,setAction] = useState("Send")
-    const assets = require('./walletAssets.json');
-    let portfolioValue = 0;
+    const [assets,setAssets] = useState([])
+    const userId = 1;
+    const [portfolioValue,setPortfolioValue] = useState(0)
+    const [usdBalance,setUsdBalance] = useState(0)
+    const [isLoading,setIsLoading] = useState(true)
 
 
-    portfolioValue = Object.values(assets).reduce((acc, asset) => acc + asset.value, 0);
+
+
+
+    useEffect(()=>{
+        setIsLoading(true)
+
+        axios.get("http://localhost:8005/wallet/"+userId)
+        .then(res=>{
+            console.log(res.data);
+            setPortfolioValue (res.data.portfolioValue) 
+            setUsdBalance  (res.data.usdBalance)
+            setAssets(res.data.assets)
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+
+        setIsLoading(false)
+    },[])
+
 
     return (
-        <BasicPage sideNavBar = {false}
+        <BasicPage sideNavBar = {false} isLoading = {isLoading}
             tabs={[
                 { label:"Dashboard", path:"/wallet/dashboard"},
                 { label:"History", path:"/wallet/history"},
@@ -41,17 +65,18 @@ export default function DashBoard() {
                             } />
                             <Input type="number" label='Quantity' />
 
-                            <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>    
-                        </div>
-                    :   <p>mjhv jvmsc</p>
-                    }
+
+                        <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>    
+                     </div>
+                     : <p>mjhv jvmsc</p>
+                     }
 
                                               
 
                     </div>
                 }>
                     
-                <ValueBar usdBalance={assets.USD.quantity} portfolioValue={portfolioValue}/>
+                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
 
                 <Table>
                     <TableRow data={[
@@ -62,21 +87,20 @@ export default function DashBoard() {
                         'ROI'
                     ]}/>
 
-                    { assets && Object.keys(assets).slice(1).map(coin => (
+                    { assets && assets.slice(1).map(coin => (
                         <TableRow 
-                            key={coin} 
+                            key={coin.coin} 
                             data={[
-                                [ coin ], 
-                                assets[coin].quantity, 
-                                assets[coin].marketPrice, 
-                                assets[coin].value, 
+                                coin.coin , 
+                                coin.balance, 
+                                coin.marketPrice, 
+                                coin.value, 
                                 <span 
                                     style= {{ 
-                                        color: ( assets[coin].roi < 0 ) ? 
-                                        '#FF0000' : ( assets[coin].roi > 0 ) ? 
-                                        '#21DB9A' : '' 
+                                        color: coin.RoiColor
+                                       
                                     }}>
-                                    {`${assets[coin].roi} %`}
+                                    {`${coin.ROI} %`}
                                 </span>
                             ]} 
                         />
