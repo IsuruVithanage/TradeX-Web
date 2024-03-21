@@ -18,12 +18,11 @@ export default function Admin() {
   });
 
   const handleChange = (e) => {
-    console.log(e);
-    // const { name, value } = e.target;
-    // setAdmin((prevState) => ({
-    //   ...prevState,
-    //   [name]: value,
-    // }));
+    const { name, value } = e.target;
+    setAdmin((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
   
   
@@ -61,7 +60,7 @@ export default function Admin() {
           Contact: "",
           Age: "",
         });
-        loadAdmins();
+        await loadAdmins();
       } else {
         console.error('Error sending data:', response.statusText);
       }
