@@ -11,7 +11,11 @@ import NewsItem from "./NewsItem";
 
     },[])
 
-     console.log(articles);
+    articles.map(article => {
+      console.log(article.url);
+    })
+
+    //console.log(articles);
 
   return (      
     <div>
