@@ -15,7 +15,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
   const Tabs = [
     { label: "Latest", path: "/Forum" },
     { label: "My Problems", path: "/forum/MyProblems" },
-    { label: "My Answers", path: "/alert" },
+    { label: "My Answers", path: "/forum/MyAnswers" },
     
   ];
   
@@ -51,10 +51,10 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
             <div className='topic-stat'>
                 <h4>Views</h4>
             </div>
-            <div className='topic-stat'>
+            <div className='topic-stat-likes'>
                 <h4>Likes</h4>
             </div>
-            <div className='topic-stat'>
+            <div className='topic-stat-replies'>
                 <h4>Replies</h4>
             </div>
         </div>

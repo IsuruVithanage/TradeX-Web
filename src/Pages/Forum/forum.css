@@ -82,10 +82,9 @@
 }
 
 .topic{
-    width: 480px;;
-    margin-left: -7.75rem;
-   
-
+    width: 480px;
+    color:#21DB9A;
+    margin-left: 3rem;
 }
 
 /*
@@ -113,25 +112,25 @@ display: flex;
 .topic-stat{
     margin-left: auto;
     text-align: right;
-    margin-right: 4.2rem;
+  
 
 }
 .topic-stat-likes{
     margin-left: auto;
     text-align: right;
-    margin-right: 3.1rem;
-
+    
 }
 .topic-stat-replies{
     margin-left: auto;
     text-align: right;
-    margin-right: 2rem;
+   margin-right: 0.5rem;
 
 }
 .question-stat {
     margin-left: auto;
    text-align: right;
-   margin-right: 1.25rem;
+   
+  
      
 }
 .question-row .author{
@@ -141,7 +140,8 @@ display: flex;
 }
 .question-stat p{
     color: #21DB9A;
-    padding-top: 8%;
+    margin-top: 1.8rem;
+    margin-right: 1.5rem;
        
 }
 

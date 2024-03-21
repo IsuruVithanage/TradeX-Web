@@ -32,7 +32,13 @@ function Dailysummary() {
                   </div>
                 <div className='chart-table'>
                       <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Top Gains"/>
+                        <div>
+                            <span>Top Gain</span>
+                        </div>
+                        <div>
+                         <Input type="toggle" id=''/>
+                        </div>
+                      
                       </div>  
 
                       <div className='data'>
