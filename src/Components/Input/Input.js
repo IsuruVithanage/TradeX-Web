@@ -42,22 +42,22 @@ export default function Input(props) {
 }
 
 function InputField(props) {
-  const handleChange = (e) => {
-    props.onChange(e.target.value);
-  };
+    const handleChange = (e) => {
+        props.onChange(e);
+    };
 
-  return (
-    <input
-      className={`input-field ${props.className}`}
-      type={props.type}
-      value={props.value}
-      id={props.id}
-      name={props.name}
-      placeholder={props.placeholder}
-      style={props.style}
-      onBlur={props.onBlur}
-      onChange={props.onChange ? handleChange : null}
-      onClick={props.onClick}
-    />
-  );
+    return (
+        <input
+            className={`input-field ${props.className}`}
+            type={props.type}
+            value={props.value}
+            id={props.id}
+            name={props.name}
+            placeholder={props.placeholder}
+            style={props.style}
+            onBlur={props.onBlur}
+            onChange={props.onChange ? handleChange : null}
+            onClick={props.onClick}
+        />
+    );
 }
