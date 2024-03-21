@@ -8,28 +8,80 @@ import axios from "axios";
 
 export default function Admin() {
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
-  const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
   const [adminList, setAdminList] = useState([]);
+  const [admin, setAdmin] = useState({
+    AdminName: "",
+    Date: "",
+    NIC: "",
+    Contact: "",
+    Age: "",
+  });
 
-  const getVerifiedCellStyle = (isVerified) => {
-    return isVerified ? { color: "#21DB9A" } : { color: "red" };
+  const handleChange = (e) => {
+    console.log(e);
+    // const { name, value } = e.target;
+    // setAdmin((prevState) => ({
+    //   ...prevState,
+    //   [name]: value,
+    // }));
+  };
+  
+  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setAdmin({
+      AdminName: document.getElementById("AdminName").value,
+      Date: document.getElementById("Date").value,
+      NIC: document.getElementById("NIC").value,
+      Contact: document.getElementById("Contact").value,
+      Age: document.getElementById("Age").value,
+    });
+
+    console.log(admin);
+    
+    try {
+      const response = await fetch('http://localhost:8002/admin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(admin)
+      });
+      
+      if (response.ok) {
+        
+        console.log('Data sent successfully');
+        
+        setAdmin({
+          AdminName: "",
+          Date: "",
+          NIC: "",
+          Contact: "",
+          Age: "",
+        });
+        loadAdmins();
+      } else {
+        console.error('Error sending data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error sending data:', error.message);
+    }
   };
 
   const loadAdmins = async () => {
     try {
-      const result = await axios.get(
-        `http://localhost:8002/admin/getAllAdmins`
-      );
+      const result = await axios.get('http://localhost:8002/admin/getAllAdmins');
       setAdminList(result.data);
     } catch (error) {
       console.error("Error fetching Admins", error);
     }
   };
+
   useEffect(() => {
     loadAdmins();
   }, []);
-
-  console.log(adminList);
 
   return (
     <BasicPage
@@ -73,26 +125,46 @@ export default function Admin() {
                     type="text"
                     placeholder="Username"
                     className="Admin-details"
+                    name="AdminName"
+                    id="AdminName"
+                    value={admin.AdminName}
+                    onChange={handleChange}
                   />
                   <Input
                     type="text"
-                    placeholder="Email"
+                    placeholder="Date"
                     className="Admin-details"
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Contact"
-                    className="Admin-details"
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Address"
-                    className="Admin-details"
+                    name="Date"
+                    id="Date"
+                    value={admin.Date}
+                    onChange={handleChange}
                   />
                   <Input
                     type="text"
                     placeholder="NIC"
                     className="Admin-details"
+                    name="NIC"
+                    id="NIC"
+                    value={admin.NIC}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Contact"
+                    className="Admin-details"
+                    name="Contact"
+                    id="Contact"
+                    value={admin.Contact}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Age"
+                    className="Admin-details"
+                    name="Age"
+                    id="Age"
+                    value={admin.Age}
+                    onChange={handleChange}
                   />
 
                   <div className="create-admin-btn">
@@ -100,11 +172,12 @@ export default function Admin() {
                       type="button"
                       style={{ width: "110px" }}
                       value="Submit"
+                      onClick={handleSubmit}
                     />
                     <Input
                       type="button"
                       style={{ width: "110px" }}
-                      onClick={() => setIsSetterModalOpen(false)}
+                      onClick={() => setIsdeleteModalOpen(false)}
                       value="Cancel"
                       red
                     />
@@ -134,7 +207,6 @@ export default function Admin() {
                   <td>{admin.Age}</td>
                 </tr>
               ))}
-              
             </tbody>
           </table>
         </div>
