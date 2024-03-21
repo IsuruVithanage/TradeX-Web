@@ -102,7 +102,7 @@ const Watchlist = () => {
                             <td colSpan={2}>Coin</td>
                             <td>Price</td>
                             <td>24h Change</td>
-                            <td>Value</td>
+                            <td>Market Volume</td>
                         </tr>
                     </thead>
                     <tbody>

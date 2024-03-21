@@ -14,7 +14,7 @@ export default function Loading() {
                 </div>
                 
                 <div className='loader-container'>
-                    <LinearLoader variant="indeterminate" track={true}/>
+                    <LinearLoader variant="indeterminate" type={"loader"}/>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@ export default function Loading() {
 export function PageLoading() {
     return (      
         <div className='page-loader-container'>        
-            <LinearLoader variant="indeterminate" track={false} />
+            <LinearLoader variant="indeterminate" type={"page-loader"} />
         </div>
     );
 }
@@ -39,10 +39,10 @@ const LinearLoader = styled(LinearProgress)((props) => ({
   height: 3,
   borderRadius: 3,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: props.track ? '#3c3c3c' : '#0E0E0F',
+    backgroundColor: props.type === 'loader' ? '#3C3C3C' : '#0E0E0F',
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: '#21DB9A',
+    backgroundColor: props.type === 'loader' ? '#21DB9A' : '#0B9364',
   },
 }));
