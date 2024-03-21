@@ -65,8 +65,6 @@ export default function Portfolio() {
         ]}>
 
 
- 
-
       
         <SidePanelWithContainer 
             style={{height:'75vh'}}

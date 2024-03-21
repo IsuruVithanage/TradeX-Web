@@ -9,8 +9,10 @@ import Table, {TableRow} from "../../Components/Table/Table";
 import Modal from "../../Components/Modal/Modal";
 import Input from "../../Components/Input/Input";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export default function Quiz() {
+    const user = useSelector(state => state.user);
     const [questions, setQuestions] = useState([]);
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [answers, setAnswers] = useState([]);
@@ -42,13 +44,36 @@ export default function Quiz() {
             }
         });
         setScore(currentScore);
+        allocateStatingFund(currentScore);
 
     }
 
 
     const loadQuestions = async () => {
         try {
-            const result = await axios.get(`http://localhost:8007/quiz/`);
+            const result = await axios.get(`http://localhost:8005/quiz/`);
+            setQuestions(shuffleArray(result.data));
+        } catch (error) {
+            console.error("Error fetching questions:", error);
+        }
+    }
+
+    const allocateStatingFund = async (score) => {
+        const ob = {
+            userId: user.user.id,
+            coin: 'USD',
+            quantity: score >= 5 ? 100000 : 50000,
+            purchasePrice: 1,
+            type: ''
+        }
+        try {
+            const result = fetch("http://localhost:8011/portfolio/asset/transfer", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ob)
+            });
             setQuestions(shuffleArray(result.data));
         } catch (error) {
             console.error("Error fetching questions:", error);

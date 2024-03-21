@@ -154,7 +154,6 @@ export default function TradingPlatform() {
         // Check if any property is null
         if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
             console.error('Invalid order:', ob);
-            // Handle the error appropriately here, such as showing an error message to the user
             return;
         }
 
