@@ -106,8 +106,6 @@ export default function Quiz() {
 
     const submitQuiz = () => {
         setIsSubmitModalOpen(true);
-
-        //handleQuizTimeout();
     }
 
     return (
@@ -126,12 +124,14 @@ export default function Quiz() {
 
             <Modal open={isSubmitModalOpen} close={() => setIsSubmitModalOpen(false)}>
                 <div className='quizmodel-container'>
-                    <h1 style={{marginBottom:0}}>Are sure?</h1>
-                    <p style={{marginTop:0}}>Are you sure you want to submit the quiz?</p>
+                    <h1 style={{marginBottom: 0}}>Are sure?</h1>
+                    <p style={{marginTop: 0}}>Are you sure you want to submit the quiz?</p>
 
-                    <div style={{display:"flex"}}>
-                        <Input type="button" value='Yes' style={{marginTop: '0.7rem', marginRight: '1rem'}} onClick={handleQuizTimeout}/>
-                        <Input type="button" value='No' style={{marginTop: '0.7rem', marginLeft:'1rem'}} red onClick={() => setIsSubmitModalOpen(false)}/>
+                    <div style={{display: "flex"}}>
+                        <Input type="button" value='Yes' style={{marginTop: '0.7rem', marginRight: '1rem'}}
+                               onClick={handleQuizTimeout}/>
+                        <Input type="button" value='No' style={{marginTop: '0.7rem', marginLeft: '1rem'}} red
+                               onClick={() => setIsSubmitModalOpen(false)}/>
                     </div>
 
                 </div>
