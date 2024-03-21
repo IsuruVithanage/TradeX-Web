@@ -1,17 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";
 import Modal from "../../Components/Modal/Modal";
+import axios from "axios";
 
 export default function Admin() {
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
   const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
+  const [adminList, setAdminList] = useState([]);
 
   const getVerifiedCellStyle = (isVerified) => {
     return isVerified ? { color: "#21DB9A" } : { color: "red" };
   };
+
+  const loadAdmins = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:8002/admin/getAllAdmins`
+      );
+      setAdminList(result.data);
+    } catch (error) {
+      console.error("Error fetching Admins", error);
+    }
+  };
+  useEffect(() => {
+    loadAdmins();
+  }, []);
+
+  console.log(adminList);
 
   return (
     <BasicPage
@@ -103,33 +121,20 @@ export default function Admin() {
                 <th>NIC</th>
                 <th>Contact</th>
                 <th>Age</th>
-                <th>Verified</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              {[...Array(5)].map((_, index) => (
+              {adminList.map((admin, index) => (
                 <tr key={index}>
-                  <td>Nimal Rathnayaka</td>
-                  <td>01.01.2023</td>
-                  <td>123456789V</td>
-                  <td>9876543210</td>
-                  <td>25</td>
-                  <td style={getVerifiedCellStyle(true)}>Yes</td>
-                  <td></td>
+                  <td>{admin.AdminName}</td>
+                  <td>{admin.Date}</td>
+                  <td>{admin.NIC}</td>
+                  <td>{admin.Contact}</td>
+                  <td>{admin.Age}</td>
                 </tr>
               ))}
-              {[...Array(5)].map((_, index) => (
-                <tr key={index + 5}>
-                  <td>Kamal Silva</td>
-                  <td>02.01.2023</td>
-                  <td>987654321C</td>
-                  <td>8765432109</td>
-                  <td>30</td>
-                  <td style={getVerifiedCellStyle(false)}>No</td>
-                  <td></td>
-                </tr>
-              ))}
+              
             </tbody>
           </table>
         </div>

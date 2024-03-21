@@ -7,9 +7,9 @@ import NumberInput from "../../Components/Input/NumberInput/NumberInput";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
-import Table, {TableRow} from "../../Components/Table/Table";
-import assets from "../Portfolio/assets.json";
-import initialData from "../Portfolio/portfolio-data.json";
+import Table, {TableRow, Coin} from "../../Components/Table/Table";
+import assets from "../SimulateTradingPlatform/assets.json";
+import initialData from "./portfolio-data.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 
@@ -106,7 +106,7 @@ export default function Suggestions() {
                 <LineChart data={initialData}></LineChart>
             </SidePanelWithContainer>
 
-            <Table style={{marginTop: '1vh'}}>
+            <Table style={{marginTop: '1vh'}} hover={true}>
                 <TableRow data={[
                     'Coin',
                     'Date',
@@ -122,10 +122,12 @@ export default function Suggestions() {
                     <TableRow
                         key={coin}
                         data={[
-                            [coin],
+                            <Coin>{coin}</Coin>,
+                            assets[coin].spotBalance,
                             assets[coin].spotBalance,
                             assets[coin].fundingBalance,
-                            assets[coin].TotalBalance,
+                            assets[coin].fundingBalance,
+                            assets[coin].marketPrice,
                             assets[coin].marketPrice,
                         ]}
                         onClick={() => handleRowClick(assets[coin].name)}

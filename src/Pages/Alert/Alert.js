@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
-import Table, { TableRow } from '../../Components/Table/Table';
+import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
-import axios from 'axios';
+import alertOperations from "./alertOperations";
 import './Alert.css';
 
  export default function Alert() {
@@ -20,56 +20,43 @@ import './Alert.css';
 
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const backendApiEndpoint = "http://localhost:8081/alert/";
+    const [isLoading, setIsLoading] = useState(true);
     const userId = 1;
     
     
 
     useEffect(() => {
-        axios
-            .get(
-                backendApiEndpoint,
-                {
-                    params: {
-                        userId: userId,
-                        runningStatus: selectedPage === "Running" 
-                    }
-                }
-            )
-            
-            .then(res => {
-                setAlerts(res.data);
-            })
+        async function getAlerts(){
+            setIsLoading(true);
+            setAlerts([]);
 
-            .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
-                console.log("error", error);
-            });
+            await alertOperations.getAlerts(userId, selectedPage === "Running")
+            .then(res => res && setAlerts(res));
+
+            setIsLoading(false);
+        }
+        
+        getAlerts();
     }, [selectedPage]);
 
 
 
     useEffect(() => {
         let invalidMessage = null;
-        let alertCount = 0;
+        let similarAlertPosition = 0;
 
         if (selectedCoin && selectedCondition && selectedPrice) {
             setIsInvalid([false, null]);
 
             for (const alert of alerts) {
-                alertCount += 1;
+                similarAlertPosition += 1;
     
-                if 
-                (   
-                    alert.coin === selectedCoin && 
-                    alert.condition === selectedCondition && 
-                    alert.price === selectedPrice
-                ) 
-                {
+                if( alert.coin === selectedCoin && alert.condition === selectedCondition ){
                     if (currentAlertId !== alert.alertId){ 
-                        invalidMessage = `This alert already exists at ${alertCount}`;
-                    }else if(alert.emailActiveStatus === selectedEmail){
+                        invalidMessage = `This alert already exists at ${similarAlertPosition}`;
+                    }
+                    
+                    else if(alert.emailActiveStatus === selectedEmail && alert.price === selectedPrice){
                         invalidMessage = "No Changes Made"; ;
                     }
                     break;
@@ -91,23 +78,23 @@ import './Alert.css';
 
 
     const openAlertSetterModel = (editAlertNo) => {
-        if (Number.isInteger(editAlertNo)) {
-            const selectedAlert = alerts.filter(alert => alert.alertId === editAlertNo)[0];
-            setAction("Edit");
-            setCurrentAlertId(editAlertNo);
-            setSelectedCoin(selectedAlert.coin);
-            setSelectedPrice(selectedAlert.price);
-            setSelectedCondition(selectedAlert.condition);
-            setSelectedEmail(selectedAlert.emailActiveStatus);
-        } 
-        
-        else {
+        if (!editAlertNo) {
             setAction("Add"); 
             setCurrentAlertId(null); 
             setSelectedCoin(undefined);
             setSelectedPrice(null);
             setSelectedCondition(undefined);
             setSelectedEmail(true);
+        } 
+        
+        else {
+            const selectedAlert = alerts.find(alert => alert.alertId === editAlertNo);
+            setAction("Edit");
+            setCurrentAlertId(editAlertNo);
+            setSelectedCoin(selectedAlert.coin);
+            setSelectedPrice(selectedAlert.price);
+            setSelectedCondition(selectedAlert.condition);
+            setSelectedEmail(selectedAlert.emailActiveStatus);
         }
 
         setIsSetterModalOpen(true); 
@@ -115,122 +102,49 @@ import './Alert.css';
 
 
 
-    const editAlert = () => {
-        axios
-            .put(
-                backendApiEndpoint,
-                {
-                    userId: userId,
-                    coin: selectedCoin,
-                    price: parseFloat(document.getElementById("edit-alert-price").value),
-                    condition: selectedCondition,
-                    emailActiveStatus: document.getElementById("edit-alert-email").checked,
-                },
-                {
-                    params: {
-                        alertId: currentAlertId,
-                        runningStatus: true
-                    }
-                }
-            )
+    const editAlert = async () => {
+        setIsLoading(true);
 
-            .then(res => {
-                setAlerts(res.data);
-            })
-
-            .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
-                console.log("error", error);
-            });
+        await alertOperations.editAlert(userId, currentAlertId, selectedCoin, selectedCondition)
+        .then(res => res && setAlerts(res));
 
         setIsSetterModalOpen(false);
+        setIsLoading(false);
     }
 
 
 
-    const addAlert = () => {
-        axios
-            .post( 
-                backendApiEndpoint, 
-                {
-                    userId: userId,
-                    coin: selectedCoin,
-                    price: parseFloat(document.getElementById("edit-alert-price").value),
-                    condition: selectedCondition,
-                    emailActiveStatus: document.getElementById("edit-alert-email").checked,
-                    runningStatus: true,
-                }
-            )
+    const addAlert = async () => {
+        setIsLoading(true);
 
-            .then(res => {  
-                setAlerts(res.data);
-            })
-
-            .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
-                console.log("error", error);
-            });
+        await alertOperations.addAlert(userId, selectedCoin, selectedCondition)
+        .then(res => res && setAlerts(res));
 
         setIsSetterModalOpen(false);
+        setIsLoading(false);
     }
 
 
 
-    const restoreAlert = (alertId) => {
-        axios
-            .put(
-                backendApiEndpoint,
-                {   
-                    userId: userId,
-                    runningStatus: true
-                },
-                {
-                    params: {
-                        alertId: alertId,
-                        runningStatus: false
-                    }
-                }
-            )
+    const restoreAlert = async (alertId) => {
+        setIsLoading(true);
 
-            .then(res => {
-                setAlerts(res.data);
-            })
+        await alertOperations.restoreAlert(userId, alertId)
+        .then(res => res && setAlerts(res));
 
-            .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
-                console.log("error", error);
-            });
+        setIsLoading(false);
     }
 
 
 
-    const deleteAlert = () => {
-        axios
-            .delete(
-                backendApiEndpoint,
-                {
-                    params: {
-                        alertId: currentAlertId,
-                        userId: userId,
-                        runningStatus: selectedPage === "Running"
-                    }
-                }
-            )
+    const deleteAlert = async () => {
+        setIsLoading(true);
 
-            .then(res => {
-                setAlerts(res.data);
-            })
-
-            .catch(error => {
-                error.response ? alert(error.message + "\n" + error.response.data.message) :
-                alert(error.message + "! \nBackend server is not running or not reachable.\nPlease start the backend server and refresh the page.");
-                console.log("error", error);
-            });
+        await alertOperations.deleteAlert(userId, currentAlertId, selectedPage === "Running")
+        .then(res => res && setAlerts(res));
 
         setIsDeleteModalOpen(false);
+        setIsLoading(false);
     }
 
 
@@ -250,16 +164,17 @@ import './Alert.css';
     return (
     <>
         <BasicPage
+            isLoading={isLoading}
             subPages={{
                 onClick: setSelectedPage,
                 pages: [
                     { label:"Running Alerts", value:"Running"},
                     { label:"Notified Alerts", value:"Notified"},
                 ],
-            }}>    
+            }}>  
 
 
-            { selectedPage === 'Running' && <Input type="fab" onClick={ openAlertSetterModel }/> }
+            { selectedPage === 'Running' && <Input type="fab" onClick={() => openAlertSetterModel() }/> }
 
 
             <Table emptyMessage="No alerts to show" restart={selectedPage}>
@@ -270,7 +185,7 @@ import './Alert.css';
                         <TableRow 
                             key={index} 
                             data={[
-                                [alert.coin], 
+                                <Coin>{alert.coin}</Coin>, 
                                 alert.price, 
                                 alert.condition, 
                                 (alert.emailActiveStatus) ? "On" : "Off", 
@@ -297,8 +212,8 @@ import './Alert.css';
             <div style={{width:"450px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
                     <h1 style={{textAlign:"center"}}>{`${ action } Alert`}</h1>
-                    <Input type="dropdown" label='Coin' options={options} defaultValue={selectedCoin} onChange={setSelectedCoin}/>
-                    <Input type="dropdown" label='Condition' defaultValue={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
+                    <Input type="dropdown" label='Coin' options={options} value={selectedCoin} onChange={setSelectedCoin}/>
+                    <Input type="dropdown" label='Condition' value={selectedCondition} onChange={setSelectedCondition} searchable={false} options={[
                         { value: 'Equals', label: 'Equals' },
                         { value: 'Above', label: 'Above' },
                         { value: 'Below', label: 'Below' },

@@ -1,15 +1,21 @@
-import { useEffect } from "react";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import NewsItem from "./NewsItem";
+import axios from 'axios';
 
  const NewsBoard = () => {
 
   const [articles,setArticles] = useState([]);
-    useEffect(()=>{
-    let url = `https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17`;
-    fetch(url).then(response=> response.json()).then(data=> setArticles(data.articles));
 
-    },[])
+  useEffect(()=>{
+    axios
+      .get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17')
+      .then(res => {
+          setArticles(res.data.articles);
+      })
+      .catch(error => {
+          console.log(error);
+      })
+  },[])
 
     articles.map(article => {
       console.log(article.url);

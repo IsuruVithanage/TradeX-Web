@@ -11,14 +11,17 @@ export default function ButtonSet(props) {
     const handleButtonClick = (userState) => {
         if (userState === 1) {
             setIsBtnOne(true);
+            props.setOrderCatagory('Limit');
             setIsBtnTwo(false);
             setIsBtnThree(false);
         } else if (userState === 2) {
             setIsBtnTwo(true);
+            props.setOrderCatagory('Market');
             setIsBtnOne(false);
             setIsBtnThree(false);
         } else if (userState === 3) {
             setIsBtnThree(true);
+            props.setOrderCatagory('Stop Limit');
             setIsBtnOne(false);
             setIsBtnTwo(false);
         }

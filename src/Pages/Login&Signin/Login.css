@@ -1,0 +1,105 @@
+.main-background{
+    
+    background-color: #151516;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    padding: 0.5%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.black-background{
+    width: 45%;
+    height: 65%;
+    background-color:#0E0E0F;
+    position: fixed;
+    
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 25px;
+
+}
+.topic{
+    display: flex;
+    text-align: center;
+    font-family: Inter;
+    padding-left: 25%;
+    font-style: normal;
+    
+    line-height: normal;
+    margin-top: 30px;
+}
+.traders{
+    color: #21DB9A;
+    padding-left: 3%;
+}
+.para{
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    margin-top: 45px;
+}
+.username-input{
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 25%;
+    left: 3%;
+    transform: translate(34%, -75%);
+    width: 58%;
+    height: 7%;
+    background-color: #3C3C3C4D;
+    border-bottom-color: #21DB9A;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    border-radius: 7px;
+}
+.password-input{
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 45%;
+    left: 3%;
+    transform: translate(34%, -75%);
+    width: 58%;
+    height: 7%;
+    background-color: #3C3C3C4D;
+    border-bottom-color: #21DB9A;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    border-radius: 7px;
+}
+.forgot-password{
+    display: flex;
+    color: #6D6D6D;
+    position: fixed;
+    top: 60%;
+    left: 56%;
+    transform: translate(34%, -75%);
+    font-size: 85%;
+}
+
+.login-button{
+    border-radius: 8px;
+    background: #21db9a;
+    width: 120px;
+    height: 38px;
+    flex-shrink: 0;
+    position: fixed;
+    top: 84%;
+    left: 35%;
+    transform: translate(34%, -75%);
+    color: #FFF;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.34px;
+    border: none;
+}

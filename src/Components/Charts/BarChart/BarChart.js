@@ -54,7 +54,8 @@ export default function BarChart(props) {
                   <td className='bar-chart-label'><FaCircle style={{color: bar.color}} size={15}></FaCircle></td>
                   <td className='bar-chart-label'>{bar.coinName}</td>
                   <td className='bar-chart-label'>
-                    {Number(bar.percentage).toFixed(2)}%
+                    { Number(bar.percentage).toFixed(4)}%
+                    {/* { Math.max(Math.round(bar.percentage * 1000) / 1000, 0.001) }% */}
                   </td>
                 </tr>
             ))}

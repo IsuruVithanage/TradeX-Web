@@ -1,53 +1,85 @@
-.watchlist-table-container{
-    background-color: #0E0E0F;
-    width: 95%;
-    margin: 0 auto;
-    padding: 5%;
-    box-sizing: border-box;
-    border-radius: 15px;
-  }
+.watchlist-table-container {
+  background-color: #0E0E0F;
+  width: 95%;
+  margin: 0 auto;
+  padding: 5%;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
 
-  .watchlist-table{
-    color: #ffffff;
-    background-color: #0E0E0F;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    border-collapse: collapse;
-  }
+.watchlist-table {
+  color: #ffffff;
+  background-color: #0E0E0F;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+}
 
-  .watchlist-table tr{
-    border-bottom: 1px solid #3C3C3C;
-    height: 70px;
-  }
+.watchlist-table tr {
+  border-bottom: 1px solid #3C3C3C;
+  height: 70px;
+}
 
-  .coin-image{
-    width: 25px;
-  }
+.coin-image {
+  width: 25px;
+}
 
-  .coin-name-container{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.coin-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 
-  .coin-symbol{
-    color: #9E9E9E;
+.coin-symbol {
+  color: #9E9E9E;
 
-  }
+}
 
-  .banner {
-    color: #ffffff;
-    background-color: #0E0E0F;
-    width: 1300px;
-    height: 120px;
-    margin-bottom: 40px;
-    margin-top: 50px;
-    margin-right: 10px; 
-    margin-left: 10px;
-    border-radius: 20px;
-  }
+.card-container{
+  display: flex;
+  align-items: center;
+  width: "100%";
+  margin-top: 5vh;
+  margin-bottom: 7vh;
+}
 
-  
-  
+.banner {
+  color: #ffffff;
+  background-color: #0E0E0F;
+  width: 21vw;
+  min-width: 250px;
+  height: 166px;
+  border-radius: 15px;
+  margin: auto;
+  padding: 22px 25px;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 15px #21db9a30;
+}
+
+.coin-image-top {
+  width: 40px;
+  height: 40px;
+}
+
+
+.coin-symbol-top {
+  color: #9E9E9E;
+  font-size: 25px;
+  margin-left: 10px;
+  font-weight: bold;
+
+}
+
+.price-top {
+  font-size: 29px;
+  margin-top: 29px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.price-change-top {
+  font-size: 20px;
+  margin-left: auto;
+}

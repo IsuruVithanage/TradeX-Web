@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
-import Table, { TableRow } from '../../../Components/Table/Table'
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
+import { showMessage } from '../../../Components/Message/Message';
 import axios from 'axios';
 import './PortfolioWallet.css'
 
 export default function FundingWallet() {
-    const currentWallet = new URLSearchParams(useLocation().search).keys().next().value;
-    const [ wallet, setWallet ] = useState(currentWallet);
+    const params = useParams().wallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet';
+    const [ currentWallet, SetCurrentWallet ] = useState(params);
     const [ selectedCoin, setSelectedCoin ] = useState('');
     const [ selectedQty, setSelectedQty ] = useState(null);
-    const [ selectedWallet, setSelectedWallet ] = useState(null);
+    const [ selectedWallet, setSelectedWallet ] = useState(undefined);
     const [ walletAddress, setWalletAddress ] = useState(null);
     const [ assets, setAssets ] = useState([]);
-    const [ usdBalance, setUsdBalance ] = useState(0);
-    const [ portfolioValue, setPortfolioValue ] = useState(0);
-    const [isInvalid, setIsInvalid] = useState([true, null]);
+    const [ usdBalance, setUsdBalance ] = useState(null);
+    const [ portfolioValue, setPortfolioValue ] = useState(null);
+    const [ isInvalid, setIsInvalid ] = useState([true, null]);
+    const [ isLoading, setIsLoading ] = useState(true);
     const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/';
     const userId = 1;
 
 
+
     useEffect(() => {
 
-        if(wallet === 'tradingWallet') {
+        if(currentWallet === 'tradingWallet') {
 
             if ( (selectedCoin && selectedQty) ) {
                 setIsInvalid([false, null]);
@@ -43,7 +46,7 @@ export default function FundingWallet() {
                 }
             }
 
-        } else if (wallet === 'fundingWallet') {
+        } else if (currentWallet === 'fundingWallet') {
 
             if ( selectedCoin && selectedQty && selectedWallet ) {
 
@@ -70,17 +73,23 @@ export default function FundingWallet() {
             }
         }
 
-    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddress, wallet]);
+    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddress, currentWallet]);
 
 
     useEffect(() => {
-        wallet === 'fundingWallet' ?  
-            setSelectedWallet(null) :
-            setSelectedWallet('fundingWallet');
-
+        currentWallet === 'tradingWallet' ?  
+        setSelectedWallet('fundingWallet') :
+        setSelectedWallet(null);
+        setSelectedCoin(null);
+        setSelectedQty(null);
+        setAssets([]);
+        setUsdBalance(null);
+        setPortfolioValue(null);
+        setIsLoading(true);
+            
         axios
             .get(
-                wallet === "tradingWallet" ? 
+                currentWallet === "tradingWallet" ? 
                 backendApiEndpoint + "trading" :
                 backendApiEndpoint + "funding",
                 {
@@ -94,22 +103,36 @@ export default function FundingWallet() {
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
+                setIsLoading(false);
             })
     
             .catch(error => {
-                error.response ? alert(error.response.data.message) :
+                setIsLoading(false);
+                setUsdBalance(0);
+                setPortfolioValue(0);
                 console.log("error", error);
+
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
             });
-    }, [wallet]);
+    }, [ currentWallet ]);
 
 
     const transfer = () => {
+        currentWallet === 'tradingWallet' ? 
+        setSelectedWallet('fundingWallet') :
+        setSelectedWallet(null);
+        setSelectedCoin(null);
+        setSelectedQty(null);
+        setIsLoading(true);
+
+
         const data = {
             userId: userId,
             coin: selectedCoin,
             quantity: selectedQty,
-            date: new Date().toLocaleDateString(),
-            sendingWallet: wallet,
+            sendingWallet: currentWallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet',
             receivingWallet: selectedWallet === 'externalWallet' ? 
             document.getElementById('walletAddress').value : selectedWallet
         };
@@ -118,42 +141,60 @@ export default function FundingWallet() {
         axios
             .put(
                 backendApiEndpoint,
-                data
+                data,
+                {
+                    params: {
+                        userId: userId
+                    }
+                }
             )
     
             .then(res => {
-                console.log(res.data);
+                console.log(res.data)
+                setAssets(res.data.assets);
+                setUsdBalance( res.data.usdBalance );
+                setPortfolioValue( res.data.portfolioValue);
+                setIsLoading(false);
+                showMessage('success', 'Transaction Successful..!') ;
             })
     
             .catch(error => {
-                error.response ? alert(error.response.data.message) :
+                setIsLoading(false);
                 console.log("error", error);
+                
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Transaction Failed..!') ;
             });
     }
 
+ 
     
     return (
         <BasicPage
+            isLoading={isLoading}
+
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
             ]}
 
             subPages={{
-                onClick: setWallet,
-                selectedPage: wallet,
+                onClick: SetCurrentWallet,
+                selectedPage: currentWallet,
                 pages: [
                     { label:"Trading Wallet", value:"tradingWallet"},
                     { label:"Funding Wallet", value:"fundingWallet"},
                 ],
             }}> 
+
             
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
                 header="Transfer"
                 sidePanel = {
                     <div>
-                        <Input type="dropdown" label='Coin' onChange={setSelectedCoin} options={
+                        <Input type="dropdown" label='Coin' value={selectedCoin} onChange={setSelectedCoin} options={
                             assets.map(asset => ({
                                 value: asset.symbol, 
                                 label: asset.symbol
@@ -161,35 +202,29 @@ export default function FundingWallet() {
                         } />
 
 
-                        <Input type="number" label='Quantity' onChange={setSelectedQty} />
+                        <Input type="number" value={selectedQty} label='Quantity' min={0} onChange={setSelectedQty} />
 
 
-                        { 
-                            wallet === "fundingWallet" &&
+                        
+                        <Input type="dropdown" label='Receiving Wallet' value={selectedWallet} disabled={currentWallet === 'tradingWallet'} onChange={setSelectedWallet} 
+                            options={[
+                                    { value: 'tradingWallet', label: 'Trading Wallet' },
+                                    { value: 'fundingWallet', label: 'Funding Wallet' },
+                                    { value: 'externalWallet', label: 'External Wallet' },
+                                ].filter(option => option.value !== currentWallet) }
+                        />
+
+
+
+                        { currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
                             <div className={'hidden-input'} >
-                                <Input type="dropdown" label='Receiving Wallet' defaultValue={selectedWallet} onChange={setSelectedWallet} 
-                                    options={[
-                                            { value: 'tradingWallet', label: 'Trading Wallet' },
-                                            { value: 'externalWallet', label: 'External Wallet' },
-                                        ]}
-                                />
+                                <Input type="text" label='Wallet Address' id="walletAddress" onChange={setWalletAddress}/> 
                             </div> 
                         }
+                        <div className={`traveling-input ${currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
+                            <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
 
-
-
-                        <div className={`traveling-input ${wallet === "fundingWallet" ? "goDown" : ""}`}>
-                        { 
-                            wallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
-                            <div className={'hidden-input'} >
-                                <Input type="text" label='Wallet Address' id="walletAddress" onChange={setWalletAddress} style={{width:"calc(100% + 70px)"}}/> 
-                            </div> 
-                        }
-                            <div className={`traveling-input ${wallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
-                                <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
-
-                                <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>                            
-                            </div>
+                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>                            
                         </div>
                     </div>
                 }>
@@ -201,8 +236,8 @@ export default function FundingWallet() {
                 />
 
                
-                <Table emptyMessage="No Assets to show" restart={wallet}>
-                    <TableRow data={ wallet === "tradingWallet" ? 
+                <Table emptyMessage="No Assets to show" restart={currentWallet}>
+                    <TableRow data={ currentWallet === "tradingWallet" ? 
                         [
                             'Coin', 
                             'Trading Balance',
@@ -220,12 +255,12 @@ export default function FundingWallet() {
                         ]
                     }/>
  
-                    { assets && (wallet === "tradingWallet" ? assets : assets.slice(1)).map(asset => (  
+                    { assets && (currentWallet === "tradingWallet" ? assets : assets.slice(1)).map(asset => (  
                         <TableRow 
                             key={asset.symbol} 
-                            data={ wallet === "tradingWallet" ?
+                            data={ currentWallet === "tradingWallet" ?
                             [
-                                [ asset.symbol ], 
+                                <Coin>{asset.symbol}</Coin>, 
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
@@ -233,7 +268,7 @@ export default function FundingWallet() {
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
-                                [ asset.symbol ], 
+                                <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
                                 `$ ${asset.value.toFixed(2)}`,

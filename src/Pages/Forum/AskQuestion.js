@@ -1,18 +1,26 @@
-  import React from 'react' 
+  import React, { useState } from 'react' 
   import BasicPage from '../../Components/BasicPage/BasicPage';
   import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
   import './askQuestion.css';
   import { height } from '@mui/system';
   import Input from "../../Components/Input/Input";
+  import ReactQuill from 'react-quill';
+  import 'react-quill/dist/quill.snow.css';
   function AskQuestion() {
 
 
     const Tabs = [
       { label: "Latest", path: "/Forum" },
       { label: "My Problems", path: "/MyProblems" },
-      { label: "My Answers", path: "/alert" },
+      { label: "My Answers", path: "/forum/MyAnswers" },
       
     ];
+
+    const [value,setValue] =  useState("");
+    
+    const handleChange = (newValue) => {
+      setValue(newValue);
+    };
     return (
 
     <BasicPage tabs={Tabs}>
@@ -30,24 +38,28 @@
 
               
     
-      <div className="ask-Question">
-        <div className="ask-ques-container">
-          <h1>Ask Your Question</h1>
+      <div className="ask-Question"> 
+        <div className="ask-ques-container"> 
+          <h2>Ask Your Question</h2>
           <form>
             <div className="ask-form-container">
               <label className="ask-ques-title">
-                <h2>Title</h2>
-                <p>Be specific and imagine you’re asking a question to another person.</p>
-                <Input type="text" id="ask-ques-title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
+                <h3>Title</h3>
+               {/* <p>Be specific and imagine you’re asking a question to another person.</p>*/}
+                <Input type="text" id="title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
               </label>
 
-              <label className="ask-ques-body">
-                <h4>Body</h4>
-                <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
-                <textarea id="ask-ques-body" className='text-area' cols="30" rows="10"></textarea>
-                
+              <div className="body">
+                <h3>Description</h3>
+                {/*<p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>*/}
+                {/*<textarea id="ask-ques-body" className='text-area' cols="30" rows="15" placeholder=''>
+ 
+                </textarea>*/}
+                  <div className="text-editor">
+                    <ReactQuill theme="snow" value={value} onChange={handleChange} />
+                  </div>
 
-              </label>
+              </div>
           {/*   <label className="ask-ques-tags">
                 <h4>Tags</h4>
                 <p>Add upto five tags to describe what your question is about. Start typing to see suggestions</p>

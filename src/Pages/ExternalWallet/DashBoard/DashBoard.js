@@ -54,16 +54,17 @@ export default function DashBoard() {
                       <Input type="switch" buttons = {["Send","Receive"]} onClick = {setAction}/>
 
                      {action === "Send" ?
-                     <div> 
-                        <Input type="text" label='Wallet Address'/> 
+                        <div> 
+                            <Input type="text" label='Wallet Address'/> 
 
-                        <Input type="dropdown" label='Coin' options={
-                              Object.keys(assets).slice(1).map(assetKey => ({
-                                  value: assetKey, 
-                                  label: assetKey
-                              }))
-                          } />
-                        <Input type="number" label='Quantity' />
+                            <Input type="dropdown" label='Coin' options={
+                                Object.keys(assets).slice(1).map(assetKey => ({
+                                    value: assetKey, 
+                                    label: assetKey
+                                }))
+                            } />
+                            <Input type="number" label='Quantity' />
+
 
                         <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>    
                      </div>
