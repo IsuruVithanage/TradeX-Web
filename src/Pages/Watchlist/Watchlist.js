@@ -13,6 +13,7 @@ const Watchlist = () => {
 
     useEffect(() => {
         setIsLoading(true);
+        console.log(symbolsList);
 
         axios
         .get(

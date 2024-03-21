@@ -7,6 +7,7 @@ import axios from "axios";
 const CoinBar = ({ onSelectCoin, enableModel }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [coins, setCoins] = useState([]);
+    const [isCoinSelected, setIsCoinSelected] = useState(false);
     const [coinData, setcoinData] = useState({
         name: '',
         price: 0,
@@ -40,7 +41,6 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
     }
 
     const handleRowClick = (selectedCoin) => {
-        console.log('Selected Coin:', selectedCoin);
         setcoinData((prevData) => ({
             ...prevData,
             name: selectedCoin.name,
@@ -51,6 +51,8 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
         }));
         setIsSetterModalOpen(false);
         onSelectCoin(selectedCoin);
+        setIsCoinSelected(true);
+
     };
 
 
@@ -65,27 +67,34 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
 
 
     return (
-        <div className='coinDiv' onClick={openSetterModel}>
-            <div className='coin-logo'>
-                <div className='coin-logo coinimg'>
-                    <img src={coinData.symbol} alt=""/>
-                    <p>{coinData.name}</p>
-                </div>
-            </div>
-            <div className='coinData'>
-                <div className='cdata'>
-                    <h1>Price</h1>
-                    <p>{coinData.price}</p>
-                </div>
-                <div className='cdata'>
-                    <h1>24h Price Change</h1>
-                    <p style={{color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{coinData.priceChange} %</p>
-                </div>
-                <div className='cdata'>
-                    <h1>Market Cap</h1>
-                    <p>{coinData.marketcap}</p>
-                </div>
-            </div>
+
+        <div className='coinDiv' onClick={openSetterModel} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            {isCoinSelected ? (
+                <>
+                    <div className='coin-logo'>
+                        <div className='coin-logo coinimg'>
+                            <img src={coinData.symbol} alt=""/>
+                            <p>{coinData.name}</p>
+                        </div>
+                    </div>
+                    <div className='coinData'>
+                        <div className='cdata'>
+                            <h1>Price</h1>
+                            <p>{coinData.price}</p>
+                        </div>
+                        <div className='cdata'>
+                            <h1>24h Price Change</h1>
+                            <p style={{color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{coinData.priceChange} %</p>
+                        </div>
+                        <div className='cdata'>
+                            <h1>Market Cap</h1>
+                            <p>{coinData.marketcap}</p>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <h1 style={{fontSize:'1.2rem',alignItems:'center',justifyItems:'center',color:'#9E9E9E'}}>Select a Coin</h1>
+            )}
 
             {enableModel && (
                 <Modal open={isSetterModalOpen} close={() => setIsSetterModalOpen(false)}>
