@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
+import axios from "axios";
 
 export default function AdDashboard() {
+    const [adminCount, setAdminCount] = useState(0);
+  
+    useEffect(() => {
+      const fetchAdminCount = async () => {
+        try {
+          const response = await axios.get("http://localhost:8003/admin/getAdminCount");
+          setAdminCount(response.data.count);
+        } catch (error) {
+          console.error("Error fetching admin count:", error);
+        }
+      };
+  
+      fetchAdminCount();
+    }, []);
   return (
     <BasicPage
       tabs={[
@@ -28,7 +43,7 @@ export default function AdDashboard() {
         </AdminCard>
         <AdminCard>
           <div className="Dash-card">Admin</div>
-          <div className="count">020</div>
+          <div className="count">{adminCount}</div>
         </AdminCard>
       </div>
       <div style={{ display: "flex" }}>

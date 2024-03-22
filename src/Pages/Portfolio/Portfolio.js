@@ -15,7 +15,7 @@ export default function Portfolio() {
   const [ percentages, setPercentages ] = useState([]);
   const [ initialData, setInitialData ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
-  const backendApiEndpoint = 'http://localhost:8004/portfolio/asset/overview';
+  const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
   const userId = 1;
   
 
@@ -64,8 +64,6 @@ export default function Portfolio() {
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
         ]}>
 
-
- 
 
       
         <SidePanelWithContainer 

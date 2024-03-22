@@ -9,14 +9,17 @@ import Table, {TableRow} from "../../Components/Table/Table";
 import Modal from "../../Components/Modal/Modal";
 import Input from "../../Components/Input/Input";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export default function Quiz() {
+    const user = useSelector(state => state.user);
     const [questions, setQuestions] = useState([]);
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
+    const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
     let currentScore = 0;
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
 
     const Tabs = [
@@ -42,13 +45,36 @@ export default function Quiz() {
             }
         });
         setScore(currentScore);
+        allocateStatingFund(currentScore);
 
     }
 
 
     const loadQuestions = async () => {
         try {
-            const result = await axios.get(`http://localhost:8007/quiz/`);
+            const result = await axios.get(`http://localhost:8005/quiz/`);
+            setQuestions(shuffleArray(result.data));
+        } catch (error) {
+            console.error("Error fetching questions:", error);
+        }
+    }
+
+    const allocateStatingFund = async (score) => {
+        const ob = {
+            userId: user.user.id,
+            coin: 'USD',
+            quantity: score >= 5 ? 100000 : 50000,
+            purchasePrice: 1,
+            type: ''
+        }
+        try {
+            const result = fetch("http://localhost:8011/portfolio/asset/transfer", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ob)
+            });
             setQuestions(shuffleArray(result.data));
         } catch (error) {
             console.error("Error fetching questions:", error);
@@ -76,8 +102,10 @@ export default function Quiz() {
 
     const startTrade = () => {
         navigate('/watchlist');
+    }
 
-
+    const submitQuiz = () => {
+        setIsSubmitModalOpen(true);
     }
 
     return (
@@ -86,11 +114,28 @@ export default function Quiz() {
                 <div className='quiz-top'>
                     <p>Level Quiz</p>
                     <QuizTimer onTimeout={handleQuizTimeout}/>
+                    <Input type="button" value='Submit' outlined style={{marginTop: '0.7rem', marginRight: '1rem'}}
+                           onClick={submitQuiz}/>
                 </div>
                 {questions.map((question, index) => (
                     <QuestionBar key={index} questionNumber={index} question={question} getAnswers={getAnswers}/>
                 ))}
             </div>
+
+            <Modal open={isSubmitModalOpen} close={() => setIsSubmitModalOpen(false)}>
+                <div className='quizmodel-container'>
+                    <h1 style={{marginBottom: 0}}>Are sure?</h1>
+                    <p style={{marginTop: 0}}>Are you sure you want to submit the quiz?</p>
+
+                    <div style={{display: "flex"}}>
+                        <Input type="button" value='Yes' style={{marginTop: '0.7rem', marginRight: '1rem'}}
+                               onClick={handleQuizTimeout}/>
+                        <Input type="button" value='No' style={{marginTop: '0.7rem', marginLeft: '1rem'}} red
+                               onClick={() => setIsSubmitModalOpen(false)}/>
+                    </div>
+
+                </div>
+            </Modal>
 
             <Modal open={isSetterModalOpen} close={() => handleQuizTimeout()} closable={false}>
                 <div className='quizmodel-container'>
