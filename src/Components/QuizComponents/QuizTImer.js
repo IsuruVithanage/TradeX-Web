@@ -19,7 +19,7 @@ function MyTimer({ expiryTimestamp, onExpire }) {
     return (
         <div style={{ textAlign: 'center' }}>
             <div className='timer-container'>
-                <span style={{ fontSize: '1.5rem', color: '#9E9E9E', fontWeight: 'bold' }}>Duration : </span>
+                <span style={{ fontSize: '1.5rem', color: '#9E9E9E', fontWeight: 'bold' }}>Time : </span>
                 <span>{formattedMinutes}</span>:<span>{formattedSeconds}</span>
             </div>
         </div>
@@ -28,7 +28,7 @@ function MyTimer({ expiryTimestamp, onExpire }) {
 
 export default function QuizTimer({ onTimeout }) {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 5);
+    time.setSeconds(time.getSeconds() + 500);
     return (
         <div>
             <MyTimer expiryTimestamp={time} onExpire={onTimeout} />

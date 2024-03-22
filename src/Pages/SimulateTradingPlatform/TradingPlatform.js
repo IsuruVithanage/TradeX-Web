@@ -40,6 +40,18 @@ export default function TradingPlatform() {
         }));
     };
 
+    //place order
+    const placeOrder = () => {
+        return {
+            userId: user.user.id,
+            coin: order.coin.symbol.toUpperCase(),
+            quantity: order.quantity,
+            price: order.price,
+            type: order.cato,
+            totalPrice: order.total
+        }
+    }
+
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
             ...prevOrder,
@@ -54,12 +66,14 @@ export default function TradingPlatform() {
                 price: 0,
                 total: 0
             }));
+            setIsOrderSet(true);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
                 ...prevOrder,
                 price: 0,
                 total: 0
             }));
+            setIsOrderSet(true);
         }
     };
 
@@ -84,6 +98,10 @@ export default function TradingPlatform() {
                 ...prevOrder,
                 total: value * order.quantity
             }));
+        }
+
+        if (isOrderSet) {
+            setIsOrderSet(false);
         }
     };
 
@@ -121,20 +139,47 @@ export default function TradingPlatform() {
         }));
     }
 
+    //http://localhost:8004/portfolio/asset/add
+    //http://localhost:8007/order
 
-    const saveOrder = async () => {
-        try {
-            const response = await fetch('http://localhost:8007/order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(order)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Failed to save order:', error);
+    const saveOrder = () => {
+        const ob = {
+            userId: user.user.id,
+            coin: order.coin ? order.coin.symbol.toUpperCase() : null,
+            quantity: order.quantity,
+            purchasePrice: order.price,
+            type: order.cato
         }
+
+        // Check if any property is null
+        if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
+            console.error('Invalid order:', ob);
+            return;
+        }
+
+        fetch('http://localhost:8011/portfolio/asset/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ob)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                return fetch('http://localhost:8005/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(placeOrder())
+                });
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Failed to save order:', error);
+            });
     }
 
 
