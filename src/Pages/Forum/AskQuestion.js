@@ -6,6 +6,8 @@
   import Input from "../../Components/Input/Input";
   import ReactQuill from 'react-quill';
   import 'react-quill/dist/quill.snow.css';
+  import axios from 'axios';
+  
   function AskQuestion() {
 
 
@@ -16,11 +18,35 @@
       
     ];
 
-    const [value,setValue] =  useState("");
+    {/*const [value,setValue] =  useState("");
     
     const handleChange = (newValue) => {
       setValue(newValue);
     };
+  */}
+   
+      const [values,setvalues]=useState({
+       questionId:null,
+       userId:1,
+       title:'',
+       description:'',
+       views:0,
+       likes:0,
+       replies:0
+      }) 
+      const handleDescriptionChange = (content) => {
+        setvalues({...values, description: content});
+    };
+    
+   
+   const handleSubmit=(event)=>{
+    event.preventDefault();
+    console.log(values);
+    axios.post('http://localhost:8010/forum',values)
+    .then(res=>console.log("Data added success"))
+    .catch(err=>console.log(err));
+   }
+
     return (
 
     <BasicPage tabs={Tabs}>
@@ -41,12 +67,12 @@
       <div className="ask-Question"> 
         <div className="ask-ques-container"> 
           <h2>Ask Your Question</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="ask-form-container">
               <label className="ask-ques-title">
                 <h3>Title</h3>
                {/* <p>Be specific and imagine you’re asking a question to another person.</p>*/}
-                <Input type="text" id="title" placeholder="Ex: What are the most highest rated CryptoCurrencies?"/>
+                <Input type="text" id="title" placeholder="Ex: What are the most highest rated CryptoCurrencies?" name='title' onChange={handleDescriptionChange}/>
               </label>
 
               <div className="body">
@@ -56,7 +82,7 @@
  
                 </textarea>*/}
                   <div className="text-editor">
-                    <ReactQuill theme="snow" value={value} onChange={handleChange} />
+                    <ReactQuill theme="snow"  name='description' onChange={handleDescriptionChange} />
                   </div>
 
               </div>
