@@ -2,6 +2,7 @@ import { createChart } from 'lightweight-charts';
 import React, { useState, useEffect, useRef } from 'react';
 import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
 import './LineChart.css';
+import * as LightweightCharts from "lightweight-charts";
 
 export default function LineChart(props) {
 	let handleResize = useRef(null);
@@ -9,6 +10,16 @@ export default function LineChart(props) {
 	const [ chartData, setChartData ] = useState([]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
+
+	const markers = [
+		{
+			time: { year: 2024, month: 4, day: 27 },
+			position: 'aboveBar',
+			color: '#FF0000',
+			shape: 'circle',
+			text: 'A',
+		},
+	];
 
 	useEffect(() => {
 		activeDuration && props.data[activeDuration].length > 0 &&
@@ -102,17 +113,38 @@ export default function LineChart(props) {
 		});
 		
 
-		chart.addLineSeries({ 
+		const series=chart.addLineSeries({
 			color: '#21db9a', 
 			lineWidth: 2,
 			lineType: 2,
 			priceLineVisible: false,
 			lastValueVisible: false,
 			lastPriceAnimation: 1,
-		}).setData(chartData);
+		});
+
+		series.setData(chartData);
+
+		chart.applyOptions({
+			crosshair: {
+				mode: LightweightCharts.CrosshairMode.Normal,
+
+				vertLine: {
+					width: 8,
+					color: 'rgba(35,40,38,0.44)',
+					style: LightweightCharts.LineStyle.Solid,
+					labelBackgroundColor: '#21DB9AFF',
+				},
+
+				horzLine: {
+					color: '#21DB9AFF',
+					labelBackgroundColor: '#21DB9AFF',
+				},
+			},
+		});
 
 
 		chart.timeScale().fitContent();
+		series.setMarkers(markers);
 		
 
 		handleResize.current = () => {

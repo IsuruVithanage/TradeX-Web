@@ -77,10 +77,10 @@ export default function Suggestions() {
     };
 
     const fetchData = async () => {
-        console.log('fetching data' + coinData);
+        console.log(coinData);
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=${coinData.symbol.toUpperCase()}USDT&interval=1m&limit=1000`
             );
             return processData(res.data);
 
@@ -108,11 +108,12 @@ export default function Suggestions() {
                     ...prevData,
                     name: res.data.name,
                     price: formatCurrency(res.data.market_data.current_price.usd),
-                    symbol: res.data.image.large,
+                    symbol: res.data.symbol,
+                    image: res.data.image.large,
                     priceChange: res.data.market_data.price_change_24h,
                     marketcap: res.data.market_data.market_cap.usd,
                 }));
-                console.log(res.data);
+                console.log(coinData);
                 await fetchData();
                 console.log(tradeData);
             })
@@ -138,7 +139,7 @@ export default function Suggestions() {
                 <div className='coinDiv'>
                     <div className='coin-logo'>
                         <div className='coin-logo coinimg'>
-                            <img src={coinData.symbol} alt=""/>
+                            <img src={coinData.image} alt=""/>
                             <p>{coinData.name}</p>
                         </div>
                     </div>
