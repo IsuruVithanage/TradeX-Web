@@ -97,7 +97,7 @@ export default function LineChart(props) {
 
 			localization: {
 				priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-				locale: 'en-US',
+				// locale: 'en-US',
 			},
 		});
 		
