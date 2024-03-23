@@ -24,8 +24,6 @@ export default function Admin() {
       [name]: value,
     }));
   };
-  
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,17 +39,26 @@ export default function Admin() {
     console.log(admin);
 
     try {
+<<<<<<< HEAD
       const response = await fetch('http://localhost:8003/admin', {
         method: 'POST',
+=======
+      const response = await fetch("http://localhost:8003/admin/", {
+        method: "POST",
+>>>>>>> 476a372f876aa1136e72a75029bedc5d09e4e11c
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(admin)
+        body: JSON.stringify(admin),
       });
 
       if (response.ok) {
+<<<<<<< HEAD
 
         console.log('Data sent successfully');
+=======
+        console.log("Data sent successfully");
+>>>>>>> 476a372f876aa1136e72a75029bedc5d09e4e11c
 
         setAdmin({
           AdminName: "",
@@ -62,16 +69,22 @@ export default function Admin() {
         });
         await loadAdmins();
       } else {
-        console.error('Error sending data:', response.statusText);
+        console.error("Error sending data:", response.statusText);
       }
     } catch (error) {
-      console.error('Error sending data:', error.message);
+      console.error("Error sending data:", error.message);
     }
   };
 
   const loadAdmins = async () => {
     try {
+<<<<<<< HEAD
       const result = await axios.get('http://localhost:8003/admin/getAllAdmins');
+=======
+      const result = await axios.get(
+        "http://localhost:8003/admin/getAllAdmins"
+      );
+>>>>>>> 476a372f876aa1136e72a75029bedc5d09e4e11c
       setAdminList(result.data);
     } catch (error) {
       console.error("Error fetching Admins", error);
