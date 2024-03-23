@@ -39,20 +39,20 @@ export default function Admin() {
     });
 
     console.log(admin);
-    
+
     try {
-      const response = await fetch('http://localhost:8002/admin', {
+      const response = await fetch('http://localhost:8003/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(admin)
       });
-      
+
       if (response.ok) {
-        
+
         console.log('Data sent successfully');
-        
+
         setAdmin({
           AdminName: "",
           Date: "",
@@ -71,7 +71,7 @@ export default function Admin() {
 
   const loadAdmins = async () => {
     try {
-      const result = await axios.get('http://localhost:8002/admin/getAllAdmins');
+      const result = await axios.get('http://localhost:8003/admin/getAllAdmins');
       setAdminList(result.data);
     } catch (error) {
       console.error("Error fetching Admins", error);

@@ -1,12 +1,6 @@
 import React, {useState} from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
-import ButtonSet from "../../Components/SimulateChart/ButtonSet";
-import Input from "../../Components/Input/Input";
-import NumberInput from "../../Components/Input/NumberInput/NumberInput";
-import SliderInput from "../../Components/Input/SliderInput/SliderInput";
-import CoinBar from "../../Components/SimulateChart/CoinBar";
-import {TradingChart} from "../../Components/SimulateChart/TradingChart";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "../SimulateTradingPlatform/assets.json";
 import initialData from "./portfolio-data.json";
@@ -32,9 +26,67 @@ export default function Suggestions() {
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [selectedCoin, setSelectedCoin] = useState(null);
+    const [tradeData, setTradeData] = useState([]);
 
     const handleCoinSelection = (coin) => {
         setSelectedCoin(coin);
+    };
+
+    const processData = async (newData) => {
+        try {
+            let seen = new Set();
+            const filteredData = newData.filter((item) => {
+                const date = new Date(item[0] * 1000);
+                const year = 2024;
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+                const day = String(date.getUTCDate()).padStart(2, '0');
+                const time = `${year}-${month}-${day}`;
+
+                if (seen.has(time)) {
+                    return false;
+                } else {
+                    seen.add(time);
+                    return true;
+                }
+            });
+
+            const transformedData = filteredData.map((item) => {
+                const date = new Date(item[0] * 1000);
+                const year = 2024;
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+                const day = String(date.getUTCDate()).padStart(2, '0');
+
+                return {
+                    time: `${year}-${month}-${day}`,
+                    value: parseFloat(item[4]),
+                };
+            });
+
+            transformedData.sort((a, b) => a.time.localeCompare(b.time));
+            console.log(transformedData);
+
+            const result = {
+                Day: transformedData
+            };
+
+            setTradeData(result);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const fetchData = async () => {
+        console.log('fetching data' + coinData);
+        try {
+            const res = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000`
+            );
+            return processData(res.data);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const formatCurrency = (amount) => {
@@ -51,7 +103,7 @@ export default function Suggestions() {
             .get(
                 `https://api.coingecko.com/api/v3/coins/${coin}`
             )
-            .then(res => {
+            .then(async res => {
                 setcoinData((prevData) => ({
                     ...prevData,
                     name: res.data.name,
@@ -61,6 +113,8 @@ export default function Suggestions() {
                     marketcap: res.data.market_data.market_cap.usd,
                 }));
                 console.log(res.data);
+                await fetchData();
+                console.log(tradeData);
             })
             .catch(error => console.log(error));
 
@@ -103,7 +157,7 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <LineChart data={initialData}></LineChart>
+                <LineChart data={tradeData}></LineChart>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}} hover={true}>
