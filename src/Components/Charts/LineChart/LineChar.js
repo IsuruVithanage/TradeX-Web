@@ -15,8 +15,8 @@ export default function LineChart(props) {
 		{
 			time: { year: 2024, month: 4, day: 27 },
 			position: 'aboveBar',
-			color: '#FF0000',
-			shape: 'circle',
+			color: '#ffbf74',
+			shape: 'arrowDown',
 			text: 'A',
 		},
 	];
@@ -124,23 +124,6 @@ export default function LineChart(props) {
 
 		series.setData(chartData);
 
-		chart.applyOptions({
-			crosshair: {
-				mode: LightweightCharts.CrosshairMode.Normal,
-
-				vertLine: {
-					width: 8,
-					color: 'rgba(35,40,38,0.44)',
-					style: LightweightCharts.LineStyle.Solid,
-					labelBackgroundColor: '#21DB9AFF',
-				},
-
-				horzLine: {
-					color: '#21DB9AFF',
-					labelBackgroundColor: '#21DB9AFF',
-				},
-			},
-		});
 
 
 		chart.timeScale().fitContent();
