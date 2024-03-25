@@ -51,6 +51,7 @@ function InputField(props) {
             className={`input-field ${props.className}`}
             type={props.type}
             value={props.value}
+            defaultValue = {props.defaultValue}
             id={props.id}
             name={props.name}
             placeholder={props.placeholder}
@@ -58,6 +59,7 @@ function InputField(props) {
             onBlur={props.onBlur}
             onChange={props.onChange ? handleChange : null}
             onClick={props.onClick}
+        
         />
     );
 }
