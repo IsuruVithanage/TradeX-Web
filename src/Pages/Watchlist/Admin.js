@@ -39,7 +39,7 @@ export default function Admin() {
     console.log(admin);
 
     try {
-      const response = await fetch("http://localhost:8003/admin", {
+      const response = await fetch("http://localhost:8003/admin/saveAdmin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
