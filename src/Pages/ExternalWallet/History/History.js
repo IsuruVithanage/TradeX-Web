@@ -1,12 +1,36 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
-import Table, { TableRow } from '../../../Components/Table/Table';
+import Table, { TableRow,Coin } from '../../../Components/Table/Table';
+import axios from 'axios';
+
 
 export default function History() {
-    const historyData = require('./History.json');
+    const userId = 1;
+    const [historyData,setHistoryData] = useState([])
+    const [isLoading,setIsLoading] = useState(true)
+
+
+    useEffect(()=>{
+        setIsLoading(true)
+        axios.get(
+            "http://localhost:8005/history",
+            {params:{userId:userId}}
+        )
+        .then((res)=>{
+            setHistoryData(res.data)
+            setIsLoading(false)
+            console.log(res.data)
+        })
+        .catch((error)=>{
+            console.log(error)
+            setIsLoading(false)
+        })
+
+    },[])
 
     return (
         <BasicPage 
+            isLoading = {isLoading}
             sideNavBar= {false}
             tabs={[
                 { label:"Dashboard", path:"/wallet/dashboard"},
@@ -21,11 +45,11 @@ export default function History() {
                     <TableRow 
                         key={index} 
                         data={[
-                            [row.Coin],
-                            row.Date, 
-                            row.Type,
-                            row.Wallet, 
-                            row.Quantity, 
+                            <Coin>{row.coin}</Coin>,
+                            row.date, 
+                            row.type,
+                            row.from_to, 
+                            row.quantity, 
                         ]} 
                     />
                 ))}
