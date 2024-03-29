@@ -5,6 +5,7 @@ import "./Admin.css";
 import "./ViewAll.css";
 import Modal from "../../Components/Modal/Modal";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function Admin() {
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
@@ -202,6 +203,7 @@ export default function Admin() {
                   <td>{admin.NIC}</td>
                   <td>{admin.Contact}</td>
                   <td>{admin.Age}</td>
+                  <td><RiDeleteBin6Line /></td>
                 </tr>
               ))}
             </tbody>

@@ -3,6 +3,8 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import "./Users.css";
 import "./ViewAll.css";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 
 export default function Users() {
   const getVerifiedCellStyle = (isVerified) => {
@@ -67,6 +69,7 @@ export default function Users() {
                   <td>{user.Contact}</td>
                   <td>{user.Age}</td>
                   <td>{user.Verified}</td>
+                  <td><RiDeleteBin6Line /></td>
                 </tr>
               ))}
             </tbody>
