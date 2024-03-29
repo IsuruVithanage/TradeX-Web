@@ -4,6 +4,9 @@ import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./ViewAll.css";
 import axios from "axios";
+import { FaUsers } from "react-icons/fa";
+import { FaUserCheck } from "react-icons/fa";
+import { FaUserCog } from "react-icons/fa";
 
 export default function ViewAll() {
   const [adminCount, setAdminCount] = useState(0);
@@ -83,17 +86,38 @@ export default function ViewAll() {
       ]}
     >
       <div style={{ display: "flex" }}>
-        <AdminCard>
-          <div className="Dash-card">Users</div>
-          <div className="count">{userCount}</div>
+      <AdminCard>
+          <div style={{ display: "flex" }}>
+            <div>
+              <div className="Dash-card">Users</div>
+              <div className="count">{userCount}</div>
+            </div>
+            <div className="user-icon">
+            <FaUsers />
+            </div>
+          </div>
         </AdminCard>
         <AdminCard>
-          <div className="Dash-card">Verified</div>
-          <div className="count">{verifiedUserCount}</div>
+          <div style={{ display: "flex" }}>
+            <div>
+              <div className="Dash-card">Verified</div>
+              <div className="count">{verifiedUserCount}</div>
+            </div>
+            <div className="user-icon">
+            <FaUserCheck />
+            </div>
+          </div>
         </AdminCard>
         <AdminCard>
-          <div className="Dash-card">Admin</div>
-          <div className="count">{adminCount}</div>
+          <div style={{ display: "flex" }}>
+            <div>
+              <div className="Dash-card">Admin</div>
+              <div className="count">{adminCount}</div>
+            </div>
+            <div className="user-icon">
+            <FaUserCog />
+            </div>
+          </div>
         </AdminCard>
       </div>
       <div>
