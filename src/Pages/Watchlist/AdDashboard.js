@@ -6,20 +6,55 @@ import "./AdDashboard.css";
 import axios from "axios";
 
 export default function AdDashboard() {
-    const [adminCount, setAdminCount] = useState(0);
-  
-    useEffect(() => {
-      const fetchAdminCount = async () => {
-        try {
-          const response = await axios.get("http://localhost:8003/admin/getAdminCount");
-          setAdminCount(response.data.count);
-        } catch (error) {
-          console.error("Error fetching admin count:", error);
-        }
-      };
-  
-      fetchAdminCount();
-    }, []);
+  const [adminCount, setAdminCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [pendingUsers, setPendingUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchAdminCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8003/admin/getAdminCount"
+        );
+        setAdminCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching admin count:", error);
+      }
+    };
+
+    fetchAdminCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchPendingUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/user/getPendingUsers"
+        );
+        setPendingUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching pending users:", error);
+      }
+    };
+
+    fetchPendingUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/user/getUserCount"
+        );
+        setUserCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching user count:", error);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
+
   return (
     <BasicPage
       tabs={[
@@ -35,7 +70,7 @@ export default function AdDashboard() {
       <div style={{ display: "flex" }}>
         <AdminCard>
           <div className="Dash-card">Users</div>
-          <div className="count">120</div>
+          <div className="count">{userCount}</div>
         </AdminCard>
         <AdminCard>
           <div className="Dash-card">Verified</div>
@@ -59,48 +94,15 @@ export default function AdDashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>02.12.2023</td>
-                  <td>
-                    <Input type="button" value=" Verify" outlined />
-                  </td>
-                </tr>
+                {pendingUsers.map((user) => (
+                  <tr key={user.userId}>
+                    <td style={{textAlign:"left"}}>{user.userName}</td>
+                    <td>{user.Date}</td>
+                    <td>
+                      <Input type="button" value=" Verify" outlined />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
