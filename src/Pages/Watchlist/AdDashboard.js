@@ -4,11 +4,13 @@ import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function AdDashboard() {
   const [adminCount, setAdminCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [verifiedUserCount, setVerifiedUserCount] = useState(0);
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -55,6 +57,21 @@ export default function AdDashboard() {
     fetchUserCount();
   }, []);
 
+  useEffect(() => {
+    const fetchVerifiedUserCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/user/getVerifiedUserCount"
+        );
+        setVerifiedUserCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching verified user count:", error);
+      }
+    };
+
+    fetchVerifiedUserCount();
+  }, []);
+
   return (
     <BasicPage
       tabs={[
@@ -62,7 +79,6 @@ export default function AdDashboard() {
         { label: "Custom", path: "/watchlist/customize" },
         { label: "CoinPage", path: "/watchlist/CoinPage" },
         { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "ViewAll", path: "/watchlist/ViewAll" },
         { label: "Users", path: "/watchlist/Users" },
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
@@ -74,7 +90,7 @@ export default function AdDashboard() {
         </AdminCard>
         <AdminCard>
           <div className="Dash-card">Verified</div>
-          <div className="count">110</div>
+          <div className="count">{verifiedUserCount}</div>
         </AdminCard>
         <AdminCard>
           <div className="Dash-card">Admin</div>
@@ -96,7 +112,7 @@ export default function AdDashboard() {
               <tbody>
                 {pendingUsers.map((user) => (
                   <tr key={user.userId}>
-                    <td style={{textAlign:"left"}}>{user.userName}</td>
+                    <td style={{ textAlign: "left" }}>{user.userName}</td>
                     <td>{user.Date}</td>
                     <td>
                       <Input type="button" value=" Verify" outlined />
@@ -107,7 +123,9 @@ export default function AdDashboard() {
             </table>
           </div>
           <div className="ViewAll-btn">
-            <Input type="button" value=" View All" />
+            <Link to="/watchlist/ViewAll">
+              <Input type="button" value=" View All" />
+            </Link>
           </div>
         </div>
         <div className="issues">
