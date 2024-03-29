@@ -16,7 +16,7 @@ export default function LineChart(props) {
 			time: { year: 2024, month: 4, day: 27 },
 			position: 'aboveBar',
 			color: '#FF0000',
-			shape: 'circle',
+			shape: 'arrowDown',
 			text: 'A',
 		},
 	];
