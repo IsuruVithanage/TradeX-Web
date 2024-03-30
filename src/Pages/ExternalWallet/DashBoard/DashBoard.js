@@ -24,13 +24,6 @@ export default function DashBoard() {
     const walletAddress = "wwwww"
     const [isInvalid,setIsInvalid] = useState([true,null])
 
-    console.log(isInvalid)
-
-
-
-
-
-    
 
 
     useEffect(()=>{
@@ -89,9 +82,9 @@ export default function DashBoard() {
 
         .then(res => {
             console.log(res.data)
-            // setAssets(res.data.assets);
-            // setUsdBalance( res.data.usdBalance );
-            // setPortfolioValue( res.data.portfolioValue);
+            setAssets(res.data.assets);
+            setUsdBalance( res.data.usdBalance );
+            setPortfolioValue( res.data.portfolioValue);
             setIsLoading(false);
             showMessage('success', 'Transaction Successful..!') ;
         })
