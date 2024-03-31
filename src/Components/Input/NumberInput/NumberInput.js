@@ -4,7 +4,6 @@ import './NumberInput.css'
 
 export default function NumberInput(props) {
     const [step, setStep] = useState('1');
-    const {name, register, errors} = props
 
     const handleStep = (value) => {
 
@@ -31,14 +30,12 @@ export default function NumberInput(props) {
                 id={props.id}
                 name={props.name}
                 value={props.value}
-                {...register(name)}
                 defaultValue={props.value}
                 placeholder={props.placeholder}
                 onBlur={props.onBlur}
                 onChange={props.onChange && props.onChange}
                 onInput={handleStep}
             />
-            <p style={{color: 'red'}}>{errors[name]?.message}</p>
         </div>
 
     );

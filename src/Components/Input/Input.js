@@ -1,4 +1,4 @@
-import React, {lazy, Suspense} from "react";
+import React, {lazy, Suspense, useState} from "react";
 import "./Input.css";
 
 const Dropdown = lazy(() => import("./Dropdown/Dropdown"));
@@ -42,32 +42,49 @@ export default function Input(props) {
 }
 
 function InputField(props) {
-    const {name, register, errors} = props
+    const { name, register, errors } = props;
 
-    console.log(register)
     const handleChange = (e) => {
         props.onChange(e);
     };
 
-
-    return (
-        <div>
-            <input
-                className={`input-field ${props.className}`}
-                type={props.type}
-                value={props.value}
-                defaultValue={props.defaultValue}
-                id={props.id}
-                name={props.name}
-                placeholder={props.placeholder}
-                style={props.style}
-                onBlur={props.onBlur}
-                {...register(name)}
-                onChange={props.onChange ? handleChange : null}
-                onClick={props.onClick}
-            />
-            <p style={{color:'red'}}>{errors[name]?.message}</p>
-        </div>
-
-    );
+    if (typeof register === 'function') {
+        return (
+            <div>
+                <input
+                    className={`input-field ${props.className}`}
+                    type={props.type}
+                    value={props.value}
+                    defaultValue={props.defaultValue}
+                    id={props.id}
+                    name={props.name}
+                    placeholder={props.placeholder}
+                    style={props.style}
+                    onBlur={props.onBlur}
+                    {...register(name)}
+                    onChange={props.onChange ? handleChange : null}
+                    onClick={props.onClick}
+                />
+                <p style={{ color: 'red' }}>{errors[name]?.message}</p>
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                <input
+                    className={`input-field ${props.className}`}
+                    type={props.type}
+                    value={props.value}
+                    defaultValue={props.defaultValue}
+                    id={props.id}
+                    name={props.name}
+                    placeholder={props.placeholder}
+                    style={props.style}
+                    onBlur={props.onBlur}
+                    onChange={props.onChange ? handleChange : null}
+                    onClick={props.onClick}
+                />
+            </div>
+        );
+    }
 }
