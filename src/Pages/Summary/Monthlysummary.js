@@ -1,22 +1,26 @@
 import React from 'react'
+import './Monthlysummary.css'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
 import Switch from '@mui/material/Switch';
-import './Monthlysummary.css'
+import { Box } from '@mui/system';
 
-function Monthlysummary() {
+
+function Dailysummary() {
     const Tabs = [
-        { label: "Daily", path: "./Summary/Dailysummary" },
-        { label: "Monthly", path: "/" },
+        { label: "Daily", path: "/Dailysummary" },
+        { label: "Monthly", path: "Dailysummary/Monthlysummary" },
        
         
       ];
+      
       const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-      return (
-        <BasicPage tabs={Tabs}>
-        
-        <div className='heading'>Generate Monthly Summary</div>
+  return (
+    <BasicPage tabs={Tabs}>
+    
+    
+    <div className='heading'>Generate Monthly Summary</div>
     <div className='page-content'>        
     <div className='left-side'>
           <div className='add-items'>
@@ -26,35 +30,66 @@ function Monthlysummary() {
                       <Input type="search" placeholder="Search" style={{width:"400px" }}/>
                       <Input type="button" value="Add" className="add-button" style={{width:"70px",marginLeft:"50%" }}/>
                   </div>
-                <div className='chart-table'>
+                  <div className='chart-table'>
                       <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Top Gains"/>
+                        <div className='tog-name'>
+                            <span>Top Gain</span>
+                        </div>
+                        <div className='tog1'>
+                         <Input type="toggle" id=''/>
+                        </div>
+                      
                       </div>  
 
                       <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Top Losses"/>
+                        <div className='tog-name'>
+                            <span>Top Losses</span>
+                        </div>
+                        <div className='tog2'>
+                         <Input type="toggle" id=''/>
+                        </div>
+                      </div>  
+
+                      <div className='data'>
+                        <div className='tog-name'>
+                            <span>Trending Coin</span>
+                        </div>
+                        <div className='tog3'>
+                         <Input type="toggle" id=''/>
+                        </div>
                       </div> 
-
+                     
                       <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Trending Coin"/>
-                      </div>
-
+                        <div className='tog-name'>
+                            <span>Trading History</span>
+                        </div>
+                        <div className='tog4'>
+                         <Input type="toggle" id=''/>
+                        </div>
+                      </div> 
+                  
                       <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Trading History"/>
-                      </div>
-
-                      <div className='data'>
-                      <Input type="toggle" id='' toggleLabel="Trading Suggestion Table"/>
-                      </div>
-
-                      
+                        <div className='tog-name'>
+                            <span>Trading Suggestion History</span>
+                        </div>
+                        <div className='tog5'>
+                         <Input type="toggle" id='' />
+                        </div>
+                      </div>  
                   </div>
 
     
               </div>
               
               <div className='default'>
-              <Input type="toggle" id='' toggleLabel="Set this features as default"/>
+                <div className="defaultname">
+                    <span>Set this features as default</span>
+                <div className="tog6">
+                    <Input type="toggle" id=''/>
+                </div>
+                   
+              </div>
+               
               </div>
 
               <div className='box-container'>
@@ -75,12 +110,9 @@ function Monthlysummary() {
     </div>
     
     
-        
-        
-    
-    </BasicPage>
-      )
-    }
-    
 
-export default Monthlysummary
+</BasicPage>
+  )
+}
+
+export default Dailysummary
