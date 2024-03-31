@@ -95,6 +95,10 @@ export default function Router() {
             path: "/Login&Signin/Signin",
             element: <Signin />,
         },
+        {
+            path: "/Login&Signin/Login",
+            element: <Login />,
+        },
     ]);
 
     return <RouterProvider router={router} />;

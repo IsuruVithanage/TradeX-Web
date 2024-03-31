@@ -24,7 +24,7 @@ export default function Forum() {
     { label: "Latest", path: "/Forum" },
     { label: "My Problems", path: "/Forum/MyProblems" },
     { label: "My Answers", path: "/Forum/MyAnswers" },
-    { label: "Login", path: "/Pages/Login&Signin/Login" },
+    { label: "Login", path: "/Login&Signin/Login" },
     { label: "Signin", path: "/Login&Signin/Signin" }
 
     

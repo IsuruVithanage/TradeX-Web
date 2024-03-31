@@ -84,7 +84,8 @@
 .topic{
     width: 480px;
     color:#21DB9A;
-    margin-left: 3rem;
+    margin-left: 0.01rem;
+    
 }
 
 /*
@@ -98,40 +99,44 @@ display: flex;
 */
 .topic-row{
     background-color: #151517;
-    margin: 1.25rem;
-    grid-template-columns: repeat(3,50px) 1fr;
+    margin: 1.1rem;
+    /*grid-template-columns: repeat(3,50px) 1fr;*/
     color: #FFF;
     display: flex;
     border-radius: 0.625rem;
+}
+.topic h4{
+    margin-top: 0.01rem;
+    
 }
 .questionarea{
     display: inline-block;
     
     
 }
-.topic-stat{
-    margin-left: auto;
+.topic-stat h4{
+    margin-right: 4.5rem;
     text-align: right;
+    margin-top: 1.7rem;
   
 
 }
-.topic-stat-likes{
-    margin-left: auto;
+.topic-stat-likes h4{
+    margin-right: 3.5rem;
     text-align: right;
+    margin-top: 1.7rem;
+
     
 }
 .topic-stat-replies{
-    margin-left: auto;
+    margin-right: 2rem;
     text-align: right;
-   margin-right: 0.5rem;
+    margin-top: 0.3rem;
 
 }
 .question-stat {
     margin-left: auto;
-   text-align: right;
-   
-  
-     
+   text-align: right;    
 }
 .question-row .author{
     color: #21DB9A;
