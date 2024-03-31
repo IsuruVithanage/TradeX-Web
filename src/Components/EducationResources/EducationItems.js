@@ -4,6 +4,7 @@ import crypto from "../../Assets/Images/crypto.png";
 import "./EducationItems.css";
 import { Flex } from "antd";
 
+
 const EducationItem = ({ title, description, src, url }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
 
