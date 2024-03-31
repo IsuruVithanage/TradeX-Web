@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import "./Users.css";
 import "./ViewAll.css";
+import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 
 export default function Users() {
   const getVerifiedCellStyle = (isVerified) => {
     return isVerified ? { color: "#21DB9A" } : { color: "red" };
   };
+
+  const [userList, setUserList] = useState([]);
+  const [user, setUser] = useState({
+    AdminName: "",
+    Date: "",
+    NIC: "",
+    Contact: "",
+    Age: "",
+  });
+
+  const loadUsers = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:8004/user/getAllUsers"
+      );
+      setUserList(result.data);
+    } catch (error) {
+      console.error("Error fetching Users", error);
+    }
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   return (
     <BasicPage
@@ -15,7 +42,6 @@ export default function Users() {
         { label: "Custom", path: "/watchlist/customize" },
         { label: "CoinPage", path: "/watchlist/CoinPage" },
         { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "ViewAll", path: "/watchlist/ViewAll" },
         { label: "Users", path: "/watchlist/Users" },
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
@@ -35,26 +61,15 @@ export default function Users() {
               </tr>
             </thead>
             <tbody>
-              {[...Array(5)].map((_, index) => (
+            {userList.map((user, index) => (
                 <tr key={index}>
-                  <td>Saman Perera</td>
-                  <td>01.01.2023</td>
-                  <td>123456789V</td>
-                  <td>9876543210</td>
-                  <td>25</td>
-                  <td style={getVerifiedCellStyle(true)}>Yes</td>
-                  <td></td>
-                </tr>
-              ))}
-              {[...Array(5)].map((_, index) => (
-                <tr key={index + 5}>
-                  <td>Amara Gamage</td>
-                  <td>02.01.2023</td>
-                  <td>987654321C</td>
-                  <td>8765432109</td>
-                  <td>30</td>
-                  <td style={getVerifiedCellStyle(false)}>No</td>
-                  <td></td>
+                  <td>{user.userName}</td>
+                  <td>{user.Date}</td>
+                  <td>{user.NIC}</td>
+                  <td>{user.Contact}</td>
+                  <td>{user.Age}</td>
+                  <td>{user.Verified}</td>
+                  <td><RiDeleteBin6Line /></td>
                 </tr>
               ))}
             </tbody>

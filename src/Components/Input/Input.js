@@ -51,6 +51,7 @@ function InputField(props) {
 
 
     return (
+<<<<<<< HEAD
         <div>
             <input
                 className={`input-field ${props.className}`}
@@ -68,5 +69,21 @@ function InputField(props) {
             />
             <p style={{color:'red'}}>{errors[name]?.message}</p>
         </div>
+=======
+        <input
+            className={`input-field ${props.className}`}
+            type={props.type}
+            value={props.value}
+            defaultValue = {props.defaultValue}
+            id={props.id}
+            name={props.name}
+            placeholder={props.placeholder}
+            style={props.style}
+            onBlur={props.onBlur}
+            onChange={props.onChange ? handleChange : null}
+            onClick={props.onClick}
+        
+        />
+>>>>>>> 0d66aa94f29f3fe2dcbfbdd1ab2c9c5040465bf7
     );
 }

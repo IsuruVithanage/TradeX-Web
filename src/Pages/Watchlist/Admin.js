@@ -5,6 +5,7 @@ import "./Admin.css";
 import "./ViewAll.css";
 import Modal from "../../Components/Modal/Modal";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function Admin() {
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
@@ -39,8 +40,8 @@ export default function Admin() {
     console.log(admin);
 
     try {
-      const response = await fetch('http://localhost:8003/admin', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8003/admin/saveAdmin", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,7 +89,6 @@ export default function Admin() {
         { label: "Custom", path: "/watchlist/customize" },
         { label: "CoinPage", path: "/watchlist/CoinPage" },
         { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "ViewAll", path: "/watchlist/ViewAll" },
         { label: "Users", path: "/watchlist/Users" },
         { label: "Admin", path: "/watchlist/Admin" },
       ]}
@@ -203,6 +203,7 @@ export default function Admin() {
                   <td>{admin.NIC}</td>
                   <td>{admin.Contact}</td>
                   <td>{admin.Age}</td>
+                  <td><RiDeleteBin6Line /></td>
                 </tr>
               ))}
             </tbody>
