@@ -12,7 +12,6 @@ export default function CoinPage() {
           { label: "Custom", path: "/watchlist/customize" },
           { label: "CoinPage", path: "/watchlist/CoinPage" },
           { label: "Dashboard", path: "/watchlist/AdDashboard" },
-          { label: "ViewAll", path: "/watchlist/ViewAll" },
           { label: "Users", path: "/watchlist/Users" },
           { label: "Admin", path: "/watchlist/Admin" },
         ]}

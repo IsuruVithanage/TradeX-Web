@@ -6,6 +6,8 @@ import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow,Coin} from '../../../Components/Table/Table'
 import axios from 'axios';
+import { showMessage } from '../../../Components/Message/Message';
+
 
 export default function DashBoard() {
 
@@ -16,13 +18,18 @@ export default function DashBoard() {
     const [portfolioValue,setPortfolioValue] = useState(0)
     const [usdBalance,setUsdBalance] = useState(0)
     const [isLoading,setIsLoading] = useState(true)
+    const [receivingWallet,setReceivingWallet] = useState(null)
+    const [selectedCoin,setSelectedCoin] = useState("")
+    const [quantity,setQuantity] = useState(null)
+    const walletAddress = "wwwww"
+    const [isInvalid,setIsInvalid] = useState([true,null])
 
 
 
     useEffect(()=>{
         setIsLoading(true)
 
-        axios.get("http://localhost:8005/wallet/"+userId)
+        axios.get("http://localhost:8006/wallet/"+userId)
         .then(res=>{
             console.log(res.data);
             setPortfolioValue (res.data.portfolioValue) 
@@ -35,9 +42,88 @@ export default function DashBoard() {
             console.log(error);
             setIsLoading(false)
 
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Transaction Failed..!') ;
+
         })
 
     },[])
+ 
+
+
+
+  const transfer = () => {
+    setReceivingWallet(null);
+    setSelectedCoin(null);
+    setQuantity(null);
+    setIsLoading(true);
+
+
+    const data = {
+        userId: userId,
+        coin: selectedCoin,
+        quantity: quantity,
+        sendingWallet: walletAddress,
+        receivingWallet: receivingWallet,
+    };
+
+
+    axios
+        .put(
+            "http://localhost:8006/wallet/",
+            data,
+            {
+                params: {
+                    userId: userId
+                }
+            }
+        )
+
+        .then(res => {
+            console.log(res.data)
+            setAssets(res.data.assets);
+            setUsdBalance( res.data.usdBalance );
+            setPortfolioValue( res.data.portfolioValue);
+            setIsLoading(false);
+            showMessage('success', 'Transaction Successful..!') ;
+        })
+
+        .catch(error => {
+            setIsLoading(false);
+            console.log("error", error);
+            
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Transaction Failed..!') ;
+        });
+}
+
+
+useEffect(() => {
+
+
+        if ( (selectedCoin && quantity && receivingWallet) ) {
+            setIsInvalid([false, null]);
+
+            const asset = assets.find(asset => asset.coin === selectedCoin);
+
+            if (quantity > asset.balance) {
+                setIsInvalid([true, "Insufficient Balance"]);
+            }
+        } else {
+            if (selectedCoin || quantity || receivingWallet) {
+                setIsInvalid([true, "Please fill all the fields"]);
+            } else {
+                setIsInvalid([true, null]);
+            }
+        }
+
+    }
+
+, [assets, selectedCoin, quantity,receivingWallet]);
+
+
 
 
     return (
@@ -56,18 +142,21 @@ export default function DashBoard() {
 
                      {action === "Send" ?
                         <div> 
-                            <Input type="text" label='Wallet Address'/> 
+                            <Input type="text" label='Wallet Address'  onChange={(e)=> setReceivingWallet (e.target.value)}/> 
 
-                            <Input type="dropdown" label='Coin' options={
-                                Object.keys(assets).slice(1).map(assetKey => ({
-                                    value: assetKey, 
-                                    label: assetKey
+                            <Input type="dropdown" label='Coin' value = {selectedCoin} onChange={setSelectedCoin} options={
+                                Object.values(assets).map(asset => ({
+                                    value: asset.coin, 
+                                    label: asset.coin
                                 }))
                             } />
-                            <Input type="number" label='Quantity' />
+                            <Input type="number" label='Quantity' value = {quantity} onChange={setQuantity} />
 
 
-                        <Input type="button" value="Transfer" style={{marginTop:"50px"}}/>    
+
+                        <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
+
+                        <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>     
                      </div>
                      : <p>mjhv jvmsc</p>
                      }

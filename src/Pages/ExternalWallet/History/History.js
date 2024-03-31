@@ -13,7 +13,7 @@ export default function History() {
     useEffect(()=>{
         setIsLoading(true)
         axios.get(
-            "http://localhost:8005/history",
+            "http://localhost:8006/history",
             {params:{userId:userId}}
         )
         .then((res)=>{
@@ -46,7 +46,7 @@ export default function History() {
                         key={index} 
                         data={[
                             <Coin>{row.coin}</Coin>,
-                            row.date, 
+                            new Date (row.date).toLocaleDateString(), 
                             row.type,
                             row.from_to, 
                             row.quantity, 
