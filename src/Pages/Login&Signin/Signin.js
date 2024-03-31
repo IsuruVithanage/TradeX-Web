@@ -36,7 +36,7 @@ function Signin() {
       <form onSubmit={handleSubmit}> 
         <input type="text" placeholder="User Name" name='userName' className="username-input" onChange={handleChange} />
         <input type="text" placeholder="Email" name='email' className="email-input"  onChange={handleChange} />
-        <input type="password" placeholder="Password" name='password' className="confirm-password-input"  onChange={handleChange}  />
+        <input type="password" placeholder="Password" name='password' className="confirm-password-input"  onChange={handleChange}/>
 
         <div >
             <button className='sign-button'>Sign in</button>

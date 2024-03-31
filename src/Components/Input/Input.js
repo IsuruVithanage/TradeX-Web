@@ -61,7 +61,7 @@ function InputField(props) {
                     placeholder={props.placeholder}
                     style={props.style}
                     onBlur={props.onBlur}
-
+                    {...register(name)}
                     onChange={props.onChange ? handleChange : null}
                     onClick={props.onClick}
                 />

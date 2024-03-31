@@ -11,9 +11,9 @@
   function AskQuestion() {
 
 
-    const Tabs = [
-      { label: "Latest", path: "/Forum" },
-      { label: "My Problems", path: "/MyProblems" },
+    const Tabs = [  
+      { label: "Latest", path: "/forum" },
+      { label: "My Problems", path: "/forum/MyProblems" },
       { label: "My Answers", path: "/forum/MyAnswers" },
       
     ];

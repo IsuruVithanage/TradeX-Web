@@ -70,3 +70,14 @@
     color: #21DB9A;
     font-size: 25px;
 }
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  

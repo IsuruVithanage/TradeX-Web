@@ -2,9 +2,9 @@
     color: white;
     font-size: 22px;
     font-weight: bold;
-    padding: 2% 0% 1% 4%;
+    padding: 2% 0% 1% 3%;
 }
-h3{
+.add-coins h3{
     color:#9E9E9E;
     padding-left: 4%;
 }
@@ -24,14 +24,79 @@ h3{
 .data{
     display: flex;
     border-bottom: 1px solid #3C3C3C;
-    width: 30%;
-    margin-bottom: 1%;
+    
+    width: 50%;
+    color: #FFF;
+    
+    align-items: self-end;
     
 }
 
-.default p{
+.defaultname{
     padding-left: 4%;
+    color:#9E9E9E ;
+    
 }
 .default{
+    margin-top: 2%;
+}
+
+
+.page-content{
     display: flex;
 }
+.template{
+    width: 400px;
+    height: 500px;
+    background-color: #9e9e9e;
+    margin-top: 17%;
+    
+    grid-template-columns: repeat(3,50px) 1fr;
+    color: #FFF;
+    display: flex;
+    border-radius: 0.938rem;
+    margin-bottom: 1%;
+}
+.left-side{
+    width: 60%;
+    margin: 0% 0% 0% 0%;
+}
+
+.box{
+    width: 50px;
+    height: 80px;
+    color: white;
+}
+.buttons{
+
+    display: flex;
+    margin-left: 50%;
+    margin-top: 5%;
+    
+}
+.tog-name{
+   margin-bottom: 0.5rem;
+   color: #9e9e9e;
+}
+.tog1{
+    margin-left: 11.5rem;
+    
+}
+.tog2{
+    margin-left: 10.3rem;
+}
+.tog3{
+    margin-left: 9.1rem;
+}
+.tog4{
+    margin-left: 8.5rem;
+}
+.tog5{
+    margin-left: 3rem;
+}
+.tog6{
+    margin-right: 27.7rem;
+    align-items: center;
+    
+}
+
