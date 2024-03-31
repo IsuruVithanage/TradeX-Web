@@ -6,13 +6,26 @@ import Modal from "../../Components/Modal/Modal";
 import './VerifyUser.css'
 import {ImCamera} from "react-icons/im";
 import {MdOutlineFileUpload} from "react-icons/md";
+import {validationSchema} from "../../Validation/UserValidation";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useForm} from "react-hook-form";
 
 export default function VerifyUser() {
+
+    const {handleSubmit, register, formState: {errors}} = useForm({
+        resolver: yupResolver(validationSchema)
+    });
+
+    const onSubmit = (data) => {
+        console.log(data);
+    }
+
     const videoConstraints = {
         width: '100%',
         height: 720,
         facingMode: "user"
     };
+
 
     const [capturedImage, setCapturedImage] = useState(null);
     const webcamRef = useRef(null); // Declare webcamRef
@@ -47,16 +60,16 @@ export default function VerifyUser() {
                     </thead>
                     <tbody>
                     <tr>
-                        <td><Input label='First Name' type='text'/></td>
-                        <td><Input label='Last Name' type='text'/></td>
-                        <td><Input label='Age' type='text'/></td>
+                        <td><Input label='First Name' name='firstName' type='text' register={register} errors={errors}/></td>
+                        <td><Input label='Last Name' name='lastName' type='text' register={register} errors={errors}/></td>
+                        <td><Input label='Age' name='age' type='number' register={register} errors={errors}/></td>
                     </tr>
                     <tr>
-                        <td><Input label='Phone Number' type='text'/></td>
-                        <td><Input label='NIC' type='text'/></td>
+                        <td><Input label='Phone Number' name='phoneNumber' type='text' register={register} errors={errors}/></td>
+                        <td><Input label='NIC' name='nic' type='text' register={register} errors={errors}/></td>
                     </tr>
                     <tr>
-                        <td><Input label='Date of Birth' type='date'/></td>
+                        <td><Input label='Date of Birth' name='dateOfBirth' type='date' register={register} errors={errors}/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -101,7 +114,7 @@ export default function VerifyUser() {
                 </div>
 
                 <div className='submit-container'>
-                    <Input type="button" value='Submit'/>
+                    <Input type="button" value='Submit' onClick={handleSubmit(onSubmit)}/>
                     <div style={{ width: '10px' }}></div>
                     <Input type="button" value='Cancel' red/>
                     {capturedImage && (
