@@ -9,12 +9,12 @@ import { FaUsers } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 
-
 export default function AdDashboard() {
   const [adminCount, setAdminCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
+  const [verificationIssues, setVerificationIssues] = useState([]);
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -76,6 +76,21 @@ export default function AdDashboard() {
     fetchVerifiedUserCount();
   }, []);
 
+  useEffect(() => {
+    const fetchVerificationIssues = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/user/getAllIssues"
+        );
+        setVerificationIssues(response.data);
+      } catch (error) {
+        console.error("Error fetching verification issues:", error);
+      }
+    };
+
+    fetchVerificationIssues();
+  }, []);
+
   return (
     <BasicPage
       tabs={[
@@ -95,7 +110,7 @@ export default function AdDashboard() {
               <div className="count">{userCount}</div>
             </div>
             <div className="user-icon">
-            <FaUsers />
+              <FaUsers />
             </div>
           </div>
         </AdminCard>
@@ -106,7 +121,7 @@ export default function AdDashboard() {
               <div className="count">{verifiedUserCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCheck />
+              <FaUserCheck />
             </div>
           </div>
         </AdminCard>
@@ -117,7 +132,7 @@ export default function AdDashboard() {
               <div className="count">{adminCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCog />
+              <FaUserCog />
             </div>
           </div>
         </AdminCard>
@@ -165,48 +180,15 @@ export default function AdDashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>NIC is not matching</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>Phone number is not verified</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>Files are blured</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>NIC is not matching</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>NIC is not matching</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Nimal Rathnayaka</td>
-                  <td>Files are blured</td>
-                  <td>
-                    <Input type="button" value="Review" outlined red />
-                  </td>
-                </tr>
+              {verificationIssues.map((user) => (
+                  <tr key={user.userId}>
+                    <td>{user.userName}</td>
+                    <td>{user.issue}</td>
+                    <td>
+                      <Input type="button" value="Review" outlined red />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
