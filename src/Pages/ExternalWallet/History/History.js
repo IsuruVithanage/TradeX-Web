@@ -46,7 +46,7 @@ export default function History() {
                         key={index} 
                         data={[
                             <Coin>{row.coin}</Coin>,
-                            row.date, 
+                            new Date (row.date).toLocaleDateString(), 
                             row.type,
                             row.from_to, 
                             row.quantity, 
