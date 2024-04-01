@@ -7,6 +7,7 @@ import { Box } from '@mui/system';
 
 
 function Dailysummary() {
+  // create the tabs
     const Tabs = [
         { label: "Daily", path: "/Dailysummary" },
         { label: "Monthly", path: "Dailysummary/Monthlysummary" },
@@ -17,8 +18,8 @@ function Dailysummary() {
       const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
+    // daily summary front end
     <BasicPage tabs={Tabs}>
-    
     
     <div className='heading'>Generate Daily Summary</div>
     <div className='page-content'>        

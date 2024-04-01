@@ -16,7 +16,7 @@ import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
 import UserProfileTab from "../Pages/User/UserProfileTab";
 import VerifyUser from "../Pages/User/VerifyUser";
-import Signin from "../Pages/Login&Signin/Signin";
+import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login"
 
 
@@ -92,13 +92,10 @@ export default function Router() {
             element: <Login />,
         },
         {
-            path: "/Login&Signin/Signin",
-            element: <Signin />,
+            path: "/Login&Signin/Signup",
+            element: <Signup />,
         },
-        {
-            path: "/Login&Signin/Login",
-            element: <Login />,
-        },
+
     ]);
 
     return <RouterProvider router={router} />;

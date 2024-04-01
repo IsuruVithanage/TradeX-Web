@@ -21,11 +21,11 @@ import { Shuffle } from '@mui/icons-material';
 
 export default function Forum() {
   const Tabs = [
-    { label: "Latest", path: "/Forum" },
+    { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/Forum/MyProblems" },
     { label: "My Answers", path: "/Forum/MyAnswers" },
     { label: "Login", path: "/Login&Signin/Login" },
-    { label: "Signin", path: "/Login&Signin/Signin" }
+    { label: "Signup", path: "/Login&Signin/Signup" }
 
     
   ];
@@ -34,7 +34,8 @@ export default function Forum() {
 
   const loadQuestions =async () => {
     try{
-      const result=await axios.get("http://localhost:8002/forum/getAllQuestions");
+      const result=await axios.get("http://localhost:8010/forum/getAllQuestions");
+      console.log(result.data);
         setQuestionList(result.data);
         
         }catch(error){

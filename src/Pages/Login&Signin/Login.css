@@ -83,7 +83,13 @@
     transform: translate(34%, -75%);
     font-size: 85%;
 }
-
+.text-danger-uname{
+    color: red;
+    
+}
+.text-danger-password{
+    color: red;
+}
 .login-button{
     border-radius: 8px;
     background: #21db9a;
