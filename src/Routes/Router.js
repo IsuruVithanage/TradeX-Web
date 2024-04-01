@@ -79,10 +79,10 @@ export default function Router() {
             path: "/quiz",
             element: <Quiz />,
         },
-        {
-            path: "/profile",
-            element: <UserProfileTab />,
-        },
+        // {
+        //     path: "/profile",
+        //     element: <UserProfileTab />,
+        // },
         {
             path: "/verify",
             element: <VerifyUser />,
