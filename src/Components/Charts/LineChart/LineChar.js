@@ -127,7 +127,9 @@ export default function LineChart(props) {
 
 
 		chart.timeScale().fitContent();
-		series.setMarkers(markers);
+		if (props.isSugges) {
+			series.setMarkers(markers);
+		}
 		
 
 		handleResize.current = () => {

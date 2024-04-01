@@ -26,6 +26,7 @@ export default function TradingPlatform() {
     const [order, setOrder] = useState({
         userId: user.id,
         type: 'Buy',
+        date: '',
         cato: 'Limit',
         coin: null,
         price: 0,
@@ -42,10 +43,13 @@ export default function TradingPlatform() {
 
     //place order
     const placeOrder = () => {
+        const currentDate = new Date().toISOString();
+        console.log(currentDate);
         return {
             userId: user.user.id,
             coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
+            date: currentDate,
             price: order.price,
             type: order.cato,
             totalPrice: order.total
@@ -216,11 +220,11 @@ export default function TradingPlatform() {
             <Table style={{marginTop: '1vh'}}>
                 <TableRow data={[
                     'Coin',
-                    'Spot Balance',
-                    'Funding Balance',
-                    'Total Balance',
-                    'market Price',
-                    'Value'
+                    'Type',
+                    'Price',
+                    'Quantity',
+                    'Total Price',
+                    ''
                 ]}/>
 
 
@@ -229,11 +233,10 @@ export default function TradingPlatform() {
                         key={coin}
                         data={[
                             <Coin>{coin}</Coin>,
-                            assets[coin].spotBalance,
-                            assets[coin].fundingBalance,
-                            assets[coin].TotalBalance,
-                            assets[coin].marketPrice,
-                            assets[coin].value,
+                            assets[coin].type,
+                            assets[coin].price,
+                            assets[coin].quantity,
+                            assets[coin].totalPrice,
                             <Input type="button" value="Cancel" style={{width: "90px"}} outlined/>
                         ]}
                     />

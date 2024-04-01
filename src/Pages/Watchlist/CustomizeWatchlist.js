@@ -87,7 +87,7 @@ const Watchlist1 = () => {
             type="search"
             placeholder="Search"
             style={{ width: "300px", float: "right", marginRight: "50px" }}
-            onChange={setSearch}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <div>
             <Input
