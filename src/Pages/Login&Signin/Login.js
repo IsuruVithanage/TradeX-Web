@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
 import './Login.css';
+import trade from '../../Assets/Images/trade.png';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import './LoginValidation';
 import Validation from './LoginValidation';
@@ -22,7 +24,7 @@ function Login() {
     setErrors(Validation(values));
   }
   return (
-    <BasicPage>
+    <BasicPage sideNavBar={false} icon={<img src={trade} width="73px" alt='tradex'/>}>
     <div>
     
             
@@ -43,7 +45,9 @@ function Login() {
         </div>
 
         <div>
-         <button type='submit' className='login-button'>Login</button>
+          <Link to={'/home'}>
+              <button type='submit' className='login-button'>Login</button>
+          </Link>
         </div>
        </form> 
       </div>
