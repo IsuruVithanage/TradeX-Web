@@ -24,7 +24,10 @@ export default function FundingWallet() {
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const userId = 1;
 
-
+    console.log(params)
+    useEffect(()=>{
+        SetCurrentWallet(params)
+    }, [params])
 
     useEffect(() => {
 
@@ -177,16 +180,9 @@ export default function FundingWallet() {
             tabs={[
                 { label:"Overview", path:"/portfolio"},
                 { label:"History", path:"/portfolio/history"},
-            ]}
-
-            subPages={{
-                onClick: SetCurrentWallet,
-                selectedPage: currentWallet,
-                pages: [
-                    { label:"Trading Wallet", value:"tradingWallet"},
-                    { label:"Funding Wallet", value:"fundingWallet"},
-                ],
-            }}> 
+                { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
+                { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+            ]}> 
 
             
             <SidePanelWithContainer 
@@ -264,14 +260,20 @@ export default function FundingWallet() {
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
-                                `$ ${asset.value.toFixed(2)}`,
+                                "$ " + asset.value.toLocaleString("en-US", { 
+                                    minimumFractionDigits: 2, 
+                                    maximumFractionDigits: 2,
+                                }),
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
-                                `$ ${asset.value.toFixed(2)}`,
+                                "$ " + asset.value.toLocaleString("en-US", { 
+                                    minimumFractionDigits: 2, 
+                                    maximumFractionDigits: 2,
+                                }),
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>
