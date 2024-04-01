@@ -26,7 +26,7 @@ export default function App() {
         </p>
 
       <div style={{width:"300px", marginTop:"50px"}}>
-        <Input type="dropdown" value="nextPage" label="Login As:" onChange={setNextPage}  options={[
+        <Input type="dropdown" value={nextPage} label="Login As:" onChange={setNextPage}  options={[
             {value: "/watchlist", label: "User"},
             {value: "/admin/AdDashboard", label: "Admin"},
         ]}/>
