@@ -22,10 +22,8 @@ import { Shuffle } from '@mui/icons-material';
 export default function Forum() {
   const Tabs = [
     { label: "Latest", path: "/forum" },
-    { label: "My Problems", path: "/Forum/MyProblems" },
-    { label: "My Answers", path: "/Forum/MyAnswers" },
-    { label: "Login", path: "/Login&Signin/Login" },
-    { label: "Signup", path: "/Login&Signin/Signup" }
+    { label: "My Problems", path: "/forum/myProblems" },
+    { label: "My Answers", path: "/forum/myAnswers" }
 
     
   ];
