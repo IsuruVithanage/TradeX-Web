@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
@@ -27,10 +27,28 @@ export default function Suggestions() {
 
     const [selectedCoin, setSelectedCoin] = useState(null);
     const [tradeData, setTradeData] = useState([]);
+    const [orderHistory, setOrderHistory] = useState([]);
 
     const handleCoinSelection = (coin) => {
         setSelectedCoin(coin);
     };
+
+    const loadOrderHistory = async () => {
+        try {
+            const res = await axios.get(
+                'http://localhost:8005/order/getAllOrders'
+            );
+            setOrderHistory(res.data);
+            console.log(res.data);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        loadOrderHistory();
+    }, []);
 
     const processData = async (newData) => {
         try {
@@ -158,7 +176,7 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <LineChart data={tradeData}></LineChart>
+                <LineChart data={tradeData} isSugges={true}></LineChart>
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}} hover={true}>
@@ -168,24 +186,21 @@ export default function Suggestions() {
                     'Type',
                     'Price',
                     'Quantity',
-                    'Value',
-                    'PNL'
+                    'Total Price',
                 ]}/>
 
 
-                {assets && Object.keys(assets).slice(1).map(coin => (
+                {orderHistory .map(order => (
                     <TableRow
-                        key={coin}
                         data={[
-                            <Coin>{coin}</Coin>,
-                            assets[coin].spotBalance,
-                            assets[coin].spotBalance,
-                            assets[coin].fundingBalance,
-                            assets[coin].fundingBalance,
-                            assets[coin].marketPrice,
-                            assets[coin].marketPrice,
+                            <Coin>{order.coin}</Coin>,
+                            new Date(order.date).toLocaleDateString(),
+                            order.type,
+                            order.price,
+                            order.quantity,
+                            order.totalPrice,
                         ]}
-                        onClick={() => handleRowClick(assets[coin].name)}
+                        onClick={() => handleRowClick(assets[order.coin].name)}
                     />
                 ))}
             </Table>
