@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
+import Admin from "./Sub-Routes/AdminRoutes";
 import Watchlist from "./Sub-Routes/WatchlistRoutes";
 import Portfolio from "./Sub-Routes/PortfolioRoutes";
 import Forum from "./Sub-Routes/ForumRoutes";
@@ -16,7 +17,7 @@ import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
 import UserProfileTab from "../Pages/User/UserProfileTab";
 import VerifyUser from "../Pages/User/VerifyUser";
-import Signin from "../Pages/Login&Signin/Signin";
+import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login"
 
 
@@ -24,8 +25,20 @@ export default function Router() {
     const router = createBrowserRouter([
         {
             path: "/",
+            element: <Login />,
+        },
+        {
+            path: "/signup",
+            element: <Signup />,
+        },
+        {
+            path: "/home",
             element: <App />,
             errorElement: <App />,
+        },
+        {
+            path: "/admin/*",
+            element: <Admin />,
         },
         {
             path: "/watchlist/*",
@@ -79,25 +92,13 @@ export default function Router() {
             path: "/quiz",
             element: <Quiz />,
         },
-        {
-            path: "/profile",
-            element: <UserProfileTab />,
-        },
+        // {
+        //     path: "/profile",
+        //     element: <UserProfileTab />,
+        // },
         {
             path: "/verify",
             element: <VerifyUser />,
-        },
-        {
-            path: "/Login&Signin/Login",
-            element: <Login />,
-        },
-        {
-            path: "/Login&Signin/Signin",
-            element: <Signin />,
-        },
-        {
-            path: "/Login&Signin/Login",
-            element: <Login />,
         },
     ]);
 
