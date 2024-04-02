@@ -54,8 +54,9 @@ const Watchlist = () => {
         <BasicPage
             isLoading={isLoading}
             tabs={[
-                {label: "All", path: "/watchlist"},
-                {label: "Custom", path: "/watchlist/customize"},
+                { label: "All", path: "/watchlist" },
+                { label: "Custom", path: "/watchlist/customize" },
+
             ]}>
 
             <div className="card-container">
