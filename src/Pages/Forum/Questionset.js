@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Records from "./Questionrecords.json";
+import loadQuestions from "./Forum"
 
 function Questionset(props) {
   console.log(props);
@@ -12,7 +13,7 @@ function Questionset(props) {
                 <div className='question-row'>
                 <Link to="/Questionbar/Detailed">
                     <div className='question-title'>
-                        {record.title}<br/><br/>
+                        { record.title}<br/><br/>
                   
                         <p>{record.description}</p>
                         <p style={{width:"600px" ,color:"#21DB9A"}}>{record.auther}</p>
@@ -53,3 +54,5 @@ function Questionset(props) {
 }
 
 export default Questionset
+
+

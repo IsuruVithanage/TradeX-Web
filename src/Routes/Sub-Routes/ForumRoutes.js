@@ -11,8 +11,8 @@ export default function ForumRoutes() {
     <Routes>
       <Route path="/" element={<Forum />} />
       <Route path="/AskQuestion" element={<AskQuestion />} />
-      <Route path="/MyProblems" element={<MyProblems/>} />
-      <Route path="/MyAnswers" element={<MyAnswers/>} />
+      <Route path="/myProblems" element={<MyProblems/>} />
+      <Route path="/myAnswers" element={<MyAnswers/>} />
       
     </Routes>
   )

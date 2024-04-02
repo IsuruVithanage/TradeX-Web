@@ -13,9 +13,9 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
  function MyAnswers() {
 
   const Tabs = [
-    { label: "Latest", path: "/Forum" },
-    { label: "My Problems", path: "/forum/MyProblems" },
-    { label: "My Answers", path: "/forum/MyAnswers" },
+    { label: "Latest", path: "/forum" },
+    { label: "My Problems", path: "/forum/myProblems" },
+    { label: "My Answers", path: "/forum/myAnswers" },
     
   ];
   

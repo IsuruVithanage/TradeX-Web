@@ -94,11 +94,9 @@ export default function AdDashboard() {
   return (
     <BasicPage
       tabs={[
-        { label: "All", path: "/watchlist" },
-        { label: "Custom", path: "/watchlist/customize" },
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
+        { label: "Dashboard", path: "/admin/AdDashboard" },
+        { label: "Users", path: "/admin/Users" },
+        { label: "Admin", path: "/admin" },
       ]}
     >
       <div style={{ display: "flex" }}>
@@ -162,7 +160,7 @@ export default function AdDashboard() {
             </table>
           </div>
           <div className="ViewAll-btn">
-            <Link to="/watchlist/ViewAll">
+            <Link to="/admin/ViewAll">
               <Input type="button" value=" View All" />
             </Link>
           </div>
