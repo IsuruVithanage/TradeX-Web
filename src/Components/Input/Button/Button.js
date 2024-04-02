@@ -26,7 +26,7 @@ const StyledButton = styled(Button)(( props ) => {
             borderRadius:'6px',
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: red ? '#ff0000' : '21DB9A'
+            borderColor: red ? '#ff0000' : '#21DB9A'
         }
     }else{
         return {

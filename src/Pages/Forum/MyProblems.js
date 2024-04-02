@@ -24,8 +24,8 @@ export default function MyProblems() {
   const user = useSelector(state => state.user);
   const Tabs = [
     { label: "Latest", path: "/forum" },
-    { label: "My Problems", path: "/Forum/MyProblems" },
-    { label: "My Answers", path: "/Forum/MyAnswers" },
+    { label: "My Problems", path: "/forum/myProblems" },
+    { label: "My Answers", path: "/forum/myAnswers" },
 
     
   ];

@@ -89,12 +89,15 @@ export default function Portfolio() {
                 <TableRow 
                     key={asset.symbol} 
                     data={[
-                      <Coin>{asset.symbol}</Coin>, 
-                      asset.tradingBalance, 
-                      asset.fundingBalance, 
-                      asset.totalBalance, 
-                      asset.marketPrice,
-                      `$ ${asset.value.toFixed(2)}`
+                        <Coin>{asset.symbol}</Coin>, 
+                        asset.tradingBalance, 
+                        asset.fundingBalance, 
+                        asset.totalBalance, 
+                        asset.marketPrice,
+                        "$ " + asset.value.toLocaleString("en-US", { 
+                            minimumFractionDigits: 2, 
+                            maximumFractionDigits: 2,
+                        })
                     ]} 
                 />
             ))}

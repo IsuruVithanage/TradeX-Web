@@ -85,12 +85,9 @@ export default function Admin() {
   return (
     <BasicPage
       tabs={[
-        { label: "All", path: "/watchlist" },
-        { label: "Custom", path: "/watchlist/customize" },
-        { label: "CoinPage", path: "/watchlist/CoinPage" },
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
+        { label: "Dashboard", path: "/admin/AdDashboard" },
+        { label: "Users", path: "/admin/Users" },
+        { label: "Admin", path: "/admin" },
       ]}
     >
       <div>

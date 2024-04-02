@@ -1,4 +1,4 @@
-{   
+{
 
     "USD": {
       "spotBalance": 50000,
@@ -12,7 +12,7 @@
       "fundingBalance": 170,
       "marketPrice": 1000
     },
-    
+
     "ETH": {
       "name": "ethereum",
       "spotBalance": 100,

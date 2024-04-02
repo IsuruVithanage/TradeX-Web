@@ -83,7 +83,7 @@ export default function SideNavBar() {
             </div>
         </Link>
 
-        <Link to="/forum" className={`nav-link ${isActive("/Forum")}`}>
+        <Link to="/forum" className={`nav-link ${isActive("/forum")}`}>
             <div className="nav-link-container">
                 <BsChatText size={22} />
                 <span className="nav-label">Support Forum</span>

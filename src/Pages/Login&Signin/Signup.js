@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.css';
 import BasicPage from '../../Components/BasicPage/BasicPage';
+import trade from '../../Assets/Images/trade.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Validation from './SignupValidation';
@@ -37,7 +38,7 @@ function Signup() {
   return (
     
     // Sign in box of the page
-    <BasicPage>
+    <BasicPage sideNavBar={false} icon={<img src={trade} width="73px" alt='tradex'/>}>
     <div>
       <div className='topic'>
         <h1 className='welcome'>WELCOME</h1>
@@ -64,7 +65,7 @@ function Signup() {
 
       <div className="have-account">
           <div className='have-text'>Already have an account?</div> 
-          <Link to="/Login&Signin/Login">
+          <Link to="/">
             <div className='login-link'>Login</div>   
           </Link> 
       </div>
