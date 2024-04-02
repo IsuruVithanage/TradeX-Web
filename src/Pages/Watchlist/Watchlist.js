@@ -56,10 +56,6 @@ const Watchlist = () => {
             tabs={[
                 {label: "All", path: "/watchlist"},
                 {label: "Custom", path: "/watchlist/customize"},
-                {label: "CoinPage", path: "/watchlist/CoinPage"},
-                {label: "Dashboard", path: "/watchlist/AdDashboard"},
-                {label: "Users", path: "/watchlist/Users"},
-                {label: "Admin", path: "/watchlist/Admin"},
             ]}>
 
             <div className="card-container">
