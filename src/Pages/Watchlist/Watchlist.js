@@ -56,6 +56,7 @@ const Watchlist = () => {
             tabs={[
                 { label: "All", path: "/watchlist" },
                 { label: "Custom", path: "/watchlist/customize" },
+
             ]}>
 
             <div className="card-container">
@@ -88,9 +89,8 @@ const Watchlist = () => {
             </div>
 
             <div className="watchlist-table-container">
-
-                <Input type="search" placeholder="Search" style={{ width: "300px" }} onChange={(e) => setSearch(e.target.value)} />
-                
+                <Input type="search" placeholder="Search" style={{width: "300px"}}
+                       onChange={(e) => setSearch(e.target.value)}/>
                 <table className="watchlist-table">
                     <thead>
                     <tr>
