@@ -41,7 +41,6 @@ const Watchlist1 = () => {
       tabs={[
         { label: "All", path: "/watchlist" },
         { label: "Custom", path: "/watchlist/customize" },
-        { label: "CoinPage", path: "/watchlist/CoinPage" },
         { label: "Dashboard", path: "/watchlist/AdDashboard" },
         { label: "Users", path: "/watchlist/Users" },
         { label: "Admin", path: "/watchlist/Admin" },
@@ -87,7 +86,7 @@ const Watchlist1 = () => {
             type="search"
             placeholder="Search"
             style={{ width: "300px", float: "right", marginRight: "50px" }}
-            onChange={setSearch}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <div>
             <Input

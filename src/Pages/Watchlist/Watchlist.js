@@ -57,7 +57,6 @@ const Watchlist = () => {
             tabs={[
                 { label: "All", path: "/watchlist" },
                 { label: "Custom", path: "/watchlist/customize" },
-                { label: "CoinPage", path: "/watchlist/CoinPage" },
                 { label: "Dashboard", path: "/watchlist/AdDashboard" },
                 { label: "Users", path: "/watchlist/Users" },
                 { label: "Admin", path: "/watchlist/Admin" },
@@ -93,7 +92,7 @@ const Watchlist = () => {
             </div>
 
             <div className="watchlist-table-container">
-                <Input type="search" placeholder="Search" style={{ width: "300px" }} onChange={setSearch} />
+                <Input type="search" placeholder="Search" style={{ width: "300px" }} onChange={(e) => setSearch(e.target.value)} />
 
                 <table className="watchlist-table">
                     <thead>
