@@ -13,12 +13,12 @@
 }
 .black-background{
     width: 45%;
-    height: 65%;
+    height: 75%;
     background-color:#0E0E0F;
     position: fixed;
     
     left: 50%;
-    transform: translate(-50%, -50%);
+    
     border-radius: 25px;
 
 }
@@ -26,7 +26,7 @@
     display: flex;
     text-align: center;
     font-family: Inter;
-    padding-left: 34%;
+    margin-left: 8rem;
     font-style: normal;
     
     line-height: normal;
@@ -41,6 +41,9 @@
     text-align: center;
     font-family: Inter;
     margin-top: 45px;
+}
+.signup-topic{
+    display: flex;
 }
 .username-input{
     display: flex;
@@ -79,7 +82,7 @@
     display: flex;
     color: white;
     position: fixed;
-    top: 60%;
+    top: 57%;
     left: 3%;
     transform: translate(34%, -75%);
     width: 58%;
@@ -128,7 +131,7 @@
     color: #6D6D6D;
     display: flex;
     position: fixed;
-    top: 91%;
+    top: 92%;
     left: 25%;
     transform: translate(34%, -75%);
     font-size: 85%;
@@ -138,9 +141,26 @@
     color: #21db9a;
     display: flex;
     position: fixed;
-    top: 91%;
+    top: 92%;
     left: 60%;
     transform: translate(34%, -75%);
     font-size: 85%;
 
+}
+.text-danger-uname{
+    color: red;
+    margin-top: 15rem;
+    margin-left: 13rem;
+    
+}
+.text-danger-password{
+    
+    color: red;
+    margin-top: 18rem;
+}
+.text-danger-email{
+    margin-left: 13rem;
+    color: red;
+    margin-top: 18rem;
+   
 }

@@ -26,7 +26,7 @@
     display: flex;
     text-align: center;
     font-family: Inter;
-    padding-left: 25%;
+    margin-left: 35%;
     font-style: normal;
     
     line-height: normal;
@@ -85,10 +85,15 @@
 }
 .text-danger-uname{
     color: red;
+    display: flex;
+    margin-top: 18rem;
+    margin-left: 13rem;
     
 }
 .text-danger-password{
+    margin-left: 13rem;
     color: red;
+    margin-top: 18rem;
 }
 .login-button{
     border-radius: 8px;
