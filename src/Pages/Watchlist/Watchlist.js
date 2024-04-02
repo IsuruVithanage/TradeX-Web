@@ -54,12 +54,11 @@ const Watchlist = () => {
         <BasicPage
             isLoading={isLoading}
             tabs={[
-                {label: "All", path: "/watchlist"},
-                {label: "Custom", path: "/watchlist/customize"},
-                {label: "CoinPage", path: "/watchlist/CoinPage"},
-                {label: "Dashboard", path: "/watchlist/AdDashboard"},
-                {label: "Users", path: "/watchlist/Users"},
-                {label: "Admin", path: "/watchlist/Admin"},
+                { label: "All", path: "/watchlist" },
+                { label: "Custom", path: "/watchlist/customize" },
+                { label: "Dashboard", path: "/watchlist/AdDashboard" },
+                { label: "Users", path: "/watchlist/Users" },
+                { label: "Admin", path: "/watchlist/Admin" },
             ]}>
 
             <div className="card-container">
@@ -92,8 +91,12 @@ const Watchlist = () => {
             </div>
 
             <div className="watchlist-table-container">
+<<<<<<< HEAD
+                <Input type="search" placeholder="Search" style={{ width: "300px" }} onChange={(e) => setSearch(e.target.value)} />
+=======
                 <Input type="search" placeholder="Search" style={{width: "300px"}}
                        onChange={(e) => setSearch(e.target.value)}/>
+>>>>>>> 74eb7e0daceb3a232c74c016a122d98ba2b71512
 
                 <table className="watchlist-table">
                     <thead>
