@@ -3,7 +3,6 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "../SimulateTradingPlatform/assets.json";
-import initialData from "./portfolio-data.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 

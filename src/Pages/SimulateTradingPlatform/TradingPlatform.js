@@ -10,9 +10,12 @@ import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "./assets.json";
 import {useSelector} from "react-redux";
+import {message} from "antd";
+import {showMessage} from "../../Components/Message/Message";
 
 export default function TradingPlatform() {
     const user = useSelector(state => state.user);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -180,7 +183,13 @@ export default function TradingPlatform() {
                     body: JSON.stringify(placeOrder())
                 });
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    showMessage('success', 'The order has been placed successfully!')
+                } else {
+                    console.error('Failed to save order:', response);
+                }
+            })
             .catch(error => {
                 console.error('Failed to save order:', error);
             });
@@ -189,6 +198,7 @@ export default function TradingPlatform() {
 
     return (
         <BasicPage tabs={Tabs}>
+            {contextHolder}
             <SidePanelWithContainer
                 line={false}
                 style={{paddingTop: "22px"}}
