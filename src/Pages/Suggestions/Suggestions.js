@@ -94,7 +94,7 @@ export default function Suggestions() {
     };
 
     const fetchData = async () => {
-        console.log(coinData);
+        console.log(coinData.symbol);
         try {
             const res = await axios.get(
                 `https://api.binance.com/api/v3/klines?symbol=${coinData.symbol.toUpperCase()}USDT&interval=1m&limit=1000`
