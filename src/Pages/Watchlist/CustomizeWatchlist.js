@@ -41,7 +41,13 @@ const Watchlist1 = () => {
       tabs={[
         { label: "All", path: "/watchlist" },
         { label: "Custom", path: "/watchlist/customize" },
+<<<<<<< HEAD
 
+=======
+        { label: "Dashboard", path: "/watchlist/AdDashboard" },
+        { label: "Users", path: "/watchlist/Users" },
+        { label: "Admin", path: "/watchlist/Admin" },
+>>>>>>> 867bce7a6acd31b25a8d21b5cb76b5a496e3d46b
       ]}
     >
       
