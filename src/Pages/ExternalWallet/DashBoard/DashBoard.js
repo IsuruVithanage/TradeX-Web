@@ -158,7 +158,7 @@ useEffect(() => {
 
                         <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>     
                      </div>
-                     : <p>mjhv jvmsc</p>
+                     : <p>...Wallet Address</p>
                      }
 
                                               
