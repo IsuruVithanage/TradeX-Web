@@ -28,7 +28,7 @@ function MyTimer({ expiryTimestamp, onExpire }) {
 
 export default function QuizTimer({ onTimeout }) {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 500);
+    time.setSeconds(time.getSeconds() + 100);
     return (
         <div>
             <MyTimer expiryTimestamp={time} onExpire={onTimeout} />

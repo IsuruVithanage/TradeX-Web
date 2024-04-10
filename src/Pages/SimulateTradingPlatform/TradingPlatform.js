@@ -10,12 +10,10 @@ import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "./assets.json";
 import {useSelector} from "react-redux";
-import {message} from "antd";
 import {showMessage} from "../../Components/Message/Message";
 
 export default function TradingPlatform() {
     const user = useSelector(state => state.user);
-    const [messageApi, contextHolder] = message.useMessage();
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -23,6 +21,7 @@ export default function TradingPlatform() {
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
+    const [limitOrder, setLimitOrder] = useState([]);
     const [isOrderSet, setIsOrderSet] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
@@ -58,6 +57,39 @@ export default function TradingPlatform() {
             totalPrice: order.total
         }
     }
+
+
+
+    const [price, setPrice] = useState(null);
+
+    /*useEffect(() => {
+        const ws = new WebSocket('wss://stream.binance.com:443/ws/btcusdt@kline_1s');
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const candlestickData = {
+                openTime: (data.k.t)/1000,
+                open: parseFloat(data.k.o),
+                high: parseFloat(data.k.h),
+                low: parseFloat(data.k.l),
+                close: parseFloat(data.k.c),
+            };
+            console.log(candlestickData);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error: ', error);
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, []);*/
+
 
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
@@ -158,9 +190,13 @@ export default function TradingPlatform() {
             type: order.cato
         }
 
-        // Check if any property is null
         if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
             console.error('Invalid order:', ob);
+            return;
+        }
+
+        if (ob.quantity < 0) {
+            showMessage('Error', 'The order has been placed successfully!');
             return;
         }
 
@@ -198,7 +234,6 @@ export default function TradingPlatform() {
 
     return (
         <BasicPage tabs={Tabs}>
-            {contextHolder}
             <SidePanelWithContainer
                 line={false}
                 style={{paddingTop: "22px"}}
@@ -208,13 +243,13 @@ export default function TradingPlatform() {
                         <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <Input label={'Price'} type={'number'} icon={"$"} value={order.price} onChange={handlePriceChange}/>
-                        <Input label={'Quantity'} type={'number'} value={order.quantity}
+                        <Input label={'Price'} type={'number'} icon={"$"} value={order.price}  onChange={handlePriceChange}/>
+                        <Input label={'Quantity'} type={'number'} min={1} value={order.quantity}
                                icon={order.coin?.symbol ? order.coin.symbol.toUpperCase() : ""}
                                onChange={handleQuantityChange}/>
                         <SliderInput/>
 
-                        <Input label={'Total'} type={"number"} icon={"$"} placehalder={"Total"} value={order.total}/>
+                        <Input label={'Total'} type={"number"} icon={"$"} disable={true} placehalder={"Total"} value={order.total}/>
 
                         <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isOrderSet}
                                onClick={saveOrder}/>
@@ -238,7 +273,7 @@ export default function TradingPlatform() {
                 ]}/>
 
 
-                {assets && Object.keys(assets).slice(1).map(coin => (
+                {limitOrder.map(coin => (
                     <TableRow
                         key={coin}
                         data={[
