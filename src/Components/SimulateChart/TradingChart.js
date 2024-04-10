@@ -8,7 +8,6 @@ export const ChartComponent = (props) => {
     const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
 
-
     const {
         selectedCoin,
         updateLastPrice,
@@ -30,7 +29,6 @@ export const ChartComponent = (props) => {
                 low: parseFloat(item[3]),
                 close: parseFloat(item[4]),
                 time: item[0] / 1000,
-
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
@@ -51,11 +49,11 @@ export const ChartComponent = (props) => {
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
             updateLastPrice(latestPrice);
             return processData(res.data);
-
         } catch (error) {
             console.log(error);
         }
     };
+
 
     const initializeChart = async () => {
         if (chartInstance) {
@@ -105,20 +103,15 @@ export const ChartComponent = (props) => {
         // Set interval to fetch and update data every 5 seconds
         const intervalId = setInterval(async () => {
             newSeries.setData(await fetchData());
-        }, 5000);
+        }, 500);
 
         setChartInstance(chart);
 
-        const handleResize = () => {
-            chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: chartContainerRef.current.clientHeight });
-        };
-
-        window.addEventListener('resize', handleResize);
-
         return () => {
             clearInterval(intervalId);
-            window.removeEventListener('resize', handleResize);
-            chart.remove();
+            if (chart) {
+                chart.remove();
+            }
         };
     };
 
@@ -127,6 +120,11 @@ export const ChartComponent = (props) => {
             initializeChart();
         }
 
+        return () => {
+            if (chartInstance) {
+                chartInstance.remove();
+            }
+        };
     }, [selectedCoin]);
 
     const updateChartDuration = async (duration) => {
@@ -146,7 +144,9 @@ export const ChartComponent = (props) => {
                 }USDT&interval=${interval}&limit=1000`
             );
             const data = await processData(res.data);
-            chartInstance.series.setData(data);
+            if (chartInstance && !chartInstance.isDisposed()) {
+                chartInstance.series.setData(data);
+            }
         } catch (error) {
             console.log(error);
         }

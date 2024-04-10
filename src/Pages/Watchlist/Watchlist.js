@@ -27,6 +27,8 @@ const Watchlist = () => {
 
 
                 setCoins(data);
+                console.log(data);
+                console.log(symbols);
                 setIsLoading(false);
             })
             .catch((error) => {

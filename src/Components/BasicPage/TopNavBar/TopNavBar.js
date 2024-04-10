@@ -40,6 +40,10 @@ export default function TopNavBar(props) {
         setActiveLink(currentLocation);
     }, [currentLocation]);
 
+    function navigateToHome() {
+        navigate('/');
+    }
+
     return (
         <div>
             {props.sideNavBar === false && props.icon !== false &&
@@ -89,7 +93,7 @@ export default function TopNavBar(props) {
                 </div>
                 <div className='profile-raw'>
                     <LuLogOut size={27} />
-                    <span className='row-name'>Logout</span>
+                    <span className='row-name' onClick={navigateToHome}>Logout</span>
                 </div>
 
             </div>
