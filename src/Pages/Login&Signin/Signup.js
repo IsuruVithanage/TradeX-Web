@@ -49,13 +49,13 @@ function Signup() {
      <div className='black-background'>
       <form onSubmit={handleSubmit}> 
         <input type="text" placeholder="User Name" name='userName' className="username-input" onChange={handleChange} />
-        {errors.username&& <span className='text-danger-uname'> {errors.username}</span>}
+        {errors.username&& <div className='text-danger-uname'> {errors.username}</div>}
 
         <input type="text" placeholder="Email" name='email' className="email-input"  onChange={handleChange} />
-        {errors.email&& <span className='text-danger-email'> {errors.email}</span>}
+        {errors.email&& <div className='text-danger-email'> {errors.email}</div>}
 
         <input type="password" placeholder="Password" name='password' className="confirm-password-input"  onChange={handleChange}/>
-        {errors.password&& <span className='text-danger-password'> {errors.password}</span>}
+        {errors.password&& <div className='text-danger-password'> {errors.password}</div>}
 
         <div >
             <button className='sign-button'>Sign Up</button>

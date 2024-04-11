@@ -83,7 +83,7 @@
     transform: translate(34%, -75%);
     font-size: 85%;
 }
-.text-danger-uname{
+ .text-danger-uname{
     color: red;
     display: flex;
     margin-top: 18rem;
@@ -91,10 +91,11 @@
     
 }
 .text-danger-password{
+    display: flex;
     margin-left: 13rem;
     color: red;
     margin-top: 18rem;
-}
+}  
 .login-button{
     border-radius: 8px;
     background: #21db9a;
@@ -102,7 +103,7 @@
     height: 38px;
     flex-shrink: 0;
     position: fixed;
-    top: 84%;
+    top: 82%;
     left: 35%;
     transform: translate(34%, -75%);
     color: #FFF;
@@ -113,4 +114,24 @@
     line-height: normal;
     letter-spacing: -0.34px;
     border: none;
+}
+.signup-link{
+    color: #21db9a;
+    display: flex;
+    position: fixed;
+    top: 95%;
+    left: 60%;
+    transform: translate(34%, -75%);
+    font-size: 85%;
+
+}
+.having-text{
+    color: #6D6D6D;
+    display: flex;
+    position: fixed;
+    top: 95%;
+    left: 26%;
+    transform: translate(34%, -75%);
+    font-size: 85%;
+
 }

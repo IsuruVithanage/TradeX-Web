@@ -1,6 +1,8 @@
 import React from 'react'
 
+
 function Validation(values){
+    
     let error={}
     
     const password_pattern= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-z0-9]{8,}$/
@@ -17,8 +19,6 @@ function Validation(values){
     }
     else if(!password_pattern.test(values.password)){
         error.password="Password must include Uppercase, Lowercase & numbers"
-    }else{
-        <span>Login Success</span>
     }
     return error;
 }
