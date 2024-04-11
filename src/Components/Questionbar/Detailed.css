@@ -13,6 +13,30 @@ padding:0% 0% 3% 2%;
 box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
 }
+.quill-editor-my-custom-class {
+    /* Add styles specific to the text area */
+    height: 8rem;
+    width: 120%;
+  }
+.text-editor{
+    width: 80%;
+    
+    color: #151517;
+}
+.text-editor p{
+    height: 5rem;
+}
+.write-title{
+    padding-left: 2%;
+    color: #21DB9A;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+.button{
+    margin-left: 38.5rem;
+    margin-top: 1.5rem;
+}
 h3{
     color: aliceblue;
     padding-left: 0%;
@@ -25,6 +49,8 @@ h5{
 }
 .answer-title{
     padding-left: 2%;
+    margin-top: 2.5rem;
+    font-size: 21px;
 }
 p{
     color: aliceblue;
@@ -41,6 +67,18 @@ p{
     color: #74817C;
     padding-left: 15px;
 }
+.add-answer{
+    width: 68%;
+    height: auto;
+    flex-shrink: 0;
+    margin-top: 1rem;
+    border-radius: 15px;
+    background: #151517;
+    padding:0% 0% 2% 2%;
+    box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    margin-left: 8rem;
+
+}
 .count{
     display: flex;
 }
@@ -56,10 +94,13 @@ h2{
     width: 80%;
     height: auto;
     flex-shrink: 0;
-    margin-top: 20px;
+    margin-top: 1rem;
     border-radius: 15px;
     background: #151517;
     padding:0% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
 }
+
+ 
+  
