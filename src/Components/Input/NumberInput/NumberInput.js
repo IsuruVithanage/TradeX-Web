@@ -30,6 +30,7 @@ export default function NumberInput(props) {
                 id={props.id}
                 name={props.name}
                 value={props.value}
+                disabled={props.isDisable}
                 defaultValue={props.value}
                 placeholder={props.placeholder}
                 onBlur={props.onBlur}
