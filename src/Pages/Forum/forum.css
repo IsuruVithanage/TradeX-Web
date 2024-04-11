@@ -88,6 +88,7 @@
     
 }
 
+
 /*
 display: flex;
     text-align: center;
@@ -134,6 +135,9 @@ display: flex;
     margin-top: 0.3rem;
 
 }
+.question-stat .replies{
+   margin-right: 2.5rem;   
+}
 .question-stat {
     margin-left: auto;
    text-align: right;    
@@ -152,10 +156,12 @@ display: flex;
 
 .question-title h4{
     margin-left: 0.625rem;
+    
 }
 .question-title p{
     font-size: 12px;
     margin-left: 0.188rem;
+    color:#6D6D6D;
 }
 .question-row{
     background-color: #151517;

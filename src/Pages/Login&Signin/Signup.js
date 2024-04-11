@@ -20,8 +20,10 @@ function Signup() {
 
 
    const handleChange = (event) => {
-    setvalues({...values, [event.target.name]: event.target.value});
-    setvalues(prev =>({...prev,[event.target.name]:[event.target.value]}))
+    setvalues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
 }
 
 
@@ -29,7 +31,7 @@ function Signup() {
     event.preventDefault();
     setErrors(Validation(values));
     console.log(values);
-    axios.post('http://localhost:8004/user',values)
+    axios.post('http://localhost:8004/user/saveUser',values)
     .then(res=>console.log("Register success"))
     .catch(err=>console.log(err));
    }
@@ -41,15 +43,19 @@ function Signup() {
       <div className='topic'>
         <h1 className='welcome'>WELCOME</h1>
         <h1 className='traders'>TRADERS</h1>
-     </div>   
+        
+     </div>  
+  
      <div className='black-background'>
       <form onSubmit={handleSubmit}> 
         <input type="text" placeholder="User Name" name='userName' className="username-input" onChange={handleChange} />
-        {errors.username&& <span className='text-danger-uname'> {errors.username}</span>}
+        {errors.username&& <div className='text-danger-uname'> {errors.username}</div>}
+
         <input type="text" placeholder="Email" name='email' className="email-input"  onChange={handleChange} />
-        {errors.email&& <span className='text-danger-uname'> {errors.email}</span>}
+        {errors.email&& <div className='text-danger-email'> {errors.email}</div>}
+
         <input type="password" placeholder="Password" name='password' className="confirm-password-input"  onChange={handleChange}/>
-        {errors.password&& <span className='text-danger-uname'> {errors.password}</span>}
+        {errors.password&& <div className='text-danger-password'> {errors.password}</div>}
 
         <div >
             <button className='sign-button'>Sign Up</button>
