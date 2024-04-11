@@ -3,6 +3,7 @@ import './CoinBar.css';
 import Modal from "../Modal/Modal";
 import Table, {TableRow} from "../Table/Table";
 import axios from "axios";
+import symbols from "../../Assets/Images/Coin Images.json";
 
 const CoinBar = ({ onSelectCoin, enableModel }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
@@ -21,13 +22,21 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
     useEffect(() => {
         axios
             .get(
-                'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en'
+                `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
             )
-            .then(res => {
-                setCoins(res.data);
+            .then((res) => {
                 console.log(res.data);
+                const data = res.data.map((coin) => {
+                    coin.symbol = coin.symbol.slice(0, -4);
+                    return coin;
+                }).sort((a, b) => b.quoteVolume - a.quoteVolume);
+
+
+                setCoins(data);
             })
-            .catch(error => console.log(error));
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
 
@@ -43,11 +52,11 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
     const handleRowClick = (selectedCoin) => {
         setcoinData((prevData) => ({
             ...prevData,
-            name: selectedCoin.name,
-            price: formatCurrency(selectedCoin.current_price),
-            symbol: selectedCoin.image,
-            priceChange: selectedCoin.price_change_percentage_24h,
-            marketcap: formatCurrency(selectedCoin.market_cap),
+            name: symbols[selectedCoin.symbol].name,
+            price: formatCurrency(selectedCoin.lastPrice),
+            symbol: selectedCoin.symbol,
+            priceChange: selectedCoin.priceChange,
+            marketcap: formatCurrency(selectedCoin.quoteVolume),
         }));
         setIsSetterModalOpen(false);
         onSelectCoin(selectedCoin);
@@ -58,12 +67,15 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
 
 
     const formatCurrency = (amount) => {
-        const amountString = amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 20
-        });
-        return '$ ' + amountString;
+        const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+        if (!isNaN(parsedAmount)) {
+            const amountString = parsedAmount.toFixed(2);
+            return '$ ' + amountString;
+        } else {
+            return 'Invalid amount';
+        }
     };
+
 
 
     return (
@@ -73,7 +85,7 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
                 <>
                     <div className='coin-logo'>
                         <div className='coin-logo coinimg'>
-                            <img src={coinData.symbol} alt=""/>
+                            <img src={symbols[coinData.symbol].img} alt=""/>
                             <p>{coinData.name}</p>
                         </div>
                     </div>
@@ -106,11 +118,11 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
 
                                 {coins.map((coin) => (
                                     <TableRow
-                                        key={coin.id}
+                                        key={coin}
                                         data={[
-                                            <img className='coin-image' src={coin.image} alt={coin.symbol} />,
-                                            coin.name,
-                                            formatCurrency(coin.current_price),
+                                            <img className='coin-image' src={symbols[coin.symbol].img} alt={coin.symbol} />,
+                                            symbols[coin.symbol].name,
+                                            formatCurrency(coin.lastPrice),
                                         ]}
                                         onClick={() => handleRowClick(coin)}
                                     />

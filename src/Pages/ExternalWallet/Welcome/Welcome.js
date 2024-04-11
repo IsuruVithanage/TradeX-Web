@@ -19,8 +19,7 @@ export default function Welcome() {
 
       <div className='platform'>SIMULATION PLATFORM</div>
 
-      <div className='paragra'>      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br/>  Lorem Ipsum has been the industry's standard  dummy text ever since the 1500s,<br/> when an unknown printer took a galley of type and
-         scrambled it to make a type specimen book. <br/> It has survived not only five centuries, but also the leap into electronic typesetting,<br/> remaining essentially unchanged. <br/> It was popularised in the 1960s </p> 
+      <div className='paragra'>      <p>Welcome to TradeX Wallet, your gateway to the future of finance.<br/>  Experience seamless management of your digital assets, executed with security and simplicity.<br/> Join us today and embark on a revolutionary journey towards financial freedom.<br/> It has survived not only five centuries, but also the leap into electronic typesetting,<br/> remaining essentially unchanged. <br/> It was popularised in the 1960s </p> 
       </div>
       <div >
       <button className='custom-button' onClick={navigateToLogin}>GET START</button>

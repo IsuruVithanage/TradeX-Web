@@ -34,6 +34,7 @@
     "redux-thunk": "^3.1.0",
     "socket.io-client": "^4.7.4",
     "web-vitals": "^2.1.4",
+    "ws": "^8.16.0",
     "yup": "^1.4.0"
   },
   "scripts": {
