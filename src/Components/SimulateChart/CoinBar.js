@@ -118,7 +118,7 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
 
                                 {coins.map((coin) => (
                                     <TableRow
-                                        key={coin}
+                                        key={coin.symbol}
                                         data={[
                                             <img className='coin-image' src={symbols[coin.symbol].img} alt={coin.symbol} />,
                                             symbols[coin.symbol].name,
