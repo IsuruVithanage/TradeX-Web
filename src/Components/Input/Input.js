@@ -42,7 +42,7 @@ export default function Input(props) {
 }
 
 function InputField(props) {
-    const { name, register, errors } = props;
+    const {name, register, errors} = props;
 
     const handleChange = (e) => {
         props.onChange(e);
@@ -65,7 +65,7 @@ function InputField(props) {
                     onChange={props.onChange ? handleChange : null}
                     onClick={props.onClick}
                 />
-                <p style={{ color: 'red' }}>{errors[name]?.message}</p>
+                <p style={{color: 'red'}}>{errors[name]?.message ? errors[name]?.message : ''}</p>
             </div>
         );
     } else {

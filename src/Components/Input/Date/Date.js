@@ -15,7 +15,6 @@ export default function Date(props) {
     
             clearIcon={<span className="calendar-icon" > <GrClose /></span>}
             suffixIcon={<span className="calendar-icon" > <IoCalendarOutline /></span>}
-            format="DD-MM-YY"
             placement="topRight"
             id={props.id}
             name={props.name}
