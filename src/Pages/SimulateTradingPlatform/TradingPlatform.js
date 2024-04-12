@@ -143,7 +143,7 @@ export default function TradingPlatform() {
     };
 
     const handleQuantityChange = (value) => {
-        if (value <= 0) {
+        if (value <= 0.0) {
             setIsError('Quantity should be greater than 0');
             setIsButtonSet(true);
         } else {
