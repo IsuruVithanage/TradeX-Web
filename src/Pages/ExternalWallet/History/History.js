@@ -13,9 +13,10 @@ export default function History() {
     useEffect(()=>{
         setIsLoading(true)
         axios.get(
-            "http://localhost:8006/history",
-            {params:{userId:userId}}
-        )
+            "http://localhost:8006/history",{
+            params:{userId:userId},
+            withCredentials: true,
+        })
         .then((res)=>{
             setHistoryData(res.data)
             setIsLoading(false)
