@@ -35,7 +35,8 @@ export default function VerifyUser() {
 
     const saveData = async () => {
         const result = await trigger();
-        if (!result) {
+        console.log("re", result)
+        if (result) {
             if (userDetail.dateOfBirth === '') {
                 setIsDateError('Please enter a valid date');
             }
@@ -43,16 +44,16 @@ export default function VerifyUser() {
                 setIsAgeError('Please enter a valid age');
             }
         }else {
-            if (userDetail.dateOfBirth === '') {
+            /*if (userDetail.dateOfBirth === '') {
                 setIsDateError('Please enter a valid date');
                 return;
-            }
-            if (userDetail.age === 0) {
+            }*/
+            /*if (userDetail.age === 0) {
                 setIsAgeError('Please enter a valid age');
                 return;
-            }
+            }*/
 
-            fetch('http://localhost:8004/user/verifyUser', {
+            fetch('http://localhost:8004/user/saveUserVerificationDetails', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,11 +118,14 @@ export default function VerifyUser() {
         }
     }
 
-    const handleDate = (value) => {
-        if (value !== null) {
+    const handleDate = (date, dateString) => {
+        if (dateString === null) {
             setIsAgeError('Please enter a valid date');
         }else {
-            console.log(value);
+            setUserDetail(prevDetails => ({
+                ...prevDetails,
+                dateOfBirth: dateString
+            }));
         }
     }
 
