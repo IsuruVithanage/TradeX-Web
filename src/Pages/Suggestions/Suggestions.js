@@ -3,7 +3,6 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "../SimulateTradingPlatform/assets.json";
-import initialData from "./portfolio-data.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 
@@ -95,7 +94,7 @@ export default function Suggestions() {
     };
 
     const fetchData = async () => {
-        console.log(coinData);
+        console.log(coinData.symbol);
         try {
             const res = await axios.get(
                 `https://api.binance.com/api/v3/klines?symbol=${coinData.symbol.toUpperCase()}USDT&interval=1m&limit=1000`

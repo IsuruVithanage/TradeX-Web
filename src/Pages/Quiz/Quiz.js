@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react'
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import QuestionBar from "../../Components/QuizComponents/QuestionBar";
 import './Quiz.css';
-import QuizTImer from "../../Components/QuizComponents/QuizTImer";
 import axios from "axios";
 import QuizTimer from "../../Components/QuizComponents/QuizTImer";
-import Table, {TableRow} from "../../Components/Table/Table";
 import Modal from "../../Components/Modal/Modal";
 import Input from "../../Components/Input/Input";
 import {useNavigate} from "react-router-dom";

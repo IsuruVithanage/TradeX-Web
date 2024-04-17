@@ -25,11 +25,13 @@ export default function DashBoard() {
     const [isInvalid,setIsInvalid] = useState([true,null])
 
 
-
+// initial data fetching
     useEffect(()=>{
         setIsLoading(true)
 
-        axios.get("http://localhost:8006/wallet/"+userId)
+        axios.get("http://localhost:8006/wallet/"+userId, {
+            withCredentials: true,
+          })
         .then(res=>{
             console.log(res.data);
             setPortfolioValue (res.data.portfolioValue) 
@@ -44,7 +46,7 @@ export default function DashBoard() {
 
             error.response ? 
             showMessage(error.response.status, error.response.data.message)   :
-            showMessage('error', 'Transaction Failed..!') ;
+            showMessage('error', 'Database connection Failed..!') ;
 
         })
 
@@ -52,7 +54,7 @@ export default function DashBoard() {
  
 
 
-
+// assets tranfering function
   const transfer = () => {
     setReceivingWallet(null);
     setSelectedCoin(null);
@@ -74,12 +76,11 @@ export default function DashBoard() {
             "http://localhost:8006/wallet/",
             data,
             {
-                params: {
-                    userId: userId
-                }
+                params: {userId: userId},
+                withCredentials: true,
             }
         )
-
+// set new fetch data
         .then(res => {
             console.log(res.data)
             setAssets(res.data.assets);
@@ -99,7 +100,7 @@ export default function DashBoard() {
         });
 }
 
-
+// validate inputs fields
 useEffect(() => {
 
 
@@ -117,10 +118,11 @@ useEffect(() => {
             } else {
                 setIsInvalid([true, null]);
             }
+
+       
         }
 
     }
-
 , [assets, selectedCoin, quantity,receivingWallet]);
 
 
@@ -158,7 +160,7 @@ useEffect(() => {
 
                         <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>     
                      </div>
-                     : <p>mjhv jvmsc</p>
+                     : <p>...Wallet Address</p>
                      }
 
                                               
@@ -176,7 +178,7 @@ useEffect(() => {
                         'Value', 
                         'ROI'
                     ]}/>
-
+  {/* data mapping to table */}
                     { assets && assets.slice(1).map(coin => (
                         <TableRow 
                             key={coin.coin} 

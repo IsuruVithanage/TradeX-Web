@@ -80,7 +80,7 @@ export default function AdDashboard() {
     const fetchVerificationIssues = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getAllIssues"
+          "http://localhost:8004/user/getUsersWithVerificationIssues"
         );
         setVerificationIssues(response.data);
       } catch (error) {
@@ -137,7 +137,7 @@ export default function AdDashboard() {
       <div style={{ display: "flex" }}>
         <div className="requests">
           Verify Requests
-          <div>
+          <div style={{height:'410px'}}>
             <table className="verify-table">
               <thead>
                 <tr>
@@ -147,7 +147,7 @@ export default function AdDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {pendingUsers.map((user) => (
+                {pendingUsers.slice(0,7).map((user) => (
                   <tr key={user.userId}>
                     <td style={{ textAlign: "left" }}>{user.userName}</td>
                     <td>{user.Date}</td>
@@ -167,7 +167,7 @@ export default function AdDashboard() {
         </div>
         <div className="issues">
           Verification Issues
-          <div>
+          <div style={{height:'410px'}}>
             <table className="verify-table">
               <thead>
                 <tr>
@@ -179,19 +179,19 @@ export default function AdDashboard() {
               <tbody>
               {verificationIssues.map((user) => (
                   <tr key={user.userId}>
-                    <td>{user.userName}</td>
+                    <td style={{ textAlign: "left" }}>{user.userName}</td>
                     <td>{user.issue}</td>
                     <td>
-                      <Input type="button" value="Review" outlined red />
+                      <Input type="button" value="Review" outlined red/>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="ViewAll-btn">
+          {/* <div className="ViewAll-btn">
             <Input type="button" value=" View All" />
-          </div>
+          </div> */}
         </div>
       </div>
     </BasicPage>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@boldreports/react-reporting-components": "^5.4.37",
     "@bytescale/upload-widget-react": "^4.18.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -35,6 +36,7 @@
     "redux-thunk": "^3.1.0",
     "socket.io-client": "^4.7.4",
     "web-vitals": "^2.1.4",
+    "ws": "^8.16.0",
     "yup": "^1.4.0"
   },
   "scripts": {
@@ -60,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
   }
 }

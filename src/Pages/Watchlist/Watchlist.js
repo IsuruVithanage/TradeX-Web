@@ -27,6 +27,8 @@ const Watchlist = () => {
 
 
                 setCoins(data);
+                console.log(data);
+                console.log(symbols);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -54,12 +56,9 @@ const Watchlist = () => {
         <BasicPage
             isLoading={isLoading}
             tabs={[
-                {label: "All", path: "/watchlist"},
-                {label: "Custom", path: "/watchlist/customize"},
-                {label: "CoinPage", path: "/watchlist/CoinPage"},
-                {label: "Dashboard", path: "/watchlist/AdDashboard"},
-                {label: "Users", path: "/watchlist/Users"},
-                {label: "Admin", path: "/watchlist/Admin"},
+                { label: "All", path: "/watchlist" },
+                { label: "Custom", path: "/watchlist/customize" },
+
             ]}>
 
             <div className="card-container">
@@ -94,7 +93,6 @@ const Watchlist = () => {
             <div className="watchlist-table-container">
                 <Input type="search" placeholder="Search" style={{width: "300px"}}
                        onChange={(e) => setSearch(e.target.value)}/>
-
                 <table className="watchlist-table">
                     <thead>
                     <tr>
