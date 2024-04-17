@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { onMessage } from "firebase/messaging";
+import getFcmDeviceToken from "./getFcmDeviceToken";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
@@ -6,7 +8,12 @@ import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
 
- export default function Alert() {
+const userId = 1;
+let fcm = await getFcmDeviceToken(userId);
+
+
+
+export default function Alert() {
     const [selectedPage, setSelectedPage] = useState("Running");
     const [selectedCoin, setSelectedCoin] = useState(undefined);
     const [selectedPrice, setSelectedPrice] = useState(null);
@@ -21,23 +28,55 @@ import './Alert.css';
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const userId = 1;
-    
-    
+    const [isRegistered, setIsRegistered] = useState(fcm.registered);
+    const selectedPageRef = useRef(selectedPage);
+   
 
     useEffect(() => {
-        async function getAlerts(){
-            setIsLoading(true);
-            setAlerts([]);
-
-            await alertOperations.getAlerts(userId, selectedPage === "Running")
-            .then(res => res && setAlerts(res));
-
-            setIsLoading(false);
+        if(!isRegistered){
+            Notification.requestPermission(async(value) => {
+                if(value === 'granted'){
+                    fcm = await getFcmDeviceToken(userId);
+                    setIsRegistered(fcm.registered)
+                }
+                else{
+                    alert('Please Allow Notifications in your browser settings to use this feature..!');
+                    setIsRegistered(fcm.registered)
+                    Notification.requestPermission(async() => {
+                        fcm = await getFcmDeviceToken(userId);
+                        setIsRegistered(fcm.registered)
+                    });
+                }
+            });
         }
-        
+    },[isRegistered]);
+
+
+    
+
+    useEffect(() => {  
+        selectedPageRef.current = selectedPage;
+
+        if(!isRegistered) {
+            setIsLoading(false);
+            setAlerts([]);
+            return;
+        }
+
+        onMessage(fcm.messaging, (payload) => {
+            console.log("Message handled in the foreground!");
+            new Notification(payload.notification.title, {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+                image: payload.notification.image,
+            });
+            
+            getAlerts();
+
+        });
         getAlerts();
-    }, [selectedPage]);
+
+    }, [selectedPage, isRegistered]);
 
 
 
@@ -78,30 +117,61 @@ import './Alert.css';
 
 
     const openAlertSetterModel = (editAlertNo) => {
-        if (!editAlertNo) {
-            setAction("Add"); 
-            setCurrentAlertId(null); 
-            setSelectedCoin(undefined);
-            setSelectedPrice(null);
-            setSelectedCondition(undefined);
-            setSelectedEmail(true);
-        } 
-        
-        else {
-            const selectedAlert = alerts.find(alert => alert.alertId === editAlertNo);
-            setAction("Edit");
-            setCurrentAlertId(editAlertNo);
-            setSelectedCoin(selectedAlert.coin);
-            setSelectedPrice(selectedAlert.price);
-            setSelectedCondition(selectedAlert.condition);
-            setSelectedEmail(selectedAlert.emailActiveStatus);
+        if(Notification.permission !== 'granted') {
+            Notification.requestPermission(async(value) => {
+                if(value === 'granted'){
+                    fcm = await getFcmDeviceToken(userId);
+                    setIsRegistered(fcm.registered)
+                    openAlertSetterModel(editAlertNo);
+                }
+                else{
+                    alert('Please Allow Notifications in your browser settings to use this feature..!');
+                    Notification.requestPermission(async() => {
+                        fcm = await getFcmDeviceToken(userId);
+                        setIsRegistered(fcm.registered)
+                    });
+                }
+            });
         }
 
-        setIsSetterModalOpen(true); 
+        else{
+            if (!editAlertNo) {
+                setAction("Add"); 
+                setCurrentAlertId(null); 
+                setSelectedCoin(undefined);
+                setSelectedPrice(null);
+                setSelectedCondition(undefined);
+                setSelectedEmail(true);
+            } 
+            
+            else {
+                const selectedAlert = alerts.find(alert => alert.alertId === editAlertNo);
+                setAction("Edit");
+                setCurrentAlertId(editAlertNo);
+                setSelectedCoin(selectedAlert.coin);
+                setSelectedPrice(selectedAlert.price);
+                setSelectedCondition(selectedAlert.condition);
+                setSelectedEmail(selectedAlert.emailActiveStatus);
+            }
+
+            setIsSetterModalOpen(true); 
+        }  
     }
 
 
 
+    const getAlerts = () => {
+        setIsLoading(true);
+        setAlerts([]);
+        
+        alertOperations.getAlerts(userId, selectedPageRef.current === "Running")
+        .then(res => res && setAlerts(res));
+
+        setIsLoading(false);
+    }
+
+
+    
     const editAlert = async () => {
         setIsLoading(true);
 
@@ -173,11 +243,13 @@ import './Alert.css';
                 ],
             }}>  
 
-
             { selectedPage === 'Running' && <Input type="fab" onClick={() => openAlertSetterModel() }/> }
 
 
-            <Table emptyMessage="No alerts to show" restart={selectedPage}>
+            <Table 
+                restart={alerts} 
+                emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}>
+                    
                 <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
 
                 { alerts.map((alert, index) => {
