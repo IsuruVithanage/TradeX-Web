@@ -68,7 +68,6 @@ export default function Alert() {
             new Notification(payload.notification.title, {
                 body: payload.notification.body,
                 icon: payload.notification.icon,
-                image: payload.notification.image,
             });
             
             getAlerts();
