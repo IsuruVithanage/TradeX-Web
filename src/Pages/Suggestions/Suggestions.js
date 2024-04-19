@@ -97,7 +97,7 @@ export default function Suggestions() {
         console.log(coinData.symbol);
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${coinData.symbol.toUpperCase()}USDT&interval=1m&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000`
             );
             return processData(res.data);
 
@@ -114,11 +114,11 @@ export default function Suggestions() {
         return '$ ' + amountString;
     };
 
-    function handleRowClick(coin) {
-        console.log(coin);
+    function handleRowClick() {
+
         axios
             .get(
-                `https://api.coingecko.com/api/v3/coins/${coin}`
+                `https://api.coingecko.com/api/v3/coins/bitcoin`
             )
             .then(async res => {
                 setcoinData((prevData) => ({
@@ -131,7 +131,7 @@ export default function Suggestions() {
                     marketcap: res.data.market_data.market_cap.usd,
                 }));
                 console.log(coinData);
-                await fetchData();
+                await fetchData();//load chart data
                 console.log(tradeData);
             })
             .catch(error => console.log(error));
