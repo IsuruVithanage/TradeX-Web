@@ -1,59 +1,66 @@
 import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
-import image from '../../Assets/Images/image.jpg';
-import './NewsItem.css';
+import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
+import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'; 
+import image from '../../Assets/Images/image.jpg'; 
+import './NewsItem.css'; 
 
 const NewsItem = ({ title, description, src, url }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
 
+  // Event handler for toggling heart icon
   const handleHeartClick = () => {
     setIsHeartFilled((prevIsHeartFilled) => !prevIsHeartFilled);
   };
 
+  // Event handler for incrementing like count
   const handleLikeClick = () => {
     setLikeCount((prevLikeCount) => prevLikeCount + 1);
   };
 
+  // Event handler for incrementing dislike count
   const handleDislikeClick = () => {
     setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
   };
 
+  // Render the component
   return (
-    <div className='newsbar-container'>
+    <div className='newsbar-container'> 
+      {/* Container for the news image */}
       <div className='img-container'>
-        <img src={src ? src : image} alt="..." />
+        <img src={src ? src : image} alt="..." /> 
       </div>
+      
       <div className='desc-container'>
         <div style={{ display: 'flex' }}>
           <div className='news-header-container'>
+            {/* Link to the full article */}
             <a href={url} target="_blank" rel="noopener noreferrer">
-              {/* Add target="_blank" to open in a new tab */}
-              <h1>{title}</h1>
+              <h1>{title}</h1> {/* Display the news title */}
             </a>
-            <p>{description ? description.slice(0, 90) : "In a rare discovery, scientists reveal the oldest piece of fossilized skin - The Washington Post,"}</p>
+            {/* Display the news description */}
+            <p>{description ? description.slice() : "In a rare discovery, scientists reveal the oldest piece of fossilized skin - The Washington Post,"}</p>
           </div>
+
           <div className='favorite-icon-container' onClick={handleHeartClick}>
             {isHeartFilled ? <FaHeart /> : <FaRegHeart />}
           </div>
         </div>
 
-        <div className='foter-bar'>
-          <p>1 day</p>
+        <div className='footer-bar'>
           <div className='like-icon-container'>
-          <div onClick={handleLikeClick}>
-            {likeCount}  <AiOutlineLike />
+            <div onClick={handleLikeClick}>
+              {likeCount} <AiOutlineLike />
+            </div>
+            <div onClick={handleDislikeClick}>
+              {dislikeCount} <AiOutlineDislike />
+            </div>
           </div>
-          <div onClick={handleDislikeClick}>
-             {dislikeCount} <AiOutlineDislike />
-          </div>
-        </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default NewsItem;
+export default NewsItem; 

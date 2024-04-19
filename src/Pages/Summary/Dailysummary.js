@@ -85,13 +85,11 @@ function Dailysummary() {
               <div className='default'>
                 <div className="defaultname">
                     <span>Set this features as default</span>
-                <div className="tog6">
-                    <Input type="toggle" id=''/>
                 </div>
-                   
-              </div>
-               
-              </div>
+                <div className="tog6">
+                      <Input type="toggle" id=''/>
+                </div>
+               </div>
 
               <div className='box-container'>
                 

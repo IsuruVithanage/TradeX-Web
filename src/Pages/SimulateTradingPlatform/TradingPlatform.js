@@ -10,12 +10,10 @@ import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "./assets.json";
 import {useSelector} from "react-redux";
-import {message} from "antd";
 import {showMessage} from "../../Components/Message/Message";
 
 export default function TradingPlatform() {
     const user = useSelector(state => state.user);
-    const [messageApi, contextHolder] = message.useMessage();
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -23,7 +21,10 @@ export default function TradingPlatform() {
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
-    const [isOrderSet, setIsOrderSet] = useState(true);
+    const [limitOrder, setLimitOrder] = useState([]);
+    const [isButtonSet, setIsButtonSet] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isError, setIsError] = useState(null);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [order, setOrder] = useState({
@@ -33,7 +34,7 @@ export default function TradingPlatform() {
         cato: 'Limit',
         coin: null,
         price: 0,
-        quantity: 1,
+        quantity: 0,
         total: 0,
     });
 
@@ -59,6 +60,35 @@ export default function TradingPlatform() {
         }
     }
 
+    /*useEffect(() => {
+        const ws = new WebSocket('wss://stream.binance.com:443/ws/btcusdt@kline_1s');
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const candlestickData = {
+                openTime: (data.k.t)/1000,
+                open: parseFloat(data.k.o),
+                high: parseFloat(data.k.h),
+                low: parseFloat(data.k.l),
+                close: parseFloat(data.k.c),
+            };
+            console.log(candlestickData);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error: ', error);
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, []);*/
+
+
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
             ...prevOrder,
@@ -66,21 +96,25 @@ export default function TradingPlatform() {
         }));
         console.log(order.cato)
         if (value === 'Market') {
+            setIsButtonSet(true);
             setMarketPrice();
+            setIsDisabled(true);
         } else if (value === 'Limit') {
             setOrder(prevOrder => ({
                 ...prevOrder,
                 price: 0,
                 total: 0
             }));
-            setIsOrderSet(true);
+            setIsButtonSet(true);
+            setIsDisabled(false);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
                 ...prevOrder,
                 price: 0,
                 total: 0
             }));
-            setIsOrderSet(true);
+            setIsButtonSet(true);
+            setIsDisabled(false);
         }
     };
 
@@ -106,21 +140,26 @@ export default function TradingPlatform() {
                 total: value * order.quantity
             }));
         }
-
-        if (isOrderSet) {
-            setIsOrderSet(false);
-        }
     };
 
     const handleQuantityChange = (value) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            quantity: value
-        }));
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            total: value * order.price
-        }));
+        if (value <= 0.0) {
+            setIsError('Quantity should be greater than 0');
+            setIsButtonSet(true);
+        } else {
+            setIsError(null);
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                quantity: value
+            }));
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                total: value * order.price
+            }));
+
+            setIsButtonSet(false);
+        }
+
     };
 
     const setMarketPrice = () => {
@@ -132,10 +171,6 @@ export default function TradingPlatform() {
             ...prevOrder,
             total: latestPrice * order.quantity
         }));
-
-        if (isOrderSet) {
-            setIsOrderSet(false);
-        }
 
     }
 
@@ -158,9 +193,13 @@ export default function TradingPlatform() {
             type: order.cato
         }
 
-        // Check if any property is null
         if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
             console.error('Invalid order:', ob);
+            return;
+        }
+
+        if (ob.quantity < 0) {
+            showMessage('Error', 'The order has been placed successfully!');
             return;
         }
 
@@ -198,7 +237,6 @@ export default function TradingPlatform() {
 
     return (
         <BasicPage tabs={Tabs}>
-            {contextHolder}
             <SidePanelWithContainer
                 line={false}
                 style={{paddingTop: "22px"}}
@@ -208,16 +246,19 @@ export default function TradingPlatform() {
                         <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
-                        <Input label={'Price'} type={'number'} icon={"$"} value={order.price} onChange={handlePriceChange}/>
-                        <Input label={'Quantity'} type={'number'} value={order.quantity}
+                        <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
+                               onChange={handlePriceChange}/>
+                        <Input label={'Quantity'} type={'number'} min={1} value={order.quantity}
                                icon={order.coin?.symbol ? order.coin.symbol.toUpperCase() : ""}
                                onChange={handleQuantityChange}/>
                         <SliderInput/>
 
-                        <Input label={'Total'} type={"number"} icon={"$"} placehalder={"Total"} value={order.total}/>
+                        <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
+                               value={order.total}/>
 
-                        <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isOrderSet}
+                        <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
                                onClick={saveOrder}/>
+                        <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
                 }
@@ -238,7 +279,7 @@ export default function TradingPlatform() {
                 ]}/>
 
 
-                {assets && Object.keys(assets).slice(1).map(coin => (
+                {limitOrder.map(coin => (
                     <TableRow
                         key={coin}
                         data={[

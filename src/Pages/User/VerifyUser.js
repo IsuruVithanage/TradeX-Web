@@ -1,5 +1,5 @@
 import BasicPage from "../../Components/BasicPage/BasicPage";
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
 import Modal from "../../Components/Modal/Modal";
@@ -9,15 +9,65 @@ import {MdOutlineFileUpload} from "react-icons/md";
 import {validationSchema} from "../../Validation/UserValidation";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
+import {useSelector} from "react-redux";
 
 export default function VerifyUser() {
+    const user = useSelector(state => state.user);
 
-    const {handleSubmit, register, formState: {errors}} = useForm({
+    const {trigger, register, formState: {errors}} = useForm({
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const [isAgeError, setIsAgeError] = useState('');
+    const [capturedImage, setCapturedImage] = useState(null);
+    const webcamRef = useRef(null); // Declare webcamRef
+    const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
+    const [isDateError, setIsDateError] = useState('');
+    const [userDetail, setUserDetail] = useState({
+        userId: user.user.id,
+        firstName: '',
+        lastName: '',
+        age: 0,
+        phoneNumber: '',
+        nic: '',
+        dateOfBirth: ''
+    });
+
+    const saveData = async () => {
+        const result = await trigger();
+        console.log("re", result)
+        if (result) {
+            if (userDetail.dateOfBirth === '') {
+                setIsDateError('Please enter a valid date');
+            }
+            if (userDetail.age === 0) {
+                setIsAgeError('Please enter a valid age');
+            }
+        }else {
+            /*if (userDetail.dateOfBirth === '') {
+                setIsDateError('Please enter a valid date');
+                return;
+            }*/
+            /*if (userDetail.age === 0) {
+                setIsAgeError('Please enter a valid age');
+                return;
+            }*/
+
+            fetch('http://localhost:8004/user/saveUserVerificationDetails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userDetail)
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+            })
+        }
     }
 
     const videoConstraints = {
@@ -25,11 +75,6 @@ export default function VerifyUser() {
         height: 720,
         facingMode: "user"
     };
-
-
-    const [capturedImage, setCapturedImage] = useState(null);
-    const webcamRef = useRef(null); // Declare webcamRef
-    const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
 
 
     console.log(capturedImage);
@@ -48,6 +93,42 @@ export default function VerifyUser() {
 
     }
 
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setUserDetail(prevDetails => ({
+            ...prevDetails,
+            [name]: value
+        }));
+    };
+
+    useEffect(() => {
+        console.log(userDetail);
+    }, [userDetail]);
+    const handleAge = (value) => {
+        if (value< 8) {
+            setIsAgeError('Age must be greater than 8');
+        }else if(value >80 ){
+            setIsAgeError('Age must be lower than 80');
+        } else {
+            setIsAgeError(null);
+            setUserDetail(prevDetails => ({
+                ...prevDetails,
+                age: value
+            }));
+        }
+    }
+
+    const handleDate = (date, dateString) => {
+        if (dateString === null) {
+            setIsAgeError('Please enter a valid date');
+        }else {
+            setUserDetail(prevDetails => ({
+                ...prevDetails,
+                dateOfBirth: dateString
+            }));
+        }
+    }
+
 
     return (
         <BasicPage>
@@ -60,16 +141,22 @@ export default function VerifyUser() {
                     </thead>
                     <tbody>
                     <tr>
-                        <td><Input label='First Name' name='firstName' type='text' register={register} errors={errors}/></td>
-                        <td><Input label='Last Name' name='lastName' type='text' register={register} errors={errors}/></td>
-                        <td><Input label='Age' name='age' type='number' register={register} errors={errors}/></td>
+                        <td><Input label='First Name' name='firstName' type='text' register={register} errors={errors} onChange={handleInputChange}/></td>
+                        <td><Input label='Last Name' name='lastName' type='text' register={register} errors={errors} onChange={handleInputChange}/></td>
+                        <td>
+                            <Input label='Age' min={0} name='age' type='number' register={register} errors={errors} onChange={handleAge}/>
+                            <p className={isAgeError !== null ? 'order-error' : 'order-noerror'}>{isAgeError}</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td><Input label='Phone Number' name='phoneNumber' type='text' register={register} errors={errors}/></td>
-                        <td><Input label='NIC' name='nic' type='text' register={register} errors={errors}/></td>
+                        <td><Input label='Phone Number' name='phoneNumber' type='text' register={register} errors={errors} onChange={handleInputChange}/></td>
+                        <td><Input label='NIC' name='nic' type='text' register={register} errors={errors} onChange={handleInputChange}/></td>
                     </tr>
                     <tr>
-                        <td><Input label='Date of Birth' name='dateOfBirth' type='date' register={register} errors={errors}/></td>
+                        <td>
+                            <Input label='Date of Birth' name='dateOfBirth' type='date' register={register} errors={errors} onChange={handleDate}/>
+                            <p className={isDateError !== null ? 'order-error' : 'order-noerror'}>{isDateError}</p>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -112,9 +199,9 @@ export default function VerifyUser() {
                     </div>
 
                 </div>
-
+on
                 <div className='submit-container'>
-                    <Input type="button" value='Submit' onClick={handleSubmit(onSubmit)}/>
+                    <Input type="button" value='Submit' onClick={saveData}/>
                     <div style={{ width: '10px' }}></div>
                     <Input type="button" value='Cancel' red/>
                     {capturedImage && (

@@ -90,7 +90,9 @@ export default function Portfolio() {
                     key={asset.symbol} 
                     data={[
                         <Coin>{asset.symbol}</Coin>, 
-                        asset.tradingBalance, 
+                        <span style={{color: asset.tradingBalance<50 ? "FF0000" : "#FFFFFF"}}>
+                            {asset.tradingBalance}
+                        </span>,
                         asset.fundingBalance, 
                         asset.totalBalance, 
                         asset.marketPrice,
