@@ -146,8 +146,8 @@ export default function VerifyUser() {
 
 
     AWS.config.update({
-        accessKeyId: 'AKIARWVGIPBREPLB4GWU',
-        secretAccessKey: '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'
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     })
 
     const myBucket = new AWS.S3({
