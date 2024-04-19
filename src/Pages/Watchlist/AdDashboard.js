@@ -189,9 +189,11 @@ export default function AdDashboard() {
               </tbody>
             </table>
           </div>
-          {/* <div className="ViewAll-btn">
-            <Input type="button" value=" View All" />
-          </div> */}
+          <div className="ViewAll-btn">
+            <Link to="/admin/ViewIssues">
+              <Input type="button" value=" View All" />
+            </Link>
+          </div>
         </div>
       </div>
     </BasicPage>
