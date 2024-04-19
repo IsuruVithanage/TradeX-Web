@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { showMessage } from '../../Components/Message/Message';
 
-const backendApiEndpoint = "http://localhost:8003/alert/";
+const backendApiEndpoint = "http://localhost:8002/alert/";
 
 
 
@@ -44,6 +44,7 @@ const editAlert = async (userId, currentAlertId, selectedCoin, selectedCondition
                 price: parseFloat(document.getElementById("edit-alert-price").value),
                 condition: selectedCondition,
                 emailActiveStatus: document.getElementById("edit-alert-email").checked,
+                runningStatus: true
             },
             {
                 params: {
@@ -167,12 +168,33 @@ const deleteAlert = async (userId, currentAlertId, runningStatus) => {
 
 
 
+const saveDeviceToken = async (userId, deviceToken) => { 
+    return axios
+        .post(
+            backendApiEndpoint + "deviceToken",
+            {
+                userId: userId,
+                deviceToken: deviceToken
+            }
+        )
+
+        .catch(error => {
+            console.log("error saving device token", error);
+        });
+
+}
+
+
+
+
+
 const alertOperations = {
     getAlerts,
     editAlert,
     addAlert,
     restoreAlert,
-    deleteAlert
+    deleteAlert,
+    saveDeviceToken
 };
 
 export default alertOperations;
