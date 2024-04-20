@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 import AWS from 'aws-sdk';
 import {v4 as uuidv4} from 'uuid';
 import {Upload} from 'antd';
+import {showMessage} from "../../Components/Message/Message";
 
 export default function VerifyUser() {
     const user = useSelector(state => state.user);
@@ -32,10 +33,14 @@ export default function VerifyUser() {
         age: 0,
         phoneNumber: '',
         nic: '',
-        dateOfBirth: ''
+        dateOfBirth: '',
+        userImg: '',
+        nicImg1: '',
+        nicImg2: ''
     });
 
     const saveData = async () => {
+        console.log(userDetail);
         const result = await trigger();
         console.log("re", result)
         if (result) {
@@ -54,6 +59,10 @@ export default function VerifyUser() {
                 setIsAgeError('Please enter a valid age');
                 return;
             }*/
+            if (userDetail.userImg && userDetail.nicImg1 && userDetail.nicImg2) {
+                showMessage('Error', 'Some data are not defined!');
+                return
+            }
 
             fetch('http://localhost:8004/user/saveUserVerificationDetails', {
                 method: 'POST',
@@ -78,8 +87,33 @@ export default function VerifyUser() {
         facingMode: "user"
     };
 
+    const handleAge = (value) => {
+        if (value < 8) {
+            setIsAgeError('Age must be greater than 8');
+        } else if (value > 80) {
+            setIsAgeError('Age must be lower than 80');
+        } else {
+            setIsAgeError(null);
+            setUserDetail(prevDetails => ({
+                ...prevDetails,
+                age: value
+            }));
+        }
+    }
 
-    console.log(capturedImage);
+    const handleDate = (date, dateString) => {
+        if (dateString === null) {
+            setIsAgeError('Please enter a valid date');
+        } else {
+            setUserDetail(prevDetails => ({
+                ...prevDetails,
+                dateOfBirth: dateString
+            }));
+        }
+    }
+
+
+
     const handleCapture = async () => {
         const imageSrc = webcamRef.current.getScreenshot();
         setCapturedImage(imageSrc);
@@ -116,31 +150,6 @@ export default function VerifyUser() {
         }));
     };
 
-    const handleAge = (value) => {
-        if (value < 8) {
-            setIsAgeError('Age must be greater than 8');
-        } else if (value > 80) {
-            setIsAgeError('Age must be lower than 80');
-        } else {
-            setIsAgeError(null);
-            setUserDetail(prevDetails => ({
-                ...prevDetails,
-                age: value
-            }));
-        }
-    }
-
-    const handleDate = (date, dateString) => {
-        if (dateString === null) {
-            setIsAgeError('Please enter a valid date');
-        } else {
-            setUserDetail(prevDetails => ({
-                ...prevDetails,
-                dateOfBirth: dateString
-            }));
-        }
-    }
-
     const S3_BUCKET = 'tradexbucket';
     const REGION = 'eu-north-1';
 
@@ -170,12 +179,43 @@ export default function VerifyUser() {
         try {
             const uploadedUrls = await uploadFiles(selectedFiles);
             console.log('Uploaded URLs:', uploadedUrls);
-            // Now you have all the uploaded URLs in the 'uploadedUrls' array
-            // You can use them as needed
+
+            let userImgCount = 0;
+            let nicImgCount = 0;
+
+            uploadedUrls.forEach(url => {
+                if (url && url.endsWith('cimg.jpg')) {
+                    setUserDetail(prevDetails => ({
+                        ...prevDetails,
+                        userImg: url
+                    }));
+                    userImgCount++;
+                } else {
+                    if (nicImgCount === 0) {
+                        setUserDetail(prevDetails => ({
+                            ...prevDetails,
+                            nicImg1: url
+                        }));
+                        nicImgCount++;
+                    } else if (nicImgCount === 1) {
+                        setUserDetail(prevDetails => ({
+                            ...prevDetails,
+                            nicImg2: url
+                        }));
+                        nicImgCount++;
+                    }
+                }
+            });
+
+
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            await saveData();
         } catch (error) {
             console.error('Error uploading files:', error);
         }
     }
+
+
 
     const uploadFiles = (files) => {
         return new Promise((resolve, reject) => {
@@ -284,6 +324,7 @@ export default function VerifyUser() {
                             <Upload
                                 listType="picture"
                                 maxCount={2}
+                                style={{marginTop:'2rem'}}
                                 showUploadList={isFileSelected}
                                 multiple
                                 beforeUpload={(file) => {
@@ -297,10 +338,8 @@ export default function VerifyUser() {
                                 ) : (
                                     <>
                                         <div style={{display:'flex',marginBottom:'0.8rem'}}>
-                                            <Input type="button" style={{}} value="Upload"
-                                                   onClick={uploadSelectedFiles}/>
-                                            <div style={{width:'0.8rem'}}></div>
-                                            <Input type="button" value='Cancel' red onClick={restAll}/>
+                                            <Input type="button" value='Cancel' outlined red onClick={restAll}/>
+                                            <p>{progress}</p>
                                         </div>
                                     </>
 
@@ -308,7 +347,7 @@ export default function VerifyUser() {
 
                             </Upload>
                             <br/>
-                            <p style={{paddingTop: '3rem'}}>{selectedFiles.length === 0 ? "Max 10MB JPG/JPEG or PNG format" : ''}</p>
+                            <p>{selectedFiles.length === 0 ? "Max 10MB JPG/JPEG or PNG format" : ''}</p>
 
                         </div>
                     </div>
@@ -338,7 +377,7 @@ export default function VerifyUser() {
                 </div>
                 on
                 <div className='submit-container'>
-                    <Input type="button" value='Submit' onClick={saveData}/>
+                    <Input type="button" value='Submit' onClick={uploadSelectedFiles}/>
                     <div style={{width: '10px'}}></div>
                     <Input type="button" value='Cancel' red/>
                     {capturedImage && (
