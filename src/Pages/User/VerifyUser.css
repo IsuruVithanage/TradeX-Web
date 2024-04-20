@@ -88,8 +88,3 @@
     width: 100%;
     padding: 1rem;
 }
-
-
-:where(.css-dev-only-do-not-override-1b0bdye).ant-upload-wrapper {
-    position: absolute;
-}
