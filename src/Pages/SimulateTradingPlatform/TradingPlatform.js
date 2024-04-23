@@ -21,10 +21,12 @@ export default function TradingPlatform() {
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
+    const [walletBalance, setWalletBalance] = useState(0);
     const [limitOrder, setLimitOrder] = useState([]);
     const [isButtonSet, setIsButtonSet] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isError, setIsError] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [order, setOrder] = useState({
@@ -44,6 +46,21 @@ export default function TradingPlatform() {
             coin: coin
         }));
     };
+
+    const getWalletBalance = () => {
+        fetch(`http://localhost:8011/portfolio/asset/1/USD`)
+            .then(response => response.json())
+            .then(data => {
+                setWalletBalance(data[0].balance);
+            })
+            .catch(error => {
+                console.error('Failed to get wallet balance:', error);
+            });
+    }
+
+    useEffect(() => {
+        getWalletBalance();
+    }, []);
 
     //place order
     const placeOrder = () => {
@@ -130,6 +147,7 @@ export default function TradingPlatform() {
 
 
     const handlePriceChange = (value) => {
+        console.log(value)
         setOrder(prevOrder => ({
             ...prevOrder,
             price: value
@@ -185,6 +203,11 @@ export default function TradingPlatform() {
     //http://localhost:8007/order
 
     const saveOrder = () => {
+        if (walletBalance < order.total) {
+            showMessage('Error', 'Wallet balance is insufficient!');
+            return;
+        }
+
         const ob = {
             userId: user.user.id,
             coin: order.coin ? order.coin.symbol.toUpperCase() : null,
@@ -199,9 +222,11 @@ export default function TradingPlatform() {
         }
 
         if (ob.quantity < 0) {
-            showMessage('Error', 'The order has been placed successfully!');
+            showMessage('Error', 'Please enter the quantity!');
             return;
         }
+
+        setIsLoading(false);
 
         fetch('http://localhost:8011/portfolio/asset/add', {
             method: 'POST',
@@ -224,7 +249,9 @@ export default function TradingPlatform() {
             })
             .then(response => {
                 if (response.ok) {
-                    showMessage('success', 'The order has been placed successfully!')
+                    setIsLoading(true);
+                    showMessage('success', 'The order has been placed successfully!');
+                    getWalletBalance();
                 } else {
                     console.error('Failed to save order:', response);
                 }
@@ -234,6 +261,12 @@ export default function TradingPlatform() {
             });
     }
 
+    useEffect(() => {
+        if (order.total > walletBalance) {
+            setIsButtonSet(true);
+            setIsError('Wallet balance is insufficient!');
+        }
+    }, [order.total]);
 
     return (
         <BasicPage tabs={Tabs}>
@@ -242,7 +275,10 @@ export default function TradingPlatform() {
                 style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
-                        <h1 className="tradeHeader">Trade</h1>
+                        <div style={{display:'flex'}}>
+                            <h1 className="tradeHeader" style={{marginRight:'5.3rem'}}>Trade</h1>
+                            <h1 className="tradeHeader" style={{color:'#21db9a'}}>${walletBalance.toLocaleString()}</h1>
+                        </div>
                         <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
