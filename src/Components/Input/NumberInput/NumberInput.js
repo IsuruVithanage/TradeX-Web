@@ -22,7 +22,7 @@ export default function NumberInput(props) {
             <InputNumber
                 variant='borderless'
                 prefix={props.icon}
-                type='number'
+                //type='number'
                 step={step}
                 min={props.min}
                 max={props.max}
@@ -33,6 +33,8 @@ export default function NumberInput(props) {
                 disabled={props.isDisable}
                 defaultValue={props.value}
                 placeholder={props.placeholder}
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
                 onBlur={props.onBlur}
                 onChange={props.onChange && props.onChange}
                 onInput={handleStep}
