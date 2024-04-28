@@ -4,36 +4,51 @@ import axios from "axios";
 import Input from "../../Components/Input/Input";
 import "./CustomizeWatchlist.css";
 import Modal from "../../Components/Modal/Modal";
+import symbols from "../../Assets/Images/Coin Images.json";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
     axios
       .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en"
+        `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
       )
       .then((res) => {
-        setCoins(res.data);
         console.log(res.data);
+        const data = res.data
+          .map((coin) => {
+            coin.symbol = coin.symbol.slice(0, -4);
+            return coin;
+          })
+          .sort((a, b) => b.quoteVolume - a.quoteVolume);
+
+        setCoins(data);
+        setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }, []);
 
   const formatCurrency = (amount) => {
-    const amountString = amount.toLocaleString("en-US", {
+    const amountString = parseFloat(amount).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 20,
     });
     return "$ " + amountString;
   };
 
-
   const filteredCoins = coins.filter((coin) =>
-    coin.name.toLowerCase().includes(search.toLowerCase())
+    symbols[coin.symbol].name.toLowerCase().includes(search.toLowerCase())
   );
+
   const top4Coins = filteredCoins.slice(0, 4);
 
   return (
@@ -43,15 +58,22 @@ const Watchlist1 = () => {
         { label: "Custom", path: "/watchlist/customize" },
       ]}
     >
-      
-      <div style={{ display: "flex", alignItems: "center", width: "100%", marginTop: "5vh", marginBottom: "7vh"}}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          marginTop: "5vh",
+          marginBottom: "7vh",
+        }}
+      >
         {top4Coins.map((coin) => (
           <div key={coin.symbol} className="banner">
-            <div style={{ display: "flex", alignItems: "center"}}>
-              <div style={{ display: "flex", alignItems: "center"}}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <img
                   className="coin-image-top"
-                  src={coin.image}
+                  src={symbols[coin.symbol].img}
                   alt={coin.symbol}
                 />
                 <p className="coin-symbol-top">{coin.symbol.toUpperCase()}</p>
@@ -61,16 +83,19 @@ const Watchlist1 = () => {
                 className="price-change-top"
                 style={{
                   color:
-                    coin.price_change_percentage_24h > 0 ? "#21DB9A" :
-                    coin.price_change_percentage_24h < 0 ? "#FF0000" : "#FFFFFF"
+                    coin.priceChangePercent > 0
+                      ? "#21DB9A"
+                      : coin.priceChangePercent < 0
+                      ? "#FF0000"
+                      : "#FFFFFF",
                 }}
               >
-                {coin.price_change_percentage_24h.toFixed(2)} %
+                {" "}
+                {parseFloat(coin.priceChangePercent).toFixed(2)} %{" "}
               </p>
             </div>
 
-            <p className="price-top">{formatCurrency(coin.current_price)}</p>
-            
+            <p className="price-top">{formatCurrency(coin.lastPrice)}</p>
           </div>
         ))}
       </div>
@@ -132,16 +157,17 @@ const Watchlist1 = () => {
                         >
                           <img
                             className="coin-image-add"
-                            src={coin.image}
+                            src={symbols[coin.symbol].img}
                             alt={coin.symbol}
                           />
+
                           <span className="coin-symbol-add">
                             {coin.symbol.toUpperCase()}
                           </span>
                         </td>
 
                         <td className="coin-price-add">
-                          {formatCurrency(coin.current_price)}
+                          {formatCurrency(coin.lastPrice)}
                         </td>
                       </tr>
                     ))}
@@ -164,14 +190,14 @@ const Watchlist1 = () => {
           </thead>
           <tbody>
             {filteredCoins.map((coin) => {
-              const price = formatCurrency(coin.current_price);
-              const mktCap = formatCurrency(coin.market_cap);
+              const price = formatCurrency(coin.lastPrice);
+              const volume = formatCurrency(coin.quoteVolume);
               return (
                 <tr key={coin.id}>
                   <td style={{ width: "40px" }}>
                     <img
                       className="coin-image"
-                      src={coin.image}
+                      src={symbols[coin.symbol].img}
                       alt={coin.symbol}
                     />
                   </td>
@@ -185,14 +211,17 @@ const Watchlist1 = () => {
                   <td
                     style={{
                       color:
-                        coin.price_change_percentage_24h > 0
+                        coin.priceChangePercent > 0
                           ? "#21DB9A"
-                          : "#FF0000",
+                          : coin.priceChangePercent < 0
+                          ? "#FF0000"
+                          : "#FFFFFF",
                     }}
                   >
-                    {coin.price_change_percentage_24h} %
+                    {" "}
+                    {coin.priceChangePercent} %
                   </td>
-                  <td>{mktCap}</td>
+                  <td>{volume}</td>
                   <td>
                     <Input
                       type="button"

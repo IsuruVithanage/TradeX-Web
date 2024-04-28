@@ -11,23 +11,22 @@ export default function News() {
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
 
-  // Effect to fetch news articles from the API on component mount
   useEffect(() => {
-    setIsLoading(true); // Set loading status to true
+    setIsLoading(true); 
 
     // Fetch news articles from the API
     axios.get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17')
       .then(res => {
-        setArticles(res.data.articles); // Set fetched articles in state
-        setIsLoading(false); // Set loading status to false
+        setArticles(res.data.articles); 
+        setIsLoading(false); 
       })
       .catch(error => {
-        console.log(error); // Log any errors
-        setIsLoading(false); // Set loading status to false
+        console.log(error);
+        setIsLoading(false); 
       });
-  }, []); // Run effect only once on component mount
+  }, []); 
 
-  console.log(articles); // Log articles array
+  console.log(articles); 
 
   //Check the title
   const filteredNews = articles.filter((news) =>
@@ -54,6 +53,6 @@ export default function News() {
           <NewsItem key={index} title={news.title} description={news.description} src={news.urlToImage} url={news.url} />
         ))}
       </div> 
-    </BasicPage> // Return BasicPage component with loading status and tabs
+    </BasicPage> 
   );
 }

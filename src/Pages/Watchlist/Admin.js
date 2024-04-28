@@ -6,13 +6,27 @@ import "./ViewAll.css";
 import Modal from "../../Components/Modal/Modal";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {validationSchema} from "../../Validation/AdminValidation";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useForm} from "react-hook-form";
 
 export default function Admin() {
+  const currentDate=new Date().toISOString();
+    console.log(currentDate);
+
+  const {handleSubmit, register, formState: {errors}} = useForm({
+    resolver: yupResolver(validationSchema)
+});
+
+const onSubmit = (data) => {
+    console.log(data);
+}
+
   const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
   const [adminList, setAdminList] = useState([]);
   const [admin, setAdmin] = useState({
     AdminName: "",
-    Date: "",
+    Date: currentDate,
     NIC: "",
     Contact: "",
     Age: "",
@@ -26,12 +40,12 @@ export default function Admin() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handledSubmit = async (e) => {
+    const currentDate=new Date().toISOString();
+    console.log(currentDate);
 
     setAdmin({
       AdminName: document.getElementById("AdminName").value,
-      Date: document.getElementById("Date").value,
       NIC: document.getElementById("NIC").value,
       Contact: document.getElementById("Contact").value,
       Age: document.getElementById("Age").value,
@@ -116,6 +130,7 @@ export default function Admin() {
                   }}
                 >
                   <h1 style={{ textAlign: "center" }}>Create Admin</h1>
+                  <form >
                   <Input
                     type="text"
                     placeholder="Username"
@@ -124,15 +139,7 @@ export default function Admin() {
                     id="AdminName"
                     value={admin.AdminName}
                     onChange={handleChange}
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Date"
-                    className="Admin-details"
-                    name="Date"
-                    id="Date"
-                    value={admin.Date}
-                    onChange={handleChange}
+                    register={register} errors={errors}
                   />
                   <Input
                     type="text"
@@ -142,6 +149,7 @@ export default function Admin() {
                     id="NIC"
                     value={admin.NIC}
                     onChange={handleChange}
+                    register={register} errors={errors}
                   />
                   <Input
                     type="text"
@@ -151,6 +159,7 @@ export default function Admin() {
                     id="Contact"
                     value={admin.Contact}
                     onChange={handleChange}
+                    register={register} errors={errors}
                   />
                   <Input
                     type="text"
@@ -160,6 +169,7 @@ export default function Admin() {
                     id="Age"
                     value={admin.Age}
                     onChange={handleChange}
+                    register={register} errors={errors}
                   />
 
                   <div className="create-admin-btn">
@@ -167,7 +177,7 @@ export default function Admin() {
                       type="button"
                       style={{ width: "110px" }}
                       value="Submit"
-                      onClick={handleSubmit}
+                      onClick={handleSubmit(handledSubmit)}
                     />
                     <Input
                       type="button"
@@ -176,7 +186,9 @@ export default function Admin() {
                       value="Cancel"
                       red
                     />
+                
                   </div>
+                  </form>
                 </div>
               </div>
             </Modal>
@@ -196,7 +208,7 @@ export default function Admin() {
               {adminList.map((admin, index) => (
                 <tr key={index}>
                   <td>{admin.AdminName}</td>
-                  <td>{admin.Date}</td>
+                  <td>{new Date(admin.Date).toLocaleDateString()}</td>
                   <td>{admin.NIC}</td>
                   <td>{admin.Contact}</td>
                   <td>{admin.Age}</td>

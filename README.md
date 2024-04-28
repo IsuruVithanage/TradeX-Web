@@ -137,7 +137,6 @@ TradeX-Web
    │  │  ├─ NumberInput
    │  │  │  ├─ NumberInput.css
    │  │  │  └─ NumberInput.js
-   │  │  ├─ Slider.js
    │  │  ├─ SliderInput
    │  │  │  ├─ SliderInput.css
    │  │  │  └─ SliderInput.js
