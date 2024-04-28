@@ -85,7 +85,7 @@ export default function Router() {
             element: <Suggestions />,
         },
         {
-            path: "/Questionbar/Detailed",
+            path: "/Questionbar/Detailed/:id",
             element: <Detailed />,
         },
         {

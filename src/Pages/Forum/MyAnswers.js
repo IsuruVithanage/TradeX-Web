@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import BasicPage from '../../Components/BasicPage/BasicPage';
-
-import Questionset from './Questionset';
+import Detailed from "../../Components/Questionbar/Detailed";
+import axios from "axios";
 import Input from "../../Components/Input/Input";
 import './forum.css';
-
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
 
@@ -18,6 +17,27 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
     { label: "My Answers", path: "/forum/myAnswers" },
     
   ];
+
+    const [answerlist, setAnswerlist]=useState([]);
+
+    const loadAnswers =async () => {
+        try{
+          const result=await axios.get(`http://localhost:8010/forum/saveAnswer`);
+          console.log(result.data);
+            setAnswerlist(result.data);
+            
+            }catch(error){
+          console.error("Error fetching questions",error);
+        }
+        
+    
+      };
+
+      useEffect(()=>{
+        loadAnswers();
+      },[])
+      
+      console.log(answerlist);
   
     const [selectedPage, setSelectedPage] = useState("Activated");
     const [alertRepeat, setAlertRepeat] = useState(undefined);
@@ -59,11 +79,14 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
             </div>
         </div>
 
-        <Questionset/>
-        <Questionset/>
-        <Questionset/>
-        <Questionset/>
-        <Questionset/>
+    
+        {answerlist?( 
+          <Detailed answerlist={answerlist} />
+        ):(
+          <div></div>
+        )
+          
+      }
 
 
      

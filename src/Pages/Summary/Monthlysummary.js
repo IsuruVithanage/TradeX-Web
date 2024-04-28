@@ -8,8 +8,8 @@ import { Box } from '@mui/system';
 
 function Dailysummary() {
     const Tabs = [
-        { label: "Daily", path: "/Dailysummary" },
-        { label: "Monthly", path: "Dailysummary/Monthlysummary" },
+        { label: "Daily", path: "Dailysummary" },
+        { label: "Monthly", path: "Summary/Monthlysummary" },
        
         
       ];

@@ -100,3 +100,90 @@
     
 }
 
+
+.watchlist-table-container {
+    background-color: #0E0E0F;
+    width: 95%;
+    margin: 0 auto;
+    padding: 5%;
+    box-sizing: border-box;
+    border-radius: 15px;
+  }
+  
+  .watchlist-table {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  
+  .watchlist-table tr {
+    border-bottom: 1px solid #3C3C3C;
+    height: 70px;
+  }
+  
+  .coin-image {
+    width: 25px;
+  }
+  
+  .coin-name-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  
+  .coin-symbol {
+    color: #9E9E9E;
+  
+  }
+  
+  
+  .add-coin {
+    margin-top: 100px;
+  
+  }
+  
+  .watchlist-table-modal {
+    color: #ffffff;
+    background-color: #0E0E0F;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    margin-top: 75px;
+  
+  }
+  
+  .watchlist-table-modal thead {
+    margin-bottom: 100px;
+    font-weight: bold;
+  }
+  
+  .watchlist-table-modal tr {
+    margin-top: 50px;
+    margin-bottom: 60px;
+  }
+  
+  .coin-image-add {
+    width: 30px;
+    height: 30px;
+  
+  }
+  
+  .coin-symbol-add {
+    font-size: 17px;
+    font-weight: bold;
+    color: #9E9E9E;
+    margin-left: 10px;
+  }
+  
+  .watchlist-table-modal tbody td {
+    padding-top: 10px;
+  }
+  
+  .coin-price-add {
+    font-size: 17px;
+    width: 150px;
+  }
