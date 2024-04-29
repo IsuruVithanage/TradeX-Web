@@ -13,17 +13,19 @@ import {
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Input from '../Input/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 function Detailed() {
- 
+  let { id } = useParams();
   const Tabs = [
     { label: "Latest", path: "/forum" },
-    { label: "My Problems", path: "/MyProblems" },
-    { label: "My Answers", path: "/MyAnswers" },
+    { label: "My Problems", path: "/forum/myProblems" },
+    { label: "My Answers", path: "/forum/myAnswers" },
     
   ];
+  const [question,setQuestion]=useState({});
 
   const [values,setValues]=useState({
     answerId:null,
@@ -53,6 +55,25 @@ function Detailed() {
       .then(res => console.log("Data added success"))
       .catch(err => console.log(err));
   }
+  useEffect(() => {
+    loadQuestions();
+    console.log(question);
+  }, []);
+
+  
+
+  const loadQuestions =async () => {
+    try{
+      const result=await axios.get(`http://localhost:8010/forum/getQuestionsByQuestionId/${id}`);
+      console.log(result.data[0].title);
+        setQuestion(result.data);
+        
+        }catch(error){
+      console.error("Error fetching questions",error);
+    }
+    
+
+  };
 
   
   return (
@@ -70,16 +91,17 @@ function Detailed() {
             }>
     <div>
       <div className='ques'>
-        <h3>Understanding Cryptocurrency Wallet Security</h3>
+      {question.length > 0 && (
+      <>
+        <h3>{question[0].title}</h3>
         <h5>Question Explain</h5>
-        <p>Explore the functionalities that set hardware wallets apart in terms of security. Dive into topics such as the device's ability to store private keys offline, isolate cryptographic processes, and generate keys securely. Encourage users to discuss real-world scenarios where these features prove crucial in safeguarding digital assets.</p>
-        
+        <p>{question[0].description}</p> 
         <AiOutlineLike className='like-button'/>
         <AiOutlineDislike className='dislike-button'/>
-        
-        
+        <p className='author'>Created by: {question[0].author}</p> 
+      </>
+  )}
       
-        <p className='author'>Created by: </p>
       </div>
 
       {/* add an answer field */}
