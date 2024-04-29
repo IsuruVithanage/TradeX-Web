@@ -18,26 +18,26 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
     
   ];
 
-    const [answerlist, setAnswerlist]=useState([]);
+     const [answerlist, setAnswerlist]=useState([]);
 
-    const loadAnswers =async () => {
-        try{
-          const result=await axios.get(`http://localhost:8010/forum/saveAnswer`);
-          console.log(result.data);
-            setAnswerlist(result.data);
+    // const loadAnswers =async () => {
+    //     try{
+    //       const result=await axios.get(`http://localhost:8010/forum/saveAnswer`);
+    //       console.log(result.data);
+    //         setAnswerlist(result.data);
             
-            }catch(error){
-          console.error("Error fetching questions",error);
-        }
+    //         }catch(error){
+    //       console.error("Error fetching questions",error);
+    //     }
         
     
-      };
+    //   };
 
-      useEffect(()=>{
-        loadAnswers();
-      },[])
+    //   useEffect(()=>{
+    //     loadAnswers();
+    //   },[])
       
-      console.log(answerlist);
+    //   console.log(answerlist); 
   
     const [selectedPage, setSelectedPage] = useState("Activated");
     const [alertRepeat, setAlertRepeat] = useState(undefined);
@@ -80,14 +80,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
         </div>
 
     
-        {answerlist?( 
-          <Detailed answerlist={answerlist} />
-        ):(
-          <div></div>
-        )
-          
-      }
-
+       
 
      
       

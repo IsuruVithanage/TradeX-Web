@@ -91,16 +91,17 @@ function Detailed() {
             }>
     <div>
       <div className='ques'>
-        <h3>{question.title}</h3>
+      {question.length > 0 && (
+      <>
+        <h3>{question[0].title}</h3>
         <h5>Question Explain</h5>
-        <p>Explore the functionalities that set hardware wallets apart in terms of security. Dive into topics such as the device's ability to store private keys offline, isolate cryptographic processes, and generate keys securely. Encourage users to discuss real-world scenarios where these features prove crucial in safeguarding digital assets.</p>
-        
+        <p>{question[0].description}</p> 
         <AiOutlineLike className='like-button'/>
         <AiOutlineDislike className='dislike-button'/>
-        
-        
+        <p className='author'>Created by: {question[0].author}</p> 
+      </>
+  )}
       
-        <p className='author'>Created by: </p>
       </div>
 
       {/* add an answer field */}
