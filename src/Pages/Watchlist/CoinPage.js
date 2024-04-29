@@ -4,6 +4,7 @@ import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithCont
 import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
+import Converter from "../../Components/Converter/Converter"
 
 export default function Suggestions() {
     const Tabs = [
@@ -133,8 +134,8 @@ export default function Suggestions() {
                 style={{height: '530px', padding: "22px"}}
                 sidePanel={
                     <div>
-                        <h1 className="tradeHeader">Converter</h1>
-
+                        <h1 className="tradeHeader">Cryptocurrency Converter</h1>
+                        <Converter/>
 
                     </div>
                 }

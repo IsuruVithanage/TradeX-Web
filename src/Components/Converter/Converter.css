@@ -1,0 +1,130 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    /* font-size: 13px;  */
+}
+
+div {
+    display: block;
+}
+
+.container {
+    /* width: 600px; */
+    margin: auto;
+    padding: auto;
+    /* height: 600px; */
+    display: block;
+    border-radius: 8px;
+    /* background: #151516;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px; */
+    padding-top: 0;
+    margin-top: 20px;
+}
+
+input[type=text],
+select,
+.primary-btn {
+    font-size: 1rem; 
+}
+
+input[type=text] {
+    width: 87%;
+    margin: auto;
+    /* display: block; */
+    background: none;
+    line-height: 1.5;
+    padding: 12px;
+    border-radius: 6px;
+    color: white;
+    border: 1px solid rgb(221, 221, 221);
+    margin-top: 15px;
+}
+
+input[type=text]:focus {
+    border-color: #21db9a;
+}
+
+#fromCurrencyName {
+    margin-top: 0;
+    font-weight: 600;
+    display: inline-block;
+    margin: 15px 40px 7.5px;
+    background-color: #131314;
+}
+
+::placeholder {
+    color: white;
+    opacity: 0.5;
+}
+
+select {
+    margin: auto;
+    /* display: block; */
+    padding: 12px;
+    background: none;
+    border-radius: 6px;
+    color: white;
+    border: 1px solid white;
+    margin-bottom: 20px;
+    width: 87%;
+    font-size: 15px;
+}
+
+select:focus {
+    border-color: #21db9a;
+}
+
+.primary-btn {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    min-width: 0px;
+    width: 50%;
+    cursor: pointer;
+    margin: auto;
+    outline-offset: 4px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition-property: background-color, border-color;
+    transition-duration: 0.3s;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: rgb(255, 255, 255);
+    background-color: #21db9a;
+    border: 2px solid #131314;
+}
+
+.primary-btn:hover {
+    background-color: rgb(0, 113, 235);
+    border: 2px solid rgb(0, 113, 235);
+}
+
+#result {
+    color: white;
+    margin-top: 25px;
+    font-weight: 400;
+    text-align: center;
+}
+
+@media only screen and (max-width: 780px) {
+    .container {
+        width: 340px;
+        height: 430px;
+    }
+
+    #fromCurrency {
+        width: 38%;
+    }
+
+    select {
+        width: 38%;
+    }
+
+    #fromCurrencyName {
+        margin: 15px 22px 7.5px;
+    }
+}
