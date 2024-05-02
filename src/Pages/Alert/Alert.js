@@ -8,6 +8,7 @@ import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
 
+
 const userId = 1;
 let fcm = await getFcmDeviceToken(userId);
 

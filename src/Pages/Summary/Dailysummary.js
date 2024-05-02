@@ -4,19 +4,39 @@ import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
 import Switch from '@mui/material/Switch';
 import { Box } from '@mui/system';
+import Modal from 'antd/es/modal/Modal';
+import { useState } from 'react';
+import {useEffect} from 'react';
 
 
 function Dailysummary() {
   // create the tabs
     const Tabs = [
-        { label: "Daily", path: "/Dailysummary" },
+        { label: "Daily", path: "/Summary/Dailysummary" },
         { label: "Monthly", path: "Dailysummary/Monthlysummary" },
        
         
       ];
-      
+     // imported 
       const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
+      const [coins, setCoins] = useState([]);
+      const [search, setSearch] = useState("");
+     const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
+
+
+     const formatCurrency = (amount) => {
+      const amountString = amount.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 20,
+      });
+      return "$ " + amountString;
+    };
+
+    const filteredCoins = coins.filter((coin) =>
+    coin.name.toLowerCase().includes(search.toLowerCase())
+  );
+     //
   return (
     // daily summary front end
     <BasicPage tabs={Tabs}>
@@ -26,11 +46,77 @@ function Dailysummary() {
     <div className='left-side'>
           <div className='add-items'>
               <div className='add-coins'>
-                  <h3>Add Coins</h3>
-                  <div className='search-bar'>
-                      <Input type="search" placeholder="Search" style={{width:"400px" }}/>
-                      <Input type="button" value="Add" className="add-button" style={{width:"70px",marginLeft:"50%" }}/>
-                  </div>
+                <Input
+            type="search"
+            placeholder="Search"
+            style={{ width: "300px", float: "right", marginRight: "50px" }}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div>
+            <Input
+              type="button"
+              value="Add Coin"
+              outlined
+              green
+              style={{ width: "150px" }}
+              onClick={() => (true)}
+            />
+            <Modal open={isdeleteModalOpen} close={setIsdeleteModalOpen}>
+              <div style={{ width: "450px" }}>
+                <h2>Select Coin</h2>
+                <div>
+                  <Input
+                    type="search"
+                    placeholder="Search"
+                    style={{
+                      width: "400px",
+                      float: "right",
+                      marginRight: "50px",
+                    }}
+                    onChange={setSearch}
+                  />
+                </div>
+
+                <table className="watchlist-table-modal">
+                  <thead
+                    style={{
+                      color: "#dbdbdb",
+                      fontSize: "18px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <tr>
+                      <td>Coin</td>
+                      <td>Price</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCoins.map((coin) => (
+                      <tr key={coin.id}>
+                        <td
+                          style={{ marginLeft: "100px", marginBottom: "50px" }}
+                        >
+                          <img
+                            className="coin-image-add"
+                            src={coin.image}
+                            alt={coin.symbol}
+                          />
+                          <span className="coin-symbol-add">
+                            {coin.symbol.toUpperCase()}
+                          </span>
+                        </td>
+
+                        <td className="coin-price-add">
+                          {formatCurrency(coin.current_price)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Modal>
+          </div> 
                   <div className='chart-table'>
                       <div className='data'>
                         <div className='tog-name'>
