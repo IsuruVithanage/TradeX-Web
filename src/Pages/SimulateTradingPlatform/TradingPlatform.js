@@ -37,7 +37,7 @@ export default function TradingPlatform() {
         userId: user.id,
         type: 'Buy',
         date: '',
-        cato: 'Limit',
+        category: 'Limit',
         coin: null,
         price: 0,
         quantity: 0,
@@ -62,7 +62,7 @@ export default function TradingPlatform() {
                 userId: user.id,
                 type: 'Buy',
                 date: '',
-                cato: 'Limit',
+                category: 'Limit',
                 coin: null,
                 price: 0,
                 quantity: 0,
@@ -156,9 +156,10 @@ export default function TradingPlatform() {
             quantity: order.quantity,
             date: currentDate,
             price: order.price,
-            type: order.cato,
+            type: order.type,
+            category: order.category,
             totalPrice: order.total,
-            orderStatus: order.cato === 'Market' ? 'Completed' : 'Pending'
+            orderStatus: order.category === 'Market' ? 'Completed' : 'Pending'
         }
     }
 
@@ -194,9 +195,9 @@ export default function TradingPlatform() {
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
             ...prevOrder,
-            cato: value
+            category: value
         }));
-        console.log(order.cato)
+        console.log(order.category)
         if (value === 'Market') {
             setIsButtonSet(true);
             setSelectedType('Market');
@@ -228,10 +229,10 @@ export default function TradingPlatform() {
     };
 
     useEffect(() => {
-        if (order.cato === 'Market') {
+        if (order.category === 'Market') {
             handlePriceChange(latestPrice);
         }
-    }, [order.cato, latestPrice]);
+    }, [order.category, latestPrice]);
 
 
     const handlePriceChange = (value) => {
@@ -302,20 +303,25 @@ export default function TradingPlatform() {
 
 
     const saveOrder = () => {
-        if (walletBalance < order.total) {
+        if (walletBalance < order.total && order.type === 'Buy') {
+            showMessage('Error', 'Wallet balance is insufficient!');
+            return;
+        }else if (walletBalance < order.quantity && order.type === 'Sell') {
             showMessage('Error', 'Wallet balance is insufficient!');
             return;
         }
 
         const ob = {
             userId: user.user.id,
-            coin: order.coin ? order.coin.symbol.toUpperCase() : null,
+            coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
+            price: order.price,
             purchasePrice: order.price,
-            type: order.cato
+            category: order.category,
+            type: order.type
         }
 
-        if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
+        if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
             console.error('Invalid order:', ob);
             return;
         }
@@ -363,29 +369,47 @@ export default function TradingPlatform() {
     }
 
     useEffect(() => {
-        if (order.total > walletBalance) {
+        if (order.total > walletBalance && order.type === 'Buy') {
+            setIsButtonSet(true);
+            setIsError('Wallet balance is insufficient!');
+        }else if (order.quantity > walletBalance && order.type === 'Sell') {
             setIsButtonSet(true);
             setIsError('Wallet balance is insufficient!');
         }
     }, [order.total,order.price,order.quantity]);
 
     useEffect(() => {
-        console.log(balancePr);
-        const value = (walletBalance * (balancePr / 100));
-        console.log('value', value);
-        const quantity = value / order.price;
-        if (balancePr !== 0) {
-            setIsError(null);
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                quantity: quantity
-            }));
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                total: quantity * order.price
-            }));
+        if (order.type === 'Buy') {
+            const value = (walletBalance * (balancePr / 100));
+            const quantity = value / order.price;
+            if (balancePr !== 0) {
+                setIsError(null);
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    quantity: quantity
+                }));
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    total: quantity * order.price
+                }));
 
-            setIsButtonSet(false);
+                setIsButtonSet(false);
+            }
+        } else if (order.type === 'Sell') {
+            const value = (walletBalance * (balancePr / 100));
+            if (balancePr !== 0) {
+                setIsError(null);
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    quantity: value
+                }));
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    total: value * order.price
+                }));
+
+                setIsButtonSet(false);
+            }
         }
     }, [balancePr]);
 
@@ -467,6 +491,7 @@ export default function TradingPlatform() {
                 <TableRow data={[
                     'Coin',
                     'Type',
+                    'Category',
                     'Price',
                     'Quantity',
                     'Total Price',
@@ -479,6 +504,7 @@ export default function TradingPlatform() {
                         data={[
                             <Coin>{order.coin}</Coin>,
                             order.type,
+                            order.category,
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
