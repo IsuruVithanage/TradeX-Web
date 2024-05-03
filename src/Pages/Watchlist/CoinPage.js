@@ -134,7 +134,7 @@ export default function Suggestions() {
                 style={{height: '530px', padding: "22px"}}
                 sidePanel={
                     <div>
-                        <h1 className="tradeHeader">Cryptocurrency Converter</h1>
+                        <h1 className="tradeHeader">Crypto Converter</h1>
                         <Converter/>
 
                     </div>
