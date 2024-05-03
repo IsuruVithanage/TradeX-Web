@@ -8,7 +8,6 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import assets from "./assets.json";
 import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
@@ -23,6 +22,7 @@ export default function TradingPlatform() {
 
     const [latestPrice, setLatestPrice] = useState(0);
     const [walletBalance, setWalletBalance] = useState(0);
+    const [balanceSymble, setBalanceSymble] = useState('$');
     const [balancePr, setBalancePr] = useState(0);
     const [limitOrder, setLimitOrder] = useState([]);
     const [isButtonSet, setIsButtonSet] = useState(true);
@@ -30,7 +30,7 @@ export default function TradingPlatform() {
     const [isError, setIsError] = useState(null);
     const [selectedCoin, setSelectedCoin] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [order, setOrder] = useState({
@@ -92,9 +92,32 @@ export default function TradingPlatform() {
                 coin: coin
             }));
             setSelectedCoin(coin);
+            if (order.type === 'Sell') {
+                setBalanceSymble(coin.symbol);
+            }
             fetchLimitOrders(coin.symbol.toUpperCase());
         }
     };
+
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'order_completed') {
+                fetchLimitOrders(selectedCoin?.symbol?.toUpperCase());
+                showMessage('success', `Your order for ${data.order.coin} has been completed at ${data.order.price}`);
+            }
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [selectedCoin]);
 
     const fetchLimitOrders = (coin) => {
         fetch(`http://localhost:8005/order/getLimitOrderByCoin/${coin}/${user.user.id}`)
@@ -108,7 +131,7 @@ export default function TradingPlatform() {
     };
 
     const getWalletBalance = () => {
-        fetch(`http://localhost:8011/portfolio/asset/1/USD`)
+        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
                 setWalletBalance(data[0].balance);
@@ -117,6 +140,7 @@ export default function TradingPlatform() {
                 console.error('Failed to get wallet balance:', error);
             });
     }
+
 
     useEffect(() => {
         getWalletBalance();
@@ -216,12 +240,12 @@ export default function TradingPlatform() {
             ...prevOrder,
             price: value
         }));
-        if (order.quantity !== 0) {
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                total: value * order.quantity
-            }));
-        }
+
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            total: value * order.quantity
+        }));
+
     };
 
     const handleQuantityChange = (value) => {
@@ -256,12 +280,26 @@ export default function TradingPlatform() {
 
     }
 
+    useEffect(() => {
+        getWalletBalance();
+    }, [balanceSymble, selectedCoin]);
+
     const setOrderType = (type) => {
         setOrder(prevOrder => ({
             ...prevOrder,
             type: type
         }));
+
+        if (type === 'Sell') {
+            setBalanceSymble(selectedCoin.symbol);
+            //getWalletBalance();
+        } else {
+            setBalanceSymble('$');
+            //getWalletBalance();
+
+        }
     }
+
 
     const saveOrder = () => {
         if (walletBalance < order.total) {
@@ -329,14 +367,14 @@ export default function TradingPlatform() {
             setIsButtonSet(true);
             setIsError('Wallet balance is insufficient!');
         }
-    }, [order.total]);
+    }, [order.total,order.price,order.quantity]);
 
     useEffect(() => {
         console.log(balancePr);
-        const value = (walletBalance * (balancePr/100));
+        const value = (walletBalance * (balancePr / 100));
         console.log('value', value);
         const quantity = value / order.price;
-        if (balancePr !== 0)  {
+        if (balancePr !== 0) {
             setIsError(null);
             setOrder(prevOrder => ({
                 ...prevOrder,
@@ -357,6 +395,15 @@ export default function TradingPlatform() {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
+    };
+
+    const formatTo6Decimal = (value) => {
+        if (typeof value === 'number' && balanceSymble !== '$') {
+            return parseFloat(value).toFixed(5);
+        } else if (typeof value === 'number' && balanceSymble === '$') {
+            return value.toLocaleString();
+        }
+        return value;
     };
 
 
@@ -385,11 +432,13 @@ export default function TradingPlatform() {
                 style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
-                        <div style={{display:'flex'}}>
-                            <h1 className="tradeHeader" style={{marginRight:'5.3rem'}}>Trade</h1>
-                            <h1 className="tradeHeader" style={{color:'#21db9a'}}>${walletBalance.toLocaleString()}</h1>
+                        <div style={{display: 'flex'}}>
+                            <h1 className="tradeHeader" style={{marginRight: '3.3rem'}}>Trade</h1>
+                            <h1 className="tradeHeader"
+                                style={{color: '#21db9a'}}>{balanceSymble + " "}{formatTo6Decimal(walletBalance)}</h1>
                         </div>
-                        <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory} selectedType={selectedType}/>
+                        <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}
+                                   selectedType={selectedType}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
@@ -433,7 +482,8 @@ export default function TradingPlatform() {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} orderId={order.orderId} title={'Cancel the order'} message={`Are you sure to cancel this Order`}/>
+                            <CancelButton confirm={confirm} orderId={order.orderId} title={'Cancel the order'}
+                                          message={`Are you sure to cancel this Order`}/>
                         ]}
                     />
                 ))}
