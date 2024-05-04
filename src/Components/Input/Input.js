@@ -34,7 +34,7 @@ export default function Input(props) {
     return (
         <div className="input-container">
             {props.label && <p className="label-name">{props.label}</p>}
-            <Suspense fallback={<div></div>}>
+            <Suspense fallback={<div style={{backgroundColor: "#3C3C3C", height: "35px"}}/>}>
                 {renderInputType()}
             </Suspense>
         </div>

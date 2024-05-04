@@ -1,6 +1,39 @@
+.wallet-address-button{
+    width: 270px;
+    position: fixed;
+    bottom: 30px;
+    color: #9E9E9F;
+    text-align: center;
+    cursor: pointer;
+}
+
+.wallet-address-button:hover{
+    color: #21DB9A;
+    text-decoration: underline;
+}
+
+.wallet-address{
+    color: white;
+    text-align: center;
+    font-size: italic;
+    user-select: text;
+    border: 1px solid #9E9E9F50;
+    padding: 10px;
+    border-radius: 7px;
+    margin-top: 20px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+
 .traveling-input {
     transform: translateY(0);
     transition: transform 0.2s ease-in-out;
+    -webkit-transition: transform 0.2s ease-in-out;
+    -moz-transition: transform 0.2s ease-in-out;
+    -ms-transition: transform 0.2s ease-in-out;
+    -o-transition: transform 0.2s ease-in-out;
 }
 
 .traveling-input.goDown{
