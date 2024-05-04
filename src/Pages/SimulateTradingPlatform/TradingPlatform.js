@@ -12,8 +12,16 @@ import assets from "./assets.json";
 import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 
-export default function TradingPlatform() {
+export default function TradingPlatform({firebase}) {
     const user = useSelector(state => state.user);
+
+    /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        firebase.onMessage(() => {
+            console.log('Message received:');
+            console.log('Message EKA AWAMA METHANA OONE DEYAK KARAPANNN');
+        });
+    }, [firebase]);
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
