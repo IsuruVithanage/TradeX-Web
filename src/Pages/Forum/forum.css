@@ -81,10 +81,10 @@
     font-size: 10px;
 }
 
-.topic{
+.topic-row .topic{
     width: 480px;
     color:#21DB9A;
-    margin-left: 0.01rem;
+    margin: 2% 0% 2% 7.5% ;
     
 }
 
@@ -118,21 +118,21 @@ display: flex;
 .topic-stat h4{
     margin-right: 4.5rem;
     text-align: right;
-    margin-top: 1.7rem;
+    margin-top: 1.3rem;
   
 
 }
 .topic-stat-likes h4{
     margin-right: 3.5rem;
     text-align: right;
-    margin-top: 1.7rem;
+    margin-top: 1.3rem;
 
     
 }
 .topic-stat-replies{
-    margin-right: 2rem;
+   
     text-align: right;
-    margin-top: 0.3rem;
+    margin-top: 1.3rem;
 
 }
 .question-stat .replies{
