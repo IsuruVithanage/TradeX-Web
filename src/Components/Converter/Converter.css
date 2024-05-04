@@ -27,11 +27,11 @@ div {
 input[type=text],
 select,
 .primary-btn {
-    font-size: 1rem; 
+    font-size: 0.6rem;
 }
 
 input[type=text] {
-    width: 87%;
+    width: 100%;
     margin: auto;
     /* display: block; */
     background: none;

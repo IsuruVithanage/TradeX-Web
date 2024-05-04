@@ -33,8 +33,8 @@ export default function NumberInput(props) {
                 disabled={props.isDisable}
                 defaultValue={props.value}
                 placeholder={props.placeholder}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                /*formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}*/
                 onBlur={props.onBlur}
                 onChange={props.onChange && props.onChange}
                 onInput={handleStep}

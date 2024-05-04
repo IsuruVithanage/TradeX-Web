@@ -5,7 +5,7 @@ import Table, {TableRow} from "../Table/Table";
 import axios from "axios";
 import symbols from "../../Assets/Images/Coin Images.json";
 
-const CoinBar = ({ onSelectCoin, enableModel }) => {
+const CoinBar = ({ onSelectCoin, enableModel, selectedCoin }) => {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [coins, setCoins] = useState([]);
     const [isCoinSelected, setIsCoinSelected] = useState(false);
@@ -18,6 +18,13 @@ const CoinBar = ({ onSelectCoin, enableModel }) => {
         image: '',
         priceChange: 0,
     });
+
+    useEffect(() => {
+        console.log('coin',selectedCoin);
+        if (selectedCoin) {
+            handleRowClick(selectedCoin)
+        }
+    }, [selectedCoin]);
 
     useEffect(() => {
         axios

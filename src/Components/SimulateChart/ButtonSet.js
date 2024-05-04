@@ -8,6 +8,22 @@ export default function ButtonSet(props) {
     const [isBtnTwo, setIsBtnTwo] = useState(false);
     const [isBtnThree, setIsBtnThree] = useState(false);
 
+    useEffect(() => {
+        console.log('selectedType',props.selectedType);
+        if (props.selectedType==="Limit"){
+            setIsBtnOne(true);
+            setIsBtnTwo(false);
+            setIsBtnThree(false);
+            props.setOrderCatagory('Limit');
+
+        }else if(props.selectedType==="Market") {
+            setIsBtnTwo(true);
+            setIsBtnOne(false);
+            setIsBtnThree(false);
+            props.setOrderCatagory('Market');
+        }
+    }, [props.selectedType]);
+
     const handleButtonClick = (userState) => {
         if (userState === 1) {
             setIsBtnOne(true);
