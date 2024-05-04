@@ -33,8 +33,8 @@ box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
     margin-bottom: 1rem;
     font-weight: bold;
 }
-.button{
-    margin-left: 38.5rem;
+.add-answer .button{
+    margin-left: 32.5rem;
     margin-top: 1.5rem;
 }
 h3{

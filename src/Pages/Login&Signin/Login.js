@@ -45,7 +45,7 @@ function Login() {
      </div>   
      <div className='black-background'>
      <form action='' onSubmit={handleSubmit}>  
-        <input type="text" placeholder="User Name" className="username-input"name='username' onChange={handleInput}/>
+        <input type="text" placeholder="User Name" className="uname-input"name='username' onChange={handleInput}/>
         {errors.username && <span className='text-danger-uname'> {errors.username}</span>}
         <input type="password" placeholder="Password" className="password-input" name='password' onChange={handleInput}/>
         {errors.password && <span className='text-danger-password'> {errors.password}</span>}
