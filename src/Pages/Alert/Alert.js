@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { onMessage } from "firebase/messaging";
-import getFcmDeviceToken from "./getFcmDeviceToken";
+import { useSelector } from "react-redux";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
@@ -8,12 +7,9 @@ import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
 
-const userId = 1;
-let fcm = await getFcmDeviceToken(userId);
 
 
-
-export default function Alert() {
+export default function Alert({firebase}) {
     const [selectedPage, setSelectedPage] = useState("Running");
     const [selectedCoin, setSelectedCoin] = useState(undefined);
     const [selectedPrice, setSelectedPrice] = useState(null);
@@ -28,31 +24,16 @@ export default function Alert() {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [isRegistered, setIsRegistered] = useState(fcm.registered);
+    const [isRegistered, setIsRegistered] = useState(false);
     const selectedPageRef = useRef(selectedPage);
-   
-
-    useEffect(() => {
-        if(!isRegistered){
-            Notification.requestPermission(async(value) => {
-                if(value === 'granted'){
-                    fcm = await getFcmDeviceToken(userId);
-                    setIsRegistered(fcm.registered)
-                }
-                else{
-                    alert('Please Allow Notifications in your browser settings to use this feature..!');
-                    setIsRegistered(fcm.registered)
-                    Notification.requestPermission(async() => {
-                        fcm = await getFcmDeviceToken(userId);
-                        setIsRegistered(fcm.registered)
-                    });
-                }
-            });
-        }
-    },[isRegistered]);
-
+    const userId = useSelector(state => state.user.user.id);
 
     
+    useEffect(() => {
+        firebase.updateRegister(setIsRegistered);
+        firebase.requestPermission();
+    }, [firebase]);
+
 
     useEffect(() => {  
         selectedPageRef.current = selectedPage;
@@ -63,19 +44,13 @@ export default function Alert() {
             return;
         }
 
-        onMessage(fcm.messaging, (payload) => {
-            console.log("Message handled in the foreground!");
-            new Notification(payload.notification.title, {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-            });
-            
+        firebase.onMessage(() => {
             getAlerts();
-
         });
+
         getAlerts();
 
-    }, [selectedPage, isRegistered]);
+    }, [selectedPage, isRegistered, firebase]);
 
 
 
@@ -115,25 +90,10 @@ export default function Alert() {
 
 
 
-    const openAlertSetterModel = (editAlertNo) => {
-        if(Notification.permission !== 'granted') {
-            Notification.requestPermission(async(value) => {
-                if(value === 'granted'){
-                    fcm = await getFcmDeviceToken(userId);
-                    setIsRegistered(fcm.registered)
-                    openAlertSetterModel(editAlertNo);
-                }
-                else{
-                    alert('Please Allow Notifications in your browser settings to use this feature..!');
-                    Notification.requestPermission(async() => {
-                        fcm = await getFcmDeviceToken(userId);
-                        setIsRegistered(fcm.registered)
-                    });
-                }
-            });
-        }
-
-        else{
+    const openAlertSetterModel = async (editAlertNo) => {
+        const permission = await firebase.requestPermission();
+        
+        if(permission) {
             if (!editAlertNo) {
                 setAction("Add"); 
                 setCurrentAlertId(null); 
@@ -159,11 +119,11 @@ export default function Alert() {
 
 
 
-    const getAlerts = () => {
+    const getAlerts = async () => {
         setIsLoading(true);
         setAlerts([]);
         
-        alertOperations.getAlerts(userId, selectedPageRef.current === "Running")
+        await alertOperations.getAlerts(userId, selectedPageRef.current === "Running")
         .then(res => res && setAlerts(res));
 
         setIsLoading(false);

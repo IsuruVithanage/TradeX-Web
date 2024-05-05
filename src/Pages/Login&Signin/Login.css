@@ -42,7 +42,7 @@
     font-family: Inter;
     margin-top: 45px;
 }
-.username-input{
+.black-background .uname-input{
     display: flex;
     color: white;
     position: fixed;

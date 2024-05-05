@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Records from "./Questionrecords.json";
+
 import loadQuestions from "./Forum"
 
 function Questionset(props) {
@@ -11,7 +11,7 @@ function Questionset(props) {
           props.questionlist && props.questionlist.map(record => {
               return(
                 <div className='question-row'>
-                <Link to="/Questionbar/Detailed">
+                <Link to={`/Questionbar/Detailed/${record.questionId}`}>
                     <div className='question-title'>
                         { record.title}<br/><br/>
                   

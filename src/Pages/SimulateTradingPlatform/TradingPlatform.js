@@ -8,12 +8,20 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import assets from "./assets.json";
 import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
+import CancelButton from "../../Components/Input/Button/CencelButton";
 
-export default function TradingPlatform() {
+export default function TradingPlatform({firebase}) {
     const user = useSelector(state => state.user);
+
+    /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        firebase.onMessage(() => {
+            console.log('Message received:');
+            console.log('Message EKA AWAMA METHANA OONE DEYAK KARAPANNN');
+        });
+    }, [firebase]);
 
     const Tabs = [
         {label: "Spot", path: "/simulate"},
@@ -22,33 +30,116 @@ export default function TradingPlatform() {
 
     const [latestPrice, setLatestPrice] = useState(0);
     const [walletBalance, setWalletBalance] = useState(0);
+    const [balanceSymble, setBalanceSymble] = useState('$');
+    const [balancePr, setBalancePr] = useState(0);
     const [limitOrder, setLimitOrder] = useState([]);
     const [isButtonSet, setIsButtonSet] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isError, setIsError] = useState(null);
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [selectedCoin, setSelectedCoin] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [order, setOrder] = useState({
         userId: user.id,
         type: 'Buy',
         date: '',
-        cato: 'Limit',
+        category: 'Limit',
         coin: null,
         price: 0,
         quantity: 0,
         total: 0,
+        orderStatus: ''
     });
 
+    useEffect(() => {
+        // Load state from localStorage when component mounts
+        const savedState = localStorage.getItem('tradingPlatformState');
+        if (savedState) {
+            const parsedState = JSON.parse(savedState);
+            setOrder(parsedState.order);
+            setLimitOrder(parsedState.limitOrder);
+            handleCoinSelection(parsedState.selectedCoin);
+            setOrderCatagory(parsedState.selectedType);
+            setSelectedType(parsedState.selectedType);
+            // Set other states as needed...
+        } else {
+            // If no saved state found, initialize with default values
+            setOrder({
+                userId: user.id,
+                type: 'Buy',
+                date: '',
+                category: 'Limit',
+                coin: null,
+                price: 0,
+                quantity: 0,
+                total: 0,
+                orderStatus: ''
+            });
+            setLimitOrder([]);
+            // Initialize other states with default values...
+        }
+    }, []);
+
+
+    useEffect(() => {
+        const stateToSave = {
+            order,
+            limitOrder,
+            selectedCoin,
+            selectedType
+        };
+        localStorage.setItem('tradingPlatformState', JSON.stringify(stateToSave));
+    }, [order, limitOrder]);
+
     const handleCoinSelection = (coin) => {
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            coin: coin
-        }));
+        if (coin) {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                coin: coin
+            }));
+            setSelectedCoin(coin);
+            if (order.type === 'Sell') {
+                setBalanceSymble(coin.symbol);
+            }
+            fetchLimitOrders(coin.symbol.toUpperCase());
+        }
+    };
+
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'order_completed') {
+                fetchLimitOrders(selectedCoin?.symbol?.toUpperCase());
+                showMessage('success', `Your order for ${data.order.coin} has been completed at ${data.order.price}`);
+            }
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [selectedCoin]);
+
+    const fetchLimitOrders = (coin) => {
+        fetch(`http://localhost:8005/order/getLimitOrderByCoin/${coin}/${user.user.id}`)
+            .then(response => response.json())
+            .then(data => {
+                setLimitOrder(data);
+            })
+            .catch(error => {
+                console.error('Failed to fetch limit orders:', error);
+            });
     };
 
     const getWalletBalance = () => {
-        fetch(`http://localhost:8011/portfolio/asset/1/USD`)
+        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
                 setWalletBalance(data[0].balance);
@@ -57,6 +148,7 @@ export default function TradingPlatform() {
                 console.error('Failed to get wallet balance:', error);
             });
     }
+
 
     useEffect(() => {
         getWalletBalance();
@@ -72,8 +164,10 @@ export default function TradingPlatform() {
             quantity: order.quantity,
             date: currentDate,
             price: order.price,
-            type: order.cato,
-            totalPrice: order.total
+            type: order.type,
+            category: order.category,
+            totalPrice: order.total,
+            orderStatus: order.category === 'Market' ? 'Completed' : 'Pending'
         }
     }
 
@@ -109,11 +203,12 @@ export default function TradingPlatform() {
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
             ...prevOrder,
-            cato: value
+            category: value
         }));
-        console.log(order.cato)
+        console.log(order.category)
         if (value === 'Market') {
             setIsButtonSet(true);
+            setSelectedType('Market');
             setMarketPrice();
             setIsDisabled(true);
         } else if (value === 'Limit') {
@@ -123,6 +218,7 @@ export default function TradingPlatform() {
                 total: 0
             }));
             setIsButtonSet(true);
+            setSelectedType('Limit');
             setIsDisabled(false);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
@@ -131,6 +227,7 @@ export default function TradingPlatform() {
                 total: 0
             }));
             setIsButtonSet(true);
+            setSelectedType('Stop Limit');
             setIsDisabled(false);
         }
     };
@@ -140,10 +237,10 @@ export default function TradingPlatform() {
     };
 
     useEffect(() => {
-        if (order.cato === 'Market') {
+        if (order.category === 'Market') {
             handlePriceChange(latestPrice);
         }
-    }, [order.cato, latestPrice]);
+    }, [order.category, latestPrice]);
 
 
     const handlePriceChange = (value) => {
@@ -152,12 +249,12 @@ export default function TradingPlatform() {
             ...prevOrder,
             price: value
         }));
-        if (order.quantity !== 0) {
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                total: value * order.quantity
-            }));
-        }
+
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            total: value * order.quantity
+        }));
+
     };
 
     const handleQuantityChange = (value) => {
@@ -192,31 +289,47 @@ export default function TradingPlatform() {
 
     }
 
+    useEffect(() => {
+        getWalletBalance();
+    }, [balanceSymble, selectedCoin]);
+
     const setOrderType = (type) => {
         setOrder(prevOrder => ({
             ...prevOrder,
             type: type
         }));
+
+        if (type === 'Sell') {
+            setBalanceSymble(selectedCoin.symbol);
+            //getWalletBalance();
+        } else {
+            setBalanceSymble('$');
+            //getWalletBalance();
+
+        }
     }
 
-    //http://localhost:8004/portfolio/asset/add
-    //http://localhost:8007/order
 
     const saveOrder = () => {
-        if (walletBalance < order.total) {
+        if (walletBalance < order.total && order.type === 'Buy') {
+            showMessage('Error', 'Wallet balance is insufficient!');
+            return;
+        }else if (walletBalance < order.quantity && order.type === 'Sell') {
             showMessage('Error', 'Wallet balance is insufficient!');
             return;
         }
 
         const ob = {
             userId: user.user.id,
-            coin: order.coin ? order.coin.symbol.toUpperCase() : null,
+            coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
+            price: order.price,
             purchasePrice: order.price,
-            type: order.cato
+            category: order.category,
+            type: order.type
         }
 
-        if (!ob.userId || !ob.coin || !ob.quantity || !ob.purchasePrice) {
+        if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
             console.error('Invalid order:', ob);
             return;
         }
@@ -227,6 +340,7 @@ export default function TradingPlatform() {
         }
 
         setIsLoading(false);
+
 
         fetch('http://localhost:8011/portfolio/asset/add', {
             method: 'POST',
@@ -252,6 +366,7 @@ export default function TradingPlatform() {
                     setIsLoading(true);
                     showMessage('success', 'The order has been placed successfully!');
                     getWalletBalance();
+                    fetchLimitOrders(selectedCoin.symbol);
                 } else {
                     console.error('Failed to save order:', response);
                 }
@@ -262,11 +377,85 @@ export default function TradingPlatform() {
     }
 
     useEffect(() => {
-        if (order.total > walletBalance) {
+        if (order.total > walletBalance && order.type === 'Buy') {
+            setIsButtonSet(true);
+            setIsError('Wallet balance is insufficient!');
+        }else if (order.quantity > walletBalance && order.type === 'Sell') {
             setIsButtonSet(true);
             setIsError('Wallet balance is insufficient!');
         }
-    }, [order.total]);
+    }, [order.total,order.price,order.quantity]);
+
+    useEffect(() => {
+        if (order.type === 'Buy') {
+            const value = (walletBalance * (balancePr / 100));
+            const quantity = value / order.price;
+            if (balancePr !== 0) {
+                setIsError(null);
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    quantity: quantity
+                }));
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    total: quantity * order.price
+                }));
+
+                setIsButtonSet(false);
+            }
+        } else if (order.type === 'Sell') {
+            const value = (walletBalance * (balancePr / 100));
+            if (balancePr !== 0) {
+                setIsError(null);
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    quantity: value
+                }));
+                setOrder(prevOrder => ({
+                    ...prevOrder,
+                    total: value * order.price
+                }));
+
+                setIsButtonSet(false);
+            }
+        }
+    }, [balancePr]);
+
+
+    const formatPrice = (price) => {
+        return "$ " + price.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
+
+    const formatTo6Decimal = (value) => {
+        if (typeof value === 'number' && balanceSymble !== '$') {
+            return parseFloat(value).toFixed(5);
+        } else if (typeof value === 'number' && balanceSymble === '$') {
+            return value.toLocaleString();
+        }
+        return value;
+    };
+
+
+    const confirm = (orderId) => {
+        fetch(`http://localhost:8005/order/deleteOrder/${orderId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    showMessage('Success', 'Order deleted successfully');
+                    fetchLimitOrders(selectedCoin.symbol);
+                } else {
+                    showMessage('Error', 'Failed to delete order');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting order:', error);
+                showMessage('Error', 'Internal server error');
+            });
+    };
 
     return (
         <BasicPage tabs={Tabs}>
@@ -275,11 +464,13 @@ export default function TradingPlatform() {
                 style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
-                        <div style={{display:'flex'}}>
-                            <h1 className="tradeHeader" style={{marginRight:'5.3rem'}}>Trade</h1>
-                            <h1 className="tradeHeader" style={{color:'#21db9a'}}>${walletBalance.toLocaleString()}</h1>
+                        <div style={{display: 'flex'}}>
+                            <h1 className="tradeHeader" style={{marginRight: '3.3rem'}}>Trade</h1>
+                            <h1 className="tradeHeader"
+                                style={{color: '#21db9a'}}>{balanceSymble + " "}{formatTo6Decimal(walletBalance)}</h1>
                         </div>
-                        <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}/>
+                        <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}
+                                   selectedType={selectedType}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
@@ -287,7 +478,7 @@ export default function TradingPlatform() {
                         <Input label={'Quantity'} type={'number'} min={1} value={order.quantity}
                                icon={order.coin?.symbol ? order.coin.symbol.toUpperCase() : ""}
                                onChange={handleQuantityChange}/>
-                        <SliderInput/>
+                        <SliderInput setBalanacePr={setBalancePr}/>
 
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
@@ -300,7 +491,7 @@ export default function TradingPlatform() {
                 }
             >
 
-                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true}/>
+                <CoinBar onSelectCoin={handleCoinSelection} enableModel={true} selectedCoin={selectedCoin}/>
                 <TradingChart selectedCoin={order.coin} updateLastPrice={updateLastPrice}/>
             </SidePanelWithContainer>
 
@@ -308,6 +499,7 @@ export default function TradingPlatform() {
                 <TableRow data={[
                     'Coin',
                     'Type',
+                    'Category',
                     'Price',
                     'Quantity',
                     'Total Price',
@@ -315,16 +507,17 @@ export default function TradingPlatform() {
                 ]}/>
 
 
-                {limitOrder.map(coin => (
+                {limitOrder.map(order => (
                     <TableRow
-                        key={coin}
                         data={[
-                            <Coin>{coin}</Coin>,
-                            assets[coin].type,
-                            assets[coin].price,
-                            assets[coin].quantity,
-                            assets[coin].totalPrice,
-                            <Input type="button" value="Cancel" style={{width: "90px"}} outlined/>
+                            <Coin>{order.coin}</Coin>,
+                            order.type,
+                            order.category,
+                            formatPrice(order.price),
+                            order.quantity,
+                            formatPrice(order.totalPrice),
+                            <CancelButton confirm={confirm} orderId={order.orderId} title={'Cancel the order'}
+                                          message={`Are you sure to cancel this Order`}/>
                         ]}
                     />
                 ))}

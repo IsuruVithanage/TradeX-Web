@@ -15,13 +15,13 @@ import Alert from "../Pages/Alert/Alert";
 import Suggestions from "../Pages/Suggestions/Suggestions";
 import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
-import UserProfileTab from "../Pages/User/UserProfileTab";
+//import UserProfileTab from "../Pages/User/UserProfileTab";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login"
 
 
-export default function Router() {
+export default function Router({firebase}) {
     const router = createBrowserRouter([
         {
             path: "/",
@@ -74,18 +74,18 @@ export default function Router() {
         },
         {
             path: "/simulate",
-            element: <Simulation />,
+            element: <Simulation firebase={firebase} />,
         },
         {
             path: "/alert",
-            element: <Alert />,
+            element: <Alert firebase={firebase} />,
         },
         {
             path: "/suggestion",
             element: <Suggestions />,
         },
         {
-            path: "/Questionbar/Detailed",
+            path: "/Questionbar/Detailed/:id",
             element: <Detailed />,
         },
         {

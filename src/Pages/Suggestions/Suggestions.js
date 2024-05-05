@@ -5,6 +5,7 @@ import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
+import Input from "../../Components/Input/Input";
 
 export default function Suggestions() {
     const Tabs = [
@@ -25,6 +26,7 @@ export default function Suggestions() {
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
 
     const [selectedCoin, setSelectedCoin] = useState(null);
+    const [type, settType] = useState('Buy');
     const [tradeData, setTradeData] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
 
@@ -35,7 +37,7 @@ export default function Suggestions() {
     const loadOrderHistory = async () => {
         try {
             const res = await axios.get(
-                'http://localhost:8005/order/getAllOrders'
+                `http://localhost:8005/order/getOrderByCato/${type}`
             );
             setOrderHistory(res.data);
             console.log(res.data);
@@ -47,7 +49,7 @@ export default function Suggestions() {
 
     useEffect(() => {
         loadOrderHistory();
-    }, []);
+    }, [type]);
 
     const processData = async (newData) => {
         try {
@@ -139,6 +141,9 @@ export default function Suggestions() {
 
     }
 
+    const setOrderType = (type) => {
+        settType(type);
+    };
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
@@ -179,10 +184,17 @@ export default function Suggestions() {
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}} hover={true}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                    <div style={{ width: '10rem' }}>
+                        <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
+                    </div>
+                </div>
+
                 <TableRow data={[
                     'Coin',
                     'Date',
                     'Type',
+                    'Category',
                     'Price',
                     'Quantity',
                     'Total Price',
@@ -196,6 +208,7 @@ export default function Suggestions() {
                             new Date(order.date).toLocaleDateString(),
                             order.type,
                             order.price,
+                            order.category,
                             order.quantity,
                             order.totalPrice,
                         ]}
