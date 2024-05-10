@@ -3,7 +3,7 @@ import './Converter.css';
 import Input from "../Input/Input";
 
 const CurrencyConverter = () => {
-    const [amount, setAmount] = useState(null);
+    const [amount, setAmount] = useState(1);
     const [fromCurrency, setFromCurrency] = useState('USD');
     const [toCurrency, setToCurrency] = useState('BTC');
     const [result, setResult] = useState('');
@@ -32,6 +32,7 @@ const CurrencyConverter = () => {
         setFromCurrency(e.target.value);
     }
 
+
     return (
         <div className="container">
 
@@ -52,13 +53,13 @@ const CurrencyConverter = () => {
 
             </div>
 
-            <Input type="number"  label='Amount'  onChange={setAmount}/>
-            {error && <p id="result" style={{color: 'red'}}>{error}</p>}
-            {result && <p id="result" style={{fontWeight:'bold'}}>{result}</p>}
-            <button type="button" className="primary-btn" onClick={handleConvert}>
-                Convert
-            </button>
+            <Input type="number"  label='Amount' defaultValue={1} min={0}  onChange={(value) => {setAmount(value || 1)  }}/>
 
+            <p id="result" style={ !(error) ? {height: "25px", fontWeight:'bold'} : {height: "25px", color: 'red'}}>
+                {!error ? result : error}
+            </p>
+
+            <Input type="button" value="Convert" onClick={handleConvert} />
         </div>
     );
 };

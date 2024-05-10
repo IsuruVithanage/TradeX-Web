@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
@@ -11,7 +11,7 @@ import axios from 'axios';
 import './PortfolioWallet.css'
 
 export default function FundingWallet() {
-    const params = useParams().wallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet';
+    const params = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
     const [ currentWallet, SetCurrentWallet ] = useState(params);
     const [ selectedCoin, setSelectedCoin ] = useState('');
     const [ selectedQty, setSelectedQty ] = useState(null);
@@ -26,7 +26,6 @@ export default function FundingWallet() {
     const [ showModal, setShowModal ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const userId = 1;
-
     
     useEffect(()=>{
         SetCurrentWallet(params)
@@ -79,7 +78,6 @@ export default function FundingWallet() {
         }
 
     }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
-
 
     useEffect(() => {
         currentWallet === 'tradingWallet' ?  
@@ -138,9 +136,8 @@ export default function FundingWallet() {
             userId: userId,
             coin: selectedCoin,
             quantity: selectedQty,
-            sendingWallet: currentWallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet',
-            receivingWallet: selectedWallet === 'externalWallet' ? 
-            document.getElementById('walletAddressValue').value : selectedWallet
+            sendingWallet: selectedWallet === 'externalWallet' ? walletAddress : currentWallet,
+            receivingWallet: selectedWallet === 'externalWallet' ? walletAddressValue : selectedWallet
         };
 
 
@@ -156,7 +153,6 @@ export default function FundingWallet() {
             )
     
             .then(res => {
-                console.log(res.data)
                 setAssets(res.data.assets);
                 setUsdBalance( res.data.usdBalance );
                 setPortfolioValue( res.data.portfolioValue);
@@ -217,7 +213,7 @@ export default function FundingWallet() {
 
                         { currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
                             <div className={'hidden-input'} >
-                                <Input type="text" label='Wallet Address' id="walletAddressValue" onChange={setWalletAddressValue}/> 
+                                <Input type="text" label='Wallet Address' onChange={(e) => setWalletAddressValue(e.target.value)}/> 
                             </div> 
                         }
                         <div className={`traveling-input ${currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
@@ -292,14 +288,21 @@ export default function FundingWallet() {
 
 
             <Modal open={showModal} close={setShowModal}>
-                <div style={{width:"450px"}}>
-                    <div style={{width:"300px", margin:"auto", marginBottom:"50px"}}>
+                <div style={{width:"430px"}}>
+                    <div style={{width:"320px", margin:"auto", marginBottom:"30px"}}>
                         <h1 style={{textAlign:"center"}}>Wallet Address</h1>
-                        <p className='wallet-address' >{walletAddress}</p>
-                        <div className="edit-alert-modal-button-container">
+
+                        <div className='wallet-address' onClick={() =>{
+                            navigator.clipboard.writeText(walletAddress);
+                            showMessage('info', 'Copied to clipboard..!');
+                        }}>
+                            <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress}</span>
+                        </div>
+
+                        <div className="edit-alert-modal-button-container" style={{marginTop: "40px"}}>
                             <Input type="button" style={{width:"100px"}} onClick={() => {
                                 navigator.clipboard.writeText(walletAddress);
-                                showMessage('success', 'Copied to clipboard..!');
+                                showMessage('info', 'Copied to clipboard..!');
                             }} value="Copy"/>
                             <Input type="button" style={{width:"120px"}} onClick={() => setShowModal(false)} value="Re-generate" red/>
                         </div> 
