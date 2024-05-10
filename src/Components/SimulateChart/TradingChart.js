@@ -66,7 +66,8 @@ export const ChartComponent = (props) => {
                 }USDT&interval=1m&limit=1000`
             );
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
-            updateLastPrice(latestPrice);
+            const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+            updateLastPrice(latestPrice,latestTime);
             return processData(res.data);
         } catch (error) {
             console.log(error);
