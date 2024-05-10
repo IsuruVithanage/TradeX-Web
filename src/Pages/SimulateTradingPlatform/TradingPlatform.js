@@ -371,6 +371,9 @@ export default function TradingPlatform({firebase}) {
                     setIsLoading(true);
                     showMessage('success', 'The order has been placed successfully!');
                     getWalletBalance();
+                    if (order.category === 'Limit') {
+                        fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                    }
                     //fetchLimitOrders(selectedCoin.symbol);
                 } else {
                     console.error('Failed to save order:', response);
