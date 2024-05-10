@@ -13,18 +13,21 @@
 }
 
 .wallet-address{
+    cursor: pointer;
+    display: flex;
+    height: 100px;
     color: white;
+    background-color: #242424;
+    border: 2px solid #9E9E9F50;
     text-align: center;
-    font-size: italic;
-    user-select: text;
-    border: 1px solid #9E9E9F50;
-    padding: 10px;
-    border-radius: 7px;
+    align-items: center;
+    justify-content: center;
     margin-top: 20px;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
-    -o-border-radius: 7px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
 }
 
 .traveling-input {

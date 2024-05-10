@@ -7,10 +7,6 @@
     /* font-size: 13px;  */
 }
 
-div {
-    display: block;
-}
-
 .container {
     /* width: 600px; */
     margin: auto;
@@ -24,28 +20,6 @@ div {
     margin-top: 20px;
 }
 
-input[type=text],
-select,
-.primary-btn {
-    font-size: 0.6rem;
-}
-
-input[type=text] {
-    width: 100%;
-    margin: auto;
-    /* display: block; */
-    background: none;
-    line-height: 1.5;
-    padding: 12px;
-    border-radius: 6px;
-    color: white;
-    border: 1px solid rgb(221, 221, 221);
-    margin-top: 15px;
-}
-
-input[type=text]:focus {
-    border-color: #21db9a;
-}
 
 #fromCurrencyName {
     margin-top: 0;
@@ -55,10 +29,6 @@ input[type=text]:focus {
     background-color: #131314;
 }
 
-::placeholder {
-    color: white;
-    opacity: 0.5;
-}
 
 select {
     margin: auto;
@@ -77,31 +47,6 @@ select:focus {
     border-color: #21db9a;
 }
 
-.primary-btn {
-    display: block;
-    justify-content: center;
-    align-items: center;
-    min-width: 0px;
-    width: 50%;
-    cursor: pointer;
-    margin: auto;
-    outline-offset: 4px;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    transition-property: background-color, border-color;
-    transition-duration: 0.3s;
-    padding: 10px 20px;
-    border-radius: 8px;
-    color: rgb(255, 255, 255);
-    background-color: #21db9a;
-    border: 2px solid #131314;
-}
-
-.primary-btn:hover {
-    background-color: rgb(0, 113, 235);
-    border: 2px solid rgb(0, 113, 235);
-}
 
 #result {
     color: white;

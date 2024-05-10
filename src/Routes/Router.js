@@ -26,6 +26,7 @@ export default function Router({firebase}) {
         {
             path: "/",
             element: <Login />,
+            errorElement: <App />,
         },
         {
             path: "/signup",
@@ -34,7 +35,6 @@ export default function Router({firebase}) {
         {
             path: "/home",
             element: <App />,
-            errorElement: <App />,
         },
         {
             path: "/admin/*",

@@ -21,15 +21,15 @@ export default function Portfolio() {
 
   useEffect(() => {
     setIsLoading(true);
+
     axios
-        .get(
-            backendApiEndpoint,
-            {
-                params: {
-                    userId: userId
-                }
-            }
-        )
+        .get( backendApiEndpoint, { 
+            params: { 
+                userId,
+                timezoneOffset: new Date().getTimezoneOffset()
+            } 
+        })
+        
 
         .then(res => {
             setAssets(res.data.assets);
