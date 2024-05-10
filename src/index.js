@@ -11,15 +11,8 @@ import './Pages/Summary/globals'
 
 const Router = lazy(() => import("./Routes/Router"));
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const firebase = new Firebase();
-
-
-const store = configureStore({
-    reducer: {
-        user: userReducer,
-    }
-});
-
+const store = configureStore({ reducer: { user: userReducer }});
+const firebase = new Firebase(store.getState().user.user.id);
 
 root.render(
     // <React.StrictMode>

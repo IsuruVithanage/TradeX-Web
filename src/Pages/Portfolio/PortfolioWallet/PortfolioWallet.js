@@ -4,6 +4,7 @@ import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
+import Modal from '../../../Components/Modal/Modal'
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import { showMessage } from '../../../Components/Message/Message';
 import axios from 'axios';
@@ -15,22 +16,23 @@ export default function FundingWallet() {
     const [ selectedCoin, setSelectedCoin ] = useState('');
     const [ selectedQty, setSelectedQty ] = useState(null);
     const [ selectedWallet, setSelectedWallet ] = useState(undefined);
-    const [ walletAddress, setWalletAddress ] = useState(null);
+    const [ walletAddressValue, setWalletAddressValue ] = useState(null);
     const [ assets, setAssets ] = useState([]);
     const [ usdBalance, setUsdBalance ] = useState(null);
     const [ portfolioValue, setPortfolioValue ] = useState(null);
+    const [ walletAddress, setWalletAddress ] = useState(null);
     const [ isInvalid, setIsInvalid ] = useState([true, null]);
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ showModal, setShowModal ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const userId = 1;
 
-    console.log(params)
+    
     useEffect(()=>{
         SetCurrentWallet(params)
     }, [params])
 
     useEffect(() => {
-
         if(currentWallet === 'tradingWallet') {
 
             if ( (selectedCoin && selectedQty) ) {
@@ -55,7 +57,7 @@ export default function FundingWallet() {
 
                 if  ( selectedWallet === 'tradingWallet' || 
                     ( selectedWallet === 'externalWallet' && 
-                    walletAddress )
+                    walletAddressValue )
                 ) {
                     setIsInvalid([false, null]);
                 } else {
@@ -76,7 +78,7 @@ export default function FundingWallet() {
             }
         }
 
-    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddress, currentWallet]);
+    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
 
 
     useEffect(() => {
@@ -104,8 +106,9 @@ export default function FundingWallet() {
     
             .then(res => {
                 setAssets(res.data.assets);
-                setUsdBalance( res.data.usdBalance );
-                setPortfolioValue( res.data.portfolioValue);
+                setUsdBalance(res.data.usdBalance);
+                setPortfolioValue(res.data.portfolioValue);
+                setWalletAddress(res.data.walletAddress);
                 setIsLoading(false);
             })
     
@@ -137,7 +140,7 @@ export default function FundingWallet() {
             quantity: selectedQty,
             sendingWallet: currentWallet === 'fundingWallet' ? 'fundingWallet' : 'tradingWallet',
             receivingWallet: selectedWallet === 'externalWallet' ? 
-            document.getElementById('walletAddress').value : selectedWallet
+            document.getElementById('walletAddressValue').value : selectedWallet
         };
 
 
@@ -214,14 +217,16 @@ export default function FundingWallet() {
 
                         { currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
                             <div className={'hidden-input'} >
-                                <Input type="text" label='Wallet Address' id="walletAddress" onChange={setWalletAddress}/> 
+                                <Input type="text" label='Wallet Address' id="walletAddressValue" onChange={setWalletAddressValue}/> 
                             </div> 
                         }
                         <div className={`traveling-input ${currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
                             <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
 
-                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>                            
+                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>              
                         </div>
+
+                        <p className='wallet-address-button' onClick={() => setShowModal(true)} >Wallet Address</p>    
                     </div>
                 }>
 
@@ -282,6 +287,25 @@ export default function FundingWallet() {
 
 
             </SidePanelWithContainer>
+
+
+
+
+            <Modal open={showModal} close={setShowModal}>
+                <div style={{width:"450px"}}>
+                    <div style={{width:"300px", margin:"auto", marginBottom:"50px"}}>
+                        <h1 style={{textAlign:"center"}}>Wallet Address</h1>
+                        <p className='wallet-address' >{walletAddress}</p>
+                        <div className="edit-alert-modal-button-container">
+                            <Input type="button" style={{width:"100px"}} onClick={() => {
+                                navigator.clipboard.writeText(walletAddress);
+                                showMessage('success', 'Copied to clipboard..!');
+                            }} value="Copy"/>
+                            <Input type="button" style={{width:"120px"}} onClick={() => setShowModal(false)} value="Re-generate" red/>
+                        </div> 
+                    </div>
+                </div>
+            </Modal>
         </BasicPage>
     )
 }

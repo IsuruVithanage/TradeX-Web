@@ -1,22 +1,26 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 import firebaseConfig from "./firebaseConfig.json";
 import alertOperations from "./alertOperations";
 
 
 class Firebase {
-    constructor() {
-        const app = initializeApp(firebaseConfig);
-        this.messaging = getMessaging(app);
-        this.getToken();
-        
-        this.onMessage((payload) => {
-            new Notification(payload.notification.title, {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-                badge: 'https://raw.githubusercontent.com/IsuruVithanage/TradeX-Web/dev/src/Assets/Images/TradeX-mini-logo.png'
-            });
-        });
+    constructor(userId) {
+        isSupported().then((isSupported) => {
+            if (isSupported) {
+                const app = initializeApp(firebaseConfig);
+                this.messaging = getMessaging(app);
+                this.getToken();
+                this.userId = userId;
+                this.onMessage((payload) => {
+                    new Notification(payload.notification.title, {
+                        body: payload.notification.body,
+                        icon: payload.notification.icon,
+                        badge: 'https://raw.githubusercontent.com/IsuruVithanage/TradeX-Web/dev/src/Assets/Images/TradeX-mini-logo.png'
+                    });
+                });
+            }
+        });  
     }
 
 
@@ -60,7 +64,7 @@ class Firebase {
             })
             .then((deviceToken) => {
                 this.deviceToken = deviceToken;
-                alertOperations.saveDeviceToken(1, deviceToken);
+                alertOperations.saveDeviceToken(this.userId, deviceToken);
                 if(this.setIsRegistered){
                     this.setIsRegistered(!deviceToken ? false : true);
                 }
