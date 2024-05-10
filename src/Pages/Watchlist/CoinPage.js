@@ -130,15 +130,9 @@ export default function Suggestions() {
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
-                line={false}
-                style={{height: '530px', padding: "22px"}}
-                sidePanel={
-                    <div>
-                        <h1 className="tradeHeader">Crypto Converter</h1>
-                        <Converter/>
-
-                    </div>
-                }
+                header="Crypto Converter"
+                sidePanel={<Converter/>}
+                style={{height: '530px'}}
             >
 
                 <div className='coinDiv'>

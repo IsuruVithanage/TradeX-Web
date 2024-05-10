@@ -1,15 +1,16 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Portfolio from '../../Pages/Portfolio/Portfolio';
-import TradingHistory from '../../Pages/Portfolio/History/TradingHistory';
+import History from '../../Pages/Portfolio/History';
 import PortfolioWallet from '../../Pages/Portfolio/PortfolioWallet/PortfolioWallet';
 
 export default function PortfolioRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Portfolio />} />
-      <Route path="/history" element={<TradingHistory />} />
-      <Route path="/:wallet" element={<PortfolioWallet />} />
+      <Route path="/history" element={<History />} />
+      <Route path="/fundingWallet" element={<PortfolioWallet />} />
+      <Route path="/tradingWallet" element={<PortfolioWallet />} />    
     </Routes>
   )
 }

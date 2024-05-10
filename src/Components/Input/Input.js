@@ -48,43 +48,25 @@ function InputField(props) {
         props.onChange(e);
     };
 
-    if (typeof register === 'function') {
-        return (
-            <div>
-                <input
-                    className={`input-field ${props.className}`}
-                    type={props.type}
-                    value={props.value}
-                    defaultValue={props.defaultValue}
-                    id={props.id}
-                    name={props.name}
-                    placeholder={props.placeholder}
-                    style={props.style}
-                    onBlur={props.onBlur}
-                    {...register(name)}
-                    onChange={props.onChange ? handleChange : null}
-                    onClick={props.onClick}
-                />
-                <p style={{color: 'red'}}>{errors[name]?.message ? errors[name]?.message : ''}</p>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <input
-                    className={`input-field ${props.className}`}
-                    type={props.type}
-                    value={props.value}
-                    defaultValue={props.defaultValue}
-                    id={props.id}
-                    name={props.name}
-                    placeholder={props.placeholder}
-                    style={props.style}
-                    onBlur={props.onBlur}
-                    onChange={props.onChange ? handleChange : null}
-                    onClick={props.onClick}
-                />
-            </div>
-        );
-    }
+    return (
+        <div>
+            <input
+                {...(!register ? {} : register(name))}
+                className={`input-field ${props.className || ''}`}
+                type={props.type}
+                value={props.value}
+                defaultValue={props.defaultValue}
+                id={props.id}
+                name={props.name}
+                placeholder={props.placeholder}
+                style={props.style}
+                onBlur={props.onBlur}
+                onChange={props.onChange ? handleChange : null}
+                onClick={props.onClick}
+                autoComplete="off"
+            />
+            
+            <p style={{color: 'red'}}>{!register ? '' : (errors[name]?.message ? errors[name]?.message : '')}</p>
+        </div>
+    );
 }
