@@ -5,6 +5,7 @@ import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithCont
 import Input from '../../Components/Input/Input';
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import { showMessage } from '../../Components/Message/Message'
+import coins from '../../Assets/Images/Coin Images.json'
 
 export default function History() {
     const [selectedSection, setSelectedSection] = useState("Trading");
@@ -15,12 +16,15 @@ export default function History() {
     const [historyData, setHistoryData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const backendAPI = (selectedSection === "Trading") ? "http://localhost:8011/portfolio/history/trading" : 'http://localhost:8011/portfolio/history/';
+    const backendAPI = (selectedSection === "Trading") ? 
+    "http://localhost:8005/order/getOrderByCato/Buy" : 
+    'http://localhost:8011/portfolio/history/';
     const userId = 1;
 
+    
     const coinOptions = [...new Set(historyData.map(item => item.coin))].map(coin => ({
         value: coin,
-        label: coin
+        label: coin + " - " + coins[coin].name,
     }));
 
 
@@ -53,6 +57,7 @@ export default function History() {
         }})
 
         .then((res) => {
+            console.log(res.data);
             setHistoryData(res.data);
             setFilteredData(res.data);
             setIsLoading(false);
@@ -148,11 +153,14 @@ export default function History() {
 
                
                 
-                <Table style={{marginTop:'0'}} restart={selectedSection} emptyMessage={`No ${selectedSection} History Data`}>
+                <Table style={{marginTop:'0'}} 
+                    restart={filteredData} 
+                    emptyMessage={`No ${selectedSection} History Data`}>
+                        
                     <TableRow data={
                         selectedSection === "Transaction" ?
                         ['Coin', 'Date', 'From', 'To', 'Quantity'] :
-                        ['Coin', 'Date', 'Type', 'Price', 'Amount', 'Total', 'PNL']
+                        ['Coin', 'Date', 'Type', 'Price', 'Quantity', 'Total', 'PNL']
                     } />
 
                     { filteredData.map((row, index) => { 
@@ -180,11 +188,11 @@ export default function History() {
                                 ]   :
                                 [
                                     <Coin>{row.coin}</Coin>,
-                                    row.Date, 
-                                    row.Type, 
-                                    `$ ${row.Price}`, 
-                                    row.Amount, 
-                                    `$ ${row.Price * row.Amount}`,
+                                    new Date(row.date).toLocaleDateString().replace(/\//g, '-'),
+                                    row.category + '-' + row.type, 
+                                    `$ ${row.price}`, 
+                                    row.quantity, 
+                                    `$ ${row.totalPrice}`,
                                     <span 
                                         style={{ 
                                         color: (row.PNL < 0) ? '#FF0000' : (row.PNL > 0) ? '#21DB9A' : '' 
