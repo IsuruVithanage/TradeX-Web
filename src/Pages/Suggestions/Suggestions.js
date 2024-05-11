@@ -6,6 +6,8 @@ import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
+import './Suggstions.css';
+import {Spin} from "antd";
 
 export default function Suggestions() {
     const Tabs = [
@@ -37,6 +39,7 @@ export default function Suggestions() {
     const [analyzeData, setAnalyzeData] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
     const [suggestion, setSuggestion] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleCoinSelection = (coin) => {
         setSelectedCoin(coin);
@@ -48,7 +51,7 @@ export default function Suggestions() {
                 `http://localhost:8005/order/getOrderByCato/${type}`
             );
             setOrderHistory(res.data);
-            console.log(res.data);
+            console.log("order", res);
 
         } catch (error) {
             console.log(error);
@@ -114,20 +117,29 @@ export default function Suggestions() {
 
 
     const getSuggestions = async () => {
-        if (suggestion !== null) {
-            return;
-        }
+
         try {
-            const res = await fetch('http://localhost:8005/suggestion/buyOrderSuggestion', {
+            fetch('http://localhost:8005/suggestion/buyOrderSuggestion', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(suggestion)
+                body: JSON.stringify(geminiData)
             })
-
-            setSuggestion(res.data);
-            console.log(res.data);
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // Parse the response body as JSON
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    setSuggestion(data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
         } catch (error) {
             console.log(error);
@@ -240,10 +252,12 @@ export default function Suggestions() {
                     tradePrice: order.price
                 }));
                 await fetchData();
+                setLoading(true);
                 await fetchAnalyzeData();
                 let index = binarySearchByTime(order.time);
                 getSurroundingElements(index);
                 await getSuggestions();
+                setLoading(false);
             })
             .catch(error => console.log(error));
 
@@ -257,6 +271,13 @@ export default function Suggestions() {
     const setOrderType = (type) => {
         settType(type);
     };
+
+    const formatPrice = (price) => {
+        return "$ " + price.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
     return (
         <BasicPage tabs={Tabs}>
             <SidePanelWithContainer
@@ -265,7 +286,37 @@ export default function Suggestions() {
                 sidePanel={
                     <div>
                         <h1 className="tradeHeader">Suggetion</h1>
-                        <p>Coin ${}</p>
+
+                        {suggestion && (
+                            <div>
+                                <Spin size='large' spinning={loading}>
+                                <div style={{display:'flex'}}>
+                                    <div>
+                                        <p className='s-lables'>Best Price</p>
+                                        <p className='s-data'
+                                           style={{fontSize: '1.5rem', color: '#21DB9A',marginRight:'0.5rem'}}>{formatPrice(suggestion.bestPrice)}</p>
+                                    </div>
+                                    <div>
+                                        <p className='s-lables'>Profit</p>
+                                        <p className='s-data' style={{
+                                            fontSize: '1.5rem',
+                                            color: 'red'
+                                        }}>{formatPrice(suggestion.profitFromBestPrice)}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className='s-lables'>Suggestions</p>
+                                    <p className='s-data' style={{fontSize: '1rem'}}>{suggestion.suggestions}</p>
+                                </div>
+                                <div>
+                                    <p className='s-lables'>Advices</p>
+                                    <p className='s-data' style={{fontSize: '1rem'}}>{suggestion.advices}</p>
+                                </div>
+                                </Spin>
+
+                            </div>
+                        )}
+
 
 
                     </div>

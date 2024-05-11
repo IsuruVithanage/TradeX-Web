@@ -1,0 +1,19 @@
+.s-lables{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+
+.s-data{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    width: 100%;
+    font-weight: bold;
+    text-align: justify;
+    padding-right: 0.5rem;
+    color: #b4b4b4;
+    flex-wrap: wrap;
+}
