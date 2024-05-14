@@ -52,7 +52,7 @@ export default function Portfolio() {
         });
 
   }, []);
-
+  
 
   return (
     <BasicPage 
@@ -71,7 +71,7 @@ export default function Portfolio() {
             header="Composition" 
             sidePanel = { <BarChart bars={ percentages }/> }>
                 <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
-                <LineChart data={initialData}></LineChart>
+                <LineChart data={initialData} lineType={2}></LineChart>
         </SidePanelWithContainer>
           
         <Table style={{marginTop:'1vh'}} emptyMessage="No Assets to show">

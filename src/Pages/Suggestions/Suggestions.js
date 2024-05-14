@@ -187,7 +187,10 @@ export default function Suggestions() {
             console.log(transformedData);
 
             const result = {
-                Day: transformedData
+                Day: {
+                    showTime: true,
+                    data: transformedData
+                }
             };
 
             setTradeData(result);

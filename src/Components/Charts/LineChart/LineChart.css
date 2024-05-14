@@ -87,3 +87,18 @@
     background-color: #21DB9A;
     color: #ffffff;
 }
+
+.hover-info-div{
+    pointer-events: none;
+    background-color: #3C3C3C;
+    color: #FFFFFF;
+    height: 100px;
+    padding: 25px;
+    border-radius: 7px;
+    position: absolute;
+    z-index: 1;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
