@@ -8,7 +8,7 @@ const StyledButton = styled(Button)(( props ) => {
         return {
             color: red ? '#ff0000' : '#21DB9A',
             '&:hover': {
-                backgroundColor: red ? '#ff00001a' : '#21DB9A1A',
+                backgroundColor: red ? '#FF00001A' : '#21DB9A1A',
             },
             '&.MuiButton-root': {
                 width: '100%',
@@ -31,9 +31,9 @@ const StyledButton = styled(Button)(( props ) => {
     }else{
         return {
             color: '#ffffff',
-            backgroundColor: red ? '#ff0000' : '#21DB9A',
+            backgroundColor: red ? '#D60202' : '#00cd85',
             '&:hover': {
-                backgroundColor: red ? '#d60202' : '#1dbb85'
+                backgroundColor: red ? '#FF0000' : '#21DB9A',
             },
             '&.MuiButton-root': {
                 width: '100%',

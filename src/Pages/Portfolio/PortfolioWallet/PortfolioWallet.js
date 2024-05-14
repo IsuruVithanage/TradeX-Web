@@ -327,9 +327,9 @@ export default function FundingWallet() {
 
 
             <Modal open={showModal} close={setShowModal}>
-                <div style={{width:"430px", paddingTop:"10px"}}>
-                    <div style={{width:"320px", margin:"auto", marginBottom:"30px"}}>
-                        <h1 style={{textAlign:"center"}}>Wallet Address</h1>
+                <div style={{width:"420px", paddingTop:"15px"}}>
+                    <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
+                        <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
 
                         <div className='wallet-address' onClick={() =>{
                             navigator.clipboard.writeText(walletAddress);
@@ -338,8 +338,8 @@ export default function FundingWallet() {
                             <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress}</span>
                         </div>
 
-                        <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}>Click on the address to copy</p>
-                        <p style={{textAlign:"center", margin:"30px auto", color: "#9E9E9E", width: "97%"}}>
+                        <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
+                        <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
                             <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
                             &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
                         </p>
