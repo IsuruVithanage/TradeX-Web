@@ -71,7 +71,10 @@ export default function Suggestions() {
             console.log(transformedData);
 
             const result = {
-                Day: transformedData
+                Day: {
+                    showTime: true,
+                    data: transformedData
+                }
             };
 
             setTradeData(result);
@@ -87,7 +90,9 @@ export default function Suggestions() {
             const res = await axios.get(
                 `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000`
             );
+            console.log("res", res.data);
             return processData(res.data);
+            
 
         } catch (error) {
             console.log(error);
