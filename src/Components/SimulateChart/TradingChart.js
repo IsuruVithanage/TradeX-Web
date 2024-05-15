@@ -26,6 +26,8 @@ export const ChartComponent = (props) => {
     });
 
 
+
+
     const {
         selectedCoin,
         updateLastPrice,
@@ -50,14 +52,16 @@ export const ChartComponent = (props) => {
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
-            console.log("this",transformedData)
 
             return transformedData;
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error processing data:', error);
         }
     };
 
+    useEffect(() => {
+        console.log('coin',selectedCoin);
+    }, [selectedCoin]);
     const fetchData = async () => {
         try {
             const res = await axios.get(
@@ -68,94 +72,47 @@ export const ChartComponent = (props) => {
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
             const latestTime = parseFloat(res.data[res.data.length - 1][0]);
             updateLastPrice(latestPrice,latestTime);
+
             return processData(res.data);
         } catch (error) {
-            console.log(error);
+            console.error('Error fetching historical data:', error);
         }
     };
 
-    const updateData = async () => {
-        try {
-            const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1`
-            );
-            const result= processData(res.data);
-            result.then((resultArray) => {
-                console.log("result",resultArray[0])
-                return resultArray[0];
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
-    /*useEffect(() => {
-        const ws = new WebSocket(`wss://stream.binance.com:443/ws/btcusdt@kline_1s`);
-
-        ws.onopen = () => {
-            console.log('Connected to WebSocket');
-        };
-
-        ws.onmessage = async (event) => {
-            const data = JSON.parse(event.data);
-            const time = (data.k.t) / 1000;
-            setUpdatedData(prevOrder => ({
-                ...prevOrder,
-                time: time,
-                open: parseFloat(data.k.o),
-                high: parseFloat(data.k.h),
-                low: parseFloat(data.k.l),
-                close: parseFloat(data.k.c),
-            }));
-
-            const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1`
-            );
-
-            const result = await processData(res.data);
-            console.log("re",result)
-
-
-            setTemp(prevOrder => ({
-                ...prevOrder,
-                open: result[0].open,
-                high: result[0].high,
-                low: result[0].low,
-                close: result[0].close,
-                time: result[0].time,
-            }));
-        };
-
-        ws.onerror = (error) => {
-            console.error('WebSocket error: ', error);
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);
 
     useEffect(() => {
-        console.log(temp);
-    }, [updatedData]);*/
 
+        fetchData();
 
-    const initializeChart = async () => {
-        if (chartInstance) {
-            chartInstance.remove();
-        }
+        const updateData = async () => {
+            try {
+                const res = await axios.get(
+                    `https://api.binance.com/api/v3/klines?symbol=${
+                        selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
+                    }USDT&interval=1m&limit=1`
+                );
+                const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
+                const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+                updateLastPrice(latestPrice,latestTime);
+                const result = await processData(res.data);
+                if (result && result.length > 0) {
+                    const latestData = result[0];
+                    series.update(latestData);
+                }
+            } catch (error) {
+                console.error('Error updating real-time data:', error);
+            }
+        };
 
+        // Chart initialization and data loading
         const chart = createChart(chartContainerRef.current, {
+            width: chartContainerRef.current.offsetWidth,
+            height: chartContainerRef.current.offsetHeight,
             layout: {
                 background: { type: ColorType.Solid, color: backgroundColor },
                 textColor,
             },
-            width: chartContainerRef.current.clientWidth,
-            height: chartContainerRef.current.clientHeight,
             grid: {
                 vertLines: {
                     visible: false,
@@ -177,9 +134,7 @@ export const ChartComponent = (props) => {
             }
         });
 
-        chart.timeScale().fitContent();
-
-        const newSeries = chart.addCandlestickSeries({
+        const series = chart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
@@ -187,30 +142,20 @@ export const ChartComponent = (props) => {
             wickDownColor
         });
 
-        newSeries.setData(await fetchData());
+        fetchData().then((data) => {
+            if (data && data.length > 0) {
+                series.setData(data);
+                chart.timeScale().fitContent();
+            }
+        });
 
-
-
-        // Set interval to fetch and update data every 5 seconds
-       /* const intervalId = setInterval(async () => {
-            newSeries.update(await updateData());
-        }, 1000);*/
-
-        setChartInstance(chart);
+        // Real-time data update interval
+        const updateInterval = setInterval(updateData, 600); // Update every 1 minute
 
         return () => {
-            //clearInterval(intervalId);
-            if (chart) {
-                chart.remove();
-            }
+            clearInterval(updateInterval);
+            chart.remove();
         };
-    };
-
-    useEffect(() => {
-        if (selectedCoin) {
-            initializeChart();
-        }
-
     }, [selectedCoin]);
 
     const updateChartDuration = async (duration) => {
