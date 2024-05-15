@@ -297,14 +297,14 @@ export default function Suggestions() {
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data'
-                                           style={{fontSize: '1.5rem', color: '#21DB9A',marginRight:'0.5rem'}}>{formatPrice(suggestion.bestPrice)}</p>
+                                           style={{fontSize: '1.5rem', color: '#21DB9A',marginRight:'0.5rem'}}>{formatCurrency(suggestion.bestPrice)}</p>
                                     </div>
                                     <div>
                                         <p className='s-lables'>Profit</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: 'red'
-                                        }}>{formatPrice(suggestion.profitFromBestPrice)}</p>
+                                        }}>{formatCurrency(suggestion.profitFromBestPrice)}</p>
                                     </div>
                                 </div>
                                 <div>

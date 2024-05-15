@@ -6,6 +6,7 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
+import TestChart from "./TestChart"
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {useSelector} from "react-redux";
@@ -501,6 +502,7 @@ export default function TradingPlatform({firebase}) {
 
                 <CoinBar onSelectCoin={handleCoinSelection} enableModel={true} selectedCoin={selectedCoin}/>
                 <TradingChart selectedCoin={order.coin} updateLastPrice={updateLastPrice}/>
+                {/*<TestChart/>*/}
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>
