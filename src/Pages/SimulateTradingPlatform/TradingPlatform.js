@@ -12,6 +12,7 @@ import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
+import BuyButton from "../../Components/Input/Button/BuyButton";
 
 export default function TradingPlatform({firebase}) {
     const user = useSelector(state => state.user);
@@ -492,8 +493,10 @@ export default function TradingPlatform({firebase}) {
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
 
-                        <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
-                               onClick={saveOrder}/>
+                        {/*<Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
+                               onClick={saveOrder}/>*/}
+                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet} title={'Confirm Order'}
+                                      message={`Are you sure to place this Order`}/>
                         <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
@@ -502,7 +505,6 @@ export default function TradingPlatform({firebase}) {
 
                 <CoinBar onSelectCoin={handleCoinSelection} enableModel={true} selectedCoin={selectedCoin}/>
                 <TradingChart selectedCoin={order.coin} updateLastPrice={updateLastPrice}/>
-                {/*<TestChart/>*/}
             </SidePanelWithContainer>
 
             <Table style={{marginTop: '1vh'}}>
@@ -526,7 +528,7 @@ export default function TradingPlatform({firebase}) {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} orderId={order.orderId} title={'Cancel the order'}
+                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId} title={'Cancel the order'}
                                           message={`Are you sure to cancel this Order`}/>
                         ]}
                     />

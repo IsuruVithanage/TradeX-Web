@@ -1,32 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './TradingChart.css';
-import {ColorType, createChart} from 'lightweight-charts';
+import { ColorType, createChart } from 'lightweight-charts';
 import axios from 'axios';
 
 export const ChartComponent = (props) => {
     const [activeDuration, setActiveDuration] = useState('1m');
-    const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
-    const [updatedData, setUpdatedData] = useState({
-        open: 0,
-        high: 0,
-        low: 0,
-        close: 0,
-        time: 0,
-    });
-
-    let i=400;
-
-    const [temp, setTemp] = useState({
-        open: 69456.45-i,
-        high: 69888.65-i,
-        low: 69233.33-i,
-        close: 69784.55-i,
-        time: 177488578499+i,
-    });
-
-
-
+    const chartInstanceRef = useRef(null);
+    const seriesRef = useRef(null);
+    const updateIntervalRef = useRef(null);
+    const [tradeData, setTradeData] = useState([]);
 
     const {
         selectedCoin,
@@ -53,59 +36,49 @@ export const ChartComponent = (props) => {
 
             transformedData.sort((a, b) => a.time - b.time);
 
+            setTradeData(transformedData);
             return transformedData;
         } catch (error) {
             console.error('Error processing data:', error);
         }
     };
 
-    useEffect(() => {
-        console.log('coin',selectedCoin);
-    }, [selectedCoin]);
     const fetchData = async () => {
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1000`
             );
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
             const latestTime = parseFloat(res.data[res.data.length - 1][0]);
-            updateLastPrice(latestPrice,latestTime);
+            updateLastPrice(latestPrice, latestTime);
 
-            return processData(res.data);
+            const data = await processData(res.data);
+            setTradeData(data);
+            return data;
         } catch (error) {
             console.error('Error fetching historical data:', error);
         }
     };
 
-
+    const updateData = async () => {
+        try {
+            const res = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1`
+            );
+            const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
+            const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+            updateLastPrice(latestPrice, latestTime);
+            const result = await processData(res.data);
+            if (result && result.length > 0) {
+                const latestData = result[0];
+                seriesRef.current.update(latestData);
+            }
+        } catch (error) {
+            console.error('Error updating real-time data:', error);
+        }
+    };
 
     useEffect(() => {
-
-        fetchData();
-
-        const updateData = async () => {
-            try {
-                const res = await axios.get(
-                    `https://api.binance.com/api/v3/klines?symbol=${
-                        selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                    }USDT&interval=1m&limit=1`
-                );
-                const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
-                const latestTime = parseFloat(res.data[res.data.length - 1][0]);
-                updateLastPrice(latestPrice,latestTime);
-                const result = await processData(res.data);
-                if (result && result.length > 0) {
-                    const latestData = result[0];
-                    series.update(latestData);
-                }
-            } catch (error) {
-                console.error('Error updating real-time data:', error);
-            }
-        };
-
-        // Chart initialization and data loading
         const chart = createChart(chartContainerRef.current, {
             width: chartContainerRef.current.offsetWidth,
             height: chartContainerRef.current.offsetHeight,
@@ -114,24 +87,14 @@ export const ChartComponent = (props) => {
                 textColor,
             },
             grid: {
-                vertLines: {
-                    visible: false,
-                },
-                horzLines: {
-                    color: "#3C3C3C",
-                },
+                vertLines: { visible: false },
+                horzLines: { color: "#3C3C3C" },
             },
-            rightPriceScale: {
-                borderVisible: false,
-                textColor: "#AAA",
-            },
+            rightPriceScale: { borderVisible: false, textColor: "#AAA" },
             localization: {
                 priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
-            timeScale: {
-                fixLeftEdge: true,
-                borderVisible: false,
-            }
+            timeScale: { fixLeftEdge: true, borderVisible: false }
         });
 
         const series = chart.addCandlestickSeries({
@@ -142,6 +105,9 @@ export const ChartComponent = (props) => {
             wickDownColor
         });
 
+        chartInstanceRef.current = chart;
+        seriesRef.current = series;
+
         fetchData().then((data) => {
             if (data && data.length > 0) {
                 series.setData(data);
@@ -149,11 +115,10 @@ export const ChartComponent = (props) => {
             }
         });
 
-        // Real-time data update interval
-        const updateInterval = setInterval(updateData, 600); // Update every 1 minute
+        updateIntervalRef.current = setInterval(updateData, 600); // Update every 1 minute
 
         return () => {
-            clearInterval(updateInterval);
+            clearInterval(updateIntervalRef.current);
             chart.remove();
         };
     }, [selectedCoin]);
@@ -161,25 +126,21 @@ export const ChartComponent = (props) => {
     const updateChartDuration = async (duration) => {
         setActiveDuration(duration);
         let interval = '1m';
-        if (duration === '1m') {
-            interval = '1m';
-        } else if (duration === '1d') {
+        if (duration === '1d') {
             interval = '1d';
         } else if (duration === '1w') {
             interval = '1w';
         }
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=${interval}&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${interval}&limit=1000`
             );
             const data = await processData(res.data);
-            if (chartInstance && !chartInstance.isDisposed()) {
-                chartInstance.series.setData(data);
+            if (chartInstanceRef.current) {
+                seriesRef.current.setData(data);
             }
         } catch (error) {
-            console.log(error);
+            console.error('Error updating chart duration:', error);
         }
     };
 
