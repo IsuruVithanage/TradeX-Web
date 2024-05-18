@@ -35,6 +35,7 @@ export default function Suggestions() {
     const [analyzeData, setAnalyzeData] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
     const [suggestion, setSuggestion] = useState(null);
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -232,9 +233,26 @@ export default function Suggestions() {
         return '$ ' + amountString;
     };
 
+    const markerData = [
+        {
+            time: selectedOrder ? selectedOrder.time/1000 : 0,
+            position: 'aboveBar',
+            color: '#ffbf74',
+            shape: 'circle',
+            text: 'A',
+        },
+        {
+            time: { year: 2024, month: 5, day: 15 },
+            position: 'belowBar',
+            color: '#ff5733',
+            shape: 'circle',
+            text: 'B',
+        },
+    ];
+
     const handleRowClick = async (order) => {
         try {
-            // Clear suggestion and set loading to true
+            setSelectedOrder(order);
             setSuggestion(null);
             setLoading(true);
             setError(false);
@@ -370,7 +388,7 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <LineChart data={tradeData} isSugges={true}></LineChart>
+                <LineChart data={tradeData} markers={markerData} isSugges={true}></LineChart>
             </SidePanelWithContainer>
 
             <Table style={{ marginTop: '1vh' }} hover={true}>
