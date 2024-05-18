@@ -17,3 +17,8 @@
     color: #b4b4b4;
     flex-wrap: wrap;
 }
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-spin .ant-spin-dot-item {
+    background-color: #21db9a;
+
+}
