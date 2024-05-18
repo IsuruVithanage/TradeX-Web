@@ -1,287 +1,228 @@
 {
     "USD": {
+        "symbol": "USD",
         "img": "https://freepngimg.com/thumb/dollar/64012-united-dollar-sign-states-currency-logo-icon.png",
         "name": "US Dollar"
     },
     "BTC": {
+        "symbol": "BTC",
         "img": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
         "name": "Bitcoin"
     },
     "ETH": {
+        "symbol": "ETH",
         "img": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
         "name": "Ethereum"
     },
     "BNB": {
+        "symbol": "BNB",
         "img": "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
         "name": "Binance Coin"
     },
     "SOL": {
+        "symbol": "SOL",
         "img": "https://assets.coingecko.com/coins/images/4128/large/solana.png?1696504756",
         "name": "Solana"
     },
     "XRP": {
+        "symbol": "XRP",
         "img": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442",
         "name": "XRP"
     },
     "USDC": {
+        "symbol": "USDC",
         "img": "https://assets.coingecko.com/coins/images/6319/large/usdc.png?1696506694",
         "name": "USD Coin"
     },
     "ADA": {
+        "symbol": "ADA",
         "img": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1696502090",
         "name": "Cardano"
     },
     "AVAX": {
+        "symbol": "AVAX",
         "img": "https://assets.coingecko.com/coins/images/12559/large/Avalanche_Circle_RedWhite_Trans.png?1696512369",
         "name": "Avalanche"
     },
     "DOGE": {
+        "symbol": "DOGE",
         "img": "https://assets.coingecko.com/coins/images/5/large/dogecoin.png?1696501409",
         "name": "Dogecoin"
     },
     "LINK": {
+        "symbol": "LINK",
         "img": "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png?1696502009",
         "name": "Chainlink"
     },
     "TRX": {
+        "symbol": "TRX",
         "img": "https://assets.coingecko.com/coins/images/1094/large/tron-logo.png?1696502193",
         "name": "TRON"
     },
     "DOT": {
+        "symbol": "DOT",
         "img": "https://assets.coingecko.com/coins/images/12171/large/polkadot.png?1696512008",
         "name": "Polkadot"
     },
     "MATIC": {
+        "symbol": "MATIC",
         "img": "https://assets.coingecko.com/coins/images/4713/large/polygon.png?1698233745",
         "name": "Polygon"
     },
     "WBTC": {
+        "symbol": "WBTC",
         "img": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1696507857",
         "name": "Wrapped Bitcoin"
     },
     "ICP": {
+        "symbol": "ICP",
         "img": "https://assets.coingecko.com/coins/images/14495/large/Internet_Computer_logo.png?1696514180",
         "name": "Internet Computer"
     },
     "SHIB": {
+        "symbol": "SHIB",
         "img": "https://assets.coingecko.com/coins/images/11939/large/shiba.png?1696511800",
         "name": "Shiba Inu"
     },
     "LTC": {
+        "symbol": "LTC",
         "img": "https://assets.coingecko.com/coins/images/2/large/litecoin.png?1696501400",
         "name": "Litecoin"
     },
     "BCH": {
+        "symbol": "BCH",
         "img": "https://assets.coingecko.com/coins/images/780/large/bitcoin-cash-circle.png?1696501932",
         "name": "Bitcoin Cash"
     },
     "UNI": {
+        "symbol": "UNI",
         "img": "https://assets.coingecko.com/coins/images/12504/large/uni.jpg?1696512319",
         "name": "Uniswap"
     },
     "ETC": {
+        "symbol": "ETC",
         "img": "https://assets.coingecko.com/coins/images/453/large/ethereum-classic-logo.png?1696501717",
         "name": "Ethereum Classic"
     },
     "ATOM": {
+        "symbol": "ATOM",
         "img": "https://assets.coingecko.com/coins/images/1481/large/cosmos_hub.png?1696502525",
         "name": "Cosmos"
     },
     "APT": {
+        "symbol": "APT",
         "img": "https://assets.coingecko.com/coins/images/26455/large/aptos_round.png?1696525528",
         "name": "Aptos"
     },
     "XLM": {
+        "symbol": "XLM",
         "img": "https://assets.coingecko.com/coins/images/100/large/Stellar_symbol_black_RGB.png?1696501482",
         "name": "Stellar"
     },
     "INJ": {
+        "symbol": "INJ",
         "img": "https://assets.coingecko.com/coins/images/12882/large/Secondary_Symbol.png?1696512670",
         "name": "Injective"
     },
     "TIA": {
+        "symbol": "TIA",
         "img": "https://assets.coingecko.com/coins/images/31967/large/tia.jpg?1696530772",
         "name": "Tiancoin"
     },
     "NEAR": {
+        "symbol": "NEAR",
         "img": "https://assets.coingecko.com/coins/images/10365/large/near.jpg?1696510367",
         "name": "Near Protocol"
     },
     "IMX": {
-        "img": "https://assets.coingecko.com/coins/images/17233/large/immutableX-symbol-BLK-RGB.png?1696516787",
-        "name": "Immutable X"
+        "symbol": "IMX",
+        "img": "https://assets.coingecko.com/coins/images/13506/large/imx.png?1696513254",
+        "name": "Impact"
     },
-    "OP": {
-        "img": "https://assets.coingecko.com/coins/images/25244/large/Optimism.png?1696524385",
-        "name": "Optimism"
+"OP": {
+        "symbol": "OP",
+        "img": "https://assets.coingecko.com/coins/images/13506/large/imx.png?1696513254",
+        "name": "Opium"
     },
     "FIL": {
-        "img": "https://assets.coingecko.com/coins/images/12817/large/filecoin.png?1696512609",
+        "symbol": "FIL",
+        "img": "https://assets.coingecko.com/coins/images/12817/large/filecoin.png?1602753933",
         "name": "Filecoin"
     },
     "LDO": {
-        "img": "https://assets.coingecko.com/coins/images/13573/large/Lido_DAO.png?1696513326",
-        "name": "Lido DAO Token"
+        "symbol": "LDO",
+        "img": "https://assets.coingecko.com/coins/images/13463/large/ldo.png?1608760763",
+        "name": "Lido DAO"
     },
     "HBAR": {
-        "img": "https://assets.coingecko.com/coins/images/3688/large/hbar.png?1696504364",
+        "symbol": "HBAR",
+        "img": "https://assets.coingecko.com/coins/images/3687/large/mqTDGK7Q.png?1610378743",
         "name": "Hedera Hashgraph"
     },
-    "ARB": {
-        "img": "https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg?1696516109",
-        "name": "Arbitrum"
+    "AR": {
+        "symbol": "AR",
+        "img": "https://assets.coingecko.com/coins/images/13463/large/ldo.png?1608760763",
+        "name": "Arweave"
     },
     "STX": {
-        "img": "https://assets.coingecko.com/coins/images/2069/large/Stacks_logo_full.png?1696503035",
+        "symbol": "STX",
+        "img": "https://assets.coingecko.com/coins/images/2069/large/stacks-stx.png?1604112510",
         "name": "Stacks"
     },
     "VET": {
-        "img": "https://assets.coingecko.com/coins/images/1167/large/VET_Token_Icon.png?1696502256",
+        "symbol": "VET",
+        "img": "https://assets.coingecko.com/coins/images/1167/large/VeChain-Logo.83486d9c.png?1602640508",
         "name": "VeChain"
     },
     "RNDR": {
-        "img": "https://assets.coingecko.com/coins/images/11636/large/rndr.png?1696511529",
+        "symbol": "RNDR",
+        "img": "https://assets.coingecko.com/coins/images/13506/large/imx.png?1696513254",
         "name": "Render Token"
     },
     "MKR": {
-        "img": "https://assets.coingecko.com/coins/images/1364/large/Mark_Maker.png?1696502423",
+        "symbol": "MKR",
+        "img": "https://assets.coingecko.com/coins/images/1364/large/Mark_Maker.png?1585191826",
         "name": "Maker"
     },
     "SUI": {
-        "img": "https://assets.coingecko.com/coins/images/26375/large/sui_asset.jpeg?1696525453",
-        "name": "Sui"
+        "symbol": "SUI",
+        "img": "https://assets.coingecko.com/coins/images/13506/large/imx.png?1696513254",
+        "name": "Suterusu"
     },
     "QNT": {
-        "img": "https://assets.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1696504070",
+        "symbol": "QNT",
+        "img": "https://assets.coingecko.com/coins/images/3370/large/5ZOu7brX_400x400.jpg?1612437252",
         "name": "Quant"
     },
     "SEI": {
-        "img": "https://assets.coingecko.com/coins/images/28205/large/Sei_Logo_-_Transparent.png?1696527207",
+        "symbol": "SEI",
+        "img": "https://assets.coingecko.com/coins/images/13506/large/imx.png?1696513254",
         "name": "Seigniorage Shares"
     },
     "GRT": {
-        "img": "https://assets.coingecko.com/coins/images/13397/large/Graph_Token.png?1696513159",
+        "symbol": "GRT",
+        "img": "https://assets.coingecko.com/coins/images/13397/large/Graph_Token.png?1608145566",
         "name": "The Graph"
     },
     "TUSD": {
-        "img": "https://assets.coingecko.com/coins/images/3449/large/tusd.png?1696504140",
+        "symbol": "TUSD",
+        "img": "https://assets.coingecko.com/coins/images/1363/large/TrueUSD.png?1548765938",
         "name": "TrueUSD"
     },
     "EGLD": {
-        "img": "https://assets.coingecko.com/coins/images/12335/large/egld-token-logo.png?1696512162",
+        "symbol": "EGLD",
+        "img": "https://assets.coingecko.com/coins/images/12335/large/Elrond.png?1599132180",
         "name": "Elrond"
     },
     "RUNE": {
-        "img": "https://assets.coingecko.com/coins/images/6595/large/Rune200x200.png?1696506946",
+        "symbol": "RUNE",
+        "img": "https://assets.coingecko.com/coins/images/6595/large/thorchain.png?1547047967",
         "name": "THORChain"
     },
     "ALGO": {
-        "img": "https://assets.coingecko.com/coins/images/4380/large/download.png?1696504978",
+        "symbol": "ALGO",
+        "img": "https://assets.coingecko.com/coins/images/4380/large/algorand_logo.png?1547034193",
         "name": "Algorand"
-    },
-    "AAVE": {
-        "img": "https://assets.coingecko.com/coins/images/12645/large/AAVE.png?1696512452",
-        "name": "Aave"
-    },
-    "MINA": {
-        "img": "https://assets.coingecko.com/coins/images/15628/large/JM4_vQ34_400x400.png?1696515261",
-        "name": "Mina Protocol"
-    },
-    "ORDI": {
-        "img": "https://assets.coingecko.com/coins/images/30162/large/ordi.png?1696529082",
-        "name": "Handshake"
-    },
-    "FLOW": {
-        "img": "https://assets.coingecko.com/coins/images/13446/large/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1696513210",
-        "name": "Flow"
-    },
-    "DYDX": {
-        "img": "https://assets.coingecko.com/coins/images/32594/large/dydx.png?1698673495",
-        "name": "dYdX Token"
-    },
-    "ASTR": {
-        "img": "https://assets.coingecko.com/coins/images/22617/large/astr.png?1696521933",
-        "name": "Astra Protocol"
-    },
-    "SNX": {
-        "img": "https://assets.coingecko.com/coins/images/3406/large/SNX.png?1696504103",
-        "name": "Synthetix Network Token"
-    },
-    "OSMO": {
-        "img": "https://assets.coingecko.com/coins/images/16724/large/osmo.png?1696516298",
-        "name": "Osmosis"
-    },
-    "FTM": {
-        "img": "https://assets.coingecko.com/coins/images/4001/large/Fantom_round.png?1696504642",
-        "name": "Fantom"
-    },
-    "THETA": {
-        "img": "https://assets.coingecko.com/coins/images/2538/large/theta-token-logo.png?1696503349",
-        "name": "Theta Network"
-    },
-    "AXS": {
-        "img": "https://assets.coingecko.com/coins/images/13029/large/axie_infinity_logo.png?1696512817",
-        "name": "Axie Infinity"
-    },
-    "SAND": {
-        "img": "https://assets.coingecko.com/coins/images/12129/large/sandbox_logo.jpg?1696511971",
-        "name": "The Sandbox"
-    },
-    "CHZ": {
-        "img": "https://assets.coingecko.com/coins/images/8834/large/CHZ_Token_updated.png?1696508986",
-        "name": "Chiliz"
-    },
-    "XTZ": {
-        "img": "https://assets.coingecko.com/coins/images/976/large/Tezos-logo.png?1696502091",
-        "name": "Tezos"
-    },
-    "APE": {
-        "img": "https://assets.coingecko.com/coins/images/24383/large/apecoin.jpg?1696523566",
-        "name": "ApeCoin"
-    },
-    "MANA": {
-        "img": "https://assets.coingecko.com/coins/images/878/large/decentraland-mana.png?1696502010",
-        "name": "Decentraland"
-    },
-    "EOS": {
-        "img": "https://assets.coingecko.com/coins/images/738/large/eos-eos-logo.png?1696501893",
-        "name": "EOS"
-    },
-    "ROSE": {
-        "img": "https://assets.coingecko.com/coins/images/13162/large/rose.png?1696512946",
-        "name": "Oasis Network"
-    },
-    "JUP": {
-        "img": "https://assets.coingecko.com/coins/images/34188/large/jup.png?1704266489",
-        "name": "Jupiter"
-    },
-    "NEO": {
-        "img": "https://assets.coingecko.com/coins/images/480/large/NEO_512_512.png?1696501735",
-        "name": "Neo"
-    },
-    "FXS": {
-        "img": "https://assets.coingecko.com/coins/images/13423/large/Frax_Shares_icon.png?1696513183",
-        "name": "Frax Share"
-    },
-    "IOTA": {
-        "img": "https://assets.coingecko.com/coins/images/692/large/IOTA_Swirl.png?1696501881",
-        "name": "IOTA"
-    },
-    "KAVA": {
-        "img": "https://assets.coingecko.com/coins/images/9761/large/kava.png?1696509822",
-        "name": "Kava"
-    },
-    "CFX": {
-        "img": "https://assets.coingecko.com/coins/images/13079/large/3vuYMbjN.png?1696512867",
-        "name": "Conflux Network"
-    },
-    "BLUR": {
-        "img": "https://assets.coingecko.com/coins/images/28453/large/blur.png?1696527448",
-        "name": "Blur"
-    },
-    "MANTA": {
-        "img": "https://assets.coingecko.com/coins/images/34289/large/manta.jpg?1704468717",
-        "name": "Manta Network"
     },
     "coinsList": "[\"BTCUSDT\",\"ETHUSDT\",\"BNBUSDT\",\"SOLUSDT\",\"XRPUSDT\",\"USDCUSDT\",\"ADAUSDT\",\"AVAXUSDT\",\"DOGEUSDT\",\"LINKUSDT\",\"TRXUSDT\",\"DOTUSDT\",\"MATICUSDT\",\"WBTCUSDT\",\"ICPUSDT\",\"SHIBUSDT\",\"LTCUSDT\",\"BCHUSDT\",\"UNIUSDT\",\"ETCUSDT\",\"ATOMUSDT\",\"APTUSDT\",\"XLMUSDT\",\"INJUSDT\",\"TIAUSDT\",\"NEARUSDT\",\"IMXUSDT\",\"OPUSDT\",\"FILUSDT\",\"LDOUSDT\",\"HBARUSDT\",\"ARBUSDT\",\"STXUSDT\",\"VETUSDT\",\"RNDRUSDT\",\"MKRUSDT\",\"SUIUSDT\",\"QNTUSDT\",\"SEIUSDT\",\"GRTUSDT\",\"TUSDUSDT\",\"EGLDUSDT\",\"RUNEUSDT\",\"ALGOUSDT\",\"AAVEUSDT\",\"MINAUSDT\",\"ORDIUSDT\",\"FLOWUSDT\",\"DYDXUSDT\",\"ASTRUSDT\",\"SNXUSDT\",\"OSMOUSDT\",\"FTMUSDT\",\"THETAUSDT\",\"AXSUSDT\",\"SANDUSDT\",\"CHZUSDT\",\"XTZUSDT\",\"APEUSDT\",\"MANAUSDT\",\"EOSUSDT\",\"ROSEUSDT\",\"JUPUSDT\",\"NEOUSDT\",\"FXSUSDT\",\"IOTAUSDT\",\"KAVAUSDT\",\"CFXUSDT\",\"BLURUSDT\",\"MANTAUSDT\"]"
 }

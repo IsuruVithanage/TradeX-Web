@@ -8,6 +8,7 @@ import axios from "axios";
 import Input from "../../Components/Input/Input";
 import './Suggstions.css';
 import { Spin, Button } from "antd";
+import symbols from "../../Assets/Images/Coin Images.json";
 
 export default function Suggestions() {
     const Tabs = [
@@ -256,19 +257,22 @@ export default function Suggestions() {
             setSuggestion(null);
             setLoading(true);
             setError(false);
+            const coin = order.coin;
 
             const res = await axios.get(
-                `https://api.coingecko.com/api/v3/coins/${assets[order.coin].name}`
+                `https://api.binance.com/api/v3/ticker/24hr?symbols=["${symbols[coin].symbol}USDT"]`
             );
+
+            console.log("suuu",res.data);
 
             setCoinData((prevData) => ({
                 ...prevData,
-                name: res.data.name,
-                price: formatCurrency(res.data.market_data.current_price.usd),
-                symbol: res.data.symbol,
-                image: res.data.image.large,
-                priceChange: res.data.market_data.price_change_24h,
-                marketcap: res.data.market_data.market_cap.usd,
+                name: symbols[coin].name,
+                price: formatCurrency(res.data[0].lastPrice),
+                symbol: coin,
+                image: symbols[coin].img,
+                priceChange: res.data[0].priceChangePercent,
+                marketcap: res.data[0].volume,
             }));
 
             setGeminiData((prevData) => ({
@@ -278,8 +282,8 @@ export default function Suggestions() {
             }));
 
             // Fetch data for the selected coin
-            await fetchData(res.data.symbol.toUpperCase());
-            await fetchAnalyzeData(res.data.symbol.toUpperCase());
+            await fetchData(coin);
+            await fetchAnalyzeData(coin);
             const index = binarySearchByTime(order.time);
             getSurroundingElements(index);
             await getSuggestions();
