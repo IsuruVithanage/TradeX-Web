@@ -1,41 +1,22 @@
 {
 
-    "USD": {
-      "spotBalance": 50000,
-      "fundingBalance": 20000,
-      "marketPrice": 1
-    },
-
     "BTC": {
-      "name": "bitcoin",
-      "spotBalance": 100,
-      "fundingBalance": 170,
-      "marketPrice": 1000
+      "name": "bitcoin"
     },
 
     "ETH": {
-      "name": "ethereum",
-      "spotBalance": 100,
-      "fundingBalance": 150,
-      "marketPrice": 1000
+      "name": "ethereum"
     },
 
     "BNB": {
-      "spotBalance": 100,
-      "fundingBalance": 100,
-      "marketPrice": 1000
+
     },
 
     "XRP": {
-      "spotBalance": 50,
-      "fundingBalance": 100,
-      "marketPrice": 1000
     },
 
     "ADA": {
-      "spotBalance": 30,
-      "fundingBalance": 30,
-      "marketPrice": 1000
+
     }
 
   }
