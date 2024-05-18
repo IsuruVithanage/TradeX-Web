@@ -335,7 +335,7 @@ export default function FundingWallet() {
                             navigator.clipboard.writeText(walletAddress);
                             showMessage('info', 'Copied to clipboard..!');
                         }}>
-                            <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress}</span>
+                            <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress || 'Wallet Address Not Found..!'}</span>
                         </div>
 
                         <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
