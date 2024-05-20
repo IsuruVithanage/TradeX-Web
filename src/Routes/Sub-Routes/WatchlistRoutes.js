@@ -10,7 +10,7 @@ export default function WatchlistRoutes() {
         <Routes>
             <Route path="/" element={<Watchlist />} />
             <Route path="/customize" element={<CustomizeWatchlist />} />
-            <Route path="/CoinPage" element={<CoinPage />} />
+            <Route path="/coin/:symbol" element={<CoinPage />} />
         </Routes>
     );
 }

@@ -31,7 +31,7 @@ export default function Alert({firebase}) {
     
     useEffect(() => {
         firebase.updateRegister(setIsRegistered);
-        firebase.requestPermission();
+        firebase.requestPermission(true);
     }, [firebase]);
 
 
@@ -91,7 +91,7 @@ export default function Alert({firebase}) {
 
 
     const openAlertSetterModel = async (editAlertNo) => {
-        const permission = await firebase.requestPermission();
+        const permission = await firebase.requestPermission(true);
         
         if(permission) {
             if (!editAlertNo) {

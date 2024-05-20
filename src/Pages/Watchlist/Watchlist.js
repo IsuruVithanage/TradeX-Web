@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
@@ -10,6 +11,7 @@ const Watchlist = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [coins, setCoins] = useState([]);
     const [search, setSearch] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
@@ -58,7 +60,7 @@ const Watchlist = () => {
             tabs={[
                 { label: "All", path: "/watchlist" },
                 { label: "Custom", path: "/watchlist/customize" },
-                { label: "CoinPage", path: "/watchlist/CoinPage" },
+                { label: "CoinPage", path: "/watchlist/coin/BTC" },
 
             ]}>
 
@@ -108,7 +110,7 @@ const Watchlist = () => {
                         const price = formatCurrency(coin.lastPrice);
                         const volume = formatCurrency(coin.quoteVolume);
                         return (
-                            <tr key={coin.symbol}>
+                            <tr key={coin.symbol} onClick={() => navigate(`./coin/${coin.symbol}`)}>
                                 <td style={{width: "40px"}}>
                                     <img className="coin-image" src={symbols[coin.symbol].img} alt={coin.symbol}/>
                                 </td>

@@ -287,7 +287,7 @@ export default function Suggestions() {
                 line={false}
                 style={{height: '530px', padding: "22px"}}
                 sidePanel={
-                    <div>
+                    <div style={{ maxHeight: '100%', overflow: "hidden auto" }}>
                         <h1 className="tradeHeader">Suggetion</h1>
 
                         {suggestion && (

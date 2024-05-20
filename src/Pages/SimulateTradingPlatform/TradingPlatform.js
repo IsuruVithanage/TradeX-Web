@@ -28,6 +28,7 @@ export default function TradingPlatform({firebase}) {
     const Tabs = [
         {label: "Spot", path: "/simulate"},
         {label: "Quiz", path: "/quiz"},
+        {label: "New", path: "/new" }
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
