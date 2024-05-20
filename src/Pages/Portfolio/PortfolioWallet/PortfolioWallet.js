@@ -12,6 +12,7 @@ import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
 
+
 export default function FundingWallet() {
     const params = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
     const [ currentWallet, SetCurrentWallet ] = useState(params);
@@ -217,7 +218,7 @@ export default function FundingWallet() {
 
             
             <SidePanelWithContainer 
-                style={{height:"91vh"}}
+                style={{height:"91vh", minHeight: selectedWallet !== 'externalWallet' ? "520px" : "620px"}}
                 header="Transfer"
                 sidePanel = {
                     <div>
