@@ -7,7 +7,7 @@ import axios from "axios";
 import Converter from "../../Components/Converter/Converter";
 import CoinDescriptions from "../../Assets/Images/Coin Description.json";
 
-export default function Suggestions() {
+export default function CoinPage() {
   const Tabs = [{ label: "CoinPage", path: "/watchlist/CoinPage" }];
 
   const [coinData, setCoinData] = useState({
@@ -56,45 +56,50 @@ export default function Suggestions() {
 
   const processData = async (newData) => {
     try {
-      let seen = new Set();
-      const filteredData = newData.filter((item) => {
-        const date = new Date(item[0] * 1000);
-        const year = 2024;
-        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-        const day = String(date.getUTCDate()).padStart(2, "0");
-        const time = `${year}-${month}-${day}`;
+        let seen = new Set();
+        const filteredData = newData.filter((item) => {
+            const date = new Date(item[0] * 1000);
+            const year = 2024;
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            const time = `${year}-${month}-${day}`;
 
-        if (seen.has(time)) {
-          return false;
-        } else {
-          seen.add(time);
-          return true;
-        }
-      });
+            if (seen.has(time)) {
+                return false;
+            } else {
+                seen.add(time);
+                return true;
+            }
+        });
 
-      const transformedData = filteredData.map((item) => {
-        const date = new Date(item[0] * 1000);
-        const year = 2024;
-        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-        const day = String(date.getUTCDate()).padStart(2, "0");
+        const transformedData = filteredData.map((item) => {
+            const date = new Date(item[0] * 1000);
+            const year = 2024;
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(date.getUTCDate()).padStart(2, '0');
 
-        return {
-          time: `${year}-${month}-${day}`,
-          value: parseFloat(item[4]),
+            return {
+                time: `${year}-${month}-${day}`,
+                value: parseFloat(item[4]),
+            };
+        });
+
+        transformedData.sort((a, b) => a.time.localeCompare(b.time));
+        console.log(transformedData);
+
+        const result = {
+            Day: {
+                showTime: true,
+                data: transformedData
+            }
         };
-      });
 
-      transformedData.sort((a, b) => a.time.localeCompare(b.time));
+        setTradeData(result);
 
-      const result = {
-        Day: transformedData,
-      };
-
-      setTradeData(result);
     } catch (error) {
-      console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
     }
-  };
+};
 
   const loadCoinDescriptions = () => {
     // Load coin descriptions from JSON file

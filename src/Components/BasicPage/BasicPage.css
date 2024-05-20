@@ -11,7 +11,7 @@
     top: 6%;
     width: 94%;
     height: 94%;
-    overflow-y: auto;
+    overflow-y: scroll;
     box-sizing: border-box;
     z-index: -1;
 }

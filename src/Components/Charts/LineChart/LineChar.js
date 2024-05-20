@@ -2,50 +2,65 @@ import { createChart } from 'lightweight-charts';
 import React, { useState, useEffect, useRef } from 'react';
 import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
 import './LineChart.css';
-import * as LightweightCharts from "lightweight-charts";
 
 export default function LineChart(props) {
 	let handleResize = useRef(null);
-	const [ timeVisible, setTimeVisible ] = useState(false)
 	const [ chartData, setChartData ] = useState([]);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
+	const [ hoverInfo, setHoverInfo ] = useState(null);
 
-	const markers = [
-		{
-			time: { year: 2024, month: 4, day: 27 },
-			position: 'aboveBar',
-			color: '#ffbf74',
-			shape: 'arrowDown',
-			text: 'A',
-		},
-	];
+	const updateChartData = (duration) => {
+		setChartData(props.data[duration].data);
+		setActiveDuration(duration);
+	};
 
-	useEffect(() => {
-		activeDuration && props.data[activeDuration].length > 0 &&
-		typeof(props.data[activeDuration][0].time) === 'number' ? 
-		setTimeVisible(true) : setTimeVisible(false);
-	}, [activeDuration, props.data])
+
+  	const toggleFullScreen = () => {
+		if(handleResize.current){
+			setIsFullScreen(!isFullScreen);
+			handleResize.current();
+		}
+	};
+
+
+
+	const timeFormatter = (time, isTimeScale) => {
+		const dateValue = (typeof(time) !== 'number') ? time :
+		time * 1000 + new Date().getTimezoneOffset() * 60 * 1000;
+
+		const options = (isTimeScale) ? 
+		(!props.data[activeDuration].showTime) ? {
+			dateStyle: "medium"
+
+		} : {
+			dateStyle: "short",
+			hourCycle: "h12",
+			timeStyle: "short",
+
+		} : (!props.data[activeDuration].showTime) ? {
+			dateStyle: "long"
+
+		} : {
+			dateStyle: "long",
+			hourCycle: "h12",
+			timeStyle: "short",
+			
+		};
+
+		return new Date(dateValue).toLocaleString('en-GB', options).replace(/\//g, '-'); 
+	};
+
+
 
 	useEffect(() => {
 		if(props.data && Object.keys(props.data).length > 0){
-			setChartData(props.data[Object.keys(props.data)[0]]);
+			setChartData(props.data[Object.keys(props.data)[0]].data);
 			setActiveDuration(Object.keys(props.data)[0]);
 		}
 	}, [props.data]);
 
-	const updateChartData = (duration) => {
-		setChartData(props.data[duration]);
-		setActiveDuration(duration);
-	};
 	
-  	const toggleFullScreen = () => {
-		setIsFullScreen(!isFullScreen);
-
-		if(handleResize.current){
-			handleResize.current();
-		}
-	};
 
 	useEffect(() => {
 		const chartDiv = document.getElementById('chart');
@@ -88,7 +103,6 @@ export default function LineChart(props) {
 				fixRightEdge: true,
 				borderVisible: false,
 				lockVisibleTimeRangeOnResize: true,
-				timeVisible: timeVisible,
 			},
 
 			grid: {
@@ -107,44 +121,71 @@ export default function LineChart(props) {
 			},
 
 			localization: {
-				priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'),
-				// locale: 'en-US',
+				priceFormatter: price => '$ ' + price.toLocaleString('en-US', { minimumFractionDigits: 2 }),
+				timeFormatter: time => timeFormatter(time, true),
 			},
 		});
 		
 
-		const series=chart.addLineSeries({
-			color: '#21db9a', 
+		const series = chart.addAreaSeries({
+			color: '#21DB9A', 
+			areaTopColor: '#21DB9A',
+            areaBottomColor: '#21DB9A47',
 			lineWidth: 2,
-			lineType: 2,
+			lineType: props.lineType === undefined ? 0 : props.lineType,
 			priceLineVisible: false,
 			lastValueVisible: false,
 			lastPriceAnimation: 1,
 		});
 
-		series.setData(chartData);
 
-
-
-		chart.timeScale().fitContent();
-		if (props.isSugges) {
-			series.setMarkers(markers);
+		if (props.isSugges && props.markers) {
+			series.setMarkers(props.markers);
 		}
 		
 
 		handleResize.current = () => {
-			const chartDiv = document.getElementById('chart');
 			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
 		};
 
+
+		const updateHoverInfo = (param) => {
+			if (!param.time || param.seriesData === undefined) {
+                setHoverInfo(null);
+                return;
+            }
+
+			const dataPoint = param.seriesData.values().next().value;
+			
+            if (dataPoint === null) {
+				setHoverInfo(null);
+                return;
+            }
+
+			const coordinateX = chart.timeScale().timeToCoordinate(dataPoint.time) + series.priceScale().width();
+			const coordinateY = series.priceToCoordinate(dataPoint.value) + chart.timeScale().height();
+
+			setHoverInfo({
+				date: timeFormatter(dataPoint.time, false),
+				value: dataPoint.value,
+				x: coordinateX,
+				y: coordinateY,
+			});	
+		}
+
+		series.setData(chartData);
+		chart.timeScale().fitContent();
+		chart.subscribeCrosshairMove(updateHoverInfo);
 		window.addEventListener('resize', handleResize.current);
 
 		return () => {
 			window.removeEventListener('resize', handleResize.current);
-
+			chart.unsubscribeCrosshairMove(updateHoverInfo);
 			chart.remove();
 		};
-	}, [isFullScreen, chartData, timeVisible] );
+	}, [isFullScreen, chartData] );
+
+
 
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
@@ -168,9 +209,18 @@ export default function LineChart(props) {
 				</span>
 			</div>
 
+
+			
+
 			{ chartData.length === 0 && <p className="empty-message">No data to show</p>}
 			
-			<div id="chart"/>
+			<div id="chart">
+				{hoverInfo && (
+					<div className="hover-info-div" style={{left: hoverInfo.x, top: hoverInfo.y }}>
+						{hoverInfo.date}
+					</div>
+				)}
+			</div>
 
 		</div>
 	);

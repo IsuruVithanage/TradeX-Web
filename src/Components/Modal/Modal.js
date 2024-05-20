@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from 'antd';
+import { Modal } from 'antd';
 import './Modal.css'
 
 export default function Model(props) {
