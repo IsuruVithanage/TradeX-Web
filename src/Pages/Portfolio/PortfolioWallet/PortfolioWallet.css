@@ -1,7 +1,7 @@
 .wallet-address-button{
     width: 270px;
-    position: fixed;
-    bottom: 30px;
+    position: absolute;
+    bottom: 10px;
     color: #9E9E9F;
     text-align: center;
     cursor: pointer;
@@ -42,13 +42,17 @@
 .traveling-input.goDown{
     transform: translateY(90px);
     transition: transform 0.2s ease-in-out;
+    -webkit-transition: transform 0.2s ease-in-out;
+    -moz-transition: transform 0.2s ease-in-out;
+    -ms-transition: transform 0.2s ease-in-out;
+    -o-transition: transform 0.2s ease-in-out;
 }
 
 .hidden-input{
     position: absolute;
     width: calc(100% - 70px);
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     animation: showInput 0.2s ease-in-out;
 }
 
