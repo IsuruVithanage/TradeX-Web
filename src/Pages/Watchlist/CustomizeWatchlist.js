@@ -8,9 +8,11 @@ import symbols from "../../Assets/Images/Coin Images.json";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
+  const [selectedCoins, setSelectedCoins] = useState([]);
   const [search, setSearch] = useState("");
-  const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCoinSelected, setIsCoinSelected] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -20,15 +22,18 @@ const Watchlist1 = () => {
         `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
       )
       .then((res) => {
-        console.log(res.data);
-        const data = res.data
-          .map((coin) => {
-            coin.symbol = coin.symbol.slice(0, -4);
-            return coin;
-          })
-          .sort((a, b) => b.quoteVolume - a.quoteVolume);
-
-        setCoins(data);
+        // console.log(res.data);
+        if (Array.isArray(res.data)) {
+          const data = res.data
+            .map((coin) => {
+              coin.symbol = coin.symbol.slice(0, -4);
+              return coin;
+            })
+            .sort((a, b) => b.quoteVolume - a.quoteVolume);
+          setCoins(data);
+        } else {
+          console.error("API response is not an array:", res.data);
+        }
         setIsLoading(false);
       })
       .catch((error) => {
@@ -36,6 +41,22 @@ const Watchlist1 = () => {
         setIsLoading(false);
       });
   }, []);
+
+  const handleRowClick = (selectedCoin) => {
+    const coinDetails = {
+      name: symbols[selectedCoin.symbol]?.name,
+      price: formatCurrency(selectedCoin.lastPrice),
+      symbol: selectedCoin.symbol,
+      priceChange: selectedCoin.priceChange,
+      marketcap: formatCurrency(selectedCoin.quoteVolume),
+    };
+  
+    setSelectedCoins(coinDetails);
+
+    // setIsDeleteModalOpen(false);
+    setIsCoinSelected(true);
+    console.log(coinDetails);
+  };
 
   const formatCurrency = (amount) => {
     const amountString = parseFloat(amount).toLocaleString("en-US", {
@@ -46,7 +67,7 @@ const Watchlist1 = () => {
   };
 
   const filteredCoins = coins.filter((coin) =>
-    symbols[coin.symbol].name.toLowerCase().includes(search.toLowerCase())
+    symbols[coin.symbol]?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
   const top4Coins = filteredCoins.slice(0, 4);
@@ -104,22 +125,19 @@ const Watchlist1 = () => {
         <div
           style={{ display: "flex", marginLeft: "700px", marginBottom: "0px" }}
         >
-          <Input
-            type="search"
-            placeholder="Search"
-            style={{ width: "300px", float: "right", marginRight: "50px" }}
-            onChange={(e) => setSearch(e.target.value)}
-          />
           <div>
             <Input
               type="button"
               value="Add Coin"
               outlined
               green
-              style={{ width: "150px" }}
-              onClick={() => setIsdeleteModalOpen(true)}
+              style={{ width: "150px", marginLeft: "120%" }}
+              onClick={() => setIsDeleteModalOpen(true)}
             />
-            <Modal open={isdeleteModalOpen} close={setIsdeleteModalOpen}>
+            <Modal
+              open={isDeleteModalOpen}
+              close={() => setIsDeleteModalOpen(false)}
+            >
               <div style={{ width: "450px" }}>
                 <h2>Select Coin</h2>
                 <div>
@@ -131,7 +149,7 @@ const Watchlist1 = () => {
                       float: "right",
                       marginRight: "50px",
                     }}
-                    onChange={setSearch}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
 
@@ -151,7 +169,7 @@ const Watchlist1 = () => {
                   </thead>
                   <tbody>
                     {filteredCoins.map((coin) => (
-                      <tr key={coin.id}>
+                      <tr key={coin.id} onClick={() => handleRowClick(coin)}>
                         <td
                           style={{ marginLeft: "100px", marginBottom: "50px" }}
                         >
