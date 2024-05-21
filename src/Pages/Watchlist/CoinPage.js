@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
+import coinList from "../../Assets/Images/Coin Images.json";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
-import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 import Converter from "../../Components/Converter/Converter"
 
 export default function Suggestions() {
-    const Tabs = [
-      { label: "CoinPage", path: "/watchlist/CoinPage" },
-    ];
-
-    const [coinData, setcoinData] = useState({
+    const pageSymbol = useParams().symbol;
+    const [isLoading, setIsLoading] = useState(true);
+    const [chartData, setChartData] = useState([]);
+    const [coinData, setCoinData] = useState({
         name: '',
         price: 0,
         symbol: '',
@@ -21,100 +21,102 @@ export default function Suggestions() {
         priceChange: 0,
     });
 
+    const Tabs = [
+        { label: "All", path: "/watchlist" },
+        { label: "Custom", path: "/watchlist/customize" },
+    ];
 
-    const priceLimits = ['Limit', 'Market', 'Stop Limit'];
-
-    const [selectedCoin, setSelectedCoin] = useState(null);
-    const [tradeData, setTradeData] = useState([]);
-    const [orderHistory, setOrderHistory] = useState([]);
-
-    const handleCoinSelection = (coin) => {
-        setSelectedCoin(coin);
-    };
 
     
     useEffect(() => {
+        fetchChartData();
         loadCoinData();
     }, []);
 
-    const processData = async (newData) => {
+
+
+    const fetchChartData = async () => {
         try {
-            let seen = new Set();
-            const filteredData = newData.filter((item) => {
-                const date = new Date(item[0] * 1000);
-                const year = 2024;
-                const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
-                const day = String(date.getUTCDate()).padStart(2, '0');
-                const time = `${year}-${month}-${day}`;
+            setIsLoading(true);
 
-                if (seen.has(time)) {
-                    return false;
-                } else {
-                    seen.add(time);
-                    return true;
-                }
-            });
+            const min = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${pageSymbol}USDT&interval=1m&limit=180`
+            );
 
-            const transformedData = filteredData.map((item) => {
-                const date = new Date(item[0] * 1000);
-                const year = 2024;
-                const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
-                const day = String(date.getUTCDate()).padStart(2, '0');
+            const hour = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${pageSymbol}USDT&interval=1h&limit=720`
+            );
 
-                return {
-                    time: `${year}-${month}-${day}`,
-                    value: parseFloat(item[4]),
-                };
-            });
+            const day = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${pageSymbol}USDT&interval=1d&limit=365`
+            );
 
-            transformedData.sort((a, b) => a.time.localeCompare(b.time));
-            console.log(transformedData);
+            const timeZone = new Date().getTimezoneOffset() * 60;
+
+            const minData = min.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
+
+            const hourData = hour.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
+
+            const dayData = day.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
 
             const result = {
-                Day: {
+                '1M': {
                     showTime: true,
-                    data: transformedData
+                    data: minData
+                },
+
+                '1H': {
+                    showTime: true,
+                    data: hourData
+                },
+
+                '1D': {
+                    showTime: false,
+                    data: dayData
                 }
             };
 
-            setTradeData(result);
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    const fetchData = async () => {
-        console.log(coinData.symbol);
-        try {
-            const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000`
-            );
-            console.log("res", res.data);
-            return processData(res.data);
-            
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const formatCurrency = (amount) => {
-        const amountString = amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 20
-        });
-        return '$ ' + amountString;
-    };
-
-    function loadCoinData() {
+            setChartData(result);
+            setIsLoading(false);
+        } 
         
+        catch (error) {
+            console.log('Error fetching data:', error);
+            setIsLoading(false);
+        }
+    };
+
+
+
+    function loadCoinData() { 
+        setIsLoading(true);
+
+        const formatCurrency = (amount) => {
+            const amountString = amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 20
+            });
+            return '$ ' + amountString;
+        };
+
+
+        const name = coinList[pageSymbol].name;
+
         axios
             .get(
-                `https://api.coingecko.com/api/v3/coins/bitcoin`
+                `https://api.coingecko.com/api/v3/coins/${name.toLowerCase()}`
             )
             .then(async res => {
-                setcoinData((prevData) => ({
+                setCoinData((prevData) => ({
                     ...prevData,
                     name: res.data.name,
                     price: formatCurrency(res.data.market_data.current_price.usd),
@@ -123,21 +125,21 @@ export default function Suggestions() {
                     priceChange: res.data.market_data.price_change_24h,
                     marketcap: res.data.market_data.market_cap.usd,
                 }));
-                console.log(coinData);
-                await fetchData();
-                console.log(tradeData);
+                setIsLoading(false);
             })
-            .catch(error => console.log(error));
 
-
+            .catch(error => {
+                console.log(error)
+                setIsLoading(false);
+            });
     }
 
     return (
-        <BasicPage tabs={Tabs}>
+        <BasicPage tabs={Tabs} isLoading={isLoading}>
             <SidePanelWithContainer
                 header="Crypto Converter"
                 sidePanel={<Converter/>}
-                style={{height: '530px'}}
+                style={{height: '91vh'}}
             >
 
                 <div className='coinDiv'>
@@ -185,7 +187,7 @@ export default function Suggestions() {
                     </div>
                 </div>
                 
-                <LineChart data={tradeData} isSugges={true}></LineChart>
+                <LineChart data={chartData} ></LineChart>
             </SidePanelWithContainer>
 
         </BasicPage>
