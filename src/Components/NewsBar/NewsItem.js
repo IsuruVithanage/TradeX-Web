@@ -3,15 +3,32 @@ import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'; 
 import image from '../../Assets/Images/image.jpg'; 
 import './NewsItem.css'; 
+import axios from 'axios'; 
+import { click } from '@testing-library/user-event/dist/click';
+
 
 const NewsItem = ({ title, description, src, url }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
+  const userId = 1;
 
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
-    setIsHeartFilled((prevIsHeartFilled) => !prevIsHeartFilled);
+    console.log("click");
+      axios.post(
+        "http://localhost:8008/news/fav/" + !isHeartFilled,
+        {
+          title,description,url,image:src,userId
+        }
+      ).then (res =>{
+        setIsHeartFilled(!isHeartFilled);
+        console.log(res.data)
+      }) 
+      .catch(error => {
+        console.log(error);
+      });
+    
   };
 
   // Event handler for incrementing like count

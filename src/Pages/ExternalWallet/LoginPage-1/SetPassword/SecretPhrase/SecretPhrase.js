@@ -33,7 +33,9 @@ export default function SecretPhrase() {
       console.error("Error fetching words:", error);
     }
   };
+
   function navigateToConfirmSecretPhrase() {
+    console.log(wordString);
     navigate(`/wallet/login/setpassword/secretphrase/confirmsecretphrase?word=${wordString}`);
   }
   
