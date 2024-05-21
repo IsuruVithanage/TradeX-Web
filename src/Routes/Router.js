@@ -18,7 +18,8 @@ import Quiz from "../Pages/Quiz/Quiz";
 //import UserProfileTab from "../Pages/User/UserProfileTab";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
-import Login from "../Pages/Login&Signin/Login"
+import Login from "../Pages/Login&Signin/Login";
+import NewPage from "../Pages/Alert/NewPage";
 
 
 export default function Router({firebase}) {
@@ -99,6 +100,11 @@ export default function Router({firebase}) {
         {
             path: "/verify",
             element: <VerifyUser />,
+        },
+
+        {
+            path: "/new",
+            element: <NewPage />,
         },
     ]);
 

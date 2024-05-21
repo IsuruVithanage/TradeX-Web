@@ -24,7 +24,7 @@ class Firebase {
     }
 
 
-    async requestPermission() {
+    async requestPermission(deniedMessage) {
         let permission = Notification.permission;
 
         return new Promise(async(resolve, reject) => {
@@ -33,19 +33,21 @@ class Firebase {
             }
 
             else if (permission === "denied") {
-                alert("Please allow notifications in your browser settings");
+                if(deniedMessage){
+                    alert("Please allow notifications in your browser settings to use this feature.");
+                }
                 resolve(false);
             }
 
             else{
                 while (permission === "default") {
-                    alert("Please allow notifications in your browser settings");
+                    alert("Please allow notifications to receive Notifications from TradeX.");
                     permission = await Notification.requestPermission();
 
                     if (permission === "granted") {
                         resolve(true);
                     } else if (permission === "denied") {
-                        alert("Please allow notifications in your browser settings");
+                        alert("Notifications Blocked! To receive notifications enable it in your browser settings");
                         resolve(false);
                     }
                 }
@@ -57,7 +59,7 @@ class Firebase {
 
     async getToken() {
         return new Promise(async(resolve, reject) => {
-            await this.requestPermission();
+            await this.requestPermission(false);
 
             getToken(this.messaging, {
                 vapidKey: firebaseConfig.vapidKey,

@@ -10,24 +10,10 @@ export default function LineChart(props) {
 	const [ activeDuration, setActiveDuration ] = useState('');
 	const [ hoverInfo, setHoverInfo ] = useState(null);
 
-
-	const markers = [
-		{
-			time: { year: 2024, month: 4, day: 27 },
-			position: 'aboveBar',
-			color: '#ffbf74',
-			shape: 'arrowDown',
-			text: 'A',
-		},
-	];
-
-
-
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration].data);
 		setActiveDuration(duration);
 	};
-	
 
 
   	const toggleFullScreen = () => {
@@ -153,8 +139,8 @@ export default function LineChart(props) {
 		});
 
 
-		if (props.isSugges) {
-			series.setMarkers(markers);
+		if (props.isSugges && props.markers) {
+			series.setMarkers(props.markers);
 		}
 		
 

@@ -12,6 +12,7 @@ import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
 
+
 export default function FundingWallet() {
     const params = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
     const [ currentWallet, SetCurrentWallet ] = useState(params);
@@ -217,7 +218,7 @@ export default function FundingWallet() {
 
             
             <SidePanelWithContainer 
-                style={{height:"91vh"}}
+                style={{height:"91vh", minHeight: selectedWallet !== 'externalWallet' ? "520px" : "620px"}}
                 header="Transfer"
                 sidePanel = {
                     <div>
@@ -335,7 +336,7 @@ export default function FundingWallet() {
                             navigator.clipboard.writeText(walletAddress);
                             showMessage('info', 'Copied to clipboard..!');
                         }}>
-                            <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress}</span>
+                            <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress || 'Wallet Address Not Found..!'}</span>
                         </div>
 
                         <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
