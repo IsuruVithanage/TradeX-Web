@@ -39,15 +39,48 @@ const CurrencyConverter = () => {
             <div>
                 <Input type="dropdown" label='From' value={fromCurrency} onChange={setFromCurrency}
                        options={[
-                           {value: 'EUR', label: 'EUR - Euro'},
-                           {value: 'USD', label: 'USD - US Dollar'},
-                       ]}
+                        {value: 'USD', label: 'USD - US Dollar'},
+                        {value: 'EUR', label: 'EUR - Euro'},
+                        {value: 'GBP', label: 'GBP - British Pound'},
+                        {value: 'CAD', label: 'CAD - Canadian Dollar'},
+                        {value: 'AUD', label: 'AUD - Australian Dollar'},
+                        {value: 'JPY', label: 'JPY - Japanese Yen'},
+                        {value: 'INR', label: 'INR - Indian Rupee'},
+                        {value: 'NZD', label: 'NZD - New Zealand Dollar'},
+                        {value: 'CHF', label: 'CHF - Swiss Franc'},
+                        {value: 'ZAR', label: 'ZAR - South African Rand'},
+                        {value: 'BGN', label: 'BGN - Bulgarian Lev'},
+                        {value: 'SGD', label: 'SGD - Singapore Dollar'},
+                        {value: 'HKD', label: 'HKD - Hong Kong Dollar'},
+                        {value: 'SEK', label: 'SEK - Swedish Krona'},
+                        {value: 'THB', label: 'THB - Thai Baht'},
+                        {value: 'HUF', label: 'HUF - Hungarian Forint'},
+                        {value: 'CNY', label: 'CNY - Chinese Yuan Renminbi'},
+                        {value: 'NOK', label: 'NOK - Norwegian Krone'},
+                        {value: 'MXN', label: 'MXN - Mexican Peso'},
+                        {value: 'GHS', label: 'GHS - Ghanaian Cedi'},
+                        {value: 'NGN', label: 'NGN - Nigerian Naira'},
+                    ]}
                 />
 
                 <Input type="dropdown" label='To' value={toCurrency} onChange={setToCurrency}
                        options={[
-                           {value: 'ETH', label: 'Ethereum (ETH)'},
-                           {value: 'USDT', label: 'Tether (USDT)'},
+                        {value: 'BTC', label: 'Bitcoin (BTC)'},
+                        {value: 'ETH', label: 'Ethereum (ETH)'},
+                        {value: 'USDT', label: 'Tether (USDT)'},
+                        {value: 'BNB', label: 'Binance Coin (BNB)'},
+                        {value: 'USDC', label: 'USD Coin (USDC)'},
+                        {value: 'XRP', label: 'XRP (XRP)'},
+                        {value: 'BUSD', label: 'Binance USD (BUSD)'},
+                        {value: 'ADA', label: 'Cardano (ADA)'},
+                        {value: 'DOGE', label: 'Dogecoin (DOGE)'},
+                        {value: 'MATIC', label: 'Polygon (MATIC)'},
+                        {value: 'SOL', label: 'Solana (SOL)'},
+                        {value: 'DOT', label: 'Polkadot (DOT)'},
+                        {value: 'SHIB', label: 'Shiba Inu (SHIB)'},
+                        {value: 'LTC', label: 'Litecoin (LTC)'},
+                        {value: 'TRX', label: 'Tron (TRX)'},
+                        {value: 'AVAX', label: 'Avalanche (AVAX)'},
                        ]}
                 />
 

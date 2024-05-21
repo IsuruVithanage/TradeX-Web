@@ -47,6 +47,33 @@ select:focus {
     border-color: #21db9a;
 }
 
+.primary-btn {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    min-width: 0px;
+    width: 50%;
+    cursor: pointer;
+    margin: auto;
+    outline-offset: 4px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition-property: background-color, border-color;
+    transition-duration: 0.3s;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: rgb(255, 255, 255);
+    background-color: #21db9a;
+    border: 2px solid #131314;
+    margin-top: 10%;
+    font-size: 15px;
+}
+
+.primary-btn:hover {
+    background-color: rgb(0, 113, 235);
+    border: 2px solid rgb(0, 113, 235);
+}
 
 #result {
     color: white;
