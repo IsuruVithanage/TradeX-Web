@@ -330,8 +330,8 @@ export default function Suggestions() {
             <SidePanelWithContainer
                 style={{ padding:'20px'}}
                 sidePanel={
-                    <div style={{ maxHeight: '500px', overflow: "hidden auto" }}>
-                        <h1 className="tradeHeader">Suggetion</h1>
+                    <div style={{ height: '500px' }}>
+                        <h1 className="tradeHeader">Suggestion</h1>
 
                         {loading ? (
                             <div style={{ textAlign: 'center', paddingTop: '50px' }}>
