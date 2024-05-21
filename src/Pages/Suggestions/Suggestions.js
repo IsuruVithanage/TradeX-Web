@@ -66,7 +66,7 @@ export default function Suggestions() {
                 high: parseFloat(item[2]),
                 low: parseFloat(item[3]),
                 close: parseFloat(item[4]),
-                time: item[0] / 1000,
+                time: item[0],
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
@@ -234,9 +234,25 @@ export default function Suggestions() {
         return '$ ' + amountString;
     };
 
+    function convertTimestampToDateObject(timestamp) {
+        // Create a new Date object using the timestamp
+        console.log(1715806140000);
+        const date = new Date(1715806140000);
+
+        // Extract the year, month, and day
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1; // getUTCMonth() returns 0-based month, so add 1
+        const day = date.getUTCDate();
+
+        // Return the object
+        console.log({ year, month, day });
+        return { year, month, day };
+    }
+
+
     const markerData = [
         {
-            time: selectedOrder ? selectedOrder.time/1000 : 0,
+            time: selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : 0,
             position: 'aboveBar',
             color: '#ffbf74',
             shape: 'circle',
@@ -260,7 +276,7 @@ export default function Suggestions() {
             const coin = order.coin;
 
             const res = await axios.get(
-                `https://api.binance.com/api/v3/ticker/24hr?symbols=["${symbols[coin].symbol}USDT"]`
+                `https://api.binance.com/api/v3/ticker/24hr?symbols=["${coin}USDT"]`
             );
 
             console.log("suuu",res.data);
@@ -314,8 +330,8 @@ export default function Suggestions() {
             <SidePanelWithContainer
                 style={{ padding:'20px'}}
                 sidePanel={
-                    <div style={{ maxHeight: '500px', overflow: "hidden auto" }}>
-                        <h1 className="tradeHeader">Suggetion</h1>
+                    <div style={{ height: '500px' }}>
+                        <h1 className="tradeHeader">Suggestion</h1>
 
                         {loading ? (
                             <div style={{ textAlign: 'center', paddingTop: '50px' }}>
