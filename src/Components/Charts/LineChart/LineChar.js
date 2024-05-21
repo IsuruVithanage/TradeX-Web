@@ -2,6 +2,8 @@ import { createChart } from 'lightweight-charts';
 import React, { useState, useEffect, useRef } from 'react';
 import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
 import './LineChart.css';
+import { width } from '@mui/system';
+import { set } from 'react-hook-form';
 
 export default function LineChart(props) {
 	let handleResize = useRef(null);
@@ -9,6 +11,9 @@ export default function LineChart(props) {
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
 	const [ hoverInfo, setHoverInfo ] = useState(null);
+	const [ markerTime, setMarkerTime ] = useState(props.markerTime);
+	const [ marker, setMarker ] = useState(null);
+
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration].data);
@@ -22,7 +27,6 @@ export default function LineChart(props) {
 			handleResize.current();
 		}
 	};
-
 
 
 	const timeFormatter = (time, isTimeScale) => {
@@ -51,6 +55,12 @@ export default function LineChart(props) {
 		return new Date(dateValue).toLocaleString('en-GB', options).replace(/\//g, '-'); 
 	};
 
+
+	useEffect(() => {
+		if (props.markerTime !== undefined) {
+			setMarkerTime(props.markerTime);
+		}
+	}, [props.markerTime]);
 
 
 	useEffect(() => {
@@ -125,7 +135,7 @@ export default function LineChart(props) {
 				timeFormatter: time => timeFormatter(time, true),
 			},
 		});
-		
+
 
 		const series = chart.addAreaSeries({
 			color: '#21DB9A', 
@@ -135,7 +145,6 @@ export default function LineChart(props) {
 			lineType: props.lineType === undefined ? 0 : props.lineType,
 			priceLineVisible: false,
 			lastValueVisible: false,
-			lastPriceAnimation: 1,
 		});
 
 
@@ -146,6 +155,24 @@ export default function LineChart(props) {
 
 		handleResize.current = () => {
 			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
+		};
+		
+
+		const initializeMarker = () => {
+			if (!markerTime) {
+				return;
+			} else {
+				setMarker(null);
+				setTimeout(() => {
+					const priceScaleWidth = series.priceScale().width();
+					const x = chart.timeScale().timeToCoordinate(markerTime) + priceScaleWidth;
+					const logical = chart.timeScale().coordinateToLogical(x - priceScaleWidth);
+					const price = series.dataByIndex(Math.abs(logical)).value;
+					const y = series.priceToCoordinate(price) + chart.timeScale().height();
+					
+					setMarker( !x ? null : { x, y});
+				}, 300);
+			}
 		};
 
 
@@ -160,30 +187,55 @@ export default function LineChart(props) {
             if (dataPoint === null) {
 				setHoverInfo(null);
                 return;
-            }
+			}
 
+			const hoverDiv = document.getElementById('hover-div');
+			const chartWidth = chartDiv.clientWidth;
+			const chartHeight = chartDiv.clientHeight;
+			const hoverDivWidth = hoverDiv ? hoverDiv.offsetWidth : 0;
+			const hoverDivHeight = hoverDiv ? hoverDiv.offsetHeight : 0;
+			const midPointX = chartWidth / 2;
+			const midPointY = chartHeight / 2;
 			const coordinateX = chart.timeScale().timeToCoordinate(dataPoint.time) + series.priceScale().width();
 			const coordinateY = series.priceToCoordinate(dataPoint.value) + chart.timeScale().height();
+			let left, top;
+
+			if (coordinateX < midPointX) {
+				left = coordinateX; 
+			} else {
+				left = coordinateX - hoverDivWidth;
+			}
+
+			if (coordinateY < midPointY) {
+				top = coordinateY;
+			} else {
+				top = coordinateY - hoverDivHeight;
+			}
+
+			
 
 			setHoverInfo({
 				date: timeFormatter(dataPoint.time, false),
 				value: dataPoint.value,
-				x: coordinateX,
-				y: coordinateY,
+				x: left,
+				y: top,
 			});	
 		}
 
+		
 		series.setData(chartData);
 		chart.timeScale().fitContent();
+		chart.timeScale().subscribeVisibleLogicalRangeChange(initializeMarker);
 		chart.subscribeCrosshairMove(updateHoverInfo);
 		window.addEventListener('resize', handleResize.current);
 
 		return () => {
 			window.removeEventListener('resize', handleResize.current);
 			chart.unsubscribeCrosshairMove(updateHoverInfo);
+			chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarker);
 			chart.remove();
 		};
-	}, [isFullScreen, chartData] );
+	}, [isFullScreen, chartData, markerTime] );
 
 
 
@@ -210,14 +262,19 @@ export default function LineChart(props) {
 			</div>
 
 
-			
-
 			{ chartData.length === 0 && <p className="empty-message">No data to show</p>}
-			
+
+
 			<div id="chart">
 				{hoverInfo && (
-					<div className="hover-info-div" style={{left: hoverInfo.x, top: hoverInfo.y }}>
-						{hoverInfo.date}
+					<div id='hover-div' className="hover-info-div" style={{left: hoverInfo.x, top: hoverInfo.y}}>
+						<span>{hoverInfo.date}</span><br/>
+					</div>
+				)}
+
+				{marker && (
+					<div className="marker" style={{left: marker.x, top: marker.y }}>
+						
 					</div>
 				)}
 			</div>
