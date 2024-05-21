@@ -94,7 +94,12 @@ export const ChartComponent = (props) => {
             localization: {
                 priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
-            timeScale: { fixLeftEdge: true, borderVisible: false }
+            timeScale: { 
+                fixLeftEdge: true, 
+                borderVisible: false,
+                timeVisible: true,
+                lockVisibleTimeRangeOnResize: true,
+            }
         });
 
         const series = chart.addCandlestickSeries({
