@@ -36,7 +36,7 @@ export default function SecretPhrase() {
 
   function navigateToConfirmSecretPhrase() {
     console.log(wordString);
-    navigate(`/wallet/login/setpassword/secretphrase/confirmsecretphrase?word=iuniuiu`);
+    navigate(`/wallet/login/setpassword/secretphrase/confirmsecretphrase?word=${wordString}`);
   }
   
 
