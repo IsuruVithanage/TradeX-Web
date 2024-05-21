@@ -187,7 +187,7 @@ export default function Suggestions() {
                     </div>
                 </div>
                 
-                <LineChart data={chartData} ></LineChart>
+                <LineChart data={chartData} markerTime={chartData['1M'] ? chartData['1M'].data[100].time : null} ></LineChart>
             </SidePanelWithContainer>
 
         </BasicPage>
