@@ -66,7 +66,7 @@ export const ChartComponent = (props) => {
                 `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1`
             );
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
-            const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+            const latestTime = res.data[res.data.length - 1][0];
             updateLastPrice(latestPrice, latestTime);
             const result = await processData(res.data);
             if (result && result.length > 0) {

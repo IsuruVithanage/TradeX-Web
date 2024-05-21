@@ -68,6 +68,7 @@ export default function LineChart(props) {
 			setChartData(props.data[Object.keys(props.data)[0]].data);
 			setActiveDuration(Object.keys(props.data)[0]);
 		}
+		console.log("testf",props.data);
 	}, [props.data]);
 
 
@@ -139,8 +140,8 @@ export default function LineChart(props) {
 
 		const series = chart.addAreaSeries({
 			color: '#21DB9A',
-			areaTopColor: '#21DB9A',
-            areaBottomColor: '#21DB9A47',
+			topColor: 'rgba(33,219,154,0.16)',
+            bottomColor: 'rgba(41,69,59,0.28)',
 			lineWidth: 2,
 			lineType: props.lineType === undefined ? 0 : props.lineType,
 			priceLineVisible: false,
@@ -156,7 +157,8 @@ export default function LineChart(props) {
 		handleResize.current = () => {
 			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
 		};
-		
+
+
 
 		const initializeMarker = () => {
 			if (!markerTime) {
@@ -165,12 +167,12 @@ export default function LineChart(props) {
 				setMarker(null);
 				setTimeout(() => {
 					const priceScaleWidth = series.priceScale().width();
-					const x = chart.timeScale().timeToCoordinate(markerTime) + priceScaleWidth;
-					const logical = chart.timeScale().coordinateToLogical(x - priceScaleWidth);
+					const x = chart.timeScale().timeToCoordinate(markerTime);
+					const logical = chart.timeScale().coordinateToLogical(x);
 					const price = series.dataByIndex(Math.abs(logical)).value;
 					const y = series.priceToCoordinate(price) + chart.timeScale().height();
 					
-					setMarker( !x ? null : { x, y});
+					setMarker( !x ? null : { x:x+priceScaleWidth, y});
 				}, 300);
 			}
 		};
@@ -241,7 +243,7 @@ export default function LineChart(props) {
 
 
 	return (
-		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
+		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`} style={props.style}>
 			<div className='button-container'>
 				{
 					( props.data && Object.keys(props.data).length > 1  ) &&

@@ -16,7 +16,7 @@
     top: 6%;
     left: 6%;
     max-width: 94%;
-    height: 100vh;
+    height: 100vh !important;
     border-radius: 0;
     z-index: 3;
     background-color: #0E0E0F;
