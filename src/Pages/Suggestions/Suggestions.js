@@ -39,6 +39,7 @@ export default function Suggestions() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const loadOrderHistory = async () => {
@@ -167,62 +168,63 @@ export default function Suggestions() {
         loadOrderHistory();
     }, [type]);
 
-    const processData = async (newData) => {
+    const fetchChartData = async (coin) => {
         try {
-            let seen = new Set();
-            const filteredData = newData.filter((item) => {
-                const date = new Date(item[0] * 1000);
-                const year = 2024;
-                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-                const day = String(date.getUTCDate()).padStart(2, '0');
-                const time = `${year}-${month}-${day}`;
+            setIsLoading(true);
 
-                if (seen.has(time)) {
-                    return false;
-                } else {
-                    seen.add(time);
-                    return true;
-                }
-            });
+            const min = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1m&limit=180`
+            );
 
-            const transformedData = filteredData.map((item) => {
-                const date = new Date(item[0] * 1000);
-                const year = 2024;
-                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-                const day = String(date.getUTCDate()).padStart(2, '0');
+            const hour = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1h&limit=720`
+            );
 
-                return {
-                    time: `${year}-${month}-${day}`,
-                    value: parseFloat(item[4]),
-                };
-            });
+            const day = await axios.get(
+                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1d&limit=365`
+            );
 
-            transformedData.sort((a, b) => a.time.localeCompare(b.time));
-            console.log(transformedData);
+            const timeZone = new Date().getTimezoneOffset() * 60;
+
+            const minData = min.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
+
+            const hourData = hour.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
+
+            const dayData = day.data.map((item) => ({
+                time: (item[0] / 1000) - timeZone,
+                value: parseFloat(item[4]),
+            }));
 
             const result = {
-                Day: {
+                '1M': {
                     showTime: true,
-                    data: transformedData
+                    data: minData
+                },
+
+                '1H': {
+                    showTime: true,
+                    data: hourData
+                },
+
+                '1D': {
+                    showTime: false,
+                    data: dayData
                 }
             };
 
             setTradeData(result);
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
+            setIsLoading(false);
         }
-    };
 
-    const fetchData = async (coinSymbol) => {
-        try {
-            const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${coinSymbol}USDT&interval=1m&limit=1000`
-            );
-            await processData(res.data);
-
-        } catch (error) {
-            console.log(error);
+        catch (error) {
+            console.log('Error fetching data:', error);
+            setIsLoading(false);
         }
     };
 
@@ -237,16 +239,13 @@ export default function Suggestions() {
     function convertTimestampToDateObject(timestamp) {
         // Create a new Date object using the timestamp
         console.log(1715806140000);
-        const date = new Date(1715806140000);
+        const timeZone = new Date().getTimezoneOffset() * 60;
 
-        // Extract the year, month, and day
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth() + 1; // getUTCMonth() returns 0-based month, so add 1
-        const day = date.getUTCDate();
+        const date = (timestamp/1000)-timeZone;
 
         // Return the object
-        console.log({ year, month, day });
-        return { year, month, day };
+        console.log(date);
+        return date;
     }
 
 
@@ -298,7 +297,7 @@ export default function Suggestions() {
             }));
 
             // Fetch data for the selected coin
-            await fetchData(coin);
+            await fetchChartData(coin);
             await fetchAnalyzeData(coin);
             const index = binarySearchByTime(order.time);
             getSurroundingElements(index);
@@ -326,6 +325,7 @@ export default function Suggestions() {
                 titleType: 'primary',
                 title: "Trade Suggestions"
             }}
+            isLoading={isLoading}
         >
             <SidePanelWithContainer
                 style={{ padding:'20px'}}
