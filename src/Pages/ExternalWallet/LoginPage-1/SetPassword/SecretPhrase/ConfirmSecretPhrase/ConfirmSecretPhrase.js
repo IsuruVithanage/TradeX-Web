@@ -9,8 +9,12 @@ export default function ConfirmSecretPhrase() {
     const navigate = useNavigate();
     const { word } = useParams();
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
+    const [words, setWords] = useState([]);
+
 
     useEffect(() => {
+
+        fetchWords();
         // Initialize inputValues state with empty strings
         setInputValues(Array(12).fill(''));
         console.log("word",word  );
@@ -44,6 +48,39 @@ export default function ConfirmSecretPhrase() {
         navigete2('/wallet/login/setpassword/secretphrase');
     }
 
+    const fetchWords = async () => {
+        try {
+          const response = await fetch("http://localhost:8006/seedphrase/getUniqueShuffledWords"); // Replace "/api/words" with your actual endpoint
+          if (!response.ok) {
+            throw new Error("Failed to fetch words");
+          }
+          const data = await response.json();
+          setWords(data.words); // Assuming your API returns an object with a "words" property containing the array of words
+        } catch (error) {
+          console.error("Error fetching words:", error);
+        }
+      };
+
+    function renderWordTable() {
+        const tableRows = [];
+        for (let i = 0; i < words.length; i += 4) {
+          const rowWords = words.slice(i, i + 4);
+          const rowCells = rowWords.map((word, index) => (
+            <td key={index} className="word-cell">
+              {word}
+            </td>
+          ));
+          tableRows.push(
+            <tr key={i / 4} className="word-row">
+              {rowCells}
+            </tr>
+          );
+        }
+        return tableRows;
+      }
+
+      
+
     return (
         <div className='main-background'>
             <Head />
@@ -73,7 +110,9 @@ export default function ConfirmSecretPhrase() {
                 </div>
 
                 <div className='word-box-2'>
-                    <p>Word from URL: {word}</p>
+                <table className="word-table">
+                      <tbody>{renderWordTable()}</tbody>
+                </table>
                 </div>
 
                 <div >
