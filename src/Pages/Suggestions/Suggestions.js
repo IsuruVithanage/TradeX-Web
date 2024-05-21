@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
-import Table, { Coin, TableRow } from "../../Components/Table/Table";
+import Table, {Coin, TableRow} from "../../Components/Table/Table";
 import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import './Suggstions.css';
-import { Spin, Button } from "antd";
+import {Spin, Button} from "antd";
 import symbols from "../../Assets/Images/Coin Images.json";
 
 export default function Suggestions() {
     const Tabs = [
-        { label: "Suggestions", path: "/suggestion" },
+        {label: "Suggestions", path: "/suggestion"},
     ];
 
     const [coinData, setCoinData] = useState({
@@ -176,13 +176,6 @@ export default function Suggestions() {
                 `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1m&limit=180`
             );
 
-            const hour = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1h&limit=720`
-            );
-
-            const day = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1d&limit=365`
-            );
 
             const timeZone = new Date().getTimezoneOffset() * 60;
 
@@ -191,15 +184,6 @@ export default function Suggestions() {
                 value: parseFloat(item[4]),
             }));
 
-            const hourData = hour.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
-                value: parseFloat(item[4]),
-            }));
-
-            const dayData = day.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
-                value: parseFloat(item[4]),
-            }));
 
             const result = {
                 '1M': {
@@ -207,22 +191,11 @@ export default function Suggestions() {
                     data: minData
                 },
 
-                '1H': {
-                    showTime: true,
-                    data: hourData
-                },
-
-                '1D': {
-                    showTime: false,
-                    data: dayData
-                }
             };
 
             setTradeData(result);
             setIsLoading(false);
-        }
-
-        catch (error) {
+        } catch (error) {
             console.log('Error fetching data:', error);
             setIsLoading(false);
         }
@@ -241,7 +214,7 @@ export default function Suggestions() {
         console.log(1715806140000);
         const timeZone = new Date().getTimezoneOffset() * 60;
 
-        const date = (timestamp/1000)-timeZone;
+        const date = (timestamp / 1000) - timeZone;
 
         // Return the object
         console.log(date);
@@ -249,26 +222,10 @@ export default function Suggestions() {
     }
 
 
-    const markerData = [
-        {
-            time: selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : 0,
-            position: 'aboveBar',
-            color: '#ffbf74',
-            shape: 'circle',
-            text: 'A',
-        },
-        {
-            time: { year: 2024, month: 5, day: 15 },
-            position: 'belowBar',
-            color: '#ff5733',
-            shape: 'circle',
-            text: 'B',
-        },
-    ];
-
     const handleRowClick = async (order) => {
         try {
             setSelectedOrder(order);
+            console.log("Order", order);
             setSuggestion(null);
             setLoading(true);
             setError(false);
@@ -278,7 +235,7 @@ export default function Suggestions() {
                 `https://api.binance.com/api/v3/ticker/24hr?symbols=["${coin}USDT"]`
             );
 
-            console.log("suuu",res.data);
+            console.log("suuu", res.data);
 
             setCoinData((prevData) => ({
                 ...prevData,
@@ -328,23 +285,25 @@ export default function Suggestions() {
             isLoading={isLoading}
         >
             <SidePanelWithContainer
-                style={{ padding:'20px'}}
+
+                header={'Suggestions'}
                 sidePanel={
-                    <div style={{ height: '500px' }}>
-                        <h1 className="tradeHeader">Suggestion</h1>
+
+                    <div style={{height: '91vh', overflowY: 'auto'}}>
+
 
                         {loading ? (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
-                                <Spin size="large" />
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
+                                <Spin size="large"/>
                             </div>
                         ) : error ? (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
                                 <p>Error fetching suggestions. Please try again.</p>
                                 <Button onClick={getSuggestions}>Try Again</Button>
                             </div>
                         ) : suggestion ? (
                             <div>
-                                <div style={{ display: 'flex' }}>
+                                <div style={{display: 'flex'}}>
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data' style={{
@@ -365,7 +324,7 @@ export default function Suggestions() {
                                     <p className='s-lables'>Suggestions</p>
                                     <ul className='s-data'>
                                         {suggestion.suggestions.split('\n').map((item, index) => (
-                                            <li key={index}>{item}</li>
+                                            <li key={index} style={{marginBottom:'10px'}}>{item}</li>
                                         ))}
                                     </ul>
                                 </div>
@@ -373,13 +332,13 @@ export default function Suggestions() {
                                     <p className='s-lables'>Advices</p>
                                     <ul className='s-data'>
                                         {suggestion.advices.split('\n').map((item, index) => (
-                                            <li key={index}>{item}</li>
+                                            <li key={index} style={{marginBottom: '10px'}}>{item}</li>
                                         ))}
                                     </ul>
                                 </div>
                             </div>
                         ) : (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
                                 <p>No suggestions available.</p>
                             </div>
                         )}
@@ -389,7 +348,7 @@ export default function Suggestions() {
                 <div className='coinDiv'>
                     <div className='coin-logo'>
                         <div className='coin-logo coinimg'>
-                            <img src={coinData.image} alt="" />
+                            <img src={coinData.image} alt=""/>
                             <p>{coinData.name}</p>
                         </div>
                     </div>
@@ -400,7 +359,7 @@ export default function Suggestions() {
                         </div>
                         <div className='cdata'>
                             <h1>24h Price Change</h1>
-                            <p style={{ color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000" }}>{coinData.priceChange} %</p>
+                            <p style={{color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{coinData.priceChange} %</p>
                         </div>
                         <div className='cdata'>
                             <h1>Market Cap</h1>
@@ -408,42 +367,49 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <LineChart data={tradeData} markers={markerData} isSugges={true}></LineChart>
+
+                <LineChart data={tradeData}
+                           markerTime={selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : null}
+                           isSugges={true} style={{height: '35rem', flex: 'none'}}></LineChart>
+
+
+                <Table style={{marginTop: '1vh'}} hover={true}>
+                    <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>
+                        <div style={{width: '10rem'}}>
+                            <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
+                        </div>
+                    </div>
+
+                    <TableRow data={[
+                        'Coin',
+                        'Date',
+                        'Type',
+                        'Category',
+                        'Price',
+                        'Quantity',
+                        'Total Price',
+                    ]}/>
+
+                    {orderHistory.map(order => (
+                        <TableRow
+                            key={order.id} // Ensure each row has a unique key
+                            data={[
+                                <Coin>{order.coin}</Coin>,
+                                new Date(order.date).toLocaleDateString(),
+                                order.type,
+                                order.price,
+                                order.category,
+                                order.quantity,
+                                order.totalPrice,
+                            ]}
+                            onClick={() => handleRowClick(order)}
+                        />
+                    ))}
+                </Table>
+
             </SidePanelWithContainer>
 
-            <Table style={{ marginTop: '1vh' }} hover={true}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                    <div style={{ width: '10rem' }}>
-                        <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType} />
-                    </div>
-                </div>
 
-                <TableRow data={[
-                    'Coin',
-                    'Date',
-                    'Type',
-                    'Category',
-                    'Price',
-                    'Quantity',
-                    'Total Price',
-                ]} />
-
-                {orderHistory.map(order => (
-                    <TableRow
-                        key={order.id} // Ensure each row has a unique key
-                        data={[
-                            <Coin>{order.coin}</Coin>,
-                            new Date(order.date).toLocaleDateString(),
-                            order.type,
-                            order.price,
-                            order.category,
-                            order.quantity,
-                            order.totalPrice,
-                        ]}
-                        onClick={() => handleRowClick(order)}
-                    />
-                ))}
-            </Table>
         </BasicPage>
     );
 }
