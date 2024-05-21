@@ -9,6 +9,7 @@ export default function LineChart(props) {
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
 	const [ hoverInfo, setHoverInfo ] = useState(null);
+	const [ markerInfo, setMarkerInfo ] = useState(null);
 
 	const updateChartData = (duration) => {
 		setChartData(props.data[duration].data);
@@ -29,7 +30,7 @@ export default function LineChart(props) {
 		const dateValue = (typeof(time) !== 'number') ? time :
 		time * 1000 + new Date().getTimezoneOffset() * 60 * 1000;
 
-		const options = (isTimeScale) ? 
+		const options = (isTimeScale) ?
 		(!props.data[activeDuration].showTime) ? {
 			dateStyle: "medium"
 
@@ -45,10 +46,10 @@ export default function LineChart(props) {
 			dateStyle: "long",
 			hourCycle: "h12",
 			timeStyle: "short",
-			
+
 		};
 
-		return new Date(dateValue).toLocaleString('en-GB', options).replace(/\//g, '-'); 
+		return new Date(dateValue).toLocaleString('en-GB', options).replace(/\//g, '-');
 	};
 
 
@@ -60,7 +61,7 @@ export default function LineChart(props) {
 		}
 	}, [props.data]);
 
-	
+
 
 	useEffect(() => {
 		const chartDiv = document.getElementById('chart');
@@ -70,7 +71,7 @@ export default function LineChart(props) {
 			height: chartDiv.clientHeight,
 
 			handleScale: {
-				mouseWheel: isFullScreen,	
+				mouseWheel: isFullScreen,
 			},
 
 			crosshair: {
@@ -115,8 +116,8 @@ export default function LineChart(props) {
 			},
 
 			layout: {
-				background: { 
-					color: '#0E0E0F' 
+				background: {
+					color: '#0E0E0F'
 				},
 			},
 
@@ -125,10 +126,10 @@ export default function LineChart(props) {
 				timeFormatter: time => timeFormatter(time, true),
 			},
 		});
-		
+
 
 		const series = chart.addAreaSeries({
-			color: '#21DB9A', 
+			color: '#21DB9A',
 			areaTopColor: '#21DB9A',
             areaBottomColor: '#21DB9A47',
 			lineWidth: 2,
@@ -142,7 +143,7 @@ export default function LineChart(props) {
 		if (props.isSugges && props.markers) {
 			series.setMarkers(props.markers);
 		}
-		
+
 
 		handleResize.current = () => {
 			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
@@ -156,7 +157,7 @@ export default function LineChart(props) {
             }
 
 			const dataPoint = param.seriesData.values().next().value;
-			
+
             if (dataPoint === null) {
 				setHoverInfo(null);
                 return;
@@ -170,7 +171,9 @@ export default function LineChart(props) {
 				value: dataPoint.value,
 				x: coordinateX,
 				y: coordinateY,
-			});	
+			});
+
+
 		}
 
 		series.setData(chartData);
@@ -187,20 +190,21 @@ export default function LineChart(props) {
 
 
 
+
 	return (
 		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
 			<div className='button-container'>
-				{ 	 
-					( props.data && Object.keys(props.data).length > 1  ) && 
+				{
+					( props.data && Object.keys(props.data).length > 1  ) &&
 					( Object.keys(props.data).map((duration, index) => (
-						<button 
+						<button
 							key={index}
-							onClick={() => updateChartData(duration)} 
+							onClick={() => updateChartData(duration)}
 							className={`duration-button ${activeDuration === duration ? "active" : ""}`}>
 							{duration}
 						</button>
 					)))
-				}	
+				}
 
 				<span
 					onClick={ toggleFullScreen }
@@ -210,14 +214,20 @@ export default function LineChart(props) {
 			</div>
 
 
-			
+
 
 			{ chartData.length === 0 && <p className="empty-message">No data to show</p>}
-			
+
 			<div id="chart">
 				{hoverInfo && (
 					<div className="hover-info-div" style={{left: hoverInfo.x, top: hoverInfo.y }}>
 						{hoverInfo.date}
+					</div>
+				)}
+
+				{markerInfo && (
+					<div className="hover-info-div" style={{left: markerInfo.x, top: markerInfo.y }}>
+						{markerInfo.date}
 					</div>
 				)}
 			</div>
