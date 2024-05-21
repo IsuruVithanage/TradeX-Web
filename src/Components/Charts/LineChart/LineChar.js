@@ -277,11 +277,6 @@ export default function LineChart(props) {
 					</div>
 				)}
 
-				{markerInfo && (
-					<div className="hover-info-div" style={{left: markerInfo.x, top: markerInfo.y }}>
-						{markerInfo.date}
-					</div>
-				)}
 			</div>
 
 		</div>
