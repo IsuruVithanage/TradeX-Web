@@ -55,10 +55,6 @@ export default function Suggestions() {
         }
     };
 
-    useEffect(() => {
-        console.log("Analyze Data", analyzeData);
-    }, [analyzeData]);
-
 
     const processAnalyzeData = async (newData) => {
         try {
@@ -168,12 +164,12 @@ export default function Suggestions() {
         loadOrderHistory();
     }, [type]);
 
-    const fetchChartData = async (coin) => {
+    const fetchChartData = async (startTime,endTime,coin) => {
         try {
             setIsLoading(true);
 
             const min = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1m&limit=180`
+                `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1m&startTime=${startTime}&endTime=${endTime}&limit=500`
             );
 
 
@@ -253,8 +249,12 @@ export default function Suggestions() {
                 tradePrice: order.price
             }));
 
+            const orderTime = new Date(order.time/1);
+            const threeHoursBefore = orderTime.getTime() - 3 * 60 * 60 * 1000;
+            const threeHoursAfter = orderTime.getTime() + 3 * 60 * 60 * 1000;
+
             // Fetch data for the selected coin
-            await fetchChartData(coin);
+            await fetchChartData(threeHoursBefore,threeHoursAfter,coin);
             await fetchAnalyzeData(coin);
             const index = binarySearchByTime(order.time);
             getSurroundingElements(index);
@@ -298,8 +298,8 @@ export default function Suggestions() {
                             </div>
                         ) : error ? (
                             <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                                <p>Error fetching suggestions. Please try again.</p>
-                                <Button onClick={getSuggestions}>Try Again</Button>
+                                <p className='error-message'>Something wend wrong. Please try again.</p>
+                                <Input type="button" value='Try Again'  onClick={getSuggestions} style={{width:'150px'}}/>
                             </div>
                         ) : suggestion ? (
                             <div>
@@ -309,14 +309,16 @@ export default function Suggestions() {
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: '#21DB9A',
-                                            marginRight: '0.5rem'
+                                            marginRight: '0.5rem',
+                                            fontWeight: 'bold'
                                         }}>{formatCurrency(suggestion.bestPrice)}</p>
                                     </div>
                                     <div>
                                         <p className='s-lables'>Profit</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
-                                            color: 'red'
+                                            color: 'red',
+                                            fontWeight: 'bold'
                                         }}>{formatCurrency(suggestion.profitFromBestPrice)}</p>
                                     </div>
                                 </div>
