@@ -173,34 +173,6 @@ export default function TradingPlatform({firebase}) {
         }
     }
 
-    /*useEffect(() => {
-        const ws = new WebSocket('wss://stream.binance.com:443/ws/btcusdt@kline_1s');
-
-        ws.onopen = () => {
-            console.log('Connected to WebSocket');
-        };
-
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            const candlestickData = {
-                openTime: (data.k.t)/1000,
-                open: parseFloat(data.k.o),
-                high: parseFloat(data.k.h),
-                low: parseFloat(data.k.l),
-                close: parseFloat(data.k.c),
-            };
-            console.log(candlestickData);
-        };
-
-        ws.onerror = (error) => {
-            console.error('WebSocket error: ', error);
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);*/
-
 
     const setOrderCatagory = (value) => {
         setOrder(prevOrder => ({
@@ -399,31 +371,33 @@ export default function TradingPlatform({firebase}) {
     useEffect(() => {
         if (order.type === 'Buy') {
             const value = (walletBalance * (balancePr / 100));
-            const quantity = value / order.price;
+            let quantity = value / order.price;
             if (balancePr !== 0) {
                 setIsError(null);
+                quantity=parseFloat(quantity.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: quantity
                 }));
                 setOrder(prevOrder => ({
                     ...prevOrder,
-                    total: quantity * order.price
+                    total: parseFloat((quantity * order.price).toFixed(4))
                 }));
 
                 setIsButtonSet(false);
             }
         } else if (order.type === 'Sell') {
-            const value = (walletBalance * (balancePr / 100));
+            let value = (walletBalance * (balancePr / 100));
             if (balancePr !== 0) {
                 setIsError(null);
+                value=parseFloat(value.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: value
                 }));
                 setOrder(prevOrder => ({
                     ...prevOrder,
-                    total: value * order.price
+                    total: parseFloat((value * order.price).toFixed(4))
                 }));
 
                 setIsButtonSet(false);
