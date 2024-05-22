@@ -15,10 +15,9 @@ import Alert from "../Pages/Alert/Alert";
 import Suggestions from "../Pages/Suggestions/Suggestions";
 import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
-//import UserProfileTab from "../Pages/User/UserProfileTab";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
-import Login from "../Pages/Login&Signin/Login"
+import Login from "../Pages/Login&Signin/Login";
 
 
 export default function Router({firebase}) {
@@ -26,6 +25,7 @@ export default function Router({firebase}) {
         {
             path: "/",
             element: <Login />,
+            errorElement: <App />,
         },
         {
             path: "/signup",
@@ -34,7 +34,6 @@ export default function Router({firebase}) {
         {
             path: "/home",
             element: <App />,
-            errorElement: <App />,
         },
         {
             path: "/admin/*",

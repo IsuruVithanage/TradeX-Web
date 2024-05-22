@@ -1,3 +1,4 @@
+import { borderBottom, borderBottomColor, borderTop } from '@mui/system';
 import Select from 'react-select';
 
 export default function Dropdown (props) {
@@ -24,15 +25,15 @@ export default function Dropdown (props) {
 
         menu: (provided) => ({
             ...provided,
-            backgroundColor: '#1e1e1f',
+            backgroundColor: '#151516',
             borderRadius: '10px',
         }),
 
         menuList: (provided) => ({
             ...provided,
-            maxHeight: '145px',
-            border: '3px solid #3C3C3C',
-            borderRadius: '10px',
+            maxHeight: '232px',
+            border: '4px solid #3C3C3C',
+            borderRadius: '13px',
             '::-webkit-scrollbar' : {
                 width: '2px'
               },
@@ -53,11 +54,11 @@ export default function Dropdown (props) {
             fontFamily: 'Inter, sans-serif',
             fontWeight: '500',
             fontSize: '16px',
-            borderRadius: '8px',
-            backgroundColor: state.isSelected ? '#1e1e1f' : null,
-            color: state.isSelected ? '#21DB9A' : '#9E9E9E',
+            borderTop: '1px solid #3c3c3c',
+            backgroundColor: '#151516',
+            color: state.isSelected ? '#21DB9A' : '#ababab',
             ':hover': {
-                backgroundColor: '#1e1e1f',
+                backgroundColor: '#151516',
                 color: '#ffffff',
             },
         }),

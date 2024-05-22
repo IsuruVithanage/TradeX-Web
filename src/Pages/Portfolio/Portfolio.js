@@ -21,17 +21,18 @@ export default function Portfolio() {
 
   useEffect(() => {
     setIsLoading(true);
+
     axios
-        .get(
-            backendApiEndpoint,
-            {
-                params: {
-                    userId: userId
-                }
-            }
-        )
+        .get( backendApiEndpoint, { 
+            params: { 
+                userId,
+                timezoneOffset: new Date().getTimezoneOffset()
+            } 
+        })
+        
 
         .then(res => {
+            console.log("data", res.data);
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);
             setInitialData(res.data.historyData);
@@ -52,7 +53,7 @@ export default function Portfolio() {
         });
 
   }, []);
-
+  
 
   return (
     <BasicPage 
@@ -71,7 +72,7 @@ export default function Portfolio() {
             header="Composition" 
             sidePanel = { <BarChart bars={ percentages }/> }>
                 <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
-                <LineChart data={initialData}></LineChart>
+                <LineChart data={initialData} lineType={2}></LineChart>
         </SidePanelWithContainer>
           
         <Table style={{marginTop:'1vh'}} emptyMessage="No Assets to show">

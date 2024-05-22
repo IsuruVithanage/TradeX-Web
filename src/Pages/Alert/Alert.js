@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
-const userId = 1;
 
 
 
@@ -26,12 +26,12 @@ export default function Alert({firebase}) {
     const [isLoading, setIsLoading] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
     const selectedPageRef = useRef(selectedPage);
-
+    const userId = useSelector(state => state.user.user.id);
 
     
     useEffect(() => {
         firebase.updateRegister(setIsRegistered);
-        firebase.requestPermission();
+        firebase.requestPermission(true);
     }, [firebase]);
 
 
@@ -91,7 +91,7 @@ export default function Alert({firebase}) {
 
 
     const openAlertSetterModel = async (editAlertNo) => {
-        const permission = await firebase.requestPermission();
+        const permission = await firebase.requestPermission(true);
         
         if(permission) {
             if (!editAlertNo) {

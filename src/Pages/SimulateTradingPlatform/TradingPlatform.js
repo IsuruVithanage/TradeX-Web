@@ -6,11 +6,13 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
+import TestChart from "./TestChart"
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
+import BuyButton from "../../Components/Input/Button/BuyButton";
 
 export default function TradingPlatform({firebase}) {
     const user = useSelector(state => state.user);
@@ -29,6 +31,7 @@ export default function TradingPlatform({firebase}) {
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
+    const [latestTime, setLatestTime] = useState(0);
     const [walletBalance, setWalletBalance] = useState(0);
     const [balanceSymble, setBalanceSymble] = useState('$');
     const [balancePr, setBalancePr] = useState(0);
@@ -50,11 +53,11 @@ export default function TradingPlatform({firebase}) {
         price: 0,
         quantity: 0,
         total: 0,
+        time: 0,
         orderStatus: ''
     });
 
     useEffect(() => {
-        // Load state from localStorage when component mounts
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
@@ -63,9 +66,7 @@ export default function TradingPlatform({firebase}) {
             handleCoinSelection(parsedState.selectedCoin);
             setOrderCatagory(parsedState.selectedType);
             setSelectedType(parsedState.selectedType);
-            // Set other states as needed...
         } else {
-            // If no saved state found, initialize with default values
             setOrder({
                 userId: user.id,
                 type: 'Buy',
@@ -75,10 +76,10 @@ export default function TradingPlatform({firebase}) {
                 price: 0,
                 quantity: 0,
                 total: 0,
+                time: 0,
                 orderStatus: ''
             });
             setLimitOrder([]);
-            // Initialize other states with default values...
         }
     }, []);
 
@@ -108,7 +109,7 @@ export default function TradingPlatform({firebase}) {
     };
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080');
+        const ws = new WebSocket('ws://localhost:8081');
 
         ws.onopen = () => {
             console.log('WebSocket connection established');
@@ -167,6 +168,7 @@ export default function TradingPlatform({firebase}) {
             type: order.type,
             category: order.category,
             totalPrice: order.total,
+            time: order.category !== 'Market' ? 0 : latestTime,
             orderStatus: order.category === 'Market' ? 'Completed' : 'Pending'
         }
     }
@@ -232,8 +234,9 @@ export default function TradingPlatform({firebase}) {
         }
     };
 
-    const updateLastPrice = (newValue) => {
-        setLatestPrice(newValue);
+    const updateLastPrice = (price, time) => {
+        setLatestPrice(price);
+        setLatestTime(time);
     };
 
     useEffect(() => {
@@ -314,7 +317,7 @@ export default function TradingPlatform({firebase}) {
         if (walletBalance < order.total && order.type === 'Buy') {
             showMessage('Error', 'Wallet balance is insufficient!');
             return;
-        }else if (walletBalance < order.quantity && order.type === 'Sell') {
+        } else if (walletBalance < order.quantity && order.type === 'Sell') {
             showMessage('Error', 'Wallet balance is insufficient!');
             return;
         }
@@ -324,7 +327,6 @@ export default function TradingPlatform({firebase}) {
             coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
             price: order.price,
-            purchasePrice: order.price,
             category: order.category,
             type: order.type
         }
@@ -342,7 +344,7 @@ export default function TradingPlatform({firebase}) {
         setIsLoading(false);
 
 
-        fetch('http://localhost:8011/portfolio/asset/add', {
+        fetch('http://localhost:8011/portfolio/asset/trade', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -351,7 +353,12 @@ export default function TradingPlatform({firebase}) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log('gvgh', data);
+                if (order.type === 'Buy') {
+                    setWalletBalance(data[0].balance);
+                } else {
+                    setWalletBalance(data[1].balance);
+                }
 
                 return fetch('http://localhost:8005/order', {
                     method: 'POST',
@@ -366,7 +373,10 @@ export default function TradingPlatform({firebase}) {
                     setIsLoading(true);
                     showMessage('success', 'The order has been placed successfully!');
                     getWalletBalance();
-                    fetchLimitOrders(selectedCoin.symbol);
+                    if (order.category === 'Limit') {
+                        fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                    }
+                    //fetchLimitOrders(selectedCoin.symbol);
                 } else {
                     console.error('Failed to save order:', response);
                 }
@@ -380,11 +390,11 @@ export default function TradingPlatform({firebase}) {
         if (order.total > walletBalance && order.type === 'Buy') {
             setIsButtonSet(true);
             setIsError('Wallet balance is insufficient!');
-        }else if (order.quantity > walletBalance && order.type === 'Sell') {
+        } else if (order.quantity > walletBalance && order.type === 'Sell') {
             setIsButtonSet(true);
             setIsError('Wallet balance is insufficient!');
         }
-    }, [order.total,order.price,order.quantity]);
+    }, [order.total, order.price, order.quantity]);
 
     useEffect(() => {
         if (order.type === 'Buy') {
@@ -483,8 +493,10 @@ export default function TradingPlatform({firebase}) {
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
 
-                        <Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
-                               onClick={saveOrder}/>
+                        {/*<Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
+                               onClick={saveOrder}/>*/}
+                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet} title={'Confirm Order'}
+                                      message={`Are you sure to place this Order`}/>
                         <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
@@ -516,7 +528,7 @@ export default function TradingPlatform({firebase}) {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} orderId={order.orderId} title={'Cancel the order'}
+                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId} title={'Cancel the order'}
                                           message={`Are you sure to cancel this Order`}/>
                         ]}
                     />

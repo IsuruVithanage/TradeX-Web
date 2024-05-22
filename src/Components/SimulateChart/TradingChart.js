@@ -1,30 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './TradingChart.css';
-import {ColorType, createChart} from 'lightweight-charts';
+import { ColorType, createChart } from 'lightweight-charts';
 import axios from 'axios';
+import symbols from "../../Assets/Images/Coin Images.json";
 
 export const ChartComponent = (props) => {
     const [activeDuration, setActiveDuration] = useState('1m');
-    const [chartInstance, setChartInstance] = useState(null);
     const chartContainerRef = useRef(null);
-    const [updatedData, setUpdatedData] = useState({
-        open: 0,
-        high: 0,
-        low: 0,
-        close: 0,
-        time: 0,
-    });
-
-    let i=400;
-
-    const [temp, setTemp] = useState({
-        open: 69456.45-i,
-        high: 69888.65-i,
-        low: 69233.33-i,
-        close: 69784.55-i,
-        time: 177488578499+i,
-    });
-
+    const chartInstanceRef = useRef(null);
+    const seriesRef = useRef(null);
+    const updateIntervalRef = useRef(null);
+    const [tradeData, setTradeData] = useState([]);
 
     const {
         selectedCoin,
@@ -50,135 +36,75 @@ export const ChartComponent = (props) => {
             }));
 
             transformedData.sort((a, b) => a.time - b.time);
-            console.log("this",transformedData)
 
+            setTradeData(transformedData);
             return transformedData;
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error processing data:', error);
         }
     };
 
     const fetchData = async () => {
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1000`
             );
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
-            updateLastPrice(latestPrice);
-            return processData(res.data);
+            const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+            updateLastPrice(latestPrice, latestTime);
+
+            const data = await processData(res.data);
+            setTradeData(data);
+            return data;
         } catch (error) {
-            console.log(error);
+            console.error('Error fetching historical data:', error);
         }
     };
 
     const updateData = async () => {
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1`
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1`
             );
-            const result= processData(res.data);
-            result.then((resultArray) => {
-                console.log("result",resultArray[0])
-                return resultArray[0];
-            });
+            const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
+            const latestTime = res.data[res.data.length - 1][0];
+            updateLastPrice(latestPrice, latestTime);
+            const result = await processData(res.data);
+            if (result && result.length > 0) {
+                const latestData = result[0];
+                seriesRef.current.update(latestData);
+            }
         } catch (error) {
-            console.log(error);
+            console.error('Error updating real-time data:', error);
         }
     };
 
-    /*useEffect(() => {
-        const ws = new WebSocket(`wss://stream.binance.com:443/ws/btcusdt@kline_1s`);
-
-        ws.onopen = () => {
-            console.log('Connected to WebSocket');
-        };
-
-        ws.onmessage = async (event) => {
-            const data = JSON.parse(event.data);
-            const time = (data.k.t) / 1000;
-            setUpdatedData(prevOrder => ({
-                ...prevOrder,
-                time: time,
-                open: parseFloat(data.k.o),
-                high: parseFloat(data.k.h),
-                low: parseFloat(data.k.l),
-                close: parseFloat(data.k.c),
-            }));
-
-            const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=1m&limit=1`
-            );
-
-            const result = await processData(res.data);
-            console.log("re",result)
-
-
-            setTemp(prevOrder => ({
-                ...prevOrder,
-                open: result[0].open,
-                high: result[0].high,
-                low: result[0].low,
-                close: result[0].close,
-                time: result[0].time,
-            }));
-        };
-
-        ws.onerror = (error) => {
-            console.error('WebSocket error: ', error);
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);
-
     useEffect(() => {
-        console.log(temp);
-    }, [updatedData]);*/
-
-
-    const initializeChart = async () => {
-        if (chartInstance) {
-            chartInstance.remove();
-        }
-
         const chart = createChart(chartContainerRef.current, {
+            width: chartContainerRef.current.offsetWidth,
+            height: chartContainerRef.current.offsetHeight,
             layout: {
                 background: { type: ColorType.Solid, color: backgroundColor },
                 textColor,
             },
-            width: chartContainerRef.current.clientWidth,
-            height: chartContainerRef.current.clientHeight,
             grid: {
-                vertLines: {
-                    visible: false,
-                },
-                horzLines: {
-                    color: "#3C3C3C",
-                },
+                vertLines: { visible: false },
+                horzLines: { color: "#3C3C3C" },
             },
-            rightPriceScale: {
-                borderVisible: false,
-                textColor: "#AAA",
-            },
+            rightPriceScale: { borderVisible: false, textColor: "#AAA" },
             localization: {
                 priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
             timeScale: {
                 fixLeftEdge: true,
                 borderVisible: false,
+                timeVisible: true,
+                lockVisibleTimeRangeOnResize: true,
+                visible: false,
             }
         });
 
-        chart.timeScale().fitContent();
-
-        const newSeries = chart.addCandlestickSeries({
+        const series = chart.addCandlestickSeries({
             upColor,
             downColor,
             borderVisible: false,
@@ -186,54 +112,109 @@ export const ChartComponent = (props) => {
             wickDownColor
         });
 
-        newSeries.setData(await fetchData());
+        const toolTipWidth = 150;
+        const toolTipHeight = 80;
+        const toolTipMargin = 15;
 
+        const container = chartContainerRef.current;
 
+        if (container) {
+            // Create and style the tooltip html element
+            const toolTip = document.createElement('div');
+            toolTip.style = `width: 150px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 10px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+            toolTip.style.background = 'black';
+            toolTip.style.color = 'white';
+            toolTip.style.borderColor = '#21DB9A';
+            container.appendChild(toolTip);
 
-        // Set interval to fetch and update data every 5 seconds
-       /* const intervalId = setInterval(async () => {
-            newSeries.update(await updateData());
-        }, 1000);*/
+            chart.subscribeCrosshairMove(param => {
+                if (
+                    param.point === undefined ||
+                    !param.time ||
+                    param.point.x < 0 ||
+                    param.point.x > container.clientWidth ||
+                    param.point.y < 0 ||
+                    param.point.y > container.clientHeight
+                ) {
+                    toolTip.style.display = 'none';
+                } else {
+                    const dateStr = new Date(param.time * 1000); // Convert to milliseconds
+                    const formattedDate = new Intl.DateTimeFormat('en-US', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    }).format(dateStr);
 
-        setChartInstance(chart);
+                    toolTip.style.display = 'block';
+                    const data = param.seriesData.get(series);
+                    const price = data.value !== undefined ? data.value : data.close;
+                    const formattedPrice = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(price);
+                    toolTip.innerHTML = `<div style="color: ${'#21DB9A'}">${symbols[selectedCoin.symbol].name}</div><div style="font-size: 20px; margin: 4px 0px; color: ${'white'}">
+                    ${formattedPrice}
+                    </div><div style="color: ${'white'}">
+                    ${formattedDate}
+                    </div>`;
 
-        return () => {
-            //clearInterval(intervalId);
-            if (chart) {
-                chart.remove();
-            }
-        };
-    };
+                    const y = param.point.y;
+                    let left = param.point.x + toolTipMargin;
+                    if (left > container.clientWidth - toolTipWidth) {
+                        left = param.point.x - toolTipMargin - toolTipWidth;
+                    }
 
-    useEffect(() => {
-        if (selectedCoin) {
-            initializeChart();
+                    let top = y + toolTipMargin;
+                    if (top > container.clientHeight - toolTipHeight) {
+                        top = y - toolTipHeight - toolTipMargin;
+                    }
+                    toolTip.style.left = left + 'px';
+                    toolTip.style.top = top + 'px';
+                }
+            });
         }
 
+        chartInstanceRef.current = chart;
+        seriesRef.current = series;
+
+        fetchData().then((data) => {
+            if (data && data.length > 0) {
+                series.setData(data);
+                chart.timeScale().fitContent();
+            }
+        });
+
+        updateIntervalRef.current = setInterval(updateData, 60000); // Update every 1 minute
+
+        return () => {
+            clearInterval(updateIntervalRef.current);
+            chart.remove();
+        };
     }, [selectedCoin]);
 
     const updateChartDuration = async (duration) => {
         setActiveDuration(duration);
         let interval = '1m';
-        if (duration === '1m') {
-            interval = '1m';
-        } else if (duration === '1d') {
+        if (duration === '1d') {
             interval = '1d';
         } else if (duration === '1w') {
             interval = '1w';
         }
         try {
             const res = await axios.get(
-                `https://api.binance.com/api/v3/klines?symbol=${
-                    selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()
-                }USDT&interval=${interval}&limit=1000`
+                `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${interval}&limit=1000`
             );
             const data = await processData(res.data);
-            if (chartInstance && !chartInstance.isDisposed()) {
-                chartInstance.series.setData(data);
+            if (chartInstanceRef.current) {
+                seriesRef.current.setData(data);
             }
         } catch (error) {
-            console.log(error);
+            console.error('Error updating chart duration:', error);
         }
     };
 
