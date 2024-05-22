@@ -83,6 +83,7 @@ export default function LineChart(props) {
 
 
 	useEffect(() => {
+		setSuggesmarker(null);
 		const chartDiv = document.getElementById('chart');
 
 		const chart = createChart(chartDiv, {
