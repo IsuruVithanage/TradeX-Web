@@ -86,6 +86,7 @@ export default function Suggestions() {
                 ...prevData,
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
+                quantity:order.quantity,
                 tradingData: transformedData.slice(0, 10)
             }));
         } catch (error) {
@@ -319,6 +320,7 @@ export default function Suggestions() {
 
 
                 <LineChart data={tradeData}
+                           suggestion={suggestion ? suggestion : null}
                            markerTime={selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : null}
                            isSugges={true} style={{height: '35rem', flex: 'none'}}></LineChart>
 

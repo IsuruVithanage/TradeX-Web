@@ -188,7 +188,7 @@ export const ChartComponent = (props) => {
             }
         });
 
-        updateIntervalRef.current = setInterval(updateData, 60000); // Update every 1 minute
+        updateIntervalRef.current = setInterval(updateData, 600);
 
         return () => {
             clearInterval(updateIntervalRef.current);
