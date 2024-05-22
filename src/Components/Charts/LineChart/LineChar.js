@@ -13,6 +13,7 @@ export default function LineChart(props) {
 	const [ hoverInfo, setHoverInfo ] = useState(null);
 	const [ markerTime, setMarkerTime ] = useState(props.markerTime);
 	const [ marker, setMarker ] = useState(null);
+	const [ suggesmarker, setSuggesmarker ] = useState(null);
 
 
 	const updateChartData = (duration) => {
@@ -55,6 +56,15 @@ export default function LineChart(props) {
 		return new Date(dateValue).toLocaleString('en-GB', options).replace(/\//g, '-');
 	};
 
+	function convertTimestampToDateObject(timestamp) {
+		const timeZone = new Date().getTimezoneOffset() * 60;
+
+		const date = (timestamp / 1000) - timeZone;
+
+		console.log(date);
+		return date;
+	}
+
 
 	useEffect(() => {
 		if (props.markerTime !== undefined) {
@@ -68,7 +78,6 @@ export default function LineChart(props) {
 			setChartData(props.data[Object.keys(props.data)[0]].data);
 			setActiveDuration(Object.keys(props.data)[0]);
 		}
-		console.log("testf",props.data);
 	}, [props.data]);
 
 
@@ -171,8 +180,25 @@ export default function LineChart(props) {
 					const logical = chart.timeScale().coordinateToLogical(x);
 					const price = series.dataByIndex(Math.abs(logical)).value;
 					const y = series.priceToCoordinate(price) + chart.timeScale().height();
-					
-					setMarker( !x ? null : { x:x+priceScaleWidth, y});
+
+					setMarker( !x ? null : { x:x+priceScaleWidth, y:y+10});
+					initializeSuggesMarker();
+				}, 300);
+			}
+		};
+
+		const initializeSuggesMarker = () => {
+			if (!props.suggestion) {
+				return;
+			} else {
+				setSuggesmarker(null);
+				setTimeout(() => {
+					const priceScaleWidth = series.priceScale().width();
+					const x = chart.timeScale().timeToCoordinate(convertTimestampToDateObject(props.suggestion.time));
+					const logical = chart.timeScale().coordinateToLogical(x);
+					const y = series.priceToCoordinate(props.suggestion.bestPrice) + chart.timeScale().height();
+
+					setSuggesmarker( !x ? null : { x:x+priceScaleWidth, y:y+10});
 				}, 300);
 			}
 		};
@@ -203,7 +229,7 @@ export default function LineChart(props) {
 			let left, top;
 
 			if (coordinateX < midPointX) {
-				left = coordinateX; 
+				left = coordinateX;
 			} else {
 				left = coordinateX - hoverDivWidth;
 			}
@@ -214,7 +240,7 @@ export default function LineChart(props) {
 				top = coordinateY - hoverDivHeight;
 			}
 
-			
+
 
 			setHoverInfo({
 				date: timeFormatter(dataPoint.time, false),
@@ -224,7 +250,7 @@ export default function LineChart(props) {
 			});
 		}
 
-		
+
 		series.setData(chartData);
 		chart.timeScale().fitContent();
 		chart.timeScale().subscribeVisibleLogicalRangeChange(initializeMarker);
@@ -237,7 +263,7 @@ export default function LineChart(props) {
 			chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarker);
 			chart.remove();
 		};
-	}, [isFullScreen, chartData, markerTime] );
+	}, [isFullScreen, chartData, markerTime,props.suggestion] );
 
 
 
@@ -274,9 +300,17 @@ export default function LineChart(props) {
 				)}
 
 				{marker && (
-					<div className="marker" style={{left: marker.x, top: marker.y }}>
-						
+					<div className="marker1" style={{left: marker.x, top: marker.y }}>
+
 					</div>
+
+				)}
+
+				{suggesmarker && (
+					<div className="marker2" style={{left: suggesmarker.x, top: suggesmarker.y }}>
+
+					</div>
+
 				)}
 
 			</div>
