@@ -35,7 +35,7 @@ export default function MyAnswers() {
 
   const loadAnswers =async () => {
     try{
-      const result=await axios.get(`http://localhost:8010/forum/getAnswersByUserId/${user.user.id}`);
+      const result=await axios.get(`http://localhost:8010/forum/getAnswerssByUserId/${user.user.id}`);
       
       console.log(result.data);
         setAnswerList(result.data);
