@@ -62,7 +62,7 @@ export default function Suggestions() {
             const orderTime = new Date(order.time / 1);
             const startTime = orderTime.getTime() - 15 * 60 * 1000;
             const endTime = orderTime.getTime() + 15 * 60 * 1000;
-            const res = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${order.coin}USDT&startTime=${startTime}&endTime=${endTime}&interval=1m&limit=200`);
+            const res = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${order.coin}USDT&startTime=${startTime}&endTime=${endTime}&interval=1m&limit=500`);
             await processAnalyzeData(res.data,order);
         } catch (error) {
             console.log(error);
@@ -87,7 +87,7 @@ export default function Suggestions() {
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
                 quantity:order.quantity,
-                tradingData: transformedData.slice(0, 10)
+                tradingData: transformedData.slice(0, 50)
             }));
         } catch (error) {
             console.error('Error fetching data:', error);
