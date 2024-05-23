@@ -51,20 +51,19 @@ export default function Suggestions() {
                 `https://api.binance.com/api/v3/klines?symbol=${pageSymbol}USDT&interval=1d&limit=365`
             );
 
-            const timeZone = new Date().getTimezoneOffset() * 60;
 
             const minData = min.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
+                time: (item[0] / 1000),
                 value: parseFloat(item[4]),
             }));
 
             const hourData = hour.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
+                time: (item[0] / 1000),
                 value: parseFloat(item[4]),
             }));
 
             const dayData = day.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
+                time: (item[0] / 1000),
                 value: parseFloat(item[4]),
             }));
 
@@ -187,7 +186,7 @@ export default function Suggestions() {
                     </div>
                 </div>
                 
-                <LineChart data={chartData} markerTime={chartData['1M'] ? chartData['1M'].data[100].time : null} ></LineChart>
+                <LineChart data={chartData} title={coinList[pageSymbol].name} currentMarkerTime={chartData['1M'] ? chartData['1M'].data[100].time : null} suggestMarkerTime={chartData['1M'] ? chartData['1M'].data[50].time : null} ></LineChart>
             </SidePanelWithContainer>
 
         </BasicPage>
