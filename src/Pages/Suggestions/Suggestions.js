@@ -342,21 +342,24 @@ export default function Suggestions() {
                         'Total Price',
                     ]}/>
 
-                    {orderHistory.map(order => (
-                        <TableRow
-                            key={order.id} // Ensure each row has a unique key
-                            data={[
-                                <Coin>{order.coin}</Coin>,
-                                new Date(order.date).toLocaleDateString(),
-                                order.type,
-                                order.price,
-                                order.category,
-                                order.quantity,
-                                order.totalPrice,
-                            ]}
-                            onClick={() => handleRowClick(order)}
-                        />
-                    ))}
+                    {orderHistory
+                        .filter(order => order.category !== 'Limit' || (order.category === 'Limit' && order.orderStatus === 'Completed'))
+                        .map(order => (
+                            <TableRow
+                                key={order.id}
+                                data={[
+                                    <Coin>{order.coin}</Coin>,
+                                    new Date(order.date).toLocaleDateString(),
+                                    order.type,
+                                    order.price,
+                                    order.category,
+                                    order.quantity,
+                                    order.totalPrice,
+                                ]}
+                                onClick={() => handleRowClick(order)}
+                            />
+                        ))}
+
                 </Table>
 
             </SidePanelWithContainer>
