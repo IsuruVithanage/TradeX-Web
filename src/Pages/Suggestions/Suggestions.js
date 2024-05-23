@@ -133,9 +133,8 @@ export default function Suggestions() {
             const min = await axios.get(
                 `https://api.binance.com/api/v3/klines?symbol=${coin}USDT&interval=1m&startTime=${startTime}&endTime=${endTime}&limit=500`
             );
-            const timeZone = new Date().getTimezoneOffset() * 60;
             const minData = min.data.map((item) => ({
-                time: (item[0] / 1000) - timeZone,
+                time: (item[0] / 1000),
                 value: parseFloat(item[4]),
             }));
             const result = { '1M': { showTime: true, data: minData } };
@@ -319,10 +318,13 @@ export default function Suggestions() {
                 </div>
 
 
-                <LineChart data={tradeData}
-                           suggestion={suggestion ? suggestion : null}
-                           markerTime={selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : null}
-                           isSugges={true} style={{height: '35rem', flex: 'none'}}></LineChart>
+                <LineChart 
+                    data={tradeData}
+                    title={selectedOrder.coin}
+                    suggestMarkerTime={suggestion ? suggestion.time : null}
+                    currentMarkerTime={selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : null}
+                    style={{height: '35rem', flex: 'none'}}>
+                </LineChart>
 
 
                 <Table style={{marginTop: '1vh'}} hover={true}>
