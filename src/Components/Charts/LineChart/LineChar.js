@@ -35,15 +35,11 @@ export default function LineChart(props) {
 
 
     useEffect(() => {
-        console.log("ddd", currentMarkerTime, suggestMarkerTime);
         const chartDiv = document.getElementById('chart');
-        const toolTip = document.createElement('div');
-        const currentMarker = document.createElement('div');
-        const suggestMarker = document.createElement('div');
-
-        toolTip.classList = 'tool-tip';
-        currentMarker.classList = 'marker current-marker';
-        suggestMarker.classList = 'marker suggest-marker';
+        const toolTip = document.getElementById('tool-tip');
+        const currentMarker = document.getElementById('current-marker');
+        const suggestMarker = document.getElementById('suggest-marker');
+	
 
         const chart = createChart(chartDiv, {
             width: chartDiv.clientWidth,
@@ -122,33 +118,32 @@ export default function LineChart(props) {
 
 
         const initializeMarkers = () => {
-            currentMarker.style.display = 'none';
-            suggestMarker.style.display = 'none';
+
+			if ( suggestMarker ) suggestMarker.style.display = 'none';
+			if ( currentMarker ) currentMarker.style.display = 'none';
+			else return;
 
             setTimeout(() => {
-                if (currentMarkerTime) {
-                    setMarkers(currentMarkerTime, currentMarker);
-                } else {
-                    return;
-                }
-                if (suggestMarkerTime) {
-                    setMarkers(suggestMarkerTime, suggestMarker);
-                }
+				currentMarker && setMarkers(currentMarkerTime, currentMarker);
+				suggestMarker && setMarkers(suggestMarkerTime, suggestMarker);
             }, 300);
 
             let priceScaleWidth = 0;
-            try {
-                priceScaleWidth = series.priceScale().width();
-            } catch {
-                console.log("error handled in marker");
-            }
-
-            const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
+            try { priceScaleWidth = series.priceScale().width();} 
+			catch { console.log("error handled in marker");}
+      
+			const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 
             const setMarkers = (time, marker) => {
                 const coordinateX = chart.timeScale().timeToCoordinate(time);
                 const logical = chart.timeScale().coordinateToLogical(coordinateX);
-                const price = series.dataByIndex(Math.abs(logical)).value;
+
+				let price = 0;
+				try {
+					price = series.dataByIndex(Math.abs(logical)).value;
+					console.log("not error", time);
+				} catch (error) { console.log("error", time);}
+
                 const coordinateY = series.priceToCoordinate(price) + chartMargin;
 
                 if (coordinateX > 0) {
@@ -167,6 +162,7 @@ export default function LineChart(props) {
                 return;
             }
 
+
             let priceScaleWidth = 0;
             try {
                 priceScaleWidth = series.priceScale().width();
@@ -178,6 +174,7 @@ export default function LineChart(props) {
                 (param.time === currentMarkerTime) ? '#FFD700' :
                     (param.time === suggestMarkerTime) ? '#0077FF' : '#21DB9A';
 
+
             const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',
                 (!data[activeDuration].showTime) ? {
                     dateStyle: "long"
@@ -188,6 +185,7 @@ export default function LineChart(props) {
                     timeStyle: "short",
 
                 });
+
 
             const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
             const chartWidth = chartDiv.clientWidth;
@@ -203,13 +201,15 @@ export default function LineChart(props) {
 
             const coordinateX =
                 (pointX < priceScaleWidth + 5) ? priceScaleWidth + 5 :
-                    (pointX + toolTipWidth < chartWidth) ? pointX :
-                        (chartWidth - (toolTipWidth + 5));
+
+                (pointX + toolTipWidth < chartWidth) ? pointX :
+                (chartWidth - (toolTipWidth + 5));
 
             const coordinateY =
                 pointY - (toolTipHeight + toolTipMargin) > chartHeight / 5 ?
-                    pointY - (toolTipHeight + toolTipMargin) :
-                    pointY + toolTipMargin;
+				pointY - (toolTipHeight + toolTipMargin) :
+				pointY + toolTipMargin;
+
 
 
             toolTip.style.display = 'block';
@@ -220,7 +220,9 @@ export default function LineChart(props) {
                 `
 				<div>
 					<div style="color: ${color}">${title || 'TradeX'}</div>
-					<div style="font-size: 24px; margin: 4px 0px; color: white">
+
+					<div style="font-size: 20px; margin: 4px 0px; color: white">
+
 						$${price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 4})}
 					</div>
 					<div style="color: #ffffffbb">
@@ -237,25 +239,25 @@ export default function LineChart(props) {
                 height: chartDiv.clientHeight
             });
 
-            initializeMarkers();
+
+            //initializeMarkers();
+
         };
 
 
         chartData && series.setData(chartData);
         chart.timeScale().fitContent();
+
+		//chart.timeScale().subscribeSizeChange(initializeMarkers);
         chart.timeScale().subscribeVisibleLogicalRangeChange(initializeMarkers);
         chart.subscribeCrosshairMove(updateToolTip);
-        chartDiv.appendChild(toolTip);
-        chartDiv.appendChild(currentMarker);
-        chartDiv.appendChild(suggestMarker);
-        window.addEventListener('resize', handleResize.current);
+        window.addEventListener('resize', ()=>{ handleResize.current(); initializeMarkers();});
 
         return () => {
-            window.removeEventListener('resize', handleResize.current);
-            chartDiv.removeChild(toolTip);
-            chartDiv.removeChild(currentMarker);
-            chartDiv.removeChild(suggestMarker);
+            window.removeEventListener('resize', ()=>{ handleResize.current(); initializeMarkers();});
             chart.unsubscribeCrosshairMove(updateToolTip);
+			//chart.timeScale().unsubscribeSizeChange(initializeMarkers);
+
             chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarkers);
             chart.remove();
         };
@@ -286,7 +288,13 @@ export default function LineChart(props) {
 
             {!chartData && <p className="empty-message">No data to show</p>}
 
-            <div id="chart"/>
+
+            <div id="chart">
+				<div id="tool-tip" className="tool-tip"/>
+				{currentMarkerTime && <div id='current-marker' className="marker current-marker"/>}
+				{suggestMarkerTime && <div id='suggest-marker' className="marker suggest-marker"/>}
+			</div>
+
         </div>
     );
 };
