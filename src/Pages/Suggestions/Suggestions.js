@@ -318,11 +318,11 @@ export default function Suggestions() {
                 </div>
 
 
-                <LineChart 
+                <LineChart
                     data={tradeData}
-                    title={selectedOrder.coin}
-                    suggestMarkerTime={suggestion ? suggestion.time : null}
-                    currentMarkerTime={selectedOrder ? convertTimestampToDateObject(selectedOrder.time) : null}
+                    title={selectedOrder ? selectedOrder.coin : null}
+                    suggestMarkerTime={suggestion ? suggestion.time/1000 : null}
+                    currentMarkerTime={selectedOrder ? selectedOrder.time/1000 : null}
                     style={{height: '35rem', flex: 'none'}}>
                 </LineChart>
 
