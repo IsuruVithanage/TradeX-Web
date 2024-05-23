@@ -35,8 +35,17 @@ export default function LineChart(props) {
 			// setHandleResize(() => {
 			// 	chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
 			// });
-		}
+    }
 	};
+
+	function convertTimestampToDateObject(timestamp) {
+		const timeZone = new Date().getTimezoneOffset() * 60;
+
+		const date = (timestamp / 1000) - timeZone;
+
+		console.log(date);
+		return date;
+	}
 
 
 	useEffect(() => {
@@ -54,9 +63,10 @@ export default function LineChart(props) {
 		}
 	}, [data]);
 
-	
+
 
 	useEffect(() => {
+		setSuggesmarker(null);
 		const chartDiv = document.getElementById('chart');
 		const toolTip = document.createElement('div');
 		const actualMarker = document.createElement('div');
@@ -71,7 +81,7 @@ export default function LineChart(props) {
 			height: chartDiv.clientHeight,
 
 			handleScale: {
-				mouseWheel: isFullScreen,	
+				mouseWheel: isFullScreen,
 			},
 
 			crosshair: {
@@ -119,9 +129,9 @@ export default function LineChart(props) {
 				},
 			},
 
-			layout: {	
-				background: { 
-					color: '#0e0e0e',
+			layout: {
+				background: {
+					color: '#0E0E0F'
 				},
 			},
 
@@ -134,13 +144,18 @@ export default function LineChart(props) {
 		const series = chart.addAreaSeries({
 			lineColor: '#21db9a', 
 			topColor: 'rgba(20, 140, 101, 1)',
-            bottomColor: 'rgba( 0, 0, 0, 0.4)',
+      bottomColor: 'rgba( 0, 0, 0, 0.4)',
 			lineWidth: 2,
 			lineType: lineType === undefined ? 0 : lineType,
 			priceLineVisible: false,
 			lastValueVisible: false,
 		});
-		
+
+
+		handleResize.current = () => {
+			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
+		};
+
 
 		const initializeMarker = () => {
 			actualMarker.style.display = 'none';
@@ -195,6 +210,7 @@ export default function LineChart(props) {
 			const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 			const chartWidth = chartDiv.clientWidth;
 			const chartHeight = chartDiv.clientHeight;
+
 			const price = param.seriesData.get(series).value;
 			const timeZone = new Date().getTimezoneOffset() * 60 * 1000;
 
@@ -280,20 +296,21 @@ export default function LineChart(props) {
 
 
 
+
 	return (
-		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`}>
+		<div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`} style={props.style}>
 			<div className='button-container'>
 				{ 	 
 					( data && Object.keys(data).length > 1  ) && 
 					( Object.keys(data).map((duration, index) => (
 						<button 
 							key={index}
-							onClick={() => updateChartData(duration)} 
+							onClick={() => updateChartData(duration)}
 							className={`duration-button ${activeDuration === duration ? "active" : ""}`}>
 							{duration}
 						</button>
 					)))
-				}	
+				}
 
 				<span
 					onClick={ toggleFullScreen }

@@ -16,7 +16,7 @@
     top: 6%;
     left: 6%;
     max-width: 94%;
-    height: 100vh;
+    height: 100vh !important;
     border-radius: 0;
     z-index: 3;
     background-color: #0E0E0F;
@@ -88,6 +88,7 @@
     color: #ffffff;
 }
 
+
 .tool-tip{
     background-color: #0E0E0F;
     width: fit-content;
@@ -108,14 +109,41 @@
     -o-border-radius: 5px;
 }
 
-.marker{
+.marker-info-div{
     pointer-events: none;
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    height: 40px;
+    width: 180px;
+    padding: 10px;
+    border-radius: 7px;
+    position: absolute;
     display: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    text-align: left;
+    z-index: 1000;
+    pointer-events: none;
+    border: 1px solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+    
+
+.marker1{
+    pointer-events: none;
     position: absolute;
     width: 10px;
     height: 10px;
     transform: translate(-50%, -50%);
-    z-index: 1;
+    background-color: #FFD700;
+    border: 2px solid #ffc500;
+    z-index: 2;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -126,6 +154,30 @@
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
 }
+
+.marker2{
+    pointer-events: none;
+    display: none;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%);
+
+    z-index: 1;
+    background-color: #0077ff;
+    border: 2px solid #0077ff;
+  
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+}
+
 
 .actual-marker{
     background-color: #ffb521;
@@ -146,17 +198,47 @@
 }
 
 .marker::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spread-out 2s infinite;
+  box-sizing: border-box;
+}
+
+.marker1::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spread-out 2s infinite;
+  box-sizing: border-box;
+}
+    
+
+.marker2::before{
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
     width: 15px;
     height: 15px;
+    border: 2px solid #0077ff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: spread-out 2s infinite;
     box-sizing: border-box;
-  }
+}
+
+
   
   @keyframes spread-out {
     0% {
