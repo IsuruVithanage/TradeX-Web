@@ -5,13 +5,11 @@ import './LineChart.css';
 
 
 export default function LineChart(props) {
-	// let handleResize = useRef(null);
-	const [ update, setUpdate ] = useState(false);
-	const [ chart, setChart ] = useState(null);
-	const [ chartData, setChartData ] = useState([]);
+	let handleResize = useRef(null);
+	const [ chartData, setChartData ] = useState(null);
 	const [ isFullScreen, setIsFullScreen ] = useState(false);
 	const [ activeDuration, setActiveDuration ] = useState('');
-	const { data, markerTime, markerTime2, lineType } = props;
+	const { data, currentMarkerTime, suggestMarkerTime, title, lineType } = props;
 
 
 	const updateChartData = (duration) => {
@@ -21,39 +19,11 @@ export default function LineChart(props) {
 
 
   	const toggleFullScreen = () => {
-		if(handleResize){
+		if(handleResize.current){
 			setIsFullScreen(!isFullScreen);
-			handleResize();
+			handleResize.current();
 		}
 	};
-
-
-	const handleResize = () => {
-		if(chart){
-			chart.resize(document.getElementById('chart').clientWidth, document.getElementById('chart').clientHeight);
-			setUpdate(!update);
-			// setHandleResize(() => {
-			// 	chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
-			// });
-    }
-	};
-
-	function convertTimestampToDateObject(timestamp) {
-		const timeZone = new Date().getTimezoneOffset() * 60;
-
-		const date = (timestamp / 1000) - timeZone;
-
-		console.log(date);
-		return date;
-	}
-
-
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	}, [chart]);
-
-
 
 
 	useEffect(() => {
@@ -66,15 +36,14 @@ export default function LineChart(props) {
 
 
 	useEffect(() => {
-		setSuggesmarker(null);
 		const chartDiv = document.getElementById('chart');
 		const toolTip = document.createElement('div');
-		const actualMarker = document.createElement('div');
-		const bestMarker = document.createElement('div');
+		const currentMarker = document.createElement('div');
+		const suggestMarker = document.createElement('div');
 
 		toolTip.classList = 'tool-tip';
-		actualMarker.classList = 'marker actual-marker';
-		bestMarker.classList = 'marker best-marker';
+		currentMarker.classList = 'marker current-marker';
+		suggestMarker.classList = 'marker suggest-marker';
 
 		const chart = createChart(chartDiv, {
 			width: chartDiv.clientWidth,
@@ -92,7 +61,7 @@ export default function LineChart(props) {
 				},
 				horzLine: {
 					labelBackgroundColor: '#000000',
-					labelVisible: false,
+					color: '#FFFFFF60',
 					style: 2,
 				},
 			},
@@ -144,7 +113,7 @@ export default function LineChart(props) {
 		const series = chart.addAreaSeries({
 			lineColor: '#21db9a', 
 			topColor: 'rgba(20, 140, 101, 1)',
-      bottomColor: 'rgba( 0, 0, 0, 0.4)',
+      		bottomColor: 'rgba( 0, 0, 0, 0.4)',
 			lineWidth: 2,
 			lineType: lineType === undefined ? 0 : lineType,
 			priceLineVisible: false,
@@ -152,47 +121,37 @@ export default function LineChart(props) {
 		});
 
 
-		handleResize.current = () => {
-			chart.applyOptions({ width: chartDiv.clientWidth, height: chartDiv.clientHeight });
-		};
 
+		const initializeMarkers = () => {
+			currentMarker.style.display = 'none';
+			suggestMarker.style.display = 'none';
 
-		const initializeMarker = () => {
-			actualMarker.style.display = 'none';
-			bestMarker.style.display = 'none';
-
-			if (!markerTime || !markerTime2) {
+			if (!currentMarkerTime || !suggestMarkerTime) {
 				return;
 			} else {
 				setTimeout(() => {
-					let priceScaleWidth = 0;
-					try { priceScaleWidth = series.priceScale().width(); }
-					catch {	console.log("error handled in marker"); }
-
-					const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
-
-					const actualX = chart.timeScale().timeToCoordinate(markerTime);
-					const actualL = chart.timeScale().coordinateToLogical(actualX);
-					const actualPrice = series.dataByIndex(Math.abs(actualL)).value;
-					const actualY = series.priceToCoordinate(actualPrice) + chartMargin;
-
-					const bestX = chart.timeScale().timeToCoordinate(markerTime2);
-					const bestL = chart.timeScale().coordinateToLogical(bestX);
-					const bestPrice = series.dataByIndex(Math.abs(bestL)).value;
-					const bestY = series.priceToCoordinate(bestPrice) + chartMargin;
-
-					if (actualX > 0) {
-						actualMarker.style.display	= 'block';
-						actualMarker.style.left		= actualX + priceScaleWidth + 'px';
-						actualMarker.style.top		= actualY + 'px';
-					}
-
-					if (bestX > 0) {
-						bestMarker.style.display	= 'block';
-						bestMarker.style.left 		= bestX + priceScaleWidth + 'px';
-						bestMarker.style.top 		= bestY + 'px';
-					}
+					setMarkers(currentMarkerTime, currentMarker);
+					setMarkers(suggestMarkerTime, suggestMarker);
 				}, 300);
+
+				let priceScaleWidth = 0;
+				try { priceScaleWidth = series.priceScale().width(); }
+				catch {	console.log("error handled in marker"); }
+
+				const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
+
+				const setMarkers = (time, marker) => {
+					const coordinateX = chart.timeScale().timeToCoordinate(time);
+					const logical = chart.timeScale().coordinateToLogical(coordinateX);
+					const price = series.dataByIndex(Math.abs(logical)).value;
+					const coordinateY = series.priceToCoordinate(price) + chartMargin;
+
+					if (coordinateX > 0) {
+						marker.style.display = 'block';
+						marker.style.top = coordinateY + 'px';
+						marker.style.left  = coordinateX + priceScaleWidth + 'px';
+					}
+				}
 			}
 		};
 
@@ -204,17 +163,14 @@ export default function LineChart(props) {
             }
 
 			let priceScaleWidth = 0;
-			try { priceScaleWidth = series.priceScale().width(); }
-			catch {	console.log("error handled in toolTip"); }
+				try { priceScaleWidth = series.priceScale().width(); }
+				catch {	console.log("error handled in toolTip"); }
 
-			const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
-			const chartWidth = chartDiv.clientWidth;
-			const chartHeight = chartDiv.clientHeight;
+			const color = 
+				(param.time === currentMarkerTime) ? '#FFD700' :
+				(param.time === suggestMarkerTime) ? '#0077FF' : '#21DB9A';
 
-			const price = param.seriesData.get(series).value;
-			const timeZone = new Date().getTimezoneOffset() * 60 * 1000;
-
-			const dateStr = new Date(param.time * 1000 + timeZone).toLocaleString('en-GB',  
+			const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',  
 				(!data[activeDuration].showTime) ? {
 					dateStyle: "long"
 		
@@ -224,20 +180,23 @@ export default function LineChart(props) {
 					timeStyle: "short",
 					
 				});
-			
+
+			const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
+			const chartWidth = chartDiv.clientWidth;
+			const chartHeight = chartDiv.clientHeight;
+
 			const toolTipWidth = toolTip.offsetWidth;
 			const toolTipHeight = toolTip.offsetHeight;
 			const toolTipMargin = 45;
-
+			
+			const price = param.seriesData.get(series).value;
 			const pointX = param.point.x + priceScaleWidth - (toolTipWidth / 2);
 			const pointY = series.priceToCoordinate(price) + chartMargin;
-
 
 			const coordinateX = 
 				(pointX < priceScaleWidth + 5) ? priceScaleWidth + 5 : 
 				(pointX + toolTipWidth < chartWidth) ? pointX   : 
 				(chartWidth - (toolTipWidth + 5));
-
 
 			const coordinateY =
 				pointY - (toolTipHeight + toolTipMargin) > chartHeight / 5 ? 
@@ -246,12 +205,13 @@ export default function LineChart(props) {
 
 
 			toolTip.style.display = 'block';
+			toolTip.style.borderColor = color;
 			toolTip.style.left = coordinateX + 'px';
 			toolTip.style.top = coordinateY + 'px';
 			toolTip.innerHTML = 
 			`
 				<div>
-					<div style="color: ${'#21db9a'}">TradeX</div>
+					<div style="color: ${color}">${title || 'TradeX'}</div>
 					<div style="font-size: 24px; margin: 4px 0px; color: white">
 						$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4})}
 					</div>
@@ -260,39 +220,38 @@ export default function LineChart(props) {
 					</div>
 				</div>
 			`;
-
-			if (markerTime === param.time) {
-				toolTip.style.borderColor = '#ffb521';
-
-			} else if (markerTime2 === param.time) {
-				toolTip.style.borderColor = '#ff0000';
-
-			} else {
-				toolTip.style.borderColor = '#21db9a';
-
-			}
 		}
+
+
+		handleResize.current = () => {
+			chart.applyOptions({ 
+				width: chartDiv.clientWidth, 
+				height: chartDiv.clientHeight 
+			});
+
+			initializeMarkers();
+		};
 
 		
 		chartData && series.setData(chartData);
 		chart.timeScale().fitContent();
-		chart.timeScale().subscribeVisibleLogicalRangeChange(initializeMarker);
+		chart.timeScale().subscribeVisibleLogicalRangeChange(initializeMarkers);
 		chart.subscribeCrosshairMove(updateToolTip);
-		setChart(chart);
 		chartDiv.appendChild(toolTip);
-		chartDiv.appendChild(actualMarker);
-		chartDiv.appendChild(bestMarker);
+		chartDiv.appendChild(currentMarker);
+		chartDiv.appendChild(suggestMarker);
+		window.addEventListener('resize', handleResize.current);
 
 		return () => {
-			// window.removeEventListener('resize', handleResize);
+			window.removeEventListener('resize', handleResize.current);
 			chartDiv.removeChild(toolTip);
-			chartDiv.removeChild(actualMarker);
-			chartDiv.removeChild(bestMarker);
+			chartDiv.removeChild(currentMarker);
+			chartDiv.removeChild(suggestMarker);
 			chart.unsubscribeCrosshairMove(updateToolTip);
-			chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarker);
+			chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarkers);
 			chart.remove();
 		};
-	}, [isFullScreen, lineType, chartData, markerTime, markerTime2, activeDuration, data, update] );
+	}, [ isFullScreen, lineType, chartData, currentMarkerTime, suggestMarkerTime, activeDuration, data, title ] );
 
 
 
@@ -319,12 +278,9 @@ export default function LineChart(props) {
 				</span>
 			</div>
 
-
 			{ !chartData && <p className="empty-message">No data to show</p>}
 
-
 			<div id="chart"/>
-
 		</div>
 	);
 };
