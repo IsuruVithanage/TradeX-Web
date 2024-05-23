@@ -88,21 +88,25 @@
     color: #ffffff;
 }
 
-.hover-info-div{
-    pointer-events: none;
-    background-color: #2e2e2e;
-    color: #FFFFFF;
-    font-size: 0.8rem;
-    height: 40px;
-    width: 180px;
-    padding: 10px;
-    border-radius: 7px;
+
+.tool-tip{
+    background-color: #0E0E0F;
+    width: fit-content;
+    height: fit-content;
     position: absolute;
-    z-index: 1;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
-    -o-border-radius: 7px;
+    display: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    text-align: left;
+    z-index: 1000;
+    pointer-events: none;
+    border: 1px solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 
 .marker-info-div{
@@ -114,12 +118,22 @@
     padding: 10px;
     border-radius: 7px;
     position: absolute;
-    z-index: 3;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
-    -o-border-radius: 7px;
+    display: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    text-align: left;
+    z-index: 1000;
+    pointer-events: none;
+    border: 1px solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
+
+    
 
 .marker1{
     pointer-events: none;
@@ -143,13 +157,16 @@
 
 .marker2{
     pointer-events: none;
+    display: none;
     position: absolute;
     width: 10px;
     height: 10px;
     transform: translate(-50%, -50%);
+
+    z-index: 1;
     background-color: #0077ff;
     border: 2px solid #0077ff;
-    z-index: 2;
+  
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -161,19 +178,51 @@
     -o-transform: translate(-50%, -50%);
 }
 
-.marker1::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 15px;
-    height: 15px;
+
+.actual-marker{
+    background-color: #ffb521;
+    border: 2px solid #392600;
+}
+
+.best-marker{
+    background-color: #ff0000;
+    border: 2px solid #4e0000;
+}
+
+.actual-marker::before{
     border: 2px solid #ffb521;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    animation: spread-out 2s infinite;
-    box-sizing: border-box;
-  }
+}
+
+.best-marker::before{
+    border: 2px solid #ff0000;
+}
+
+.marker::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spread-out 2s infinite;
+  box-sizing: border-box;
+}
+
+.marker1::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spread-out 2s infinite;
+  box-sizing: border-box;
+}
+    
 
 .marker2::before{
     content: "";
