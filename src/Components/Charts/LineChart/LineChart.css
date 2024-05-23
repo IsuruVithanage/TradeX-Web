@@ -101,7 +101,7 @@
     z-index: 1000;
     pointer-events: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; 
-    border: 1px solid;
+    border: 1px solid #21DB9A;
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -136,7 +136,7 @@
     width: 11px;
     height: 11px;
     transform: translate(-50%, -50%);
-    z-index: 3;
+    z-index: 2;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;

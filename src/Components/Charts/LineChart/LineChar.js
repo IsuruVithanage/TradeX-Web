@@ -159,10 +159,6 @@ export default function LineChart(props) {
             try { priceScaleWidth = series.priceScale().width(); }
 			catch { console.log("error handled in toolTip"); }
 
-            const color =
-                (param.time === currentMarkerTime) ? '#FFD700' :
-                (param.time === suggestMarkerTime) ? '#0077FF' : '#21DB9A';
-
             const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',
                 (!data[activeDuration].showTime) ? {
                     dateStyle: "long"
@@ -198,13 +194,12 @@ export default function LineChart(props) {
 
 
             toolTip.style.display = 'block';
-            toolTip.style.borderColor = color;
             toolTip.style.left = coordinateX + 'px';
             toolTip.style.top = coordinateY + 'px';
             toolTip.innerHTML =
                 `
 				<div>
-					<div style="color: ${color}">${title || 'TradeX'}</div>
+					<div style="color: #21DB9A;">${title || 'TradeX'}</div>
 					<div style="font-size: 24px; margin: 4px 0px; color: white">
 						$${price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 4})}
 					</div>
