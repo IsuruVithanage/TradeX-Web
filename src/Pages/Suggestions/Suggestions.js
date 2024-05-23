@@ -408,7 +408,7 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <LineChart data={tradeData} markers={markerData} isSugges={true}></LineChart>
+                <LineChart data={tradeData} markers={markerData} isSugges={true} ></LineChart>
             </SidePanelWithContainer>
 
             <Table style={{ marginTop: '1vh' }} hover={true}>

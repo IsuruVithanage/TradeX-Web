@@ -88,30 +88,34 @@
     color: #ffffff;
 }
 
-.hover-info-div{
-    pointer-events: none;
-    background-color: #3C3C3C;
-    color: #FFFFFF;
-    height: 100px;
-    padding: 25px;
-    border-radius: 7px;
+.tool-tip{
+    background-color: #0E0E0F;
+    width: fit-content;
+    height: fit-content;
     position: absolute;
-    z-index: 3;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    -ms-border-radius: 7px;
-    -o-border-radius: 7px;
+    display: none;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    text-align: left;
+    z-index: 1000;
+    pointer-events: none;
+    border: 1px solid;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 
 .marker{
     pointer-events: none;
+    display: none;
     position: absolute;
     width: 10px;
     height: 10px;
     transform: translate(-50%, -50%);
-    background-color: #ffb521;
-    border: 2px solid #392600;
-    z-index: 2;
+    z-index: 1;
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -123,6 +127,24 @@
     -o-transform: translate(-50%, -50%);
 }
 
+.actual-marker{
+    background-color: #ffb521;
+    border: 2px solid #392600;
+}
+
+.best-marker{
+    background-color: #ff0000;
+    border: 2px solid #4e0000;
+}
+
+.actual-marker::before{
+    border: 2px solid #ffb521;
+}
+
+.best-marker::before{
+    border: 2px solid #ff0000;
+}
+
 .marker::before {
     content: "";
     position: absolute;
@@ -130,7 +152,6 @@
     left: 50%;
     width: 15px;
     height: 15px;
-    border: 2px solid #ffb521;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: spread-out 2s infinite;
