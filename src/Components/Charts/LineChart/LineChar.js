@@ -36,7 +36,6 @@ export default function LineChart(props) {
 
 
     useEffect(() => {
-        console.log("props",props);
         const chartDiv = document.getElementById('chart');
         const toolTip = document.getElementById('tool-tip');
         const currentMarker = document.getElementById('current-marker');
@@ -120,9 +119,9 @@ export default function LineChart(props) {
 
 
         const initializeMarkers = () => {
-            if (currentMarker) currentMarker.style.display = 'none';
-            if (suggestMarker) suggestMarker.style.display = 'none';
-            if (!currentMarkerTime) return;
+            if(currentMarker) currentMarker.style.display = 'none';
+            if(suggestMarker) suggestMarker.style.display = 'none';
+            if( !currentMarkerTime ) return;
 
             setTimeout(() => {
                 currentMarkerTime && setMarkers(currentMarkerTime, currentMarker);
@@ -130,11 +129,8 @@ export default function LineChart(props) {
             }, 300);
 
             let priceScaleWidth = 0;
-            try {
-                priceScaleWidth = series.priceScale().width();
-            } catch {
-                console.log("error handled in marker");
-            }
+            try { priceScaleWidth = series.priceScale().width(); }
+            catch {	console.log("error handled in marker");	}
 
             const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 
@@ -161,15 +157,8 @@ export default function LineChart(props) {
             }
 
             let priceScaleWidth = 0;
-            try {
-                priceScaleWidth = series.priceScale().width();
-            } catch {
-                console.log("error handled in toolTip");
-            }
-
-            const color =
-                (param.time === currentMarkerTime) ? '#FFD700' :
-                    (param.time === suggestMarkerTime) ? '#0077FF' : '#21DB9A';
+            try { priceScaleWidth = series.priceScale().width(); }
+            catch { console.log("error handled in toolTip"); }
 
             const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',
                 (!data[activeDuration].showTime) ? {
@@ -206,13 +195,12 @@ export default function LineChart(props) {
 
 
             toolTip.style.display = 'block';
-            toolTip.style.borderColor = color;
             toolTip.style.left = coordinateX + 'px';
             toolTip.style.top = coordinateY + 'px';
             toolTip.innerHTML =
                 `
 				<div>
-					<div style="color: ${color}">${title || 'TradeX'}</div>
+					<div style="color: #21DB9A;">${title || 'TradeX'}</div>
 					<div style="font-size: 24px; margin: 4px 0px; color: white">
 						$${price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 4})}
 					</div>
@@ -235,6 +223,7 @@ export default function LineChart(props) {
             handleResize.current();
             initializeMarkers();
         };
+
 
 
         chartData && series.setData(chartData);
