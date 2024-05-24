@@ -219,11 +219,11 @@ export default function Suggestions() {
             isLoading={isLoading}
         >
             <SidePanelWithContainer
-
+                style={{height: '91vh'}}
                 header={'Suggestions'}
                 sidePanel={
 
-                    <div style={{height: '91vh', overflowY: 'auto'}}>
+                    <div style={{overflowY: 'auto', overscrollBehaviorY: "contain"}}>
 
 
                         {loading ? (
@@ -329,12 +329,18 @@ export default function Suggestions() {
                 </LineChart>
 
 
-                <Table style={{marginTop: '1vh'}} hover={true}>
-                    <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>
-                        <div style={{width: '10rem'}}>
-                            <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
+                <Table 
+                    style={{marginTop: '1vh'}} 
+                    emptyMessage={"No Trade data To display"}
+                    hover={true} 
+                    tableTop={
+                        <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>
+                            <div style={{width: '10rem'}}>
+                                <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
+                            </div>
                         </div>
-                    </div>
+                    }>
+                    
 
                     <TableRow data={[
                         'Coin',
