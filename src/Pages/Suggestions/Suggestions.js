@@ -223,7 +223,7 @@ export default function Suggestions() {
                 header={'Suggestions'}
                 sidePanel={
 
-                    <div style={{overflowY: 'auto'}}>
+                    <div style={{overflowY: 'auto', overscrollBehaviorY: "contain"}}>
 
 
                         {loading ? (
@@ -329,6 +329,7 @@ export default function Suggestions() {
 
                 <Table 
                     style={{marginTop: '1vh'}} 
+                    emptyMessage={"No Trade data To display"}
                     hover={true} 
                     tableTop={
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>

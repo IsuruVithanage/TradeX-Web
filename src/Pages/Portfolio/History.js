@@ -11,13 +11,14 @@ export default function History() {
     const [selectedSection, setSelectedSection] = useState("Trading");
     const [selectedCoin, setSelectedCoin] = useState(null);
     const [selectedAction, setSelectedAction] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
     const [selectedFrom, setSelectedFrom] = useState(null);
     const [selectedTo, setSelectedTo] = useState(null);
     const [historyData, setHistoryData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const backendAPI = (selectedSection === "Trading") ? 
-    "http://localhost:8005/order/getOrderByCato/Buy" : 
+    "http://localhost:8005/order/getAllOrders" : 
     'http://localhost:8011/portfolio/history/';
     const userId = 1;
 
@@ -44,6 +45,7 @@ export default function History() {
         setHistoryData([]);
         setFilteredData([]);
         setSelectedCoin(null);
+        setSelectedType(null);
         setSelectedAction(null);
         setSelectedFrom(null);
         setSelectedTo(null);
@@ -78,10 +80,10 @@ export default function History() {
 
 
     useEffect(() => {
-        if(!selectedCoin && !selectedAction && !selectedFrom && !selectedTo) {
+        if(!selectedCoin && !selectedType && !selectedAction && !selectedFrom && !selectedTo) {
             setFilteredData(historyData);
         }
-    }, [selectedCoin, selectedAction, selectedFrom, selectedTo, historyData]);
+    }, [selectedCoin,selectedType, selectedAction, selectedFrom, selectedTo, historyData]);
 
 
 
@@ -97,7 +99,8 @@ export default function History() {
             } 
             
             else {
-                if (selectedAction && data.Type !== selectedAction) return false;
+                if (selectedType && data.category !== selectedType) return false;
+                if (selectedAction && data.type !== selectedAction) return false;
             }
             return true;
         });
@@ -112,38 +115,46 @@ export default function History() {
             isLoading={isLoading}
             tabs={[
                 { label:"Overview", path:"/portfolio"},
-                { label:"History", path:"/portfolio/history"},
                 { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
-                { label:"Funding Wallet", path:"/portfolio/fundingWallet"}
+                { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+                { label:"History", path:"/portfolio/history"}
             ]}>
 
 
 
             <SidePanelWithContainer 
                 style={{height:"91vh"}}
-                header="History"
+                header="Filter History"
                 sidePanel={
                     <div>
                         <Input type="switch" onClick={setSelectedSection} buttons= {["Trading", "Transaction"]}/>
                         <Input type="dropdown" value={selectedCoin} onChange={setSelectedCoin} label='Coin' options={coinOptions}/>
                         { selectedSection === "Transaction" ? 
                             <div>
-                            <Input type="dropdown" value={selectedFrom} onChange={setSelectedFrom} label='From' options={fromOptions.filter(option => option.value !== selectedTo)}/>
-                            <Input type="dropdown" value={selectedTo} onChange={setSelectedTo} label='To' options={toOptions.filter(option => option.value !== selectedFrom)}/>
+                                <Input type="dropdown" value={selectedFrom} onChange={setSelectedFrom} label='From' options={fromOptions.filter(option => option.value !== selectedTo)}/>
+                                <Input type="dropdown" value={selectedTo} onChange={setSelectedTo} label='To' options={toOptions.filter(option => option.value !== selectedFrom)}/>
                             </div>:
-                            <Input type="dropdown" value={selectedAction} onChange={setSelectedAction} label='Trading Action' options={[
-                                { value: 'Buy', label: 'Buy' },
-                                { value: 'Sell', label: 'Sell' },
-                            ]}/> 
+                            <div>
+                                <Input type="dropdown" value={selectedType} onChange={setSelectedType} label='Trading Type' options={[
+                                    { value: 'Market', label: 'Market' },
+                                    { value: 'Limit', label: 'Limit' },
+                                    { value: 'Stop-Limit', label: 'Stop-Limit' },
+                                ]}/> 
+                                    <Input type="dropdown" value={selectedAction} onChange={setSelectedAction} label='Trading Action' options={[
+                                    { value: 'Buy', label: 'Buy' },
+                                    { value: 'Sell', label: 'Sell' },
+                                ]}/> 
+                            </div>
                         }
                         <Input type="button" value="Show" onClick={filterHistoryData} style={{marginTop:"50px"}}
-                            disabled={!selectedCoin && !selectedAction && !selectedFrom && !selectedTo}
+                            disabled={!selectedCoin && !selectedType && !selectedAction && !selectedFrom && !selectedTo}
                         />
 
                         <Input type="button" value="Clear" style={{marginTop:"25px"}} red 
-                            disabled={!selectedCoin && !selectedAction && !selectedFrom && !selectedTo}
+                            disabled={!selectedCoin && !selectedType && !selectedAction && !selectedFrom && !selectedTo}
                             onClick={() => {
                             setSelectedCoin(null);
+                            setSelectedType(null);
                             setSelectedAction(null);
                             setSelectedFrom(null);
                             setSelectedTo(null);
@@ -155,7 +166,13 @@ export default function History() {
                 
                 <Table style={{marginTop:'0'}} 
                     restart={filteredData} 
-                    emptyMessage={`No ${selectedSection} History Data`}>
+                    emptyMessage={`No History Data`}
+                    tableTop={
+                        <div 
+                            style={{textAlign: "center", color: "#21db9a", fontSize: "22px", fontWeight: "600", marginBottom: "10px"}}>
+                            {selectedSection} History
+                        </div>
+                    }>
                         
                     <TableRow data={
                         selectedSection === "Transaction" ?
@@ -188,11 +205,11 @@ export default function History() {
                                 ]   :
                                 [
                                     <Coin>{row.coin}</Coin>,
-                                    new Date(row.date).toLocaleDateString().replace(/\//g, '-'),
+                                    new Date(parseFloat(row.time)).toLocaleDateString('en-GB').replace(/\//g, '-'),
                                     row.category + '-' + row.type, 
                                     `$ ${row.price}`, 
                                     row.quantity, 
-                                    `$ ${row.totalPrice}`,
+                                    `$ ${row.totalPrice && row.totalPrice.toLocaleString()}`,
                                     <span 
                                         style={{ 
                                         color: (row.PNL < 0) ? '#FF0000' : (row.PNL > 0) ? '#21DB9A' : '' 

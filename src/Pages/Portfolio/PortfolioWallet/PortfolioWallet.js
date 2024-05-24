@@ -26,14 +26,20 @@ export default function FundingWallet() {
     const [ walletAddress, setWalletAddress ] = useState(null);
     const [ isInvalid, setIsInvalid ] = useState([true, null]);
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ showModal, setShowModal ] = useState(false);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const userId = 1;
     const userName = 'Kasun Silva';
     
     useEffect(()=>{
         SetCurrentWallet(params)
-    }, [params])
+    }, [params]);
+
+    useEffect(() => {
+        if(!isModalOpen) 
+        setIsRegenerate(false);
+    }, [isModalOpen]);
 
     useEffect(() => {
         if(currentWallet === 'tradingWallet') {
@@ -190,7 +196,8 @@ export default function FundingWallet() {
         .then(res => {
             setWalletAddress(res.data.walletAddress);
             setIsLoading(false);
-            showMessage('success', 'Wallet Address Regenerated..!') ;
+            setIsRegenerate(false);
+            showMessage('success', 'Wallet Address Regenerated..!');
         })
 
         .catch(error => {
@@ -211,9 +218,9 @@ export default function FundingWallet() {
 
             tabs={[
                 { label:"Overview", path:"/portfolio"},
-                { label:"History", path:"/portfolio/history"},
                 { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
                 { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+                { label:"History", path:"/portfolio/history"}
             ]}> 
 
             
@@ -262,7 +269,7 @@ export default function FundingWallet() {
                             <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>              
                         </div>
 
-                        <p className='wallet-address-button' onClick={() => setShowModal(true)} >Wallet Address</p>    
+                        <p className='wallet-address-button' onClick={() => setIsModalOpen(true)} >Wallet Address</p>    
                     </div>
                 }>
 
@@ -327,7 +334,7 @@ export default function FundingWallet() {
 
 
 
-            <Modal open={showModal} close={setShowModal}>
+            <Modal open={isModalOpen} close={setIsModalOpen}>
                 <div style={{width:"420px", paddingTop:"15px"}}>
                     <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
                         <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
@@ -340,14 +347,31 @@ export default function FundingWallet() {
                         </div>
 
                         <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
-                        <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
-                            <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
-                            &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
-                        </p>
+                        {!isRegenerate ?
+                            <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
+                                <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
+                                &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
+                            </p> :
+                            <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "100%"}}>
+                                <i style={{color: "#21db9a", margin: "0"}}>Are you sure?</i>
+                                &ensp;Do you still wish to generate a new wallet address? This action cannot be undone. 
+                            </p>
+                        }
 
                         <div className="edit-alert-modal-button-container" style={{width: "83%"}}>
-                            <Input type="button" style={{width:"120px"}} onClick={regenerateAddress} value="Re-generate"/>
-                            <Input type="button" style={{width:"120px"}} onClick={() => setShowModal(false)} value="Close" red/>
+                            <Input 
+                                type="button" style={{width:"120px"}} 
+                                value={!isRegenerate ? "Re-generate" : "Confirm"}
+                                onClick={() => {
+                                    !isRegenerate ?  setIsRegenerate(true) : regenerateAddress();
+                                }} />
+
+                            <Input 
+                                type="button" style={{width:"120px"}} red
+                                value={!isRegenerate ? "Close" : "Cancel"}
+                                onClick={() => {
+                                    !isRegenerate ?  setIsModalOpen(false) : setIsRegenerate(false);
+                                }} />
                         </div> 
                     </div>
                 </div>
