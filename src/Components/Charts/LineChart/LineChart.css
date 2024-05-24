@@ -160,6 +160,10 @@
   animation: spread-out 2s infinite;
   box-sizing: border-box;
 }
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-tooltip .ant-tooltip-inner {
+    font-weight: bold;
+}
     
   
 @keyframes spread-out {

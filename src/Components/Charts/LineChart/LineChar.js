@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {createChart} from 'lightweight-charts';
 import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
 import './LineChart.css';
+import {Tooltip} from "antd";
 
 
 export default function LineChart(props) {
@@ -120,16 +121,16 @@ export default function LineChart(props) {
         const initializeMarkers = () => {
             if(currentMarker) currentMarker.style.display = 'none';
             if(suggestMarker) suggestMarker.style.display = 'none';
-			if( !currentMarkerTime ) return;
+            if( !currentMarkerTime ) return;
 
             setTimeout(() => {
                 currentMarkerTime && setMarkers(currentMarkerTime, currentMarker);
- 				suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker);
+                suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker);
             }, 300);
 
             let priceScaleWidth = 0;
-            try { priceScaleWidth = series.priceScale().width(); } 
-			catch {	console.log("error handled in marker");	}
+            try { priceScaleWidth = series.priceScale().width(); }
+            catch {	console.log("error handled in marker");	}
 
             const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 
@@ -157,7 +158,7 @@ export default function LineChart(props) {
 
             let priceScaleWidth = 0;
             try { priceScaleWidth = series.priceScale().width(); }
-			catch { console.log("error handled in toolTip"); }
+            catch { console.log("error handled in toolTip"); }
 
             const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',
                 (!data[activeDuration].showTime) ? {
@@ -184,13 +185,13 @@ export default function LineChart(props) {
 
             const coordinateX =
                 (pointX < priceScaleWidth + 5) ? priceScaleWidth + 5 :
-                (pointX + toolTipWidth < chartWidth) ? pointX :
-                (chartWidth - (toolTipWidth + 5));
+                    (pointX + toolTipWidth < chartWidth) ? pointX :
+                        (chartWidth - (toolTipWidth + 5));
 
             const coordinateY =
                 pointY - (toolTipHeight + toolTipMargin) > chartHeight / 5 ?
-                pointY - (toolTipHeight + toolTipMargin) :
-                pointY + toolTipMargin;
+                    pointY - (toolTipHeight + toolTipMargin) :
+                    pointY + toolTipMargin;
 
 
             toolTip.style.display = 'block';
@@ -210,7 +211,7 @@ export default function LineChart(props) {
 			`;
         }
 
-	
+
         handleResize.current = () => {
             chart.applyOptions({
                 width: chartDiv.clientWidth,
@@ -218,10 +219,10 @@ export default function LineChart(props) {
             });
         };
 
-		const resize = () => {
-			handleResize.current();
-			initializeMarkers();
-		};
+        const resize = () => {
+            handleResize.current();
+            initializeMarkers();
+        };
 
 
 
@@ -265,10 +266,18 @@ export default function LineChart(props) {
             {!chartData && <p className="empty-message">No data to show</p>}
 
             <div id="chart">
-				<div id='tool-tip' className='tool-tip'/>
-				{currentMarkerTime && <div id='current-marker' className='marker current-marker'/>}
-				{suggestMarkerTime && <div id='suggest-marker' className='marker suggest-marker'/>}
-			</div>
+                <div id='tool-tip' className='tool-tip'/>
+                {currentMarkerTime &&
+                    <Tooltip title={props.orderPrice} color='#ffb521' trigger="click" open>
+                        <div id='current-marker' className='marker current-marker'/>
+                    </Tooltip>
+                }
+                {suggestMarkerTime &&
+                    <Tooltip title={props.suggestPrice} color='#0077FF' trigger="click" open>
+                        <div id='suggest-marker' className='marker suggest-marker'/>
+                    </Tooltip>
+                }
+            </div>
         </div>
     );
 };
