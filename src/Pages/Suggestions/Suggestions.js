@@ -10,6 +10,8 @@ import './Suggstions.css';
 import {Spin, Button} from "antd";
 import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
+import {SiGooglegemini} from "react-icons/si";
+import {LuRefreshCw} from "react-icons/lu";
 
 export default function Suggestions() {
     const Tabs = [
@@ -63,14 +65,14 @@ export default function Suggestions() {
             const startTime = orderTime.getTime() - 15 * 60 * 1000;
             const endTime = orderTime.getTime() + 15 * 60 * 1000;
             const res = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${order.coin}USDT&startTime=${startTime}&endTime=${endTime}&interval=1m&limit=500`);
-            await processAnalyzeData(res.data,order);
+            await processAnalyzeData(res.data, order);
         } catch (error) {
             console.log(error);
         }
     };
 
 
-    const processAnalyzeData = async (newData,order) => {
+    const processAnalyzeData = async (newData, order) => {
         try {
             const transformedData = newData.map((item) => ({
                 open: parseFloat(item[1]),
@@ -86,7 +88,7 @@ export default function Suggestions() {
                 ...prevData,
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
-                quantity:order.quantity,
+                quantity: order.quantity,
                 tradingData: transformedData.slice(0, 150)
             }));
         } catch (error) {
@@ -101,18 +103,23 @@ export default function Suggestions() {
 
     const getSuggestions = async () => {
         console.log('getSuggestions');
+        setSuggestion(null);
         setLoading(true);
         setError(false);
         try {
             const res = await fetch('http://localhost:8005/suggestion/buyOrderSuggestion', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(geminiData),
             });
             if (!res.ok) throw new Error('Network response was not ok');
             const data = await res.json();
             const formatText = (text) => text.split('\n').map(line => line.replace(/^- /, '• ')).join('\n');
-            const formattedData = { ...data, suggestions: formatText(data.suggestions), advices: formatText(data.advices) };
+            const formattedData = {
+                ...data,
+                suggestions: formatText(data.suggestions),
+                advices: formatText(data.advices)
+            };
             setSuggestion(formattedData);
         } catch (error) {
             console.error('Error:', error);
@@ -137,7 +144,7 @@ export default function Suggestions() {
                 time: (item[0] / 1000),
                 value: parseFloat(item[4]),
             }));
-            const result = { '1M': { showTime: true, data: minData } };
+            const result = {'1M': {showTime: true, data: minData}};
             setTradeData(result);
             setIsLoading(false);
         } catch (error) {
@@ -154,14 +161,6 @@ export default function Suggestions() {
         return '$ ' + amountString;
     };
 
-    function convertTimestampToDateObject(timestamp) {
-        const timeZone = new Date().getTimezoneOffset() * 60;
-
-        const date = (timestamp / 1000) - timeZone;
-
-        console.log(date);
-        return date;
-    }
 
     const getCoin = async (coin) => {
         try {
@@ -220,11 +219,23 @@ export default function Suggestions() {
         >
             <SidePanelWithContainer
                 style={{height: '91vh'}}
-                header={'Suggestions'}
                 sidePanel={
+
 
                     <div style={{overflowY: 'auto', overscrollBehaviorY: "contain"}}>
 
+                        <div style={{display: 'flex'}}>
+                            <h1 style={{fontSize: '1.5rem'}}>Suggestions</h1>
+                            {suggestion && (
+                                <LuRefreshCw style={{
+                                    color: '#21DB9A',
+                                    fontSize: '1.7rem',
+                                    marginLeft: '3rem',
+                                    cursor: 'pointer',
+                                    marginTop: '0.3rem'
+                                }} onClick={getSuggestions}/>
+                            )}
+                        </div>
 
                         {loading ? (
                             <div style={{textAlign: 'center', paddingTop: '50px'}}>
@@ -323,16 +334,16 @@ export default function Suggestions() {
                     title={selectedOrder ? selectedOrder.coin : null}
                     suggestPrice={suggestion ? formatCurrency(suggestion.bestPrice) : null}
                     orderPrice={selectedOrder ? formatCurrency(selectedOrder.price) : null}
-                    suggestMarkerTime={suggestion ? suggestion.time/1000 : null}
-                    currentMarkerTime={selectedOrder ? selectedOrder.time/1000 : null}
+                    suggestMarkerTime={suggestion ? suggestion.time / 1000 : null}
+                    currentMarkerTime={selectedOrder ? selectedOrder.time / 1000 : null}
                     style={{height: '35rem', flex: 'none'}}>
                 </LineChart>
 
 
-                <Table 
-                    style={{marginTop: '1vh'}} 
+                <Table
+                    style={{marginTop: '1vh'}}
                     emptyMessage={"No Trade data To display"}
-                    hover={true} 
+                    hover={true}
                     tableTop={
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>
                             <div style={{width: '10rem'}}>
@@ -340,7 +351,7 @@ export default function Suggestions() {
                             </div>
                         </div>
                     }>
-                    
+
 
                     <TableRow data={[
                         'Coin',
@@ -353,22 +364,22 @@ export default function Suggestions() {
                     ]}/>
 
                     {orderHistory
-                        .filter(order => order.category !== 'Limit'|| (order.category === 'Limit' && order.orderStatus === 'Completed'))
+                        .filter(order => order.category !== 'Limit' || (order.category === 'Limit' && order.orderStatus === 'Completed'))
                         .map(order => (
-                        <TableRow
-                            key={order.id}
-                            data={[
-                                <Coin>{order.coin}</Coin>,
-                                new Date(order.date).toLocaleDateString(),
-                                order.type,
-                                order.price,
-                                order.category,
-                                order.quantity,
-                                order.totalPrice,
-                            ]}
-                            onClick={() => handleRowClick(order)}
-                        />
-                    ))}
+                            <TableRow
+                                key={order.id}
+                                data={[
+                                    <Coin>{order.coin}</Coin>,
+                                    new Date(order.date).toLocaleDateString(),
+                                    order.type,
+                                    order.price,
+                                    order.category,
+                                    order.quantity,
+                                    order.totalPrice,
+                                ]}
+                                onClick={() => handleRowClick(order)}
+                            />
+                        ))}
                 </Table>
 
             </SidePanelWithContainer>
