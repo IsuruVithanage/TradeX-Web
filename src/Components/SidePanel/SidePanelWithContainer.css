@@ -16,6 +16,8 @@
 
 .side-panel{
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 340px;
     height: -moz-fit-content;
     height: fit-content;

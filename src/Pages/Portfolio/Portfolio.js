@@ -60,9 +60,9 @@ export default function Portfolio() {
         isLoading={isLoading}
         tabs={[
           { label:"Overview", path:"/portfolio"},
-          { label:"History", path:"/portfolio/history"},
           { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+          { label:"History", path:"/portfolio/history"}
         ]}>
 
 
