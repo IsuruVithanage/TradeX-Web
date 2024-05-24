@@ -87,7 +87,7 @@ export default function Suggestions() {
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
                 quantity:order.quantity,
-                tradingData: transformedData.slice(0, 50)
+                tradingData: transformedData.slice(0, 150)
             }));
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -321,6 +321,8 @@ export default function Suggestions() {
                 <LineChart
                     data={tradeData}
                     title={selectedOrder ? selectedOrder.coin : null}
+                    suggestPrice={suggestion ? formatCurrency(suggestion.bestPrice) : null}
+                    orderPrice={selectedOrder ? formatCurrency(selectedOrder.price) : null}
                     suggestMarkerTime={suggestion ? suggestion.time/1000 : null}
                     currentMarkerTime={selectedOrder ? selectedOrder.time/1000 : null}
                     style={{height: '35rem', flex: 'none'}}>
@@ -344,9 +346,11 @@ export default function Suggestions() {
                         'Total Price',
                     ]}/>
 
-                    {orderHistory.map(order => (
+                    {orderHistory
+                        .filter(order => order.category !== 'Limit'|| (order.category === 'Limit' && order.orderStatus === 'Completed'))
+                        .map(order => (
                         <TableRow
-                            key={order.id} // Ensure each row has a unique key
+                            key={order.id}
                             data={[
                                 <Coin>{order.coin}</Coin>,
                                 new Date(order.date).toLocaleDateString(),
