@@ -31,6 +31,8 @@ export default function Suggestions() {
     const [geminiData, setGeminiData] = useState({
         coinName: '',
         tradePrice: 0,
+        quantity: 0,
+        orderCategory: '',
         tradingData: []
     });
 
@@ -89,6 +91,7 @@ export default function Suggestions() {
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
                 quantity: order.quantity,
+                orderCategory: order.category,
                 tradingData: transformedData.slice(0, 150)
             }));
         } catch (error) {
@@ -114,13 +117,8 @@ export default function Suggestions() {
             });
             if (!res.ok) throw new Error('Network response was not ok');
             const data = await res.json();
-            const formatText = (text) => text.split('\n').map(line => line.replace(/^- /, '• ')).join('\n');
-            const formattedData = {
-                ...data,
-                suggestions: formatText(data.suggestions),
-                advices: formatText(data.advices)
-            };
-            setSuggestion(formattedData);
+            console.log(data)
+            setSuggestion(data);
         } catch (error) {
             console.error('Error:', error);
             setError(true);
@@ -128,6 +126,10 @@ export default function Suggestions() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        console.log("suggest", suggestion);
+    }, [suggestion]);
 
 
     useEffect(() => {
@@ -218,38 +220,38 @@ export default function Suggestions() {
             isLoading={isLoading}
         >
             <SidePanelWithContainer
-                style={{height: '91vh'}}
+                style={{ height: '91vh', padding: '1.7rem', overflowY: 'auto' }}
+                className="side-panel-container"
+                line={false}
                 sidePanel={
-
-
-                    <div style={{overflowY: 'auto', overscrollBehaviorY: "contain"}}>
-
-                        <div style={{display: 'flex'}}>
-                            <h1 style={{fontSize: '1.5rem'}}>Suggestions</h1>
+                    <div className="side-panel-container">
+                        <div style={{ display: 'flex', marginBottom: '20px' }}>
+                            <h1 style={{ fontSize: '1.5rem' }}>Suggestions</h1>
                             {suggestion && (
                                 <LuRefreshCw style={{
                                     color: '#21DB9A',
-                                    fontSize: '1.7rem',
-                                    marginLeft: '3rem',
-                                    cursor: 'pointer',
-                                    marginTop: '0.3rem'
-                                }} onClick={getSuggestions}/>
+                                    fontSize: '1.6rem',
+                                    marginLeft: '6rem',
+                                    marginTop:"0.3rem",
+                                    cursor: 'pointer'
+                                }}
+                                             onClick={getSuggestions}
+                                />
                             )}
                         </div>
-
                         {loading ? (
-                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
+                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
                                 <Spin size="large"/>
                             </div>
                         ) : error ? (
-                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                                <p className='error-message'>Something wend wrong. Please try again.</p>
+                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                                <p className='error-message'>Failed to load suggestions.</p>
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
                             </div>
                         ) : suggestion ? (
                             <div>
-                                <div style={{display: 'flex'}}>
+                                <div style={{ display: 'flex' }}>
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data' style={{
@@ -271,22 +273,28 @@ export default function Suggestions() {
                                 <div>
                                     <p className='s-lables'>Suggestions</p>
                                     <ul className='s-data'>
-                                        {suggestion.suggestions.split('\n').map((item, index) => (
-                                            <li key={index} style={{marginBottom: '10px'}}>{item}</li>
+                                        {suggestion.suggestions.map((item, index) => (
+                                            <li key={index} style={{ marginBottom: '10px' }}>{"• " + item}</li>
                                         ))}
                                     </ul>
                                 </div>
                                 <div>
-                                    <p className='s-lables'>Advices</p>
+                                    <p className='s-lables'>Resources</p>
                                     <ul className='s-data'>
-                                        {suggestion.advices.split('\n').map((item, index) => (
-                                            <li key={index} style={{marginBottom: '10px'}}>{item}</li>
+                                        {suggestion.resources.map((item, index) => (
+                                            <li key={index} style={{
+                                                marginBottom: '10px',
+                                                fontWeight: 'normal',
+                                                color: '#21DB9A'
+                                            }}>
+                                                <a href={item} target="_blank" rel="noopener noreferrer">{item}</a>
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
                             </div>
                         ) : (
-                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
+                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
                                 <p className='error-message'>No suggestions available.</p>
                             </div>
                         )}
@@ -294,7 +302,8 @@ export default function Suggestions() {
                 }
             >
 
-                <div className='coinDiv' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+
+            <div className='coinDiv' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     {selectedOrder ? (
                         <>
                             <div className='coin-logo'>
