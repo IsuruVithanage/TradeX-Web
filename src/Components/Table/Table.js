@@ -14,6 +14,7 @@ export default function Table(props) {
 
     return (
         <div className='table-container' style={props.style}>
+            { props.tableTop }
             <table className='main-table' id={props.id}>
                 <thead className='table-head'>
                     { props.children[0] }
