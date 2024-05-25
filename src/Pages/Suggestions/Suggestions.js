@@ -44,6 +44,9 @@ export default function Suggestions() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const filterBtn = ["All", "Today", "Week","Month"];
+    const [activateDuration, setActivateDuration] = useState("All");
+    const [filteredOrderHistory, setFilteredOrderHistory] = useState([]);
 
 
     const loadOrderHistory = async () => {
@@ -92,7 +95,7 @@ export default function Suggestions() {
                 tradePrice: order.price,
                 quantity: order.quantity,
                 orderCategory: order.category,
-                tradingData: transformedData.slice(0, 150)
+                tradingData: transformedData.slice(0, 250)
             }));
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -209,6 +212,45 @@ export default function Suggestions() {
         setType(type);
     };
 
+    useEffect(() => {
+        filterOrders();
+    }, [orderHistory,activateDuration]);
+
+    const filterOrders = () => {
+        const now = new Date();
+        let filteredOrders = [];
+
+        switch (activateDuration) {
+            case "Today":
+                filteredOrders = orderHistory.filter(order => {
+                    const orderDate = new Date(order.date);
+                    return orderDate.toDateString() === now.toDateString();
+                });
+                break;
+            case "Week":
+                filteredOrders = orderHistory.filter(order => {
+                    const orderDate = new Date(order.date);
+                    const weekAgo = new Date(now);
+                    weekAgo.setDate(now.getDate() - 7);
+                    return orderDate >= weekAgo && orderDate <= now;
+                });
+                break;
+            case "Month":
+                filteredOrders = orderHistory.filter(order => {
+                    const orderDate = new Date(order.date);
+                    const monthAgo = new Date(now);
+                    monthAgo.setMonth(now.getMonth() - 1);
+                    return orderDate >= monthAgo && orderDate <= now;
+                });
+                break;
+            default:
+                filteredOrders = orderHistory;
+                break;
+        }
+
+        setFilteredOrderHistory(filteredOrders);
+    };
+
 
     return (
         <BasicPage
@@ -220,19 +262,19 @@ export default function Suggestions() {
             isLoading={isLoading}
         >
             <SidePanelWithContainer
-                style={{ height: '91vh', padding: '1.7rem', overflowY: 'auto' }}
+                style={{height: '91vh', padding: '1.7rem', overflowY: 'auto'}}
                 className="side-panel-container"
                 line={false}
                 sidePanel={
                     <div className="side-panel-container">
-                        <div style={{ display: 'flex', marginBottom: '20px' }}>
-                            <h1 style={{ fontSize: '1.5rem' }}>Suggestions</h1>
+                        <div style={{display: 'flex', marginBottom: '20px'}}>
+                            <h1 style={{fontSize: '1.5rem'}}>Suggestions</h1>
                             {suggestion && (
                                 <LuRefreshCw style={{
                                     color: '#21DB9A',
                                     fontSize: '1.6rem',
                                     marginLeft: '6rem',
-                                    marginTop:"0.3rem",
+                                    marginTop: "0.3rem",
                                     cursor: 'pointer'
                                 }}
                                              onClick={getSuggestions}
@@ -240,18 +282,18 @@ export default function Suggestions() {
                             )}
                         </div>
                         {loading ? (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
                                 <Spin size="large"/>
                             </div>
                         ) : error ? (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
                                 <p className='error-message'>Failed to load suggestions.</p>
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
                             </div>
                         ) : suggestion ? (
                             <div>
-                                <div style={{ display: 'flex' }}>
+                                <div style={{display: 'flex'}}>
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data' style={{
@@ -274,7 +316,7 @@ export default function Suggestions() {
                                     <p className='s-lables'>Suggestions</p>
                                     <ul className='s-data'>
                                         {suggestion.suggestions.map((item, index) => (
-                                            <li key={index} style={{ marginBottom: '10px' }}>{"• " + item}</li>
+                                            <li key={index} style={{marginBottom: '10px'}}>{"• " + item}</li>
                                         ))}
                                     </ul>
                                 </div>
@@ -294,7 +336,7 @@ export default function Suggestions() {
                                 </div>
                             </div>
                         ) : (
-                            <div style={{ textAlign: 'center', paddingTop: '50px' }}>
+                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
                                 <p className='error-message'>No suggestions available.</p>
                             </div>
                         )}
@@ -303,7 +345,7 @@ export default function Suggestions() {
             >
 
 
-            <div className='coinDiv' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <div className='coinDiv' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     {selectedOrder ? (
                         <>
                             <div className='coin-logo'>
@@ -354,11 +396,30 @@ export default function Suggestions() {
                     emptyMessage={"No Trade data To display"}
                     hover={true}
                     tableTop={
-                        <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '1rem',
+                            marginTop:'0.7rem'
+                        }}>
                             <div style={{width: '10rem'}}>
                                 <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
                             </div>
+                            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                {
+                                    filterBtn.map((duration, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => {filterOrders(); setActivateDuration(duration)}}
+                                            className={`duration-button ${activateDuration === duration ? "active" : ""}`}>
+                                            {duration}
+                                        </button>
+                                    ))
+                                }
+                            </div>
                         </div>
+
                     }>
 
 
@@ -372,11 +433,11 @@ export default function Suggestions() {
                         'Total Price',
                     ]}/>
 
-                    {orderHistory
+                    {filteredOrderHistory
                         .filter(order => order.category !== 'Limit' || (order.category === 'Limit' && order.orderStatus === 'Completed'))
                         .map(order => (
                             <TableRow
-                                key={order.id}
+                                key={order.orderId}
                                 data={[
                                     <Coin>{order.coin}</Coin>,
                                     new Date(order.date).toLocaleDateString(),
