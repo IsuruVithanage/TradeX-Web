@@ -6,7 +6,6 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
-import TestChart from "./TestChart"
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {useSelector} from "react-redux";
@@ -49,6 +48,7 @@ export default function TradingPlatform({firebase}) {
         type: 'Buy',
         date: '',
         category: 'Limit',
+        stopLimit: 0,
         coin: null,
         price: 0,
         quantity: 0,
@@ -72,6 +72,7 @@ export default function TradingPlatform({firebase}) {
                 type: 'Buy',
                 date: '',
                 category: 'Limit',
+                stopLimit: 0,
                 coin: null,
                 price: 0,
                 quantity: 0,
@@ -166,6 +167,7 @@ export default function TradingPlatform({firebase}) {
             quantity: order.quantity,
             date: currentDate,
             price: order.price,
+            stopLimit: order.stopLimit,
             type: order.type,
             category: order.category,
             totalPrice: order.total,
@@ -184,6 +186,7 @@ export default function TradingPlatform({firebase}) {
         if (value === 'Market') {
             setIsButtonSet(true);
             setSelectedType('Market');
+            handleStopLimitPriceChange(0);
             setMarketPrice();
             setIsDisabled(true);
         } else if (value === 'Limit') {
@@ -194,6 +197,7 @@ export default function TradingPlatform({firebase}) {
             }));
             setIsButtonSet(true);
             setSelectedType('Limit');
+            handleStopLimitPriceChange(0);
             setIsDisabled(false);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
@@ -229,6 +233,15 @@ export default function TradingPlatform({firebase}) {
         setOrder(prevOrder => ({
             ...prevOrder,
             total: value * order.quantity
+        }));
+
+    };
+
+    const handleStopLimitPriceChange = (value) => {
+        console.log(value)
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            stopLimit: value
         }));
 
     };
@@ -295,68 +308,93 @@ export default function TradingPlatform({firebase}) {
             return;
         }
 
-        const ob = {
-            userId: user.user.id,
-            coin: order.coin.symbol.toUpperCase(),
-            quantity: order.quantity,
-            price: order.price,
-            category: order.category,
-            type: order.type
-        }
-
-        if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
-            console.error('Invalid order:', ob);
-            return;
-        }
-
-        if (ob.quantity < 0) {
-            showMessage('Error', 'Please enter the quantity!');
-            return;
-        }
 
         setIsLoading(false);
 
+        if (order.category !== 'Stop Limit') {
+            const ob = {
+                userId: user.user.id,
+                coin: order.coin.symbol.toUpperCase(),
+                quantity: order.quantity,
+                price: order.price,
+                category: order.category,
+                type: order.type
+            }
 
-        fetch('http://localhost:8011/portfolio/asset/trade', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ob)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('gvgh', data);
-                if (order.type === 'Buy') {
-                    setWalletBalance(data[0].balance);
-                } else {
-                    setWalletBalance(data[1].balance);
-                }
+            if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
+                console.error('Invalid order:', ob);
+                return;
+            }
 
-                return fetch('http://localhost:8005/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(placeOrder())
+            if (ob.quantity < 0) {
+                showMessage('Error', 'Please enter the quantity!');
+                return;
+            }
+
+            fetch('http://localhost:8011/portfolio/asset/trade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ob)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('gvgh', data);
+                    if (order.type === 'Buy') {
+                        setWalletBalance(data[0].balance);
+                    } else {
+                        setWalletBalance(data[1].balance);
+                    }
+
+                    return fetch('http://localhost:8005/order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(placeOrder())
+                    });
+                })
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (order.category === 'Limit') {
+                            fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                        }
+                        //fetchLimitOrders(selectedCoin.symbol);
+                    } else {
+                        console.error('Failed to save order:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
                 });
+        }else {
+            fetch('http://localhost:8005/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(placeOrder())
             })
             .then(response => {
-                if (response.ok) {
-                    setIsLoading(true);
-                    showMessage('success', 'The order has been placed successfully!');
-                    getWalletBalance();
-                    if (order.category === 'Limit') {
-                        fetchLimitOrders(selectedCoin.symbol.toUpperCase());
-                    }
-                    //fetchLimitOrders(selectedCoin.symbol);
-                } else {
-                    console.error('Failed to save order:', response);
+            if (response.ok) {
+                setIsLoading(true);
+                showMessage('success', 'The order has been placed successfully!');
+                getWalletBalance();
+                if (order.category === 'Limit') {
+                    fetchLimitOrders(selectedCoin.symbol.toUpperCase());
                 }
-            })
+            } else {
+                console.error('Failed to save order:', response);
+            }
+        })
             .catch(error => {
                 console.error('Failed to save order:', error);
             });
+        }
     }
 
     useEffect(() => {
@@ -457,6 +495,11 @@ export default function TradingPlatform({firebase}) {
                         <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}
                                    selectedType={selectedType}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
+
+                        {selectedType === 'Stop Limit' &&
+                        <Input label={'Stop Limit'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.stopLimit}
+                               onChange={handleStopLimitPriceChange}/>
+                        }
 
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
                                onChange={handlePriceChange}/>
