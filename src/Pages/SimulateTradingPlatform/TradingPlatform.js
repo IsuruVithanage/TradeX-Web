@@ -105,7 +105,7 @@ export default function TradingPlatform({firebase}) {
             if (order.type === 'Sell') {
                 setBalanceSymble(coin.symbol);
             }
-            fetchLimitOrders(coin.symbol.toUpperCase());
+            fetchOrderByCoinAndCate(coin.symbol.toUpperCase(), selectedType);
         }
     };
 
@@ -119,8 +119,11 @@ export default function TradingPlatform({firebase}) {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === 'order_completed') {
-                fetchLimitOrders(selectedCoin?.symbol?.toUpperCase());
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Limit");
                 showMessage('success', `Your order for ${data.order.coin} has been completed at ${data.order.price}`);
+            } else if (data.type === 'stopLimit_completed') {
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Stop Limit");
+                showMessage('success', `Your Stop Limit order for ${data.order.coin} has been execute as Limit`);
             }
         };
 
@@ -129,10 +132,15 @@ export default function TradingPlatform({firebase}) {
         };
     }, [selectedCoin]);
 
-    const fetchLimitOrders = (coin) => {
-        fetch(`http://localhost:8005/order/getLimitOrderByCoin/${coin}/${user.user.id}`)
+    const fetchOrderByCoinAndCate = (coin, category) => {
+        console.log('fetchOrderByCoinAndCate')
+        if (!order.coin) {
+            return;
+        }
+        fetch(`http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Limit orders:', data)
                 setLimitOrder(data);
             })
             .catch(error => {
@@ -279,6 +287,14 @@ export default function TradingPlatform({firebase}) {
     }
 
     useEffect(() => {
+        console.log('order', order)
+        if (order.coin) {
+            fetchOrderByCoinAndCate(order.coin.symbol.toUpperCase(), order.category);
+        }
+
+    }, [selectedType]);
+
+    useEffect(() => {
         getWalletBalance();
     }, [balanceSymble, selectedCoin]);
 
@@ -361,9 +377,9 @@ export default function TradingPlatform({firebase}) {
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
                         if (order.category === 'Limit') {
-                            fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                         }
-                        //fetchLimitOrders(selectedCoin.symbol);
+
                     } else {
                         console.error('Failed to save order:', response);
                     }
@@ -371,7 +387,7 @@ export default function TradingPlatform({firebase}) {
                 .catch(error => {
                     console.error('Failed to save order:', error);
                 });
-        }else {
+        } else {
             fetch('http://localhost:8005/order', {
                 method: 'POST',
                 headers: {
@@ -379,21 +395,21 @@ export default function TradingPlatform({firebase}) {
                 },
                 body: JSON.stringify(placeOrder())
             })
-            .then(response => {
-            if (response.ok) {
-                setIsLoading(true);
-                showMessage('success', 'The order has been placed successfully!');
-                getWalletBalance();
-                if (order.category === 'Limit') {
-                    fetchLimitOrders(selectedCoin.symbol.toUpperCase());
-                }
-            } else {
-                console.error('Failed to save order:', response);
-            }
-        })
-            .catch(error => {
-                console.error('Failed to save order:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (selectedType === 'Stop Limit') {
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), 'Stop Limit');
+                        }
+                    } else {
+                        console.error('Failed to save order:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
+                });
         }
     }
 
@@ -413,7 +429,7 @@ export default function TradingPlatform({firebase}) {
             let quantity = value / order.price;
             if (balancePr !== 0) {
                 setIsError(null);
-                quantity=parseFloat(quantity.toFixed(4));
+                quantity = parseFloat(quantity.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: quantity
@@ -429,7 +445,7 @@ export default function TradingPlatform({firebase}) {
             let value = (walletBalance * (balancePr / 100));
             if (balancePr !== 0) {
                 setIsError(null);
-                value=parseFloat(value.toFixed(4));
+                value = parseFloat(value.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: value
@@ -469,7 +485,7 @@ export default function TradingPlatform({firebase}) {
             .then(response => {
                 if (response.ok) {
                     showMessage('Success', 'Order deleted successfully');
-                    fetchLimitOrders(selectedCoin.symbol);
+                    fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
                     showMessage('Error', 'Failed to delete order');
                 }
@@ -497,8 +513,9 @@ export default function TradingPlatform({firebase}) {
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
                         {selectedType === 'Stop Limit' &&
-                        <Input label={'Stop Limit'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.stopLimit}
-                               onChange={handleStopLimitPriceChange}/>
+                            <Input label={'Stop Limit'} type={'number'} icon={"$"} isDisable={isDisabled}
+                                   value={order.stopLimit}
+                                   onChange={handleStopLimitPriceChange}/>
                         }
 
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
@@ -511,8 +528,9 @@ export default function TradingPlatform({firebase}) {
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
 
-                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet} title={'Confirm Order'}
-                                      message={`Are you sure to place this Order`}/>
+                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet}
+                                   title={'Confirm Order'}
+                                   message={`Are you sure to place this Order`}/>
                         <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
@@ -544,7 +562,8 @@ export default function TradingPlatform({firebase}) {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId} title={'Cancel the order'}
+                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId}
+                                          title={'Cancel the order'}
                                           message={`Are you sure to cancel this Order`}/>
                         ]}
                     />
