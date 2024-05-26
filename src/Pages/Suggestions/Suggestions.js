@@ -12,8 +12,10 @@ import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
 import {SiGooglegemini} from "react-icons/si";
 import {LuRefreshCw} from "react-icons/lu";
+import {useSelector} from "react-redux";
 
 export default function Suggestions() {
+    const user = useSelector(state => state.user);
     const Tabs = [
         {label: "Suggestions", path: "/suggestion"},
     ];
@@ -28,15 +30,18 @@ export default function Suggestions() {
         priceChange: 0,
     });
 
+    const [type, setType] = useState('Buy');
+
     const [geminiData, setGeminiData] = useState({
         coinName: '',
         tradePrice: 0,
         quantity: 0,
+        orderType: type,
+        boughtPrice: 0,
         orderCategory: '',
         tradingData: []
     });
 
-    const [type, setType] = useState('Buy');
     const [tradeData, setTradeData] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
     const [suggestion, setSuggestion] = useState(null);
@@ -44,7 +49,7 @@ export default function Suggestions() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const filterBtn = ["All", "Today", "Week","Month"];
+    const filterBtn = ["All", "Today", "Week", "Month"];
     const [activateDuration, setActivateDuration] = useState("All");
     const [filteredOrderHistory, setFilteredOrderHistory] = useState([]);
 
@@ -94,6 +99,8 @@ export default function Suggestions() {
                 coinName: symbols[order.coin].name,
                 tradePrice: order.price,
                 quantity: order.quantity,
+                orderType: order.type,
+                boughtPrice: type === "Sell" ? getBoughtPrice(selectedOrder.coin) : 0,
                 orderCategory: order.category,
                 tradingData: transformedData.slice(0, 250)
             }));
@@ -107,11 +114,24 @@ export default function Suggestions() {
         getSuggestions();
     }, [geminiData]);
 
+    const getBoughtPrice = async (coin) => {
+        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${coin === '$' ? 'USD' : coin}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Wallet balance:', data[0]);
+                return data[0].avgPurchasePrice;
+            })
+            .catch(error => {
+                console.error('Failed to get wallet balance:', error);
+            });
+    }
+
     const getSuggestions = async () => {
         console.log('getSuggestions');
         setSuggestion(null);
         setLoading(true);
         setError(false);
+
         try {
             const res = await fetch('http://localhost:8005/suggestion/buyOrderSuggestion', {
                 method: 'POST',
@@ -214,7 +234,7 @@ export default function Suggestions() {
 
     useEffect(() => {
         filterOrders();
-    }, [orderHistory,activateDuration]);
+    }, [orderHistory, activateDuration]);
 
     const filterOrders = () => {
         const now = new Date();
@@ -401,7 +421,7 @@ export default function Suggestions() {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             marginBottom: '1rem',
-                            marginTop:'0.7rem'
+                            marginTop: '0.7rem'
                         }}>
                             <div style={{width: '10rem'}}>
                                 <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
@@ -411,7 +431,10 @@ export default function Suggestions() {
                                     filterBtn.map((duration, index) => (
                                         <button
                                             key={index}
-                                            onClick={() => {filterOrders(); setActivateDuration(duration)}}
+                                            onClick={() => {
+                                                filterOrders();
+                                                setActivateDuration(duration)
+                                            }}
                                             className={`duration-button ${activateDuration === duration ? "active" : ""}`}>
                                             {duration}
                                         </button>

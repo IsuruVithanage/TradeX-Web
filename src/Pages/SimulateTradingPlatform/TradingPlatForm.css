@@ -38,3 +38,22 @@
     color: #0E0E0F;
     opacity: 0;
 }
+
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popover .ant-popover-inner {
+    background-color: #151516;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-title {
+    color: #ffffff;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
+    margin-top: 4px;
+    color: #ffffff;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-btn-primary {
+    color: #fff;
+    background: #21db9a;
+}
