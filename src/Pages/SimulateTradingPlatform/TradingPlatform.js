@@ -143,6 +143,7 @@ export default function TradingPlatform({firebase}) {
         fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Wallet balance:', data[0]);
                 setWalletBalance(data[0].balance);
             })
             .catch(error => {
