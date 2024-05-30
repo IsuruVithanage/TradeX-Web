@@ -4,10 +4,9 @@ import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import image from '../../Assets/Images/image.jpg'; 
 import './NewsItem.css'; 
 import axios from 'axios'; 
-import { click } from '@testing-library/user-event/dist/click';
 
 
-const NewsItem = ({ title, description, src, url }) => {
+const NewsItem = ({ title, description, src, url,newsId }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
@@ -19,7 +18,7 @@ const NewsItem = ({ title, description, src, url }) => {
       axios.post(
         "http://localhost:8008/news/fav/" + !isHeartFilled,
         {
-          title,description,url,image:src,userId
+          newsId,userId
         }
       ).then (res =>{
         setIsHeartFilled(!isHeartFilled);
