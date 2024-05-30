@@ -37,35 +37,56 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
   // Event handler for incrementing like count
   const handleLikeClick = () => {
     if(isDislike && !isLike){
-      setIsDislike(false)
-      setDislikeCount(dislikeCount-1)
+      dislike(false)
     }
     
+    like(!isLike)
+    
+  };
+
+  // Event handler for incrementing dislike count
+  const handleDislikeClick = () => {
+    if(!isDislike && isLike){
+      like(false)
+    }
+  
+    dislike(!isDislike)
+
+  };
+
+  const like = async (likeStatus)=>{
     axios.post(
       "http://localhost:8008/news/like",
       {
-        newsId,userId,isLike:!isLike
+        newsId,userId,isLike:likeStatus
       }
     ).then (res =>{
       setLikeCount((prevLikeCount) => prevLikeCount + 1);
-      setIsLike(!isLike);
+      setIsLike(likeStatus);
       console.log(res.data)
 
     }) 
     .catch(error => {
       console.log(error);
     });
-  };
+  } 
+ 
+  const dislike = async (dislikeStatus)=>{
+    axios.post(
+      "http://localhost:8008/news/dislike",
+      {
+        newsId,userId,isDislike:dislikeStatus
+      }
+    ).then (res =>{
+      setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
+      setIsDislike(dislikeStatus);
+      console.log(res.data)
 
-  // Event handler for incrementing dislike count
-  const handleDislikeClick = () => {
-    if(!isDislike && isLike){
-      setIsLike(false)
-      setLikeCount(likeCount-1)
-    }
-    setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
-    setIsDislike(!isDislike);
-  };
+    }) 
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
   // Render the component
   return (
