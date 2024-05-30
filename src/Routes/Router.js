@@ -18,88 +18,89 @@ import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login";
+import Favorites from "../Pages/Forum/Favorites";
 
+export default function Router({ firebase }) {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Login />,
+      errorElement: <App />,
+    },
+    {
+      path: "/signup",
+      element: <Signup />,
+    },
+    {
+      path: "/home",
+      element: <App />,
+    },
+    {
+      path: "/admin/*",
+      element: <Admin />,
+    },
+    {
+      path: "/watchlist/*",
+      element: <Watchlist />,
+    },
+    {
+      path: "/portfolio/*",
+      element: <Portfolio />,
+    },
+    {
+      path: "/forum/*",
+      element: <Forum />,
+    },
+    {
+      path: "/summary/*",
+      element: <Summary />,
+    },
+    {
+      path: "/education/*",
+      element: <Education />,
+    },
+    {
+      path: "/news/*",
+      element: <News />,
+    },
+    {
+      path: "/wallet/*",
+      element: <Wallet />,
+    },
+    {
+      path: "/settings",
+      element: <BasicPage />,
+    },
+    {
+      path: "/simulate",
+      element: <Simulation firebase={firebase} />,
+    },
+    {
+      path: "/alert",
+      element: <Alert firebase={firebase} />,
+    },
+    {
+      path: "/suggestion",
+      element: <Suggestions />,
+    },
+    {
+      path: "/Questionbar/Detailed/:id",
+      element: <Detailed />,
+    },
 
-export default function Router({firebase}) {
-    const router = createBrowserRouter([
-        {
-            path: "/",
-            element: <Login />,
-            errorElement: <App />,
-        },
-        {
-            path: "/signup",
-            element: <Signup />,
-        },
-        {
-            path: "/home",
-            element: <App />,
-        },
-        {
-            path: "/admin/*",
-            element: <Admin />,
-        },
-        {
-            path: "/watchlist/*",
-            element: <Watchlist />,
-        },
-        {
-            path: "/portfolio/*",
-            element: <Portfolio />,
-        },
-        {
-            path: "/forum/*",
-            element: <Forum />,
-        },
-        {
-            path: "/summary/*",
-            element: <Summary />,
-        },
-        {
-            path: "/education/*",
-            element: <Education />,
-        },
-        {
-            path: "/news/*",
-            element: <News />,
-        },
-        {
-            path: "/wallet/*",
-            element: <Wallet />,
-        },
-        {
-            path: "/settings",
-            element: <BasicPage />,
-        },
-        {
-            path: "/simulate",
-            element: <Simulation firebase={firebase} />,
-        },
-        {
-            path: "/alert",
-            element: <Alert firebase={firebase} />,
-        },
-        {
-            path: "/suggestion",
-            element: <Suggestions />,
-        },
-        {
-            path: "/Questionbar/Detailed/:id",
-            element: <Detailed />,
-        },
-        {
-            path: "/quiz",
-            element: <Quiz />,
-        },
-        // {
-        //     path: "/profile",
-        //     element: <UserProfileTab />,
-        // },
-        {
-            path: "/verify",
-            element: <VerifyUser />,
-        },
-    ]);
+    {
+      path: "/quiz",
+      element: <Quiz />,
+    },
+    // {
+    //     path: "/profile",
+    //     element: <UserProfileTab />,
+    // },
+    {
+      path: "/verify",
+      element: <VerifyUser />,
+    },
+  ]);
 
-    return <RouterProvider router={router} />;
+  return <RouterProvider router={router} />;
 }

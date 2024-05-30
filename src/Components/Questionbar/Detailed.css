@@ -71,6 +71,13 @@ p{
     height: 3rem !important;
     width: 3rem !important;
 }
+.favourite-icon{
+    color: white;
+    padding-top: 4%;
+    
+    height: 3rem !important;
+    width: 3rem !important;
+}
 .add-answer{
     width: 68%;
     height: auto;

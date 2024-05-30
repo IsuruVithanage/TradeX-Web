@@ -11,7 +11,9 @@ const Education = lazy(() => import("./Sub-Routes/EducationRoutes"));
 const News = lazy(() => import("./Sub-Routes/NewsRoutes"));
 const Wallet = lazy(() => import("./Sub-Routes/WalletRoutes"));
 const BasicPage = lazy(() => import("../Components/BasicPage/BasicPage"));
-const Simulation = lazy(() => import("../Pages/SimulateTradingPlatform/TradingPlatform"));
+const Simulation = lazy(() =>
+  import("../Pages/SimulateTradingPlatform/TradingPlatform")
+);
 const Alert = lazy(() => import("../Pages/Alert/Alert"));
 const Suggestions = lazy(() => import("../Pages/Suggestions/Suggestions"));
 const Detailed = lazy(() => import("../Components/Questionbar/Detailed"));
@@ -24,20 +26,20 @@ export default function Router() {
     {
       path: "/",
       element: (
-        <Suspense fallback={<Loading/>}>
-            <App />
+        <Suspense fallback={<Loading />}>
+          <App />
         </Suspense>
       ),
       errorElement: (
-        <Suspense fallback={<Loading/>}>
-            <App />
+        <Suspense fallback={<Loading />}>
+          <App />
         </Suspense>
-      )
+      ),
     },
     {
       path: "/watchlist/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Watchlist />
         </Suspense>
       ),
@@ -45,7 +47,7 @@ export default function Router() {
     {
       path: "/portfolio/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Portfolio />
         </Suspense>
       ),
@@ -53,7 +55,7 @@ export default function Router() {
     {
       path: "/forum/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Forum />
         </Suspense>
       ),
@@ -61,7 +63,7 @@ export default function Router() {
     {
       path: "/summary/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Summary />
         </Suspense>
       ),
@@ -69,7 +71,7 @@ export default function Router() {
     {
       path: "/education/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Education />
         </Suspense>
       ),
@@ -77,7 +79,7 @@ export default function Router() {
     {
       path: "/news/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <News />
         </Suspense>
       ),
@@ -85,7 +87,7 @@ export default function Router() {
     {
       path: "/wallet/*",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Wallet />
         </Suspense>
       ),
@@ -93,7 +95,7 @@ export default function Router() {
     {
       path: "/settings",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <BasicPage />
         </Suspense>
       ),
@@ -101,7 +103,7 @@ export default function Router() {
     {
       path: "/simulate",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Simulation />
         </Suspense>
       ),
@@ -109,7 +111,7 @@ export default function Router() {
     {
       path: "/alert",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Alert />
         </Suspense>
       ),
@@ -117,7 +119,7 @@ export default function Router() {
     {
       path: "/suggestion",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Suggestions />
         </Suspense>
       ),
@@ -125,15 +127,16 @@ export default function Router() {
     {
       path: "/Questionbar/Detailed",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Detailed />
         </Suspense>
       ),
     },
+
     {
       path: "/quiz",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Quiz />
         </Suspense>
       ),
@@ -141,7 +144,7 @@ export default function Router() {
     {
       path: "/profile",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <UserProfileTab />
         </Suspense>
       ),
@@ -149,7 +152,7 @@ export default function Router() {
     {
       path: "/verify",
       element: (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <VerifyUser />
         </Suspense>
       ),

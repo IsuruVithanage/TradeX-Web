@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { MdFavoriteBorder } from "react-icons/md";
+import { Favorite } from "@mui/icons-material";
+import Favourites from "../../Pages/Forum/Favorites";
 
 const socket = io("/", {
   reconnection: true,
@@ -40,6 +43,48 @@ function Detailed() {
       ...prevOrder,
       comment: content,
     }));
+  };
+
+  //add favorites
+  const [favorites, setFavorites] = useState([]);
+
+  const handleFavorite = async (question) => {
+    try {
+      // Update local state
+      setFavorites((prevFavorites) => {
+        if (prevFavorites.some((fav) => fav.id === question.questionId)) {
+          return prevFavorites.filter((fav) => fav.id !== question.questionId);
+        } else {
+          return [...prevFavorites, question];
+        }
+      });
+
+      // Send request to backend
+      const response = await axios.post(
+        "http://localhost:8010/forum/addFavorite",
+        {
+          questionId: question.questionId,
+          userId: 1,
+          title: question.title,
+        }
+      );
+
+      // Log the response from the server
+      console.log("Favorite added successfully:", response.data);
+    } catch (error) {
+      console.error("Error adding favorite:", error.response.data);
+    }
+  };
+
+  const fetchFavorites = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8010/forum/getFavoritesByUserId/${userId}`
+      );
+      setFavorites(response.data);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -92,6 +137,7 @@ function Detailed() {
   useEffect(() => {
     loadQuestions();
     fetchAnswers();
+    fetchFavorites(1);
   }, [id]);
 
   useEffect(() => {
@@ -119,9 +165,11 @@ function Detailed() {
         header="Favourites"
         sidePanel={
           <div>
-            <p className="sub-title">Technical Analysis</p>
-            <p className="sub-title">Understanding cryptocurrency</p>
-            <p className="sub-title">Understanding cryptocurrency wallet</p>
+            {favorites.map((fav) => (
+              <p key={fav.id} className="sub-title">
+                {fav.title}
+              </p>
+            ))}
           </div>
         }
       >
@@ -138,6 +186,10 @@ function Detailed() {
                 />
                 <AiOutlineDislike className="dislike-button" />
                 {question.likes}
+                <MdFavoriteBorder
+                  className="favourite-icon"
+                  onClick={() => handleFavorite(question)}
+                />
                 <p className="author">Created by: {question.author}</p>
               </>
             )}
