@@ -6,7 +6,6 @@ import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
-import TestChart from "./TestChart"
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {useSelector} from "react-redux";
@@ -49,6 +48,7 @@ export default function TradingPlatform({firebase}) {
         type: 'Buy',
         date: '',
         category: 'Limit',
+        stopLimit: 0,
         coin: null,
         price: 0,
         quantity: 0,
@@ -72,6 +72,7 @@ export default function TradingPlatform({firebase}) {
                 type: 'Buy',
                 date: '',
                 category: 'Limit',
+                stopLimit: 0,
                 coin: null,
                 price: 0,
                 quantity: 0,
@@ -104,7 +105,7 @@ export default function TradingPlatform({firebase}) {
             if (order.type === 'Sell') {
                 setBalanceSymble(coin.symbol);
             }
-            fetchLimitOrders(coin.symbol.toUpperCase());
+            fetchOrderByCoinAndCate(coin.symbol.toUpperCase(), selectedType);
         }
     };
 
@@ -118,8 +119,11 @@ export default function TradingPlatform({firebase}) {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === 'order_completed') {
-                fetchLimitOrders(selectedCoin?.symbol?.toUpperCase());
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Limit");
                 showMessage('success', `Your order for ${data.order.coin} has been completed at ${data.order.price}`);
+            } else if (data.type === 'stopLimit_completed') {
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Stop Limit");
+                showMessage('success', `Your Stop Limit order for ${data.order.coin} has been execute as Limit`);
             }
         };
 
@@ -128,10 +132,15 @@ export default function TradingPlatform({firebase}) {
         };
     }, [selectedCoin]);
 
-    const fetchLimitOrders = (coin) => {
-        fetch(`http://localhost:8005/order/getLimitOrderByCoin/${coin}/${user.user.id}`)
+    const fetchOrderByCoinAndCate = (coin, category) => {
+        console.log('fetchOrderByCoinAndCate')
+        if (!order.coin) {
+            return;
+        }
+        fetch(`http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Limit orders:', data)
                 setLimitOrder(data);
             })
             .catch(error => {
@@ -143,6 +152,7 @@ export default function TradingPlatform({firebase}) {
         fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Wallet balance:', data[0]);
                 setWalletBalance(data[0].balance);
             })
             .catch(error => {
@@ -165,6 +175,7 @@ export default function TradingPlatform({firebase}) {
             quantity: order.quantity,
             date: currentDate,
             price: order.price,
+            stopLimit: order.stopLimit,
             type: order.type,
             category: order.category,
             totalPrice: order.total,
@@ -172,34 +183,6 @@ export default function TradingPlatform({firebase}) {
             orderStatus: order.category === 'Market' ? 'Completed' : 'Pending'
         }
     }
-
-    /*useEffect(() => {
-        const ws = new WebSocket('wss://stream.binance.com:443/ws/btcusdt@kline_1s');
-
-        ws.onopen = () => {
-            console.log('Connected to WebSocket');
-        };
-
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            const candlestickData = {
-                openTime: (data.k.t)/1000,
-                open: parseFloat(data.k.o),
-                high: parseFloat(data.k.h),
-                low: parseFloat(data.k.l),
-                close: parseFloat(data.k.c),
-            };
-            console.log(candlestickData);
-        };
-
-        ws.onerror = (error) => {
-            console.error('WebSocket error: ', error);
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);*/
 
 
     const setOrderCatagory = (value) => {
@@ -211,6 +194,7 @@ export default function TradingPlatform({firebase}) {
         if (value === 'Market') {
             setIsButtonSet(true);
             setSelectedType('Market');
+            handleStopLimitPriceChange(0);
             setMarketPrice();
             setIsDisabled(true);
         } else if (value === 'Limit') {
@@ -221,6 +205,7 @@ export default function TradingPlatform({firebase}) {
             }));
             setIsButtonSet(true);
             setSelectedType('Limit');
+            handleStopLimitPriceChange(0);
             setIsDisabled(false);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
@@ -260,6 +245,15 @@ export default function TradingPlatform({firebase}) {
 
     };
 
+    const handleStopLimitPriceChange = (value) => {
+        console.log(value)
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            stopLimit: value
+        }));
+
+    };
+
     const handleQuantityChange = (value) => {
         if (value <= 0.0) {
             setIsError('Quantity should be greater than 0');
@@ -293,6 +287,14 @@ export default function TradingPlatform({firebase}) {
     }
 
     useEffect(() => {
+        console.log('order', order)
+        if (order.coin) {
+            fetchOrderByCoinAndCate(order.coin.symbol.toUpperCase(), order.category);
+        }
+
+    }, [selectedType]);
+
+    useEffect(() => {
         getWalletBalance();
     }, [balanceSymble, selectedCoin]);
 
@@ -322,68 +324,93 @@ export default function TradingPlatform({firebase}) {
             return;
         }
 
-        const ob = {
-            userId: user.user.id,
-            coin: order.coin.symbol.toUpperCase(),
-            quantity: order.quantity,
-            price: order.price,
-            category: order.category,
-            type: order.type
-        }
-
-        if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
-            console.error('Invalid order:', ob);
-            return;
-        }
-
-        if (ob.quantity < 0) {
-            showMessage('Error', 'Please enter the quantity!');
-            return;
-        }
 
         setIsLoading(false);
 
+        if (order.category !== 'Stop Limit') {
+            const ob = {
+                userId: user.user.id,
+                coin: order.coin.symbol.toUpperCase(),
+                quantity: order.quantity,
+                price: order.price,
+                category: order.category,
+                type: order.type
+            }
 
-        fetch('http://localhost:8011/portfolio/asset/trade', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ob)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('gvgh', data);
-                if (order.type === 'Buy') {
-                    setWalletBalance(data[0].balance);
-                } else {
-                    setWalletBalance(data[1].balance);
-                }
+            if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
+                console.error('Invalid order:', ob);
+                return;
+            }
 
-                return fetch('http://localhost:8005/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(placeOrder())
-                });
+            if (ob.quantity < 0) {
+                showMessage('Error', 'Please enter the quantity!');
+                return;
+            }
+
+            fetch('http://localhost:8011/portfolio/asset/trade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ob)
             })
-            .then(response => {
-                if (response.ok) {
-                    setIsLoading(true);
-                    showMessage('success', 'The order has been placed successfully!');
-                    getWalletBalance();
-                    if (order.category === 'Limit') {
-                        fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                .then(response => response.json())
+                .then(data => {
+                    console.log('gvgh', data);
+                    if (order.type === 'Buy') {
+                        setWalletBalance(data[0].balance);
+                    } else {
+                        setWalletBalance(data[1].balance);
                     }
-                    //fetchLimitOrders(selectedCoin.symbol);
-                } else {
-                    console.error('Failed to save order:', response);
-                }
+
+                    return fetch('http://localhost:8005/order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(placeOrder())
+                    });
+                })
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (order.category === 'Limit') {
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
+                        }
+
+                    } else {
+                        console.error('Failed to save order:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
+                });
+        } else {
+            fetch('http://localhost:8005/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(placeOrder())
             })
-            .catch(error => {
-                console.error('Failed to save order:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (selectedType === 'Stop Limit') {
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), 'Stop Limit');
+                        }
+                    } else {
+                        console.error('Failed to save order:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
+                });
+        }
     }
 
     useEffect(() => {
@@ -399,31 +426,33 @@ export default function TradingPlatform({firebase}) {
     useEffect(() => {
         if (order.type === 'Buy') {
             const value = (walletBalance * (balancePr / 100));
-            const quantity = value / order.price;
+            let quantity = value / order.price;
             if (balancePr !== 0) {
                 setIsError(null);
+                quantity = parseFloat(quantity.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: quantity
                 }));
                 setOrder(prevOrder => ({
                     ...prevOrder,
-                    total: quantity * order.price
+                    total: parseFloat((quantity * order.price).toFixed(4))
                 }));
 
                 setIsButtonSet(false);
             }
         } else if (order.type === 'Sell') {
-            const value = (walletBalance * (balancePr / 100));
+            let value = (walletBalance * (balancePr / 100));
             if (balancePr !== 0) {
                 setIsError(null);
+                value = parseFloat(value.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: value
                 }));
                 setOrder(prevOrder => ({
                     ...prevOrder,
-                    total: value * order.price
+                    total: parseFloat((value * order.price).toFixed(4))
                 }));
 
                 setIsButtonSet(false);
@@ -456,7 +485,7 @@ export default function TradingPlatform({firebase}) {
             .then(response => {
                 if (response.ok) {
                     showMessage('Success', 'Order deleted successfully');
-                    fetchLimitOrders(selectedCoin.symbol);
+                    fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
                     showMessage('Error', 'Failed to delete order');
                 }
@@ -483,6 +512,12 @@ export default function TradingPlatform({firebase}) {
                                    selectedType={selectedType}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
+                        {selectedType === 'Stop Limit' &&
+                            <Input label={'Stop Limit'} type={'number'} icon={"$"} isDisable={isDisabled}
+                                   value={order.stopLimit}
+                                   onChange={handleStopLimitPriceChange}/>
+                        }
+
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
                                onChange={handlePriceChange}/>
                         <Input label={'Quantity'} type={'number'} min={1} value={order.quantity}
@@ -493,10 +528,9 @@ export default function TradingPlatform({firebase}) {
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
 
-                        {/*<Input type="button" value={order.type} style={{marginTop: '0.7rem'}} disabled={isButtonSet}
-                               onClick={saveOrder}/>*/}
-                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet} title={'Confirm Order'}
-                                      message={`Are you sure to place this Order`}/>
+                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet}
+                                   title={'Confirm Order'}
+                                   message={`Are you sure to place this Order`}/>
                         <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
@@ -528,7 +562,8 @@ export default function TradingPlatform({firebase}) {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId} title={'Cancel the order'}
+                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId}
+                                          title={'Cancel the order'}
                                           message={`Are you sure to cancel this Order`}/>
                         ]}
                     />
