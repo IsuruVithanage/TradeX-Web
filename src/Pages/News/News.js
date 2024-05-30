@@ -15,9 +15,9 @@ export default function News() {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17')
+    axios.get('http://localhost:8008/news')
       .then(res => {
-        setArticles(res.data.articles); 
+        setArticles(res.data); 
         setIsLoading(false); 
       })
       .catch(error => {
@@ -50,7 +50,7 @@ export default function News() {
       <div className='news-container'>
         {/* Render news items */}
         {filteredNews.map((news, index) => (
-          <NewsItem key={index} title={news.title} description={news.description} src={news.urlToImage} url={news.url} />
+          <NewsItem key={index} title={news.title} description={news.description} src={news.image} url={news.url} newsId={news.newsId}/>
         ))}
       </div> 
     </BasicPage> 
