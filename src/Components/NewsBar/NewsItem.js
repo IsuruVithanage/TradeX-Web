@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
-import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'; 
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import image from '../../Assets/Images/image.jpg'; 
 import './NewsItem.css'; 
 import axios from 'axios'; 
@@ -8,13 +11,14 @@ import axios from 'axios';
 
 const NewsItem = ({ title, description, src, url,newsId }) => {
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+  const [isLike, setIsLike ] = useState(false);
+  const [isDislike, setIsDislike ] = useState(false);  
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
   const userId = 1;
 
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
-    console.log("click");
       axios.post(
         "http://localhost:8008/news/fav/" + !isHeartFilled,
         {
@@ -32,12 +36,35 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
 
   // Event handler for incrementing like count
   const handleLikeClick = () => {
-    setLikeCount((prevLikeCount) => prevLikeCount + 1);
+    if(isDislike && !isLike){
+      setIsDislike(false)
+      setDislikeCount(dislikeCount-1)
+    }
+    
+    axios.post(
+      "http://localhost:8008/news/like",
+      {
+        newsId,userId,isLike:!isLike
+      }
+    ).then (res =>{
+      setLikeCount((prevLikeCount) => prevLikeCount + 1);
+      setIsLike(!isLike);
+      console.log(res.data)
+
+    }) 
+    .catch(error => {
+      console.log(error);
+    });
   };
 
   // Event handler for incrementing dislike count
   const handleDislikeClick = () => {
+    if(!isDislike && isLike){
+      setIsLike(false)
+      setLikeCount(likeCount-1)
+    }
     setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
+    setIsDislike(!isDislike);
   };
 
   // Render the component
@@ -67,10 +94,11 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
         <div className='footer-bar'>
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
-              {likeCount} <AiOutlineLike />
+              {likeCount}{isLike ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+
             </div>
             <div onClick={handleDislikeClick}>
-              {dislikeCount} <AiOutlineDislike />
+              {dislikeCount}{isDislike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
             </div>
           </div>
         </div>
