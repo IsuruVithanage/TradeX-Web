@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {createChart} from 'lightweight-charts';
 import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
-import './LineChart.css';
+import {createChart} from 'lightweight-charts';
 import {Tooltip} from "antd";
+import './LineChart.css';
 
 
 export default function LineChart(props) {
@@ -10,7 +10,7 @@ export default function LineChart(props) {
     const [chartData, setChartData] = useState(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [activeDuration, setActiveDuration] = useState('');
-    const {data, currentMarkerTime, suggestMarkerTime, title, lineType} = props;
+    const {data, currentMarkerTime, suggestMarkerTime, title, lineType, zoom} = props;
 
 
     const updateChartData = (duration) => {
@@ -40,6 +40,8 @@ export default function LineChart(props) {
         const toolTip = document.getElementById('tool-tip');
         const currentMarker = document.getElementById('current-marker');
         const suggestMarker = document.getElementById('suggest-marker');
+        const currentTooltip = document.getElementById('current-tooltip');
+        const suggestTooltip = document.getElementById('suggest-tooltip');
 
 
         const chart = createChart(chartDiv, {
@@ -47,7 +49,7 @@ export default function LineChart(props) {
             height: chartDiv.clientHeight,
 
             handleScale: {
-                mouseWheel: isFullScreen,
+                mouseWheel: zoom || isFullScreen,
             },
 
             crosshair: {
@@ -121,11 +123,13 @@ export default function LineChart(props) {
         const initializeMarkers = () => {
             if(currentMarker) currentMarker.style.display = 'none';
             if(suggestMarker) suggestMarker.style.display = 'none';
+            if(currentTooltip) currentTooltip.parentElement.parentElement.style.display = 'none';
+            if(suggestTooltip) suggestTooltip.parentElement.parentElement.style.display = 'none';
             if( !currentMarkerTime ) return;
 
             setTimeout(() => {
-                currentMarkerTime && setMarkers(currentMarkerTime, currentMarker);
-                suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker);
+                currentMarkerTime && setMarkers(currentMarkerTime, currentMarker, currentTooltip);
+                suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker, suggestTooltip);    
             }, 300);
 
             let priceScaleWidth = 0;
@@ -134,16 +138,19 @@ export default function LineChart(props) {
 
             const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 
-            const setMarkers = (time, marker) => {
+            const setMarkers = (time, marker, tooltip) => {
                 const coordinateX = chart.timeScale().timeToCoordinate(time);
                 const logical = chart.timeScale().coordinateToLogical(coordinateX);
                 const price = series.dataByIndex(Math.abs(logical)).value;
                 const coordinateY = series.priceToCoordinate(price) + chartMargin;
 
-                if (coordinateX > 0) {
+                if (0 < coordinateX && coordinateX < chartDiv.clientWidth) {
                     marker.style.display = 'block';
                     marker.style.top = coordinateY + 'px';
                     marker.style.left = coordinateX + priceScaleWidth + 'px';
+                    setTimeout(() => {
+                        tooltip.parentElement.parentElement.style.display = 'block';
+                    }, 25);
                 }
             }
 
@@ -238,7 +245,7 @@ export default function LineChart(props) {
             chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarkers);
             chart.remove();
         };
-    }, [isFullScreen, lineType, chartData, currentMarkerTime, suggestMarkerTime, activeDuration, data, title]);
+    }, [isFullScreen, lineType, chartData, currentMarkerTime, suggestMarkerTime, activeDuration, data, title, zoom]);
 
 
     return (
@@ -268,12 +275,12 @@ export default function LineChart(props) {
             <div id="chart">
                 <div id='tool-tip' className='tool-tip'/>
                 {currentMarkerTime &&
-                    <Tooltip title={props.orderPrice} color='#ffb521' trigger="click" open>
+                    <Tooltip id='current-tooltip' title={props.orderPrice} color='#ffb521' trigger="click" open>
                         <div id='current-marker' className='marker current-marker'/>
                     </Tooltip>
                 }
                 {suggestMarkerTime &&
-                    <Tooltip title={props.suggestPrice} color='#0077FF' trigger="click" open>
+                    <Tooltip id='suggest-tooltip' title={props.suggestPrice} color='#0077FF' trigger="click" open>
                         <div id='suggest-marker' className='marker suggest-marker'/>
                     </Tooltip>
                 }

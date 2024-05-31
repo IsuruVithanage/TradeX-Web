@@ -10,14 +10,16 @@ export default function News() {
   const [articles, setArticles] = useState([]); 
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
+  const userId = 1;
 
   useEffect(() => {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('http://localhost:8008/news')
+    axios.get('http://localhost:8008/news/' + userId)
       .then(res => {
         setArticles(res.data); 
+        console.log(res.data)
         setIsLoading(false); 
       })
       .catch(error => {
@@ -26,7 +28,6 @@ export default function News() {
       });
   }, []); 
 
-  console.log(articles); 
 
   //Check the title
   const filteredNews = articles.filter((news) =>
@@ -50,7 +51,7 @@ export default function News() {
       <div className='news-container'>
         {/* Render news items */}
         {filteredNews.map((news, index) => (
-          <NewsItem key={index} title={news.title} description={news.description} src={news.image} url={news.url} newsId={news.newsId}/>
+          <NewsItem key={index} userId={userId} {...news}/>
         ))}
       </div> 
     </BasicPage> 
