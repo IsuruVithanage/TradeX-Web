@@ -4,18 +4,18 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
-import image from '../../Assets/Images/image.jpg'; 
+import defaultImage from '../../Assets/Images/image.jpg'; 
 import './NewsItem.css'; 
 import axios from 'axios'; 
 
 
-const NewsItem = ({ title, description, src, url,newsId }) => {
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
-  const [isLike, setIsLike ] = useState(false);
-  const [isDislike, setIsDislike ] = useState(false);  
-  const [likeCount, setLikeCount] = useState(0);
-  const [dislikeCount, setDislikeCount] = useState(0);
-  const userId = 1;
+const NewsItem = (props) => {
+  const { newsId, url, title, description, image, isFavorite, isLiked, isDisliked, userId } = props;
+  const [isHeartFilled, setIsHeartFilled] = useState(isFavorite || false);
+  const [isLike, setIsLike ] = useState(isLiked || false);
+  const [isDislike, setIsDislike ] = useState(isDisliked || false);  
+  const [likeCount, setLikeCount] = useState(props.likeCount || 0);
+  const [dislikeCount, setDislikeCount] = useState(props.dislikeCount || 0);
 
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
@@ -61,10 +61,8 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
         newsId,userId,isLike:likeStatus
       }
     ).then (res =>{
-      setLikeCount((prevLikeCount) => prevLikeCount + 1);
+      setLikeCount(parseInt(res.data.likeCount, 10) || 0);
       setIsLike(likeStatus);
-      console.log(res.data)
-
     }) 
     .catch(error => {
       console.log(error);
@@ -78,10 +76,8 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
         newsId,userId,isDislike:dislikeStatus
       }
     ).then (res =>{
-      setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
+      setDislikeCount(parseInt(res.data.dislikeCount, 10) || 0);
       setIsDislike(dislikeStatus);
-      console.log(res.data)
-
     }) 
     .catch(error => {
       console.log(error);
@@ -93,7 +89,7 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
     <div className='newsbar-container'> 
       {/* Container for the news image */}
       <div className='img-container'>
-        <img src={src ? src : image} alt="..." /> 
+        <img src={image ? image : defaultImage} alt="..." /> 
       </div>
       
       <div className='desc-container'>
@@ -115,11 +111,11 @@ const NewsItem = ({ title, description, src, url,newsId }) => {
         <div className='footer-bar'>
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
-              {likeCount}{isLike ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+              {likeCount} {isLike ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
 
             </div>
             <div onClick={handleDislikeClick}>
-              {dislikeCount}{isDislike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
+              {dislikeCount} {isDislike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
             </div>
           </div>
         </div>
