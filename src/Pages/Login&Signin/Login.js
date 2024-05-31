@@ -26,12 +26,13 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setErrors(Validation(values));
+
     console.log(values);
-    axios
-      .post("http://localhost:8004/user/login", values)
-      .then((res) => console.log("Login success"))
-      .catch((err) => console.log(err));
+    axios.post("http://localhost:8004/user/login", values).then((res) => {
+      console.log("Login success");
+      // Navigate to the home page upon successful login
+      navigate("/home");
+    });
   };
 
   // if(Object.keys(Validation(values)).length === 0){

@@ -401,6 +401,7 @@ export default function Suggestions() {
 
 
                 <LineChart
+                    zoom={true}
                     data={tradeData}
                     title={selectedOrder ? selectedOrder.coin : null}
                     suggestPrice={suggestion ? formatCurrency(suggestion.bestPrice) : null}

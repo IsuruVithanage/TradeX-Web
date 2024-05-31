@@ -186,7 +186,7 @@ export default function Suggestions() {
                     </div>
                 </div>
                 
-                <LineChart data={chartData} title={coinList[pageSymbol].name} currentMarkerTime={chartData['1M'] ? chartData['1M'].data[100].time : null} suggestMarkerTime={chartData['1M'] ? chartData['1M'].data[50].time : null} ></LineChart>
+                <LineChart data={chartData} zoom={true} title={coinList[pageSymbol].name} ></LineChart>
             </SidePanelWithContainer>
 
         </BasicPage>
