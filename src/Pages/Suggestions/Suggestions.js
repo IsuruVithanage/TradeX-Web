@@ -2,19 +2,19 @@ import React, {useEffect, useState} from "react";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import Table, {Coin, TableRow} from "../../Components/Table/Table";
-import assets from "../SimulateTradingPlatform/assets.json";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import './Suggstions.css';
-import {Spin, Button} from "antd";
+import {Spin} from "antd";
 import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
-import {SiGooglegemini} from "react-icons/si";
 import {LuRefreshCw} from "react-icons/lu";
 import {useSelector} from "react-redux";
 
 export default function Suggestions() {
+    const apiGateway = process.env.REACT_APP_API_GATEWAY;
+
     const user = useSelector(state => state.user);
     const Tabs = [
         {label: "Suggestions", path: "/suggestion"},
@@ -57,7 +57,7 @@ export default function Suggestions() {
     const loadOrderHistory = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:8005/order/getOrderByCato/${type}`
+                `${apiGateway}/order/getOrderByCato/${type}`
             );
             setOrderHistory(res.data);
             setSelectedOrder(res.data[0]);
@@ -133,7 +133,7 @@ export default function Suggestions() {
         setError(false);
 
         try {
-            const res = await fetch('http://localhost:8005/suggestion/buyOrderSuggestion', {
+            const res = await fetch(`${apiGateway}/suggestion/buyOrderSuggestion`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(geminiData),
