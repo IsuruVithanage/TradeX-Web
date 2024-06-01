@@ -7,10 +7,13 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../../Components/Input/Input";
 import axios from "axios";
 import { showMessage } from '../../../../Components/Message/Message';
+import {useSelector} from "react-redux";
 
 export default function () {
 
   const [state, setState] = useState("login")
+
+  const user = useSelector(state => state.user);
 
   const navigete = useNavigate();
 
@@ -28,10 +31,8 @@ export default function () {
     navigete3("/wallet/dashboard");
   }
 
-  function toggleState(){
-    state=== "login" ?
-    setState("reset") :
-    setState("login")
+  function navigateToSeedPrase(){
+    navigete("/wallet/login/changepassword/recoverwallet?userId=${1}");
   }
 
   function login() {
@@ -94,8 +95,8 @@ export default function () {
         </div>
 
         <div>
-          <button className="reset-button" onClick={toggleState}>
-            {state=== "login" ? "Reset Wallet" : "Login Wallet" }
+          <button className="reset-button" onClick={navigateToSeedPrase}>
+            Reset Wallet
           </button>
         </div>
         <div>
