@@ -34,16 +34,16 @@ const getAlerts = async (userId, runningStatus) => {
 
 
 
-const editAlert = async (userId, currentAlertId, selectedCoin, selectedCondition) => {
+const editAlert = async (userId, currentAlertId, selectedCoin, selectedPrice, selectedCondition, emailActiveStatus) => {
     return axios
         .put(
             backendApiEndpoint,
             {
                 userId: userId,
                 coin: selectedCoin,
-                price: parseFloat(document.getElementById("edit-alert-price").value),
+                price: selectedPrice,
                 condition: selectedCondition,
-                emailActiveStatus: document.getElementById("edit-alert-email").checked,
+                emailActiveStatus: emailActiveStatus,
                 runningStatus: true
             },
             {
@@ -72,16 +72,16 @@ const editAlert = async (userId, currentAlertId, selectedCoin, selectedCondition
 
 
 
-const addAlert = async (userId, selectedCoin, selectedCondition) => {
+const addAlert = async (userId, selectedCoin, selectedPrice, selectedCondition, emailActiveStatus) => {
     return axios
         .post( 
             backendApiEndpoint, 
             {
                 userId: userId,
                 coin: selectedCoin,
-                price: parseFloat(document.getElementById("edit-alert-price").value),
+                price: selectedPrice,
                 condition: selectedCondition,
-                emailActiveStatus: document.getElementById("edit-alert-email").checked,
+                emailActiveStatus: emailActiveStatus,
                 runningStatus: true,
             }
         )

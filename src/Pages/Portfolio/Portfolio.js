@@ -18,7 +18,6 @@ export default function Portfolio() {
   const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
   const userId = 1;
   
-
   useEffect(() => {
     setIsLoading(true);
 
