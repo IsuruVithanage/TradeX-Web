@@ -15,7 +15,12 @@ export default function RecoverWallet() {
     const [words, setWords] = useState(null);
     const inputRefs = useRef([]);
 
+    function navigateToHaveAccount() {
+      navigate("/wallet/login/HaveAccount");
+    }
+
     useEffect(() => {
+      console.log("userId",userId);
         fetchWords();
         // Initialize inputValues state with empty strings
         setInputValues(Array(12).fill(''));
@@ -53,6 +58,8 @@ export default function RecoverWallet() {
         const isWordChecked = checkWords(inputValues);
         if (isWordChecked) {
           console.log("sucess");
+          navigate("/wallet/login/changepassword");
+
         } else {
             alert('Incorrect secret phrase');
             // Clear the input fields and reset inputValues array
@@ -73,7 +80,7 @@ export default function RecoverWallet() {
             }
             const data = await response.json();
             console.log(data)
-            setWords(data.words); // Assuming your API returns an object with a "words" property containing the array of words
+            setWords(data[0]); // Assuming your API returns an object with a "words" property containing the array of words
         } catch (error) {
             console.error("Error fetching words:", error);
         }
@@ -140,7 +147,7 @@ export default function RecoverWallet() {
                     <button className='confirm-button' onClick={navigateToDashBoard}>Confirm</button>
                 </div>
                 <div >
-                    <button className='back-to-secret-button' >Back</button>
+                    <button className='back-to-secret-button' onClick={navigateToHaveAccount} >Back</button>
                 </div>
             </BlackBar>
         </div>
