@@ -112,8 +112,11 @@ display: flex;
 }
 .questionarea{
     display: inline-block;
-    
-    
+}
+
+.sub-title{
+    font-size: 13px;
+    margin-top: 0.6rem;
 }
 .topic-stat h4{
     margin-right: 4.5rem;
