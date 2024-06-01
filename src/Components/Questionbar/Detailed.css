@@ -47,10 +47,16 @@ h5{
     
     
 }
+.sub-title{
+    font-size: 13px;
+    margin-top: 0.6rem;
+}
 .answer-title{
-    padding-left: 2%;
+    margin-left: 8rem;
+
     margin-top: 2.5rem;
     font-size: 21px;
+
 }
 p{
     color: aliceblue;
@@ -102,7 +108,7 @@ h2{
     color: aliceblue;
 }
 .answer{
-    width: 80%;
+    width: 70%;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
@@ -110,6 +116,7 @@ h2{
     background: #151517;
     padding:1% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    margin-left: 8rem;
 
 }
 
