@@ -4,15 +4,22 @@ import Head from '../../../../../../Components/WalletComponents/Head';
 import WalletImage from "../../../../../../Assets/Images/wallet.png";
 import "./ConfirmSecretPhrase.css";
 import { useNavigate, useLocation } from 'react-router-dom';
+import {useSelector} from "react-redux";
+
 
 export default function ConfirmSecretPhrase() {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const word = queryParams.get('word');
+    const user = useSelector(state => state.user);
 
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
     const [words, setWords] = useState([]);
+    const [seedPraseDetails, setSeedPraseDetails] = useState({
+        userId:user.user.id,
+        seedphrase:word
+    });
     const inputRefs = useRef([]);
 
     useEffect(() => {
@@ -48,10 +55,35 @@ export default function ConfirmSecretPhrase() {
         return inputValues.join(' ');
     }
 
+
+    const saveSeedPrase = async () => {
+        try {
+            const response = await fetch("http://localhost:8006/seedphrase/saveSeedPrase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(seedPraseDetails),
+            });
+
+            if (response.ok) {
+                console.log("Data sent successfully");
+
+            } else {
+                console.error("Error sending data:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching words:", error);
+        }
+    };
+
+
     function navigateToDashBoard() {
         // Compare concatenated input values with the word variable
         const isWordChecked = checkWords(word, inputValues);
         if (isWordChecked) {
+            
+            saveSeedPrase();
             navigate('/wallet/dashboard');
         } else {
             alert('Incorrect secret phrase');
