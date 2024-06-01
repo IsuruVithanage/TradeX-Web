@@ -17,9 +17,7 @@ export default function () {
 
   const navigete = useNavigate();
 
-  function navigateToChangePassword() {
-    navigete("/wallet/login/changepassword");
-  }
+  
   const navigete2 = useNavigate();
 
   function navigateToLogin() {
@@ -32,7 +30,7 @@ export default function () {
   }
 
   function navigateToSeedPrase(){
-    navigete("/wallet/login/changepassword/recoverwallet?userId=${1}");
+    navigete(`/wallet/login/changepassword/recoverwallet?userId=${user.user.id}`);
   }
 
   function login() {
