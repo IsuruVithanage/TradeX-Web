@@ -6,7 +6,6 @@ import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
-import { set } from "react-hook-form";
 
 
 export default function Alert({firebase}) {
@@ -92,6 +91,7 @@ export default function Alert({firebase}) {
 
 
     const openAlertSetterModel = async (editAlertNo) => {
+        console.log("editAlertNo", editAlertNo);
         const permission = await firebase.requestPermission(true);
         
         if(permission) {
@@ -192,6 +192,17 @@ export default function Alert({firebase}) {
 
 
 
+    const clearAll = async () => {
+        setIsLoading(true);
+
+        await alertOperations.clearAll(userId)
+        .then(res => res && setAlerts(res));
+
+        setIsLoading(false);
+    }
+
+
+
     const options = [
       { value: 'BTC', label: 'BTC' },
       { value: 'ETH', label: 'ETH' },
@@ -223,18 +234,19 @@ export default function Alert({firebase}) {
                 tableTop= {
                     <div style={{display: "flex", alignItems: "center", position: "relative"}}>
                         <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
-                        <div style={{width: "130px", marginLeft: "auto", marginTop: "8px"}}>
+                        <div style={{width: "130px", marginLeft: "auto", margin: "8px 0"}}>
                             <Input 
                                 type='button' 
                                 value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
                                 red={selectedPage === 'Notified'}
-                                onClick={selectedPage === 'Running' ? () => openAlertSetterModel() : () => setIsDeleteModalOpen(true)}
+                                onClick={selectedPage === 'Running' ?  openAlertSetterModel : clearAll}
+                                disabled={selectedPage === 'Notified' && alerts.length === 0}
                                 />
                         </div>
                     </div>
                 }>
                     
-                <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
+                <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Actions']} />
 
                 { alerts.map((alert, index) => {
                     return (
@@ -242,7 +254,7 @@ export default function Alert({firebase}) {
                             key={index} 
                             data={[
                                 <Coin>{alert.coin}</Coin>, 
-                                alert.price, 
+                                '$ ' + alert.price.toLocaleString(),
                                 alert.condition, 
                                 (alert.emailActiveStatus) ? "On" : "Off", 
                                 <div className="alert-table-action-button-container">

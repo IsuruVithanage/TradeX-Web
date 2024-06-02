@@ -168,10 +168,10 @@ export default function History() {
                     restart={filteredData} 
                     emptyMessage={`No History Data`}
                     tableTop={
-                        <div 
-                            style={{textAlign: "center", color: "#21db9a", fontSize: "22px", fontWeight: "600", marginBottom: "10px"}}>
+                        <h2
+                            style={{textAlign: "center", color: "#21db9a", fontSize: "24px", marginBottom: "10px"}}>
                             {selectedSection} History
-                        </div>
+                        </h2>
                     }>
                         
                     <TableRow data={

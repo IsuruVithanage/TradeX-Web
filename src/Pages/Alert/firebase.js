@@ -17,6 +17,7 @@ class Firebase {
                 };
 
                 const app = initializeApp(firebaseConfig);
+                this.isRequestingPermission = false;
                 this.messaging = getMessaging(app);
                 this.getToken();
                 this.userId = userId;
@@ -33,11 +34,17 @@ class Firebase {
 
 
     async requestPermission(deniedMessage) {
+        if(this.isRequestingPermission){
+            return false;
+        }
+
+        this.isRequestingPermission = true;
         let permission = Notification.permission;
 
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (permission === "granted") {
                 resolve(true);
+                this.isRequestingPermission = false;
             }
 
             else if (permission === "denied") {
@@ -45,18 +52,27 @@ class Firebase {
                     alert("Please allow notifications in your browser settings to use this feature.");
                 }
                 resolve(false);
+                this.isRequestingPermission = false;
             }
 
             else{
+                let isFistTime = permission === "default";
+
                 while (permission === "default") {
-                    alert("Please allow notifications to receive Notifications from TradeX.");
                     permission = await Notification.requestPermission();
+
+                    if(isFistTime && permission === "default"){
+                        alert("Please allow to receive Notifications from TradeX.");
+                        isFistTime = false;
+                    }
 
                     if (permission === "granted") {
                         resolve(true);
+                        this.isRequestingPermission = false;
                     } else if (permission === "denied") {
-                        alert("Notifications Blocked! To receive notifications enable it in your browser settings");
+                        alert("Notifications Blocked! enable it in your browser settings To receive notifications from TradeX.");
                         resolve(false);
+                        this.isRequestingPermission = false;
                     }
                 }
             }

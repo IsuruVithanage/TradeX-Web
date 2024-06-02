@@ -31,7 +31,6 @@ export default function Portfolio() {
         
 
         .then(res => {
-            console.log("data", res.data);
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);
             setInitialData(res.data.historyData);
