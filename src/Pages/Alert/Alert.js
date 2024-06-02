@@ -6,7 +6,7 @@ import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
 import alertOperations from "./alertOperations";
 import './Alert.css';
-
+import { set } from "react-hook-form";
 
 
 export default function Alert({firebase}) {
@@ -14,7 +14,7 @@ export default function Alert({firebase}) {
     const [selectedCoin, setSelectedCoin] = useState(undefined);
     const [selectedPrice, setSelectedPrice] = useState(null);
     const [selectedCondition, setSelectedCondition] = useState(undefined); 
-    const [selectedEmail, setSelectedEmail] = useState(false);
+    const [emailStatus, setEmailStatus] = useState(false);
     
     const [currentAlertId, setCurrentAlertId] = useState(null);
     const [action, setAction] = useState(undefined);
@@ -33,6 +33,7 @@ export default function Alert({firebase}) {
         firebase.updateRegister(setIsRegistered);
         firebase.requestPermission(true);
     }, [firebase]);
+    
 
 
     useEffect(() => {  
@@ -69,7 +70,7 @@ export default function Alert({firebase}) {
                         invalidMessage = `This alert already exists at ${similarAlertPosition}`;
                     }
                     
-                    else if(alert.emailActiveStatus === selectedEmail && alert.price === selectedPrice){
+                    else if(alert.emailActiveStatus === emailStatus && alert.price === selectedPrice){
                         invalidMessage = "No Changes Made"; ;
                     }
                     break;
@@ -86,7 +87,7 @@ export default function Alert({firebase}) {
             setIsInvalid([true, invalidMessage]);
         }
 
-    }, [selectedCoin, selectedCondition, selectedPrice, selectedEmail, currentAlertId, alerts]);
+    }, [selectedCoin, selectedCondition, selectedPrice, emailStatus, currentAlertId, alerts]);
 
 
 
@@ -100,7 +101,7 @@ export default function Alert({firebase}) {
                 setSelectedCoin(undefined);
                 setSelectedPrice(null);
                 setSelectedCondition(undefined);
-                setSelectedEmail(true);
+                setEmailStatus(false);
             } 
             
             else {
@@ -110,7 +111,7 @@ export default function Alert({firebase}) {
                 setSelectedCoin(selectedAlert.coin);
                 setSelectedPrice(selectedAlert.price);
                 setSelectedCondition(selectedAlert.condition);
-                setSelectedEmail(selectedAlert.emailActiveStatus);
+                setEmailStatus(selectedAlert.emailActiveStatus);
             }
 
             setIsSetterModalOpen(true); 
@@ -134,8 +135,15 @@ export default function Alert({firebase}) {
     const editAlert = async () => {
         setIsLoading(true);
 
-        await alertOperations.editAlert(userId, currentAlertId, selectedCoin, selectedCondition)
-        .then(res => res && setAlerts(res));
+        await alertOperations
+        .editAlert(
+            userId, 
+            currentAlertId, 
+            selectedCoin, 
+            selectedPrice, 
+            selectedCondition, 
+            emailStatus
+        ).then(res => res && setAlerts(res));
 
         setIsSetterModalOpen(false);
         setIsLoading(false);
@@ -146,8 +154,14 @@ export default function Alert({firebase}) {
     const addAlert = async () => {
         setIsLoading(true);
 
-        await alertOperations.addAlert(userId, selectedCoin, selectedCondition)
-        .then(res => res && setAlerts(res));
+        await alertOperations
+        .addAlert(
+            userId, 
+            selectedCoin, 
+            selectedPrice, 
+            selectedCondition, 
+            emailStatus
+        ).then(res => res && setAlerts(res));
 
         setIsSetterModalOpen(false);
         setIsLoading(false);
@@ -202,12 +216,23 @@ export default function Alert({firebase}) {
                 ],
             }}>  
 
-            { selectedPage === 'Running' && <Input type="fab" onClick={() => openAlertSetterModel() }/> }
-
 
             <Table 
                 restart={alerts} 
-                emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}>
+                emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}
+                tableTop= {
+                    <div style={{display: "flex", alignItems: "center", position: "relative"}}>
+                        <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
+                        <div style={{width: "130px", marginLeft: "auto", marginTop: "8px"}}>
+                            <Input 
+                                type='button' 
+                                value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
+                                red={selectedPage === 'Notified'}
+                                onClick={selectedPage === 'Running' ? () => openAlertSetterModel() : () => setIsDeleteModalOpen(true)}
+                                />
+                        </div>
+                    </div>
+                }>
                     
                 <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Action']} />
 
@@ -249,9 +274,9 @@ export default function Alert({firebase}) {
                         { value: 'Above', label: 'Above' },
                         { value: 'Below', label: 'Below' },
                     ]}/>
-                    <Input type="number" label='Price' id="edit-alert-price" value={selectedPrice} onChange={setSelectedPrice}/>
+                    <Input type="number" label='Price' value={selectedPrice} min={0} onChange={setSelectedPrice}/>
 
-                    <Input type="toggle" id='edit-alert-email' toggleLabel="Email Notification"  checked={selectedEmail} onChange={setSelectedEmail}/>
+                    <Input type="toggle" toggleLabel="Email Notification"  checked={emailStatus} onChange={setEmailStatus}/>
                     
                     <div className="edit-alert-modal-button-container">
                         <Input type="button" style={{width:"110px"}} disabled={isInvalid[0]} onClick={ action === 'Edit' ? editAlert : addAlert} value={ action }/>

@@ -5,7 +5,7 @@ import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithCont
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import "./forum.css";
-
+import { useParams } from "react-router-dom";
 import Questionset from "./Questionset";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
@@ -13,6 +13,7 @@ import { Shuffle } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 export default function MyProblems() {
+  let { id } = useParams();
   const user = useSelector((state) => state.user);
   const Tabs = [
     { label: "Latest", path: "/forum" },
@@ -36,9 +37,61 @@ export default function MyProblems() {
 
   useEffect(() => {
     loadQuestions();
-  }, []);
+    fetchFavorites(1);
+  }, [id]);
 
   console.log(questionlist);
+
+  //add favorites
+  const [favorites, setFavorites] = useState([]);
+
+  const handleFavorite = async (question) => {
+    try {
+      const isFav = favorites.some(
+        (fav) => fav.questionId === question.questionId
+      );
+
+      // Update local state
+      setFavorites((prevFavorites) => {
+        if (isFav) {
+          // Remove from local state
+          return prevFavorites.filter(
+            (fav) => fav.questionId !== question.questionId
+          );
+        } else {
+          // Add to local state
+          return [...prevFavorites, question];
+        }
+      });
+
+      // Send request to backend to add or remove favorite
+      await axios.post("http://localhost:8010/forum/addFavorite", {
+        questionId: question.questionId,
+        userId: 1,
+        title: question.title,
+      });
+    } catch (error) {
+      console.error(
+        "Error updating favorite:",
+        error.response ? error.response.data : error
+      );
+    }
+  };
+
+  const fetchFavorites = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8010/forum/getFavoritesByUserId/${userId}`
+      );
+      setFavorites(response.data);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+    }
+  };
+
+  const isFavorite = (questionId) => {
+    return favorites.some((fav) => fav.questionId === questionId);
+  };
 
   return (
     <BasicPage tabs={Tabs}>
@@ -47,9 +100,13 @@ export default function MyProblems() {
         header="Favourites"
         sidePanel={
           <div>
-            <p className="sub-title">Technical Analysis</p>
-            <p className="sub-title">Understanding cryptocurrency</p>
-            <p className="sub-title">Understanding cryptocurrency wallet</p>
+            <Link to="/Questionbar/Detailed">
+              {favorites.map((fav) => (
+                <p key={fav.id} className="sub-title">
+                  {fav.title}
+                </p>
+              ))}
+            </Link>
           </div>
         }
       >
