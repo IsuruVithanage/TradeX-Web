@@ -8,7 +8,7 @@ import axios from 'axios'
 
 
 export default function News() {
-  const userId = 3;
+  const userId = 1;
   const [articles,setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
