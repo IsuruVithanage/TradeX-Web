@@ -10,7 +10,7 @@ export default function News() {
   const [articles, setArticles] = useState([]); 
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
-  const userId = 1;
+  const userId = 3;
 
   useEffect(() => {
     setIsLoading(true); 
