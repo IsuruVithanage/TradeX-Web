@@ -340,8 +340,12 @@ export default function FundingWallet() {
                         <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
 
                         <div className='wallet-address' onClick={() =>{
-                            navigator.clipboard.writeText(walletAddress);
-                            showMessage('info', 'Copied to clipboard..!');
+                            if(!walletAddress){
+                                showMessage('warning', 'Nothing to copy..!');
+                            } else {
+                                navigator.clipboard.writeText(walletAddress); 
+                                showMessage('info', 'Copied to clipboard..!');
+                            }
                         }}>
                             <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress || 'Wallet Address Not Found..!'}</span>
                         </div>

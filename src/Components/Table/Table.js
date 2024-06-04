@@ -30,14 +30,8 @@ export default function Table(props) {
 }
 
 export function TableRow(props) {
-    const handleRowClick = () => {
-        if (props.onClick) {
-            props.onClick();
-        }
-    };
-
     return (
-        <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={handleRowClick}>
+        <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={props.onClick}>
             {props.data && props.data.map((cell, index) => (
                 <td key={index} className={`${props.classes && props.classes[index]}`}>
                     {cell}

@@ -24,7 +24,7 @@ const getAlerts = async (userId, runningStatus) => {
 
         .catch(error => {
             error.response ? 
-            showMessage(error.response.status, error.response.data.message)   :
+            showMessage(error.response.status, error.response.data.message)   : 
             showMessage('error', 'Database connection failed..!') ;
 
             console.log("error", error);

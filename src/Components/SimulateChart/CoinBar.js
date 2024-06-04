@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './CoinBar.css';
 import Modal from "../Modal/Modal";
-import Table, {TableRow} from "../Table/Table";
+import Table, {TableRow, Coin} from "../Table/Table";
 import axios from "axios";
 import symbols from "../../Assets/Images/Coin Images.json";
 
@@ -118,23 +118,24 @@ const CoinBar = ({ onSelectCoin, enableModel, selectedCoin }) => {
             {enableModel && (
                 <Modal open={isSetterModalOpen} close={() => setIsSetterModalOpen(false)}>
                     <div style={{ width: '450px' }}>
-                        <div style={{ width: '100%', marginBottom: '50px' }}>
-                            <h1 style={{ textAlign: 'center' }}>Select Coin</h1>
-                            <Table style={{ marginTop: '1vh' }}>
-                                <TableRow data={['', 'Coin', 'Price']}/>
+                        <div style={{ width: '100%'}}>
+                            <h1 style={{ textAlign: 'center' }}>Select a Coin</h1>
+                            <div style={{ marginTop: '3vh', height: '70vh', overflowY: 'scroll', }}>
+                                <Table hover={true} >
+                                    <TableRow data={['Coin', 'Price']}/>
 
-                                {coins.map((coin) => (
-                                    <TableRow
-                                        key={coin.symbol}
-                                        data={[
-                                            <img className='coin-image' src={symbols[coin.symbol].img} alt={coin.symbol} />,
-                                            symbols[coin.symbol].name,
-                                            formatCurrency(coin.lastPrice),
-                                        ]}
-                                        onClick={() => handleRowClick(coin)}
-                                    />
-                                ))}
-                            </Table>
+                                    {coins.map((coin) => (
+                                        <TableRow
+                                            key={coin.symbol}
+                                            data={[
+                                                <Coin>{coin.symbol}</Coin>,
+                                                formatCurrency(coin.lastPrice),
+                                            ]}
+                                            onClick={() => handleRowClick(coin)}
+                                        />
+                                    ))}
+                                </Table>
+                            </div>
                         </div>
                     </div>
                 </Modal>
