@@ -47,25 +47,42 @@ h5{
     
     
 }
+.sub-title{
+    font-size: 13px;
+    margin-top: 0.6rem;
+}
 .answer-title{
-    padding-left: 2%;
+    margin-left: 8rem;
+
     margin-top: 2.5rem;
     font-size: 21px;
+
 }
 p{
     color: aliceblue;
    
 
 }
-.like-button{
-    color: #74817C;
-    
+ .like-button{
+    color: aliceblue;
     padding-top: 4%;
+    height: 3rem !important;
+    width: 3rem !important;
 }
-.dislike-button{
-    display: inline;
-    color: #74817C;
-    padding-left: 15px;
+ .dislike-button{
+    
+    color: white;
+    padding-top: 4%;
+    
+    height: 3rem !important;
+    width: 3rem !important;
+}
+.favourite-icon{
+    color: white;
+    padding-top: 4%;
+    
+    height: 3rem !important;
+    width: 3rem !important;
 }
 .add-answer{
     width: 68%;
@@ -91,14 +108,15 @@ h2{
     color: aliceblue;
 }
 .answer{
-    width: 80%;
+    width: 70%;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
     border-radius: 15px;
     background: #151517;
-    padding:0% 0% 3% 2%;
+    padding:1% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    margin-left: 8rem;
 
 }
 

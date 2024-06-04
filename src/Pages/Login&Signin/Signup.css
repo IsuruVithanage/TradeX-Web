@@ -45,7 +45,7 @@
 .signup-topic{
     display: flex;
 }
-.username-input{
+.black-background .username-input{
     display: flex;
     color: white;
     position: fixed;
@@ -61,11 +61,11 @@
     border-left: none;
     border-radius: 7px;
 }
-.email-input{
+.black-background .email-input{
     display: flex;
     color: white;
     position: fixed;
-    top: 40%;
+    top: 37%;
     left: 3%;
     transform: translate(34%, -75%);
     width: 58%;

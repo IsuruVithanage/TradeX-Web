@@ -13,12 +13,11 @@ export default function Portfolio() {
   const [ usdBalance, setUsdBalance ] = useState(null);
   const [ portfolioValue, setPortfolioValue ] = useState(null);
   const [ percentages, setPercentages ] = useState([]);
-  const [ initialData, setInitialData ] = useState([]);
+  const [ initialData, setInitialData ] = useState(null);
   const [ isLoading, setIsLoading ] = useState(true);
   const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
   const userId = 1;
   
-
   useEffect(() => {
     setIsLoading(true);
 
@@ -32,7 +31,6 @@ export default function Portfolio() {
         
 
         .then(res => {
-            console.log("data", res.data);
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);
             setInitialData(res.data.historyData);
@@ -60,9 +58,9 @@ export default function Portfolio() {
         isLoading={isLoading}
         tabs={[
           { label:"Overview", path:"/portfolio"},
-          { label:"History", path:"/portfolio/history"},
           { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
           { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+          { label:"History", path:"/portfolio/history"}
         ]}>
 
 

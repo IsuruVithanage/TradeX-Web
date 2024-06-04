@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { showMessage } from '../../Components/Message/Message';
 
+
 const backendApiEndpoint = "http://localhost:8002/alert/";
 
 
@@ -34,16 +35,16 @@ const getAlerts = async (userId, runningStatus) => {
 
 
 
-const editAlert = async (userId, currentAlertId, selectedCoin, selectedCondition) => {
+const editAlert = async (userId, currentAlertId, selectedCoin, selectedPrice, selectedCondition, emailActiveStatus) => {
     return axios
         .put(
             backendApiEndpoint,
             {
                 userId: userId,
                 coin: selectedCoin,
-                price: parseFloat(document.getElementById("edit-alert-price").value),
+                price: selectedPrice,
                 condition: selectedCondition,
-                emailActiveStatus: document.getElementById("edit-alert-email").checked,
+                emailActiveStatus: emailActiveStatus,
                 runningStatus: true
             },
             {
@@ -72,16 +73,16 @@ const editAlert = async (userId, currentAlertId, selectedCoin, selectedCondition
 
 
 
-const addAlert = async (userId, selectedCoin, selectedCondition) => {
+const addAlert = async (userId, selectedCoin, selectedPrice, selectedCondition, emailActiveStatus) => {
     return axios
         .post( 
             backendApiEndpoint, 
             {
                 userId: userId,
                 coin: selectedCoin,
-                price: parseFloat(document.getElementById("edit-alert-price").value),
+                price: selectedPrice,
                 condition: selectedCondition,
-                emailActiveStatus: document.getElementById("edit-alert-email").checked,
+                emailActiveStatus: emailActiveStatus,
                 runningStatus: true,
             }
         )
@@ -168,6 +169,31 @@ const deleteAlert = async (userId, currentAlertId, runningStatus) => {
 
 
 
+
+const clearAll = async (userId) => {
+    return axios
+        .delete(
+            backendApiEndpoint + "clearAll",
+            { params: { userId: userId }}
+        )
+
+        .then(res => {
+            showMessage('success', 'All Alerts cleared..!') ;
+            return res.data;
+        })
+
+        .catch(error => {
+            console.log("error", error);
+
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Alert clear failed..!') ;
+        });
+}
+
+
+
+
 const saveDeviceToken = async (userId, deviceToken) => { 
     return axios
         .post(
@@ -178,8 +204,8 @@ const saveDeviceToken = async (userId, deviceToken) => {
             }
         )
 
-        .catch(error => {
-            console.log("error saving device token", error);
+        .catch(() => {
+            console.log("device token Saving Failed");
         });
 
 }
@@ -194,6 +220,7 @@ const alertOperations = {
     addAlert,
     restoreAlert,
     deleteAlert,
+    clearAll,
     saveDeviceToken
 };
 

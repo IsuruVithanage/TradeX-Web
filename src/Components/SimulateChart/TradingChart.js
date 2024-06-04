@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './TradingChart.css';
 import { ColorType, createChart } from 'lightweight-charts';
 import axios from 'axios';
+import symbols from "../../Assets/Images/Coin Images.json";
 
 export const ChartComponent = (props) => {
     const [activeDuration, setActiveDuration] = useState('1m');
@@ -66,7 +67,7 @@ export const ChartComponent = (props) => {
                 `https://api.binance.com/api/v3/klines?symbol=${selectedCoin === null ? 'BTC' : selectedCoin.symbol.toUpperCase()}USDT&interval=${activeDuration}&limit=1`
             );
             const latestPrice = parseFloat(res.data[res.data.length - 1][4]);
-            const latestTime = parseFloat(res.data[res.data.length - 1][0]);
+            const latestTime = res.data[res.data.length - 1][0];
             updateLastPrice(latestPrice, latestTime);
             const result = await processData(res.data);
             if (result && result.length > 0) {
@@ -94,7 +95,13 @@ export const ChartComponent = (props) => {
             localization: {
                 priceFormatter: price => '$ ' + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
             },
-            timeScale: { fixLeftEdge: true, borderVisible: false }
+            timeScale: {
+                fixLeftEdge: true,
+                borderVisible: false,
+                timeVisible: true,
+                lockVisibleTimeRangeOnResize: true,
+                visible: false,
+            }
         });
 
         const series = chart.addCandlestickSeries({
@@ -104,6 +111,72 @@ export const ChartComponent = (props) => {
             wickUpColor,
             wickDownColor
         });
+
+        const toolTipWidth = 150;
+        const toolTipHeight = 80;
+        const toolTipMargin = 15;
+
+        const container = chartContainerRef.current;
+
+        if (container) {
+            const toolTip = document.createElement('div');
+            toolTip.style = `width: 150px; height: 80px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 10px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border: 1px solid; border-radius: 2px;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+            toolTip.style.background = 'black';
+            toolTip.style.color = 'white';
+            toolTip.style.borderColor = '#21DB9A';
+            container.appendChild(toolTip);
+
+            chart.subscribeCrosshairMove(param => {
+                if (
+                    param.point === undefined ||
+                    !param.time ||
+                    param.point.x < 0 ||
+                    param.point.x > container.clientWidth ||
+                    param.point.y < 0 ||
+                    param.point.y > container.clientHeight
+                ) {
+                    toolTip.style.display = 'none';
+                } else {
+                    const dateStr = new Date(param.time * 1000); // Convert to milliseconds
+                    const formattedDate = new Intl.DateTimeFormat('en-US', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    }).format(dateStr);
+
+                    toolTip.style.display = 'block';
+                    const data = param.seriesData.get(series);
+                    const price = data.value !== undefined ? data.value : data.close;
+                    const formattedPrice = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(price);
+                    toolTip.innerHTML = `<div style="color: ${'#21DB9A'}">${symbols[selectedCoin.symbol].name}</div><div style="font-size: 20px; margin: 4px 0px; color: ${'white'}">
+                    ${formattedPrice}
+                    </div><div style="color: ${'white'}">
+                    ${formattedDate}
+                    </div>`;
+
+                    const y = param.point.y;
+                    let left = param.point.x + toolTipMargin;
+                    if (left > container.clientWidth - toolTipWidth) {
+                        left = param.point.x - toolTipMargin - toolTipWidth;
+                    }
+
+                    let top = y + toolTipMargin;
+                    if (top > container.clientHeight - toolTipHeight) {
+                        top = y - toolTipHeight - toolTipMargin;
+                    }
+                    toolTip.style.left = left + 'px';
+                    toolTip.style.top = top + 'px';
+                }
+            });
+        }
 
         chartInstanceRef.current = chart;
         seriesRef.current = series;
@@ -115,7 +188,7 @@ export const ChartComponent = (props) => {
             }
         });
 
-        updateIntervalRef.current = setInterval(updateData, 600); // Update every 1 minute
+        updateIntervalRef.current = setInterval(updateData, 600);
 
         return () => {
             clearInterval(updateIntervalRef.current);
