@@ -33,7 +33,7 @@ class Firebase {
     }
 
 
-    async requestPermission(deniedMessage) {
+    async requestPermission() {
         if(this.isRequestingPermission){
             return false;
         }
@@ -48,9 +48,6 @@ class Firebase {
             }
 
             else if (permission === "denied") {
-                if(deniedMessage){
-                    alert("Please allow notifications in your browser settings to use this feature.");
-                }
                 resolve(false);
                 this.isRequestingPermission = false;
             }
