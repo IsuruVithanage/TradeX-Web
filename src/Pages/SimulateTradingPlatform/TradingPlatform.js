@@ -142,7 +142,7 @@ export default function TradingPlatform({firebase}) {
 
         try {
             const res = await axiosInstance.get(
-                `${apiGateway}/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`
+                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`
             );
             setLimitOrder(res.data);
 
@@ -360,7 +360,7 @@ export default function TradingPlatform({firebase}) {
                 body: JSON.stringify(ob)
             })
                 .then(response => response.json())
-                .then(data => {
+                .then(async data => {
                     console.log('gvgh', data);
                     if (order.type === 'Buy') {
                         setWalletBalance(data[0].balance);
@@ -368,7 +368,7 @@ export default function TradingPlatform({firebase}) {
                         setWalletBalance(data[1].balance);
                     }
 
-                    return fetch(`${apiGateway}/order`, {
+                    return await fetch(`${apiGateway}/order`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
