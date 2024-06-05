@@ -420,6 +420,7 @@ export default function Suggestions() {
                     style={{marginTop: '1vh'}}
                     emptyMessage={"No Trade data To display"}
                     hover={true}
+                    restart={filteredOrderHistory}
                     tableTop={
                         <div style={{
                             display: 'flex',

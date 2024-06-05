@@ -61,7 +61,9 @@
 .table-body
 td{
   font-weight: 300;
+  user-select: text !important;
 } 
+
 
 .table-container
 td:first-child{
