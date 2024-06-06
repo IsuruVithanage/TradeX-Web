@@ -24,7 +24,7 @@ const getAlerts = async (userId, runningStatus) => {
 
         .catch(error => {
             error.response ? 
-            showMessage(error.response.status, error.response.data.message)   :
+            showMessage(error.response.status, error.response.data.message)   : 
             showMessage('error', 'Database connection failed..!') ;
 
             console.log("error", error);
@@ -194,12 +194,17 @@ const clearAll = async (userId) => {
 
 
 
-const saveDeviceToken = async (userId, deviceToken) => { 
+
+const saveDeviceToken = async (deviceToken) => {
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+    const id = user.id;
+
     return axios
         .post(
             backendApiEndpoint + "deviceToken",
             {
-                userId: userId,
+                userId: id,
                 deviceToken: deviceToken
             }
         )

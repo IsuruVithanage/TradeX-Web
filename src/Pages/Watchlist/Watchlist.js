@@ -99,8 +99,9 @@ const Watchlist = () => {
             </div>
 
             <div className="watchlist-table-container">
-                <Input type="search" placeholder="Search" style={{width: "300px"}}
+                <Input type="text" placeholder="Search" style={{width: "300px"}}
                        onChange={(e) => setSearch(e.target.value)}/>
+
                 <table className="watchlist-table">
                     <thead>
                     <tr>

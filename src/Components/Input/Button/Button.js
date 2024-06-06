@@ -59,7 +59,7 @@ export default function ButtonMUI(props){
     return (
         <StyledButton
             style={props.style}
-            onClick={() => props.onClick()}
+            onClick={props.onClick}
             outlined={props.outlined ? 'true' : 'false'}
             red={props.red ? 'true' : 'false'}
             disabled={props.disabled && props.disabled}

@@ -174,7 +174,7 @@ const Watchlist1 = () => {
                 <h2>Select Coin</h2>
                 <div>
                   <Input
-                    type="search"
+                    type="text"
                     placeholder="Search"
                     style={{
                       width: "400px",

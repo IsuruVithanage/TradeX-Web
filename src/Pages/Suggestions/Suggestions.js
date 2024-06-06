@@ -11,6 +11,7 @@ import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
 import {LuRefreshCw} from "react-icons/lu";
 import {useSelector} from "react-redux";
+import axiosInstance from "../../Authentication/axiosInstance";
 
 export default function Suggestions() {
     const apiGateway = process.env.REACT_APP_API_GATEWAY;
@@ -56,7 +57,7 @@ export default function Suggestions() {
 
     const loadOrderHistory = async () => {
         try {
-            const res = await axios.get(
+            const res = await axiosInstance.get(
                 `${apiGateway}/order/getOrderByCato/${type}`
             );
             setOrderHistory(res.data);
@@ -135,7 +136,10 @@ export default function Suggestions() {
         try {
             const res = await fetch(`${apiGateway}/suggestion/buyOrderSuggestion`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
                 body: JSON.stringify(geminiData),
             });
             if (!res.ok) throw new Error('Network response was not ok');
@@ -416,6 +420,7 @@ export default function Suggestions() {
                     style={{marginTop: '1vh'}}
                     emptyMessage={"No Trade data To display"}
                     hover={true}
+                    restart={filteredOrderHistory}
                     tableTop={
                         <div style={{
                             display: 'flex',
