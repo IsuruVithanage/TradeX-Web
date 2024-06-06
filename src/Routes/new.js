@@ -18,8 +18,7 @@ import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login";
-import Favorites from "../Pages/Forum/Favorites";
-import PrivateRoute from "../Components/PrivateRoute";  // Import the PrivateRoute component
+import PrivateRoute from "../Components/PrivateRoute";
 
 export default function Router({ firebase }) {
   const router = createBrowserRouter([

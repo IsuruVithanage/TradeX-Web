@@ -15,7 +15,14 @@ import BuyButton from "../../Components/Input/Button/BuyButton";
 import axiosInstance from "../../Authentication/axiosInstance";
 
 export default function TradingPlatform({firebase}) {
-    const user = useSelector(state => state.user);
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+
+    useEffect(() => {
+        const t=localStorage.getItem('user');
+        console.log("t",JSON.parse(t))
+        console.log(localStorage.getItem('user'));
+    }, []);
 
     /////////////////////////////////////////////////////////////////////
     useEffect(() => {
@@ -26,8 +33,7 @@ export default function TradingPlatform({firebase}) {
     }, [firebase]);
 
     const Tabs = [
-        {label: "Spot", path: "/simulate"},
-        {label: "Quiz", path: "/quiz"},
+        {label: "Spot", path: "/simulate"}
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
@@ -60,6 +66,7 @@ export default function TradingPlatform({firebase}) {
     });
 
     useEffect(() => {
+        console.log("user",user[0])
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
@@ -142,7 +149,7 @@ export default function TradingPlatform({firebase}) {
 
         try {
             const res = await axiosInstance.get(
-                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`
+                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
             );
             setLimitOrder(res.data);
 
@@ -153,7 +160,7 @@ export default function TradingPlatform({firebase}) {
     };
 
     const getWalletBalance = () => {
-        fetch(`${apiGateway}/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
+        fetch(`${apiGateway}/portfolio/asset/${user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Wallet balance:', data[0]);
@@ -174,7 +181,7 @@ export default function TradingPlatform({firebase}) {
         const currentDate = new Date().toISOString();
         console.log(currentDate);
         return {
-            userId: user.user.id,
+            userId: user.id,
             coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
             date: currentDate,
@@ -333,7 +340,7 @@ export default function TradingPlatform({firebase}) {
 
         if (order.category !== 'Stop Limit') {
             const ob = {
-                userId: user.user.id,
+                userId: user.id,
                 coin: order.coin.symbol.toUpperCase(),
                 quantity: order.quantity,
                 price: order.price,
