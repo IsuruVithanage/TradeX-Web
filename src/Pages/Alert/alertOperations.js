@@ -194,12 +194,17 @@ const clearAll = async (userId) => {
 
 
 
-const saveDeviceToken = async (userId, deviceToken) => { 
+
+const saveDeviceToken = async (deviceToken) => {
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+    const id = user.id;
+
     return axios
         .post(
             backendApiEndpoint + "deviceToken",
             {
-                userId: userId,
+                userId: id,
                 deviceToken: deviceToken
             }
         )
