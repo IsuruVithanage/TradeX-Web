@@ -4,9 +4,14 @@ import axios from "axios";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import "./Login.css";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../Features/User';
+
+
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState({
     email: "",
@@ -28,7 +33,20 @@ function Login() {
     axios.post("http://localhost:8004/user/login", values)
         .then((res) => {
           const token = res.data.token;
+          const user = res.data.user;
+
+          const userData = {
+            id: user.userId,
+            username: user.userName,
+            email: user.email,
+            isVerified: user.isVerified,
+            hasTakenQuiz: user.hasTakenQuiz,
+            level: user.level,
+          };
+
+
           console.log("Token:", token);
+          localStorage.setItem('user', JSON.stringify(userData));
           localStorage.setItem("access-token", token);
           console.log("Login success");
           navigate("/watchlist");

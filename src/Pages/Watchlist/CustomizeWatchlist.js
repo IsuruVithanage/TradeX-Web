@@ -6,6 +6,7 @@ import "./CustomizeWatchlist.css";
 import Modal from "../../Components/Modal/Modal";
 import symbols from "../../Assets/Images/Coin Images.json";
 
+
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
   const [selectedCoins, setSelectedCoins] = useState([]);
@@ -51,19 +52,21 @@ const Watchlist1 = () => {
       priceChange: selectedCoin.priceChange,
       marketcap: formatCurrency(selectedCoin.quoteVolume),
     };
-  
+
     // Combine the previously selected coins with the newly selected one
     const updatedSelectedCoins = [...selectedCoins, coinDetails];
-  
+
     // Update the state with the new selected coins array
     setSelectedCoins(updatedSelectedCoins);
-  
+
     // Remove the selected coin from the filtered coins state (modal view)
-    setModalFilteredCoins((prevCoins) => prevCoins.filter((coin) => coin.symbol !== selectedCoin.symbol));
-  
+    setModalFilteredCoins((prevCoins) =>
+      prevCoins.filter((coin) => coin.symbol !== selectedCoin.symbol)
+    );
+
     // Set flag to indicate a coin is selected
     setIsCoinSelected(true);
-  
+
     // Log all selected coins
     console.log(updatedSelectedCoins);
   };
@@ -76,7 +79,7 @@ const Watchlist1 = () => {
       const updatedSelectedCoins = [...selectedCoins];
       updatedSelectedCoins.splice(index, 1);
       setSelectedCoins(updatedSelectedCoins);
-      
+
       // Find the coin in the coins array and add it back to the modalFilteredCoins array
       const coinToAddBack = coins.find((coin) => coin.symbol === symbol);
       if (coinToAddBack) {
@@ -84,7 +87,8 @@ const Watchlist1 = () => {
       }
     }
   };
-  
+
+
 
   const formatCurrency = (amount) => {
     const amountString = parseFloat(amount).toLocaleString("en-US", {
@@ -241,51 +245,51 @@ const Watchlist1 = () => {
               return (
                 <tr key={coin.symbol}>
                   <td style={{ width: "40px" }}>
-                  <img
-                    className="coin-image"
-                    src={symbols[coin.symbol].img}
-                    alt={coin.symbol}
-                  />
-                </td>
-                <td style={{ width: "150px" }}>
-                  <div className="coin-name-container">
-                    <span className="coin-name">{coin.name}</span>
-                    <span className="coin-symbol">{coin.symbol}</span>
-                  </div>
-                </td>
-                <td>{price}</td>
-                <td
-                  style={{
-                    color:
-                      coin.priceChangePercent > 0
-                        ? "#21DB9A"
-                        : coin.priceChangePercent < 0
-                        ? "#FF0000"
-                        : "#FFFFFF",
-                  }}
-                >
-                  {" "}
-                  {parseFloat(coin.priceChangePercent).toFixed(2)} %
-                </td>
-                <td>{coin.marketcap}</td>
-                <td>
-                  <Input
-                    type="button"
-                    value="Remove"
-                    outlined
-                    red
-                    style={{ width: "150px" }}
-                    onClick={() => handleRemoveCoin(coin.symbol)}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  </BasicPage>
-);
+                    <img
+                      className="coin-image"
+                      src={symbols[coin.symbol].img}
+                      alt={coin.symbol}
+                    />
+                  </td>
+                  <td style={{ width: "150px" }}>
+                    <div className="coin-name-container">
+                      <span className="coin-name">{coin.name}</span>
+                      <span className="coin-symbol">{coin.symbol}</span>
+                    </div>
+                  </td>
+                  <td>{coin.price}</td>
+                  <td
+                    style={{
+                      color:
+                        coin.priceChange> 0
+                          ? "#21DB9A"
+                          : coin.priceChange < 0
+                          ? "#FF0000"
+                          : "#FFFFFF",
+                    }}
+                  >
+                    {" "}
+                    {parseFloat(coin.priceChange).toFixed(2)} %
+                  </td>
+                  <td>{coin.marketcap}</td>
+                  <td>
+                    <Input
+                      type="button"
+                      value="Remove"
+                      outlined
+                      red
+                      style={{ width: "150px" }}
+                      onClick={() => handleRemoveCoin(coin.symbol)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </BasicPage>
+  );
 };
 
 export default Watchlist1;
