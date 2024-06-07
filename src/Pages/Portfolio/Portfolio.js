@@ -22,14 +22,8 @@ export default function Portfolio() {
     setIsLoading(true);
 
     axios
-        .get( backendApiEndpoint, { 
-            params: { 
-                userId,
-                timezoneOffset: new Date().getTimezoneOffset()
-            } 
-        })
+        .get( backendApiEndpoint, { params: { userId } })
         
-
         .then(res => {
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);

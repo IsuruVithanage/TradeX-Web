@@ -148,7 +148,7 @@ export default function Alert({firebase}) {
     };
     
 
-    const addAlert = async () => {
+    const openAddAlertModal = async () => {
         if(!isRegistered && !await firebase.requestPermission()){
             showMessage('warning', "Please allow notifications in your browser settings to use this feature.", 3);
             return;
@@ -157,41 +157,8 @@ export default function Alert({firebase}) {
         setAddOrEditAlert('Add');
     }
 
-    const setAlertId = (alertId) => {
-        setCurrentAlert({alertId: alertId});
-    }
-
-    const setCoin = (coin) => {
-        setCurrentAlert(prev => ({...prev, coin: coin}));
-    }
-
-    const setCondition = (condition) => {
-        setCurrentAlert(prev => ({...prev, condition: condition}));
-    }
-
-    const setPrice = (price) => {
-        setCurrentAlert(prev => ({...prev, price: price}));
-    }
-
-    const setEmail = (email) => {
-        setCurrentAlert(prev => ({...prev, emailActiveStatus: email}));
-    }
-
-
-    const options = [
-      { value: 'BTC', label: 'BTC' },
-      { value: 'ETH', label: 'ETH' },
-      { value: 'DOGE', label: 'DOGE' },
-      { value: 'ADA', label: 'ADA' },
-      { value: 'BNB', label: 'BNB' },
-      { value: 'XRP', label: 'XRP' },
-    ];
-
-
-
 
     return (
-    <>
         <BasicPage
             isLoading={isLoading}
             subPages={{
@@ -203,80 +170,160 @@ export default function Alert({firebase}) {
             }}>  
 
 
-            <Table 
-                restart={alerts} 
-                emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}
-                tableTop= {
-                    <div style={{display: "flex", alignItems: "center", position: "relative"}}>
-                        <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
-                        <div style={{width: "130px", marginLeft: "auto", margin: "8px 0"}}>
-                            <Input 
-                                type='button' 
-                                value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
-                                red={selectedPage === 'Notified'}
-                                onClick={() => selectedPage === 'Running' ?  addAlert() : setDeleteOrClearAlert('clearAll')}
-                                disabled={selectedPage === 'Notified' && alerts.length === 0}
-                                />
-                        </div>
-                    </div>
-                }>
-                    
-                <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Actions']} />
+            <AlertsTable {...{alerts, selectedPage, openAddAlertModal, setAddOrEditAlert, setDeleteOrClearAlert, setCurrentAlert, isRegistered, call}} />
 
-                { alerts.map((alert, index) => {
-                    return (
-                        <TableRow 
-                            key={index} 
-                            data={[
-                                <Coin>{alert.coin}</Coin>, 
-                                '$ ' + alert.price.toLocaleString(),
-                                alert.condition, 
-                                (alert.emailActiveStatus) ? "On" : "Off", 
-                                <div className="alert-table-action-button-container">
-                                    { selectedPage === "Running" ?
-                                    <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => {setAddOrEditAlert('Edit'); setCurrentAlert(alert)}} outlined/>  :
-                                    <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => call('restoreAlert', alert.alertId)} outlined/>
-                                    }
-                                    <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setDeleteOrClearAlert('deleteAlert'); setAlertId(alert.alertId)}} outlined red/>
-                                </div>
-                            ]}
-                        />
-                    )
-                })}
-            </Table>
+            <AddOrEditModal {...{addOrEditAlert, setAddOrEditAlert, call, currentAlert, setCurrentAlert, isInvalid}} />
+
+            <DeleteOrClearModal {...{deleteOrClearAlert, setDeleteOrClearAlert, call}} />
                 
         </BasicPage>
-    
+    )
+}
 
 
 
+function AlertsTable (props) {
+    const { alerts, selectedPage, openAddAlertModal, setAddOrEditAlert, setDeleteOrClearAlert, setCurrentAlert, isRegistered, call } = props;
+
+    return(
+        <Table 
+            restart={alerts} 
+            emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}
+            tableTop= {
+                <div style={{display: "flex", alignItems: "center", position: "relative"}}>
+                    <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
+                    <div style={{width: "130px", marginLeft: "auto", margin: "8px 0"}}>
+                        <Input 
+                            type='button' 
+                            value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
+                            red={selectedPage === 'Notified'}
+                            onClick={() => selectedPage === 'Running' ?  openAddAlertModal() : setDeleteOrClearAlert('clearAll')}
+                            disabled={selectedPage === 'Notified' && alerts.length === 0}
+                            />
+                    </div>
+                </div>
+            }>
                 
+            <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Actions']} />
+
+            { alerts.map((alert, index) => {
+                return (
+                    <TableRow 
+                        key={index} 
+                        data={[
+                            <Coin>{alert.coin}</Coin>, 
+                            '$ ' + alert.price.toLocaleString(),
+                            alert.condition, 
+                            (alert.emailActiveStatus) ? "On" : "Off", 
+                            <div className="alert-table-action-button-container">
+                                { selectedPage === "Running" ?
+                                <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => {setAddOrEditAlert('Edit'); setCurrentAlert(alert)}} outlined/>  :
+                                <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => call('restoreAlert', alert.alertId)} outlined/>
+                                }
+                                <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setDeleteOrClearAlert('deleteAlert'); setCurrentAlert({alertId: alert.alertId})}} outlined red/>
+                            </div>
+                        ]}
+                    />
+                )
+            })}
+        </Table>
+    )
+}
+
+
+
+function AddOrEditModal (props) {
+    const { addOrEditAlert, setAddOrEditAlert, call, currentAlert, setCurrentAlert, isInvalid } = props;
+    
+    const options = [
+        { value: 'BTC', label: 'BTC' },
+        { value: 'ETH', label: 'ETH' },
+        { value: 'DOGE', label: 'DOGE' },
+        { value: 'ADA', label: 'ADA' },
+        { value: 'BNB', label: 'BNB' },
+        { value: 'XRP', label: 'XRP' },
+      ];
+
+    return(
         <Modal open={addOrEditAlert} close={setAddOrEditAlert}>
             <div style={{width:"400px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
                     <h1 style={{textAlign:"center"}}>{`${ addOrEditAlert } Alert`}</h1>
-                    <Input type="dropdown" label='Coin' options={options} value={currentAlert.coin} onChange={setCoin}/>
-                    <Input type="dropdown" label='Condition' value={currentAlert.condition} onChange={setCondition} searchable={false} options={[
-                        { value: 'Equals', label: 'Equals' },
-                        { value: 'Above', label: 'Above' },
-                        { value: 'Below', label: 'Below' },
-                    ]}/>
-                    <Input type="number" label='Price' value={currentAlert.price} min={0} onChange={setPrice}/>
+                    <Input 
+                        type="dropdown" 
+                        label='Coin' 
+                        options={options} 
+                        value={currentAlert.coin} 
+                        onChange={(coin) => {
+                            setCurrentAlert(prev => ({...prev, coin: coin}))
+                        }}
+                    />
 
-                    <Input type="toggle" toggleLabel="Email Notification"  checked={currentAlert.emailActiveStatus || false} onChange={setEmail}/>
+                    <Input 
+                        type="dropdown" 
+                        label='Condition' 
+                        value={currentAlert.condition} 
+                        searchable={false} 
+                        onChange={(condition) => {
+                            setCurrentAlert(prev => ({...prev, condition: condition}));
+                        }} 
+                        options={[
+                            { value: 'Equals', label: 'Equals' },
+                            { value: 'Above', label: 'Above' },
+                            { value: 'Below', label: 'Below' },
+                        ]}
+                    />
+
+                    <Input 
+                        type="number" 
+                        label='Price' 
+                        value={currentAlert.price} 
+                        min={0} 
+                        onChange={(price) => {
+                            setCurrentAlert(prev => ({...prev, price: price}));
+                        }}
+                    />
+
+                    <Input 
+                        type="toggle" 
+                        toggleLabel="Email Notification"  
+                        checked={currentAlert.emailActiveStatus || false} 
+                        onChange={(email) => {
+                            setCurrentAlert(prev => ({...prev, emailActiveStatus: email}));
+                        }}
+                    />
                     
                     <div className="edit-alert-modal-button-container">
-                        <Input type="button" style={{width:"110px"}} disabled={isInvalid[0]} onClick={ () => call(addOrEditAlert)} value={ addOrEditAlert }/>
-                        <Input type="button" style={{width:"110px"}} onClick={() => setAddOrEditAlert(false)} value="Cancel" red/>
+                        <Input 
+                            type="button" 
+                            style={{width:"110px"}} 
+                            disabled={isInvalid[0]} 
+                            value={ addOrEditAlert }
+                            onClick={ () => call(addOrEditAlert)} 
+                        />
+
+                        <Input 
+                            red
+                            type="button"
+                            style={{width:"110px"}}  
+                            value="Cancel"
+                            onClick={() => setAddOrEditAlert(false)}  
+                        />
                     </div>  
 
                     <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>        
                 </div>
             </div>
         </Modal>
+    )
+}
 
 
 
+function DeleteOrClearModal (props) {
+    const { deleteOrClearAlert, setDeleteOrClearAlert, call } = props;
+
+    return(
         <Modal open={deleteOrClearAlert} close={setDeleteOrClearAlert}>
             <div style={{width:"350px"}}>
                 <div style={{width:"300px", margin:"0 auto 30px auto"}}>
@@ -294,6 +341,5 @@ export default function Alert({firebase}) {
                 </div>
             </div>
         </Modal>
-
-    </> )
+    )
 }

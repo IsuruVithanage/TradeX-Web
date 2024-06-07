@@ -56,7 +56,7 @@ export default function LineChart(props) {
                 vertLine: {
                     style: 0,
                     width: 1.3,
-                    visible: !chartData ? false : true,
+                    visible: (chartData && chartData.length > 0),
                 },
                 horzLine: {
                     labelBackgroundColor: '#000000',
@@ -270,7 +270,7 @@ export default function LineChart(props) {
 				</span>
             </div>
 
-            {!chartData && <p className="empty-message">No data to show</p>}
+            {(!chartData || chartData.length === 0) && <p className="empty-message">No data to show</p>}
 
             <div id="chart">
                 <div id='tool-tip' className='tool-tip'/>
