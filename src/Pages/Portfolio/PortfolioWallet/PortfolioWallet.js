@@ -14,17 +14,16 @@ import './PortfolioWallet.css'
 
 
 export default function FundingWallet() {
-    const params = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
-    const [ currentWallet, SetCurrentWallet ] = useState(params);
+    const currentWallet = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
     const [ selectedCoin, setSelectedCoin ] = useState('');
     const [ selectedQty, setSelectedQty ] = useState(null);
-    const [ selectedWallet, setSelectedWallet ] = useState(undefined);
-    const [ walletAddressValue, setWalletAddressValue ] = useState(null);
+    const [ selectedWallet, setSelectedWallet ] = useState(null);
+    const [ walletAddressValue, setWalletAddressValue ] = useState('');
     const [ assets, setAssets ] = useState([]);
     const [ usdBalance, setUsdBalance ] = useState(null);
     const [ portfolioValue, setPortfolioValue ] = useState(null);
     const [ walletAddress, setWalletAddress ] = useState(null);
-    const [ isInvalid, setIsInvalid ] = useState([true, null]);
+    const [ isInvalid, setIsInvalid ] = useState({status: true, message: null});
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
@@ -34,62 +33,12 @@ export default function FundingWallet() {
     const userId = user.id;
     const userName = user.userName;
     
-    useEffect(()=>{
-        SetCurrentWallet(params)
-    }, [params]);
 
     useEffect(() => {
         if(!isModalOpen) 
         setIsRegenerate(false);
     }, [isModalOpen]);
 
-    useEffect(() => {
-        if(currentWallet === 'tradingWallet') {
-
-            if ( (selectedCoin && selectedQty) ) {
-                setIsInvalid([false, null]);
-
-                const asset = assets.find(asset => asset.symbol === selectedCoin);
-
-                if (selectedQty > asset.tradingBalance) {
-                    setIsInvalid([true, "Insufficient Balance"]);
-                }
-            } else {
-                if ((!(!selectedCoin && !selectedQty))) {
-                    setIsInvalid([true, "Please fill all the fields"]);
-                } else {
-                    setIsInvalid([true, null]);
-                }
-            }
-
-        } else if (currentWallet === 'fundingWallet') {
-
-            if ( selectedCoin && selectedQty && selectedWallet ) {
-
-                if  ( selectedWallet === 'tradingWallet' || 
-                    ( selectedWallet === 'externalWallet' && 
-                    walletAddressValue )
-                ) {
-                    setIsInvalid([false, null]);
-                } else {
-                    setIsInvalid([true, "Please fill all the fields"]);
-                }
-
-                const asset = assets.find(asset => asset.symbol === selectedCoin);
-                
-                if (selectedQty > asset.fundingBalance) {
-                    setIsInvalid([true, "Insufficient Balance"]);
-                }
-            } else {
-                if((!(!selectedCoin && !selectedQty  && !selectedWallet))) {
-                    setIsInvalid([true, "Please fill all the fields"]);
-                } else {
-                    setIsInvalid([true, null]);
-                }
-            }
-        }
-
-    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
 
     useEffect(() => {
         currentWallet === 'tradingWallet' ?  
@@ -97,10 +46,10 @@ export default function FundingWallet() {
         setSelectedWallet(null);
         setSelectedCoin(null);
         setSelectedQty(null);
-        setAssets([]);
         setUsdBalance(null);
         setPortfolioValue(null);
         setIsLoading(true);
+        //setAssets([]);
             
         axios
             .get(
@@ -133,6 +82,73 @@ export default function FundingWallet() {
                 showMessage('error', 'Database connection failed..!') ;
             });
     }, [ currentWallet ]);
+
+
+
+    useEffect(() => {
+        let status = true;
+        let message = null;
+
+        if(currentWallet === 'tradingWallet') {
+
+            if ( (selectedCoin && selectedQty) ) {
+                status = false;
+                message = null;
+
+                const asset = assets.find(asset => asset.symbol === selectedCoin);
+
+                if (selectedQty > asset.tradingBalance) {
+                    status = true;
+                    message = "Insufficient Balance";
+                }
+            } else {
+                if (selectedCoin || selectedQty) {
+                    status = true;
+                    message = "Please fill all the fields";
+                } else {
+                    status = true;
+                    message = null;
+                }
+            }
+
+        } else if (currentWallet === 'fundingWallet') {
+
+            if ( selectedCoin && selectedQty && selectedWallet ) {
+
+                if  ( selectedWallet === 'tradingWallet' || 
+                    ( selectedWallet === 'externalWallet' && 
+                    walletAddressValue )
+                ) {
+                    status = false;
+                    message = null;
+                } else {
+                    status = true;
+                    message = "Please fill all the fields";
+                }
+
+                const asset = assets.find(asset => asset.symbol === selectedCoin);
+                
+                if (selectedQty > asset.fundingBalance) {
+                    status = true;
+                    message = "Insufficient Balance";
+                }
+            } else {
+                if(selectedCoin || selectedQty  || selectedWallet) {
+                    status = true;
+                    message = "Please fill all the fields";
+                } else {
+                    status = true;
+                    message = null;
+                }
+            }
+        }
+
+        if(isInvalid.status !== status || isInvalid.message !== message){
+            setIsInvalid({status, message});
+        }
+
+    }, [isInvalid, assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
+
 
 
     const transfer = () => {
@@ -266,9 +282,9 @@ export default function FundingWallet() {
                         }
 
                         <div className={`traveling-input ${currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
-                            <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
+                            <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid.status} style={{marginTop:"50px"}}/> 
 
-                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>              
+                            <p className={`alert-invalid-message ${isInvalid.message ? 'show' : ''}`} > { isInvalid.message } </p>              
                         </div>
 
                         <p className='wallet-address-button' onClick={() => setIsModalOpen(true)} >Wallet Address</p>    

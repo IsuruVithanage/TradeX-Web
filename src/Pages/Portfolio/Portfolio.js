@@ -20,39 +20,35 @@ export default function Portfolio() {
     const user = JSON.parse(userTemp);
     const userId = user.id;
 
+
     useEffect(() => {
         setIsLoading(true);
-
+        
         axios
-            .get(backendApiEndpoint, {
-                params: {
-                    userId,
-                    timezoneOffset: new Date().getTimezoneOffset()
-                }
-            })
+        .get( backendApiEndpoint, { params: { userId } })
+        
+        .then(res => {
+            setAssets(res.data.assets);
+            setPercentages(res.data.percentages);
+            setInitialData(res.data.historyData);
+            setPortfolioValue(res.data.portfolioValue);
+            setUsdBalance(res.data.usdBalance);
+            setIsLoading(false);
+        })
 
+        .catch(error => {
+            setIsLoading(false);
+            setPortfolioValue(0);
+            setUsdBalance(0);
+            console.log("error", error);
 
-            .then(res => {
-                setAssets(res.data.assets);
-                setPercentages(res.data.percentages);
-                setInitialData(res.data.historyData);
-                setPortfolioValue(res.data.portfolioValue);
-                setUsdBalance(res.data.usdBalance);
-                setIsLoading(false);
-            })
-
-            .catch(error => {
-                setIsLoading(false);
-                setPortfolioValue(0);
-                setUsdBalance(0);
-                console.log("error", error);
-
-                error.response ?
-                    showMessage(error.response.status, error.response.data.message) :
-                    showMessage('error', 'Database connection failed..!');
-            });
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Database connection failed..!') ;
+        });
 
     }, []);
+  
 
 
     return (
