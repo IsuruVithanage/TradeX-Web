@@ -12,7 +12,7 @@ function Signup() {
         userName: "",
         email: "",
         password: "",
-        isVerified: false,
+        isVerified: "No",
         hasTakenQuiz: false,
         level: "",
     });
