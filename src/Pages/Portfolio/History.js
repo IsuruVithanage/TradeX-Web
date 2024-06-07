@@ -20,7 +20,9 @@ export default function History() {
     const backendAPI = (selectedSection === "Trading") ? 
     "http://localhost:8005/order/getAllOrders" : 
     'http://localhost:8011/portfolio/history/';
-    const userId = 1;
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+    const userId = user.id;
 
     
     const coinOptions = [...new Set(historyData.map(item => item.coin))].map(coin => ({
