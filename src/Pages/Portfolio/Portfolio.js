@@ -16,9 +16,9 @@ export default function Portfolio() {
     const [initialData, setInitialData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user && user.id;
+
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Portfolio() {
             setIsLoading(false);
             setPortfolioValue(0);
             setUsdBalance(0);
-            console.log("error", error);
+            console.log("error getting assets");
 
             error.response ? 
             showMessage(error.response.status, error.response.data.message)   :

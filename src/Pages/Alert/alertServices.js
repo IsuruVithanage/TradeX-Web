@@ -195,16 +195,12 @@ const clearAll = async (userId) => {
 
 
 
-const saveDeviceToken = async (deviceToken) => {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const id = user.id;
-
+export const saveDeviceToken = async (userId, deviceToken) => {
     return axios
         .post(
             backendApiEndpoint + "deviceToken",
             {
-                userId: id,
+                userId: userId,
                 deviceToken: deviceToken
             }
         )
@@ -219,14 +215,12 @@ const saveDeviceToken = async (deviceToken) => {
 
 
 
-const alertOperations = {
+
+export default {
     getAlerts,
     editAlert,
     addAlert,
     restoreAlert,
     deleteAlert,
     clearAll,
-    saveDeviceToken
 };
-
-export default alertOperations;

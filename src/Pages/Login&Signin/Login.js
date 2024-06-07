@@ -9,7 +9,7 @@ import { setUser } from '../../Features/User';
 
 
 
-function Login() {
+function Login({firebase}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,6 +49,7 @@ function Login() {
           localStorage.setItem('user', JSON.stringify(userData));
           localStorage.setItem("access-token", token);
           console.log("Login success");
+          firebase.getToken();
           navigate("/watchlist");
         })
         .catch((err) => {

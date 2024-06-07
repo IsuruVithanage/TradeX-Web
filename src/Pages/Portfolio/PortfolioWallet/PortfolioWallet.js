@@ -28,16 +28,16 @@ export default function FundingWallet() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
-    const userName = user.userName;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user && user.id;
+    const userName = user && user.userName;
     
 
     useEffect(() => {
         if(!isModalOpen) 
         setIsRegenerate(false);
     }, [isModalOpen]);
+
 
 
     useEffect(() => {

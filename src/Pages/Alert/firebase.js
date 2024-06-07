@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
-import alertOperations from "./alertOperations";
+import { saveDeviceToken } from "./alertServices";
 
 
 class Firebase {
-    constructor(userId) {
+    constructor() {
         isSupported().then((isSupported) => {
             if (isSupported) {
                 const firebaseConfig = {
@@ -15,12 +15,12 @@ class Firebase {
                     messagingSenderId: process.env.REACT_APP_FCM_MESSAGING_SENDER_ID,
                     appId: process.env.REACT_APP_FCM_APP_ID,
                 };
-
+           
                 const app = initializeApp(firebaseConfig);
                 this.isRequestingPermission = false;
                 this.messaging = getMessaging(app);
+                this.registerServiceWorker();
                 this.getToken();
-                this.userId = userId;
 
                 this.onMessage((payload) => {
                     new Notification(payload.notification.title, {
@@ -30,6 +30,16 @@ class Firebase {
                 });
             }
         });  
+    }
+
+
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .catch(() => { console.log('Service Worker registration failed');});
+        } else {
+            console.warn('Service Workers are not supported by this browser');
+        }
     }
 
 
@@ -79,25 +89,36 @@ class Firebase {
 
 
     async getToken() {
-        return new Promise(async(resolve, reject) => {
-            await this.requestPermission(false);
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user && user.id;
+
+
+        if(!userId || !await isSupported()){
+            return;
+        }
+
+
+        this.requestPermission().then(async() => {
 
             getToken(this.messaging, {
                 vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
+                serviceWorkerRegistration: await navigator.serviceWorker.ready,
             })
+
             .then((deviceToken) => {
                 this.deviceToken = deviceToken;
-                alertOperations.saveDeviceToken(this.userId, deviceToken);
+                saveDeviceToken(userId, deviceToken);
+
                 if(this.setIsRegistered){
                     this.setIsRegistered(!deviceToken ? false : true);
                 }
-                resolve();
             })
-            .catch(() => {
+
+            .catch((error) => {
+                console.log("error getting device Token", error);
                 if(this.setIsRegistered){
                     this.setIsRegistered(false);
                 }
-                resolve();
             });
         });
     }
