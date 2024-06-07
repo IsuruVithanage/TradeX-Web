@@ -1,5 +1,5 @@
 import BasicPage from "../../Components/BasicPage/BasicPage";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
 import Modal from "../../Components/Modal/Modal";
@@ -15,7 +15,13 @@ import {Upload} from 'antd';
 import {showMessage} from "../../Components/Message/Message";
 
 export default function VerifyUser() {
-    const user = useSelector(state => state.user);
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+
+    useEffect(() => {
+        console.log("userId",user.id);
+    }, []);
+
 
     const {trigger, register, formState: {errors}} = useForm({
         resolver: yupResolver(validationSchema)
@@ -27,7 +33,7 @@ export default function VerifyUser() {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDateError, setIsDateError] = useState('');
     const [userDetail, setUserDetail] = useState({
-        userId: user.user.id,
+        userId: user.id,
         firstName: '',
         lastName: '',
         age: 0,
@@ -51,17 +57,9 @@ export default function VerifyUser() {
                 setIsAgeError('Please enter a valid age');
             }
         } else {
-            /*if (userDetail.dateOfBirth === '') {
-                setIsDateError('Please enter a valid date');
-                return;
-            }*/
-            /*if (userDetail.age === 0) {
-                setIsAgeError('Please enter a valid age');
-                return;
-            }*/
-            if (userDetail.userImg && userDetail.nicImg1 && userDetail.nicImg2) {
+            if (!userDetail.userImg || !userDetail.nicImg1 || !userDetail.nicImg2) {
                 showMessage('Error', 'Some data are not defined!');
-                return
+                return;
             }
 
             fetch('http://localhost:8004/user/saveUserVerificationDetails', {
@@ -76,7 +74,6 @@ export default function VerifyUser() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-
                 })
         }
     }
@@ -185,35 +182,48 @@ export default function VerifyUser() {
 
             uploadedUrls.forEach(url => {
                 if (url && url.endsWith('cimg.jpg')) {
-                    setUserDetail(prevDetails => ({
-                        ...prevDetails,
-                        userImg: url
-                    }));
+                    setUserDetail(prevDetails => {
+                        console.log('Updating userImg:', url);
+                        return {
+                            ...prevDetails,
+                            userImg: url
+                        };
+                    });
                     userImgCount++;
                 } else {
                     if (nicImgCount === 0) {
-                        setUserDetail(prevDetails => ({
-                            ...prevDetails,
-                            nicImg1: url
-                        }));
+                        setUserDetail(prevDetails => {
+                            console.log('Updating nicImg1:', url);
+                            return {
+                                ...prevDetails,
+                                nicImg1: url
+                            };
+                        });
                         nicImgCount++;
                     } else if (nicImgCount === 1) {
-                        setUserDetail(prevDetails => ({
-                            ...prevDetails,
-                            nicImg2: url
-                        }));
+                        setUserDetail(prevDetails => {
+                            console.log('Updating nicImg2:', url);
+                            return {
+                                ...prevDetails,
+                                nicImg2: url
+                            };
+                        });
                         nicImgCount++;
                     }
                 }
             });
-
-
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            await saveData();
         } catch (error) {
             console.error('Error uploading files:', error);
         }
-    }
+    };
+
+    useEffect(() => {
+        if (userDetail.userImg && userDetail.nicImg1 && userDetail.nicImg2) {
+            console.log('Saving user detail:', userDetail);
+            saveData();
+        }
+    }, [userDetail.userImg, userDetail.nicImg1, userDetail.nicImg2]);
+
 
 
 
