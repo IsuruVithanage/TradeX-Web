@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useRef} from "react";
-import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
-import alertOperations from "./alertOperations";
+import alertServices from "./alertServices";
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import './Alert.css';
@@ -21,9 +20,8 @@ export default function Alert({firebase}) {
     const [isRegistered, setIsRegistered] = useState(false);
     const [isInvalid, setIsInvalid] = useState([true, null]);
     const selectedPageRef = useRef(selectedPage);
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user && user.id;
 
 
     useEffect(() => {
@@ -51,7 +49,7 @@ export default function Alert({firebase}) {
             setIsLoading(true);
             setAlerts([]);
 
-            alertOperations
+            alertServices
                 .getAlerts(userId, selectedPageRef.current === "Running")
                 .then((res) => {
                     res && setAlerts(res);
@@ -105,7 +103,7 @@ export default function Alert({firebase}) {
         let args = [];
         let modalSetter = null;
         const {alertId, coin, condition, price, emailActiveStatus} = currentAlert;
-        const {addAlert, editAlert, restoreAlert, deleteAlert, clearAll} = alertOperations;
+        const {addAlert, editAlert, restoreAlert, deleteAlert, clearAll} = alertServices;
 
         switch (func) {
             case 'Add':

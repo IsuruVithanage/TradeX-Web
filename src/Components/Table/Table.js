@@ -4,7 +4,7 @@ import './Table.css'
 export default function Table(props) {
     useEffect(() => {
         const table = document.querySelector('.table-body');
-        console.log(props.restart);
+      
         if(!table.classList.contains('restart')) {
             table.classList.add('restart');
         }

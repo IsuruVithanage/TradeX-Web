@@ -6,7 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Validation from "./SignupValidation";
 
-function Signup() {
+function Signup({firebase}) {
     const navigate = useNavigate();
     const [values, setvalues] = useState({
         userName: "",
@@ -56,6 +56,7 @@ function Signup() {
                 localStorage.setItem('user', JSON.stringify(userData));
                 localStorage.setItem("access-token", token);
                 console.log("Login success");
+                firebase.getToken(user.userId);
                 navigate("/quiz")
             })
             .catch((err) => console.log(err));
