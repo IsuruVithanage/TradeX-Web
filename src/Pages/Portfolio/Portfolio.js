@@ -20,8 +20,11 @@ export default function Portfolio() {
     const user = JSON.parse(userTemp);
     const userId = user.id;
 
-<<<<<<< HEAD
-    axios
+
+    useEffect(() => {
+        setIsLoading(true);
+        
+        axios
         .get( backendApiEndpoint, { params: { userId } })
         
         .then(res => {
@@ -44,53 +47,8 @@ export default function Portfolio() {
             showMessage('error', 'Database connection failed..!') ;
         });
 
-  }, []);
-  
-
-  return (
-    <BasicPage 
-        isLoading={isLoading}
-        tabs={[
-          { label:"Overview", path:"/portfolio"},
-          { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
-          { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
-          { label:"History", path:"/portfolio/history"}
-        ]}>
-=======
-    useEffect(() => {
-        setIsLoading(true);
-
-        axios
-            .get(backendApiEndpoint, {
-                params: {
-                    userId,
-                    timezoneOffset: new Date().getTimezoneOffset()
-                }
-            })
->>>>>>> 69812fe636538f08447b899d0e51119598576246
-
-
-            .then(res => {
-                setAssets(res.data.assets);
-                setPercentages(res.data.percentages);
-                setInitialData(res.data.historyData);
-                setPortfolioValue(res.data.portfolioValue);
-                setUsdBalance(res.data.usdBalance);
-                setIsLoading(false);
-            })
-
-            .catch(error => {
-                setIsLoading(false);
-                setPortfolioValue(0);
-                setUsdBalance(0);
-                console.log("error", error);
-
-                error.response ?
-                    showMessage(error.response.status, error.response.data.message) :
-                    showMessage('error', 'Database connection failed..!');
-            });
-
     }, []);
+  
 
 
     return (

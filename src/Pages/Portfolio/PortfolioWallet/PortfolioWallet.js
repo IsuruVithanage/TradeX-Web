@@ -40,12 +40,6 @@ export default function FundingWallet() {
     }, [isModalOpen]);
 
 
-    // useEffect(() => {
-    //     console.log("assets", assets);
-    // }, [assets]);
-
-
-
     useEffect(() => {
         currentWallet === 'tradingWallet' ?  
         setSelectedWallet('fundingWallet') :
