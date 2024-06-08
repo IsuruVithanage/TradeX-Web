@@ -5,7 +5,10 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
-import Converter from "../../Components/Converter/Converter"
+import Converter from "../../Components/Converter/Converter";
+import CoinDescription from "../../Assets/Images/Coin Description.json";
+import "./CoinPage.css";
+
 
 export default function Suggestions() {
     const pageSymbol = useParams().symbol;
@@ -25,9 +28,8 @@ export default function Suggestions() {
         { label: "All", path: "/watchlist" },
         { label: "Custom", path: "/watchlist/customize" },
     ];
+ 
 
-
-    
     useEffect(() => {
         fetchChartData();
         loadCoinData();
@@ -163,27 +165,9 @@ export default function Suggestions() {
                         </div>
                     </div>
                 </div>
-                <div className='coinDiv'>
-                    <div className='coin-logo'>
-                        <div className='coin-logo coinimg'>
-                            <img src={coinData.image} alt=""/>
-                            <p>{coinData.name}</p>
-                        </div>
-                    </div>
-                    <div className='coinData'>
-                        <div className='cdata'>
-                            <h1>Price</h1>
-                            <p>{coinData.price}</p>
-                        </div>
-                        <div className='cdata'>
-                            <h1>24h Price Change</h1>
-                            <p style={{color: coinData.priceChange > 0 ? "#21DB9A" : "#FF0000"}}>{coinData.priceChange} %</p>
-                        </div>
-                        <div className='cdata'>
-                            <h1>Market Cap</h1>
-                            <p>{coinData.marketcap}</p>
-                        </div>
-                    </div>
+            
+                <div className="coinDiv coinDescription" >
+                    <div>{isLoading ? "Loading..." : CoinDescription[pageSymbol].description}</div>
                 </div>
                 
                 <LineChart data={chartData} zoom={true} title={coinList[pageSymbol].name} ></LineChart>

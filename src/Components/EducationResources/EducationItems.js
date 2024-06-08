@@ -2,20 +2,30 @@ import React, { useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import crypto from "../../Assets/Images/crypto.png";
 import "./EducationItems.css";
-import { Flex } from "antd";
+import axios from "axios";
 
 
-const EducationItem = ({ title, description, src, url }) => {
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
+const EducationItem = (props) => {
+  const { eduId, userId, title, description, image, url, isFavorite } = props
+  const [isHeartFilled, setIsHeartFilled] = useState(isFavorite);
 
   const handleHeartClick = () => {
-    setIsHeartFilled((prevIsHeartFilled) => !prevIsHeartFilled);
+    axios.post("http://localhost:8009/education/favorite",{
+      eduId, userId, isFavorite: !isHeartFilled
+    })
+    .then((res) => {
+      setIsHeartFilled(!isHeartFilled);
+    })
+    .catch((error) => {
+      console.log("error in favorite");
+    })
+    
   };
 
   return (
     <div style={{ display: "flex" }}><div className="education-container">
       <div className="img-container">
-        <img src={src ? src : crypto} alt="..." />
+        <img src={image ? image : crypto} alt="..." />
       </div>
       <div className="desc-container">
         <div style={{ display: "flex" }}>

@@ -24,12 +24,12 @@ export default function Router({ firebase }) {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <Login firebase={firebase} />,
       errorElement: <App />,
     },
     {
       path: "/signup",
-      element: <Signup />,
+      element: <Signup firebase={firebase} />,
     },
     {
       path: "/home",

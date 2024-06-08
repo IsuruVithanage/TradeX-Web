@@ -12,9 +12,17 @@ import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
+import axiosInstance from "../../Authentication/axiosInstance";
 
 export default function TradingPlatform({firebase}) {
-    const user = useSelector(state => state.user);
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+
+    useEffect(() => {
+        const t=localStorage.getItem('user');
+        console.log("t",JSON.parse(t))
+        console.log(localStorage.getItem('user'));
+    }, []);
 
     /////////////////////////////////////////////////////////////////////
     useEffect(() => {
@@ -25,8 +33,7 @@ export default function TradingPlatform({firebase}) {
     }, [firebase]);
 
     const Tabs = [
-        {label: "Spot", path: "/simulate"},
-        {label: "Quiz", path: "/quiz"},
+        {label: "Spot", path: "/simulate"}
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
@@ -42,6 +49,7 @@ export default function TradingPlatform({firebase}) {
     const [selectedType, setSelectedType] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
+    const apiGateway = process.env.REACT_APP_API_GATEWAY;
 
     const [order, setOrder] = useState({
         userId: user.id,
@@ -58,6 +66,7 @@ export default function TradingPlatform({firebase}) {
     });
 
     useEffect(() => {
+        console.log("user",user[0])
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
@@ -132,24 +141,26 @@ export default function TradingPlatform({firebase}) {
         };
     }, [selectedCoin]);
 
-    const fetchOrderByCoinAndCate = (coin, category) => {
+    const fetchOrderByCoinAndCate = async (coin, category) => {
         console.log('fetchOrderByCoinAndCate')
         if (!order.coin) {
             return;
         }
-        fetch(`http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.user.id}/${category}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Limit orders:', data)
-                setLimitOrder(data);
-            })
-            .catch(error => {
-                console.error('Failed to fetch limit orders:', error);
-            });
+
+        try {
+            const res = await axiosInstance.get(
+                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
+            );
+            setLimitOrder(res.data);
+
+        } catch (error) {
+            console.log(error);
+            showMessage('error', 'Error', 'Error fetching order history');
+        }
     };
 
     const getWalletBalance = () => {
-        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
+        fetch(`${apiGateway}/portfolio/asset/${user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Wallet balance:', data[0]);
@@ -170,7 +181,7 @@ export default function TradingPlatform({firebase}) {
         const currentDate = new Date().toISOString();
         console.log(currentDate);
         return {
-            userId: user.user.id,
+            userId: user.id,
             coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
             date: currentDate,
@@ -329,7 +340,7 @@ export default function TradingPlatform({firebase}) {
 
         if (order.category !== 'Stop Limit') {
             const ob = {
-                userId: user.user.id,
+                userId: user.id,
                 coin: order.coin.symbol.toUpperCase(),
                 quantity: order.quantity,
                 price: order.price,
@@ -347,15 +358,16 @@ export default function TradingPlatform({firebase}) {
                 return;
             }
 
-            fetch('http://localhost:8011/portfolio/asset/trade', {
+            fetch(`${apiGateway}/portfolio/asset/trade`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 },
                 body: JSON.stringify(ob)
             })
                 .then(response => response.json())
-                .then(data => {
+                .then(async data => {
                     console.log('gvgh', data);
                     if (order.type === 'Buy') {
                         setWalletBalance(data[0].balance);
@@ -363,10 +375,11 @@ export default function TradingPlatform({firebase}) {
                         setWalletBalance(data[1].balance);
                     }
 
-                    return fetch('http://localhost:8005/order', {
+                    return await fetch(`${apiGateway}/order`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                         },
                         body: JSON.stringify(placeOrder())
                     });
@@ -388,10 +401,11 @@ export default function TradingPlatform({firebase}) {
                     console.error('Failed to save order:', error);
                 });
         } else {
-            fetch('http://localhost:8005/order', {
+            fetch(`${apiGateway}/order`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 },
                 body: JSON.stringify(placeOrder())
             })
@@ -479,8 +493,12 @@ export default function TradingPlatform({firebase}) {
 
 
     const confirm = (orderId) => {
-        fetch(`http://localhost:8005/order/deleteOrder/${orderId}`, {
+        fetch(`${apiGateway}/order/deleteOrder/${orderId}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+            },
         })
             .then(response => {
                 if (response.ok) {

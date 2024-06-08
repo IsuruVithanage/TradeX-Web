@@ -13,9 +13,7 @@ const Watchlist = () => {
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setIsLoading(true);
-
+    const fetchData =() => {
         axios
             .get(
                 `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
@@ -37,6 +35,13 @@ const Watchlist = () => {
                 console.log(error);
                 setIsLoading(false);
             });
+    };
+
+    useEffect(() => {
+        fetchData();
+        const interval = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+        return () => clearInterval(interval); // Clear interval on component unmount
+  
     }, []);
 
 
@@ -94,8 +99,9 @@ const Watchlist = () => {
             </div>
 
             <div className="watchlist-table-container">
-                <Input type="search" placeholder="Search" style={{width: "300px"}}
+                <Input type="text" placeholder="Search" style={{width: "300px"}}
                        onChange={(e) => setSearch(e.target.value)}/>
+
                 <table className="watchlist-table">
                     <thead>
                     <tr>

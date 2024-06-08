@@ -20,7 +20,8 @@ export default function History() {
     const backendAPI = (selectedSection === "Trading") ? 
     "http://localhost:8005/order/getAllOrders" : 
     'http://localhost:8011/portfolio/history/';
-    const userId = 1;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user && user.id;
 
     
     const coinOptions = [...new Set(historyData.map(item => item.coin))].map(coin => ({
@@ -53,13 +54,9 @@ export default function History() {
 
 
         axios 
-        .get( backendAPI, { params: { 
-            userId: userId,
-            timezoneOffset: new Date().getTimezoneOffset()
-        }})
+        .get( backendAPI, { params: { userId: userId }})
 
         .then((res) => {
-            console.log(res.data);
             setHistoryData(res.data);
             setFilteredData(res.data);
             setIsLoading(false);
@@ -168,10 +165,10 @@ export default function History() {
                     restart={filteredData} 
                     emptyMessage={`No History Data`}
                     tableTop={
-                        <div 
-                            style={{textAlign: "center", color: "#21db9a", fontSize: "22px", fontWeight: "600", marginBottom: "10px"}}>
+                        <h2
+                            style={{textAlign: "center", color: "#21db9a", fontSize: "24px", marginBottom: "10px"}}>
                             {selectedSection} History
-                        </div>
+                        </h2>
                     }>
                         
                     <TableRow data={
@@ -194,7 +191,7 @@ export default function History() {
                                 selectedSection === "Transaction" ?
                                 [
                                     <Coin>{row.coin}</Coin>,
-                                    row.date,
+                                    new Date(parseFloat(row.date)).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short', hour12: true }),
                                     <span style={{color: senderColor, wordWrap: "break-word", textAlign: "center"}} >
                                         { row.sendingWallet }
                                     </span>,

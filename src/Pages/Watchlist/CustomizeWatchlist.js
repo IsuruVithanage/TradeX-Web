@@ -6,6 +6,7 @@ import "./CustomizeWatchlist.css";
 import Modal from "../../Components/Modal/Modal";
 import symbols from "../../Assets/Images/Coin Images.json";
 
+
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
   const [selectedCoins, setSelectedCoins] = useState([]);
@@ -13,6 +14,7 @@ const Watchlist1 = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isCoinSelected, setIsCoinSelected] = useState(false);
+  const [modalFilteredCoins, setModalFilteredCoins] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -22,7 +24,6 @@ const Watchlist1 = () => {
         `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
       )
       .then((res) => {
-        // console.log(res.data);
         if (Array.isArray(res.data)) {
           const data = res.data
             .map((coin) => {
@@ -31,6 +32,7 @@ const Watchlist1 = () => {
             })
             .sort((a, b) => b.quoteVolume - a.quoteVolume);
           setCoins(data);
+          setModalFilteredCoins(data); // Set filtered coins for modal initially
         } else {
           console.error("API response is not an array:", res.data);
         }
@@ -50,13 +52,43 @@ const Watchlist1 = () => {
       priceChange: selectedCoin.priceChange,
       marketcap: formatCurrency(selectedCoin.quoteVolume),
     };
-  
-    setSelectedCoins(coinDetails);
 
-    // setIsDeleteModalOpen(false);
+    // Combine the previously selected coins with the newly selected one
+    const updatedSelectedCoins = [...selectedCoins, coinDetails];
+
+    // Update the state with the new selected coins array
+    setSelectedCoins(updatedSelectedCoins);
+
+    // Remove the selected coin from the filtered coins state (modal view)
+    setModalFilteredCoins((prevCoins) =>
+      prevCoins.filter((coin) => coin.symbol !== selectedCoin.symbol)
+    );
+
+    // Set flag to indicate a coin is selected
     setIsCoinSelected(true);
-    console.log(coinDetails);
+
+    // Log all selected coins
+    console.log(updatedSelectedCoins);
   };
+
+  const handleRemoveCoin = (symbol) => {
+    // Find the index of the coin to remove
+    const index = selectedCoins.findIndex((coin) => coin.symbol === symbol);
+    if (index !== -1) {
+      // Remove the coin from the selectedCoins array
+      const updatedSelectedCoins = [...selectedCoins];
+      updatedSelectedCoins.splice(index, 1);
+      setSelectedCoins(updatedSelectedCoins);
+
+      // Find the coin in the coins array and add it back to the modalFilteredCoins array
+      const coinToAddBack = coins.find((coin) => coin.symbol === symbol);
+      if (coinToAddBack) {
+        setModalFilteredCoins((prevCoins) => [...prevCoins, coinToAddBack]);
+      }
+    }
+  };
+
+
 
   const formatCurrency = (amount) => {
     const amountString = parseFloat(amount).toLocaleString("en-US", {
@@ -142,7 +174,7 @@ const Watchlist1 = () => {
                 <h2>Select Coin</h2>
                 <div>
                   <Input
-                    type="search"
+                    type="text"
                     placeholder="Search"
                     style={{
                       width: "400px",
@@ -168,7 +200,7 @@ const Watchlist1 = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredCoins.map((coin) => (
+                    {modalFilteredCoins.map((coin) => (
                       <tr key={coin.id} onClick={() => handleRowClick(coin)}>
                         <td
                           style={{ marginLeft: "100px", marginBottom: "50px" }}
@@ -207,11 +239,11 @@ const Watchlist1 = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredCoins.map((coin) => {
+            {selectedCoins.map((coin) => {
               const price = formatCurrency(coin.lastPrice);
               const volume = formatCurrency(coin.quoteVolume);
               return (
-                <tr key={coin.id}>
+                <tr key={coin.symbol}>
                   <td style={{ width: "40px" }}>
                     <img
                       className="coin-image"
@@ -225,21 +257,21 @@ const Watchlist1 = () => {
                       <span className="coin-symbol">{coin.symbol}</span>
                     </div>
                   </td>
-                  <td>{price}</td>
+                  <td>{coin.price}</td>
                   <td
                     style={{
                       color:
-                        coin.priceChangePercent > 0
+                        coin.priceChange> 0
                           ? "#21DB9A"
-                          : coin.priceChangePercent < 0
+                          : coin.priceChange < 0
                           ? "#FF0000"
                           : "#FFFFFF",
                     }}
                   >
                     {" "}
-                    {coin.priceChangePercent} %
+                    {parseFloat(coin.priceChange).toFixed(2)} %
                   </td>
-                  <td>{volume}</td>
+                  <td>{coin.marketcap}</td>
                   <td>
                     <Input
                       type="button"
@@ -247,6 +279,7 @@ const Watchlist1 = () => {
                       outlined
                       red
                       style={{ width: "150px" }}
+                      onClick={() => handleRemoveCoin(coin.symbol)}
                     />
                   </td>
                 </tr>

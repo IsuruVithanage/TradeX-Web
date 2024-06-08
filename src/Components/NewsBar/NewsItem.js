@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 const NewsItem = (props) => {
-  const { newsId, url, title, description, image, isFavorite, isLiked, isDisliked, userId } = props;
+  const { newsId, url, title, description, image, isFavorite, isLiked, isDisliked, userId, publishedAt } = props;
   const [isHeartFilled, setIsHeartFilled] = useState(isFavorite || false);
   const [isLike, setIsLike ] = useState(isLiked || false);
   const [isDislike, setIsDislike ] = useState(isDisliked || false);  
@@ -109,6 +109,9 @@ const NewsItem = (props) => {
         </div>
 
         <div className='footer-bar'>
+          <div>
+            {new Date(publishedAt).toLocaleDateString('en-GB')}
+          </div>
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
               {likeCount} {isLike ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
