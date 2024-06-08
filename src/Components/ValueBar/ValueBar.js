@@ -3,16 +3,12 @@ import './ValueBar.css';
 
 export default function ValueBar(props) {
     const formatCurrency = (amount) => {
-        return '$ ' + Number(amount).toLocaleString('en-US', {
+        return amount !== null ?
+         ('$ ' + amount.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
-        });
+        })) : ' ';
     }
-
-    // const formatCurrency = (amount) => {
-    //     const amountString = amount.toLocaleString('en-US', { maximumFractionDigits: 20 });
-    //     return '$ ' + amountString;
-    // };
 
     const usd = formatCurrency(props.usdBalance);
     const value = formatCurrency(props.portfolioValue);

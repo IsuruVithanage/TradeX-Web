@@ -1,79 +1,69 @@
-import React from 'react';
-import './Input.css';
-import { IoCalendarOutline } from "react-icons/io5";
-import { GrClose } from "react-icons/gr";
-import { DatePicker } from 'antd';
-import Dropdown from './Dropdown/Dropdown';
-import NumberInput from './NumberInput/NumberInput';
-import TabSwitch from './TabSwitch/TabSwitch';
-import { ButtonComponent, FABComponent, SwitchComponent } from './MUIComponents/MUIComponents';
+import React, {lazy, Suspense} from "react";
+import "./Input.css";
 
-export default function SidePanelInput(props) {
-  return (
-    <div className='input-container'>
-        { props.label && <p className='label-name'>{props.label}</p> }
-        {
-           (() => {
-              switch (props.type) {
-                case 'number':
-                  return <NumberInput {...props} />;
-                case 'date':
-                  return <DateInput {...props} />;
-                case 'dropdown':
-                  return <Dropdown {...props} />;
-                case 'switch':
-                  return <TabSwitch {...props} />;
-                case 'toggle':
-                  return <SwitchComponent {...props} />;
-                case 'fab':
-                  return <FABComponent {...props} />;
-                case 'button':
-                  return <ButtonComponent {...props} />;
-                default:
-                  return <InputField {...props} />;
-              }
-            })()
+const Dropdown = lazy(() => import("./Dropdown/Dropdown"));
+const NumberInput = lazy(() => import("./NumberInput/NumberInput"));
+const Date = lazy(() => import("./Date/Date"));
+const TabSwitch = lazy(() => import("./TabSwitch/TabSwitch"));
+const Button = lazy(() => import("./Button/Button"));
+const Toggle = lazy(() => import("./Toggle/Toggle"));
+
+export default function Input(props) {
+    const renderInputType = () => {
+        switch (props.type) {
+            case "number":
+                return <NumberInput {...props} />;
+            case "date":
+                return <Date {...props} />;
+            case "dropdown":
+                return <Dropdown {...props} />;
+            case "switch":
+                return <TabSwitch {...props} />;
+            case "toggle":
+                return <Toggle {...props} />;
+            case "button":
+                return <Button {...props} />;
+            default:
+                return <InputField {...props} />;
         }
-    </div>
-  );
+    };
+
+    return (
+        <div className="input-container">
+            {props.label && <p className="label-name">{props.label}</p>}
+            <Suspense fallback={<div style={{backgroundColor: "#3C3C3C", height: "35px"}}/>}>
+                {renderInputType()}
+            </Suspense>
+        </div>
+    );
 }
 
 function InputField(props) {
-  return (
-      <input  
-        className={`input-field ${props.className}`} 
-        type={props.type}
-        value={props.value}
-        id={props.id}
-        name={props.name}
-        placeholder={props.placeholder}
-        style={props.style}
-        onBlur={props.onBlur}
-        onChange={props.onChange}
-        onClick={props.onClick}
-      />
-  );
-}
+    const {name, register, errors} = props;
 
-function DateInput(props) {
-  return (
-    <DatePicker
-      style={{
-          backgroundColor: '#3C3C3C',
-          border: 'none',
-          height: '40px',
-          width: '100%',
-      }}
-      
-      clearIcon={<span className="calendar-icon" > <GrClose/></span>}
-      suffixIcon={<span className="calendar-icon" > <IoCalendarOutline/></span>}
-      format="DD-MM-YY"
-      placement="topRight"
-      id={props.id}
-      name={props.name}
-      placeholder={props.placeholder ? props.placeholder : ""}
-      onBlur={props.onBlur}
-      onChange={props.onChange}
-  />
-  );
+    const handleChange = (e) => {
+        props.onChange(e);
+    };
+
+    return (
+        <div>
+            <input
+                {...(!register ? {} : register(name))}
+                className={`input-field ${props.className || ''}`}
+                type={props.type}
+                value={props.value}
+                defaultValue={props.defaultValue}
+                id={props.id}
+                name={props.name}
+                placeholder={props.placeholder}
+                style={props.style}
+                onBlur={props.onBlur}
+                onChange={props.onChange ? handleChange : null}
+                onClick={props.onClick}
+                autoComplete="off"
+            />
+            
+            <p style={{color: 'red'}}>{!register ? '' : (errors[name]?.message ? errors[name]?.message : '')}</p>
+        </div>
+    );
 }

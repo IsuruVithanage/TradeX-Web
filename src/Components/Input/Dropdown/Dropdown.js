@@ -1,15 +1,18 @@
+import { borderBottom, borderBottomColor, borderTop, padding } from '@mui/system';
 import Select from 'react-select';
 
 export default function Dropdown (props) {
 
     const customStyles = {
-        control: (provided) => ({
+        control: (provided, state) => ({
             ...provided,
             border: 'none',
             boxShadow: 'none',
             borderRadius: '6px',
+            opacity: state.isDisabled ? '0.6' : '1',
             backgroundColor: '#3C3C3C',
             minHeight: '30px',
+            cursor: 'pointer',
         }),
 
         singleValue: (provided) => ({
@@ -22,15 +25,15 @@ export default function Dropdown (props) {
 
         menu: (provided) => ({
             ...provided,
-            backgroundColor: '#1e1e1f',
+            backgroundColor: '#151516',
             borderRadius: '10px',
         }),
 
         menuList: (provided) => ({
             ...provided,
-            maxHeight: '145px',
-            border: '3px solid #3C3C3C',
-            borderRadius: '10px',
+            maxHeight: '232px',
+            border: '4px solid #3C3C3C',
+            borderRadius: '13px',
             '::-webkit-scrollbar' : {
                 width: '2px'
               },
@@ -51,24 +54,25 @@ export default function Dropdown (props) {
             fontFamily: 'Inter, sans-serif',
             fontWeight: '500',
             fontSize: '16px',
-            borderRadius: '8px',
-            backgroundColor: state.isSelected ? '#1e1e1f' : null,
-            color: state.isSelected ? '#21DB9A' : '#9E9E9E',
+            borderTop: '1px solid #3c3c3c',
+            backgroundColor: '#151516',
+            color: state.isSelected ? '#21DB9A' : '#ababab',
             ':hover': {
-                backgroundColor: '#1e1e1f',
+                backgroundColor: '#151516',
                 color: '#ffffff',
             },
         }),
 
         indicatorSeparator: (provided) => ({
             ...provided,
-            backgroundColor: '#3c3c3c',
+            backgroundColor: '#282828',
         }),
 
         dropdownIndicator: (provided) => ({
             ...provided,
             color: '#21db9a',
             cursor: 'pointer',
+            paddingLeft: '4px',
             ':hover': {
                 color: '#9e9e9e',
             },
@@ -78,6 +82,7 @@ export default function Dropdown (props) {
             ...provided,
             color: '#21db9a',
             cursor: 'pointer',
+            padding: '8px 4px',
             ':hover': {
                 color: '#9e9e9e',
             },
@@ -92,14 +97,16 @@ export default function Dropdown (props) {
     const handleChange = (selectedValue) => {
         props.onChange(selectedValue ? selectedValue.value : undefined);
     };
-
+    
 
     return (
         <Select
             styles={customStyles}
             isClearable={true} 
+            isSearchable={props.searchable === undefined ? true : props.searchable}
+            isDisabled={props.disabled}
             options={props.options} 
-            defaultValue={props.defaultValue && props.options.filter(opt => opt.label === props.defaultValue)}
+            value={(props.value === null ) ? null : props.value && props.options.find(opt => opt.value === props.value)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}
             id={props.id}

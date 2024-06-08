@@ -3,40 +3,98 @@ body{
     
 }
 .ques{
-    width: 850px;
-height: 250px;
+width: 80%;
+height: auto;
 flex-shrink: 0;
 margin-top: 20px;
 border-radius: 15px;
 background: #151517;
-
+padding:0% 0% 3% 2%;
 box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
 }
+.quill-editor-my-custom-class {
+    /* Add styles specific to the text area */
+    height: 8rem;
+    width: 120%;
+  }
+.text-editor{
+    width: 80%;
+    
+    color: #151517;
+}
+.text-editor p{
+    height: 5rem;
+}
+.write-title{
+    padding-left: 2%;
+    color: #21DB9A;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+.add-answer .button{
+    margin-left: 32.5rem;
+    margin-top: 1.5rem;
+}
 h3{
     color: aliceblue;
-    padding-left: 2%;
+    padding-left: 0%;
     padding-top: 2%;
 }
 h5{
     color: #21DB9A;
-    padding-left: 2%;
-    ;
+    
+    
+}
+.sub-title{
+    font-size: 13px;
+    margin-top: 0.6rem;
+}
+.answer-title{
+    margin-left: 8rem;
+
+    margin-top: 2.5rem;
+    font-size: 21px;
+
 }
 p{
     color: aliceblue;
-    padding-left: 2%;
+   
 
 }
-.like-button{
-    color: #74817C;
-    padding-left: 2%;
+ .like-button{
+    color: aliceblue;
     padding-top: 4%;
+    height: 3rem !important;
+    width: 3rem !important;
 }
-.dislike-button{
-    display: inline;
-    color: #74817C;
-    padding-left: 15px;
+ .dislike-button{
+    
+    color: white;
+    padding-top: 4%;
+    
+    height: 3rem !important;
+    width: 3rem !important;
+}
+.favourite-icon{
+    color: white;
+    padding-top: 4%;
+    
+    height: 3rem !important;
+    width: 3rem !important;
+}
+.add-answer{
+    width: 68%;
+    height: auto;
+    flex-shrink: 0;
+    margin-top: 1rem;
+    border-radius: 15px;
+    background: #151517;
+    padding:0% 0% 2% 2%;
+    box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    margin-left: 8rem;
+
 }
 .count{
     display: flex;
@@ -50,13 +108,17 @@ h2{
     color: aliceblue;
 }
 .answer{
-    width: 850px;
-    height: 250px;
+    width: 70%;
+    height: auto;
     flex-shrink: 0;
-    margin-top: 20px;
+    margin-top: 1rem;
     border-radius: 15px;
     background: #151517;
-    
+    padding:1% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
+    margin-left: 8rem;
 
 }
+
+ 
+  

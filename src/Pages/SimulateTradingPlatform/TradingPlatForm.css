@@ -6,6 +6,7 @@
     margin-bottom: 1rem;
 
 }
+
 .input-field-container{
     margin: 1.4375em 0.6rem 1.4375em 0.5rem;
     width: 18.1875em;
@@ -13,15 +14,46 @@
 
 .tradeHeader{
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     font-size: 20px;
-}
-
-.side-panel {
-    padding: 22px;
 }
 
 .trade-btn-container{
     width: 94%;
     margin: 0 1rem 0 0.5rem;
+}
+
+.order-error{
+    color: red;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    opacity: 15;
+    transition: opacity 0.8s ease;
+}
+
+.order-noerror{
+    color: #0E0E0F;
+    opacity: 0;
+}
+
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popover .ant-popover-inner {
+    background-color: #151516;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-title {
+    color: #ffffff;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
+    margin-top: 4px;
+    color: #ffffff;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-btn-primary {
+    color: #fff;
+    background: #21db9a;
 }

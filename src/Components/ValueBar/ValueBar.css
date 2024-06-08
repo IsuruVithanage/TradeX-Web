@@ -18,7 +18,7 @@
     background-color: #0E0E0F;
     padding: 0 1.5vw;
     border-radius: 15px;
-    min-width: 18%;
+    min-width: 10vw;
     width: -moz-fit-content;
     width: fit-content;
 }
@@ -27,12 +27,14 @@
     margin-right: auto;
     text-align: left;
     box-shadow: 2px 2px 8px #21DB9A20;
+    padding-right: 3vw;
 }
 
 .value-card{
     margin-left: auto;
     text-align: right;
     box-shadow: 2px 2px 8px #FFFFFF20;
+    padding-left: 3vw;
 }
 
 .value-card-amount{
@@ -40,6 +42,7 @@
     margin: 1vh 0;
     font-size: 2rem;
     font-weight: 500;
+    height: 2rem;
     color: #ffffff;
 }
 

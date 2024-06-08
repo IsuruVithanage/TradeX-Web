@@ -7,8 +7,6 @@ export default function BarChart(props) {
 
   useEffect(() => {
     let cumulativePercentage = 0;
-    
-    props.bars.sort((a, b) => b.percentage - a.percentage);
 
     props.bars.forEach((bar, index) => {
         cumulativePercentage += bar.percentage;
@@ -48,6 +46,7 @@ export default function BarChart(props) {
       </div>
       
       <div className='bar-chart-labels-list'>
+        { props.bars.length === 0 && <span className="empty-message">No Assets to show</span> }
         <table style={{ margin: '0 auto' }}>
           <tbody>
             {(bars) && bars.map((bar) => (
@@ -55,7 +54,8 @@ export default function BarChart(props) {
                   <td className='bar-chart-label'><FaCircle style={{color: bar.color}} size={15}></FaCircle></td>
                   <td className='bar-chart-label'>{bar.coinName}</td>
                   <td className='bar-chart-label'>
-                    {(Number(bar.percentage) % 1 === 0) ? Number(bar.percentage) : Number(bar.percentage).toFixed(2)}%
+                    { Number(bar.percentage).toFixed(4)}%
+                    {/* { Math.max(Math.round(bar.percentage * 1000) / 1000, 0.001) }% */}
                   </td>
                 </tr>
             ))}

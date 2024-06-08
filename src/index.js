@@ -1,147 +1,26 @@
 import './index.css';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import reportWebVitals from './reportWebVitals';
-import Watchlist from './Pages/Watchlist/Watchlist';
-import CustomizeWatchlist from './Pages/Watchlist/CustomizeWatchlist';
-import Portfolio from './Pages/Portfolio/Portfolio';
-import TradingHistory from './Pages/Portfolio/History/TradingHistory';
-import PortfolioWallet from './Pages/Portfolio/PortfolioWallet/PortfolioWallet';
-import Simulation from './Pages/SimulateTradingPlatform/TradingPlatform';
-import Forum from './Pages/Forum/Forum';
-import App from './App';
-import BasicPage from './Components/BasicPage/BasicPage';
-import Alert from './Pages/Alert/Alert';
-import News from './Pages/News/News';
-import Favourite from './Pages/News/Favourite';
-import Welcome from './Pages/ExternalWallet/Welcome/Welcome';
-import LoginPage1 from './Pages/ExternalWallet/LoginPage-1/LoginPage1';
-import AskQuestion from './Pages/Forum/AskQuestion';
-import ChangePassword from './Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
-import SetPassword from './Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
-import ConfirmSecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
-import DashBoard from './Pages/ExternalWallet/DashBoard/DashBoard';
-import RecoverWallet from './Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
-import SecretPhrase from './Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
+import Loading from './Components/Loading/Loading';
+import {configureStore} from "@reduxjs/toolkit";
+import {Provider} from "react-redux";
+import Firebase from './Pages/Alert/firebase';
+import userReducer from "./Features/User";
+import './Pages/Summary/globals'
 
-
-
-
-
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/watchlist",
-    element: <Watchlist />,
-  },
-  {
-    path: "/watchlist/customize",
-    element:<CustomizeWatchlist/>
-  },
-  {
-    path: "/portfolio",
-    element: <Portfolio />,
-  },
-  {
-    path: "/AskQuestion",
-    element: <AskQuestion />,
-  },
-  {
-    path: "/portfolio/history",
-    element: <TradingHistory />,
-  },
-  {
-    path: "/portfolio/wallet",
-    element: <PortfolioWallet />,
-  },
-  {
-    path: "/forum",
-    element: <Forum />,
-  },
-  {
-    path: "/summary",
-    element: <BasicPage/>,
-  },
-  {
-    path: "/settings",
-    element: <BasicPage/>,
-  },
-  {
-    path: "/simulate",
-    element: <Simulation/>,
-  },
-  {
-    path: "/education",
-    element: <BasicPage/>,
-  },
-  {
-    path: "/news",
-    element: <News/>,
-  },
-  {
-    path: "/news/favourite",
-    element: <Favourite/>,
-  },
-  {
-    path: "/alert",
-    element: <Alert/>,
-  },
-  {
-    path: "/suggestion",
-    element: <BasicPage/>,
-  },
-  {
-    path: "/externalwallet",
-    element: <Welcome/>,
-  },
-  {
-    path: "/wallet/login",
-    element: <LoginPage1/>,
-  },
-  {
-    path: "/wallet/login/changepassword",
-    element: <ChangePassword/>,
-  },
-  {
-    path: "/wallet/login/setpassword",
-    element: <SetPassword/>,
-  },
-  {
-    path: "/wallet/login/setpassword/secretphrase",
-    element: <SecretPhrase/>,
-  },
-  {
-    path: "/wallet/login/setpassword/secretphrase/confirmsecretphrase",
-    element: <ConfirmSecretPhrase/>,
-  },
-  {
-    path: "/wallet/dashboard",
-    element: <DashBoard/>,
-  },
- 
-  {
-    path: "/wallet/login/changepassword/recoverwallet",
-    element: <RecoverWallet/>,
-  },
-
-
-]);
-
+const Router = lazy(() => import("./Routes/Router"));
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  // <React.StrictMode>
-  //   <RouterProvider router={router}/>
-  // </React.StrictMode>
-  <RouterProvider router={router}/>
-);
+const store = configureStore({ reducer: { user: userReducer }});
+const firebase = new Firebase();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+root.render(
+    // <React.StrictMode>
+    //   <RouterProvider router={router}/>
+    // </React.StrictMode>
+    <Suspense fallback={<Loading/>}>
+        <Provider store={store}>
+            <Router firebase={firebase}/>
+        </Provider>
+    </Suspense>
+);

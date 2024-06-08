@@ -1,0 +1,26 @@
+/* :where(.css-dev-only-do-not-override-1b0bdye).ant-popover .ant-popover-inner {
+    background-color: #151517;
+    background-clip: padding-box;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    padding: 12px;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-title {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-btn-primary {
+    color: #fff;
+    background: #21DB9A;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-popover {
+    --antd-arrow-background-color: rgba(255, 255, 255, 0.1);
+} */

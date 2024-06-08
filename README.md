@@ -1,3 +1,11 @@
+## Developers
+
+<a href="https://github.com/IsuruVithanage/TradeX-Web/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=IsuruVithanage/TradeX-Web" />
+</a>
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +76,252 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+```
+TradeX-Web
+├─ .env
+├─ .gitignore
+├─ .idea
+│  ├─ .gitignore
+│  ├─ misc.xml
+│  ├─ modules.xml
+│  ├─ TradeX-Web.iml
+│  └─ vcs.xml
+├─ .vscode
+│  └─ settings.json
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ index.html
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ README.md
+└─ src
+   ├─ App.css
+   ├─ App.js
+   ├─ App.test.js
+   ├─ Assets
+   │  └─ Images
+   │     ├─ Coin Images.json
+   │     ├─ coverx.png
+   │     ├─ crypto.png
+   │     ├─ image.jpg
+   │     ├─ trade.png
+   │     └─ wallet.png
+   ├─ Components
+   │  ├─ Admin
+   │  │  ├─ AdminCard.css
+   │  │  └─ AdminCard.js
+   │  ├─ BasicPage
+   │  │  ├─ BasicPage.css
+   │  │  ├─ BasicPage.js
+   │  │  ├─ SideNavBar
+   │  │  │  ├─ SideNavBar.css
+   │  │  │  └─ SideNavBar.js
+   │  │  └─ TopNavBar
+   │  │     ├─ TopNavBar.css
+   │  │     └─ TopNavBar.js
+   │  ├─ Charts
+   │  │  ├─ BarChart
+   │  │  │  ├─ BarChart.css
+   │  │  │  └─ BarChart.js
+   │  │  └─ LineChart
+   │  │     ├─ LineChar.js
+   │  │     └─ LineChart.css
+   │  ├─ EducationResources
+   │  │  ├─ EducationItems.css
+   │  │  └─ EducationItems.js
+   │  ├─ Input
+   │  │  ├─ Button
+   │  │  │  └─ Button.js
+   │  │  ├─ Date
+   │  │  │  └─ Date.js
+   │  │  ├─ Dropdown
+   │  │  │  └─ Dropdown.js
+   │  │  ├─ FAB
+   │  │  │  └─ FAB.js
+   │  │  ├─ Input.css
+   │  │  ├─ Input.js
+   │  │  ├─ NumberInput
+   │  │  │  ├─ NumberInput.css
+   │  │  │  └─ NumberInput.js
+   │  │  ├─ SliderInput
+   │  │  │  ├─ SliderInput.css
+   │  │  │  └─ SliderInput.js
+   │  │  ├─ TabSwitch
+   │  │  │  ├─ TabSwitch.css
+   │  │  │  └─ TabSwitch.js
+   │  │  └─ Toggle
+   │  │     └─ Toggle.js
+   │  ├─ Loading
+   │  │  ├─ Loading.css
+   │  │  └─ Loading.js
+   │  ├─ Message
+   │  │  ├─ Message.css
+   │  │  └─ Message.js
+   │  ├─ Modal
+   │  │  ├─ Modal.css
+   │  │  └─ Modal.js
+   │  ├─ NewsBar
+   │  │  ├─ NewsBoard.js
+   │  │  ├─ NewsItem.css
+   │  │  └─ NewsItem.js
+   │  ├─ Questionbar
+   │  │  ├─ Detailed.css
+   │  │  ├─ Detailed.js
+   │  │  ├─ Questionbar.css
+   │  │  └─ Questionbar.js
+   │  ├─ QuizComponents
+   │  │  ├─ QuestionBar.css
+   │  │  ├─ QuestionBar.js
+   │  │  ├─ QuizTimer.css
+   │  │  └─ QuizTImer.js
+   │  ├─ Sidebar
+   │  │  ├─ sidebar.css
+   │  │  ├─ sidebar.js
+   │  │  └─ Sidebardata.js
+   │  ├─ SidePanel
+   │  │  ├─ SidePanelWithContainer.css
+   │  │  └─ SidePanelWithContainer.js
+   │  ├─ SimulateChart
+   │  │  ├─ ButtonSet.css
+   │  │  ├─ ButtonSet.js
+   │  │  ├─ CoinBar.css
+   │  │  ├─ CoinBar.js
+   │  │  ├─ DualButtons.css
+   │  │  ├─ DualButtons.js
+   │  │  ├─ TradingChart.css
+   │  │  └─ TradingChart.js
+   │  ├─ Table
+   │  │  ├─ Table.css
+   │  │  └─ Table.js
+   │  ├─ ValueBar
+   │  │  ├─ ValueBar.css
+   │  │  └─ ValueBar.js
+   │  └─ WalletComponents
+   │     ├─ BlackBar.css
+   │     ├─ BlackBar.js
+   │     ├─ Head.css
+   │     └─ Head.js
+   ├─ Features
+   │  └─ User.js
+   ├─ index.css
+   ├─ index.js
+   ├─ Pages
+   │  ├─ Alert
+   │  │  ├─ Alert.css
+   │  │  ├─ Alert.js
+   │  │  └─ alertOperations.js
+   │  ├─ Education
+   │  │  ├─ Education.css
+   │  │  ├─ Education.js
+   │  │  └─ Favorites.js
+   │  ├─ ExternalWallet
+   │  │  ├─ DashBoard
+   │  │  │  ├─ DashBoard.css
+   │  │  │  └─ DashBoard.js
+   │  │  ├─ History
+   │  │  │  ├─ History.js
+   │  │  │  └─ History.json
+   │  │  ├─ LoginPage-1
+   │  │  │  ├─ ChangePassword
+   │  │  │  │  ├─ ChangePassword.css
+   │  │  │  │  ├─ ChangePassword.js
+   │  │  │  │  └─ RecoverWallet
+   │  │  │  │     ├─ RecoverWallet.css
+   │  │  │  │     └─ RecoverWallet.js
+   │  │  │  ├─ HaveAccount
+   │  │  │  │  ├─ HaveAccount.css
+   │  │  │  │  └─ HaveAccount.js
+   │  │  │  ├─ LoginPage1.css
+   │  │  │  ├─ LoginPage1.js
+   │  │  │  └─ SetPassword
+   │  │  │     ├─ SecretPhrase
+   │  │  │     │  ├─ ConfirmSecretPhrase
+   │  │  │     │  │  ├─ ConfirmSecretPhrase.css
+   │  │  │     │  │  └─ ConfirmSecretPhrase.js
+   │  │  │     │  ├─ SecretPhrase.css
+   │  │  │     │  └─ SecretPhrase.js
+   │  │  │     ├─ SetPassword.css
+   │  │  │     └─ SetPassword.js
+   │  │  └─ Welcome
+   │  │     ├─ Welcome.css
+   │  │     └─ Welcome.js
+   │  ├─ Forum
+   │  │  ├─ askQuestion.css
+   │  │  ├─ AskQuestion.js
+   │  │  ├─ Datatable.js
+   │  │  ├─ forum.css
+   │  │  ├─ Forum.js
+   │  │  ├─ MyAnswers.js
+   │  │  ├─ MyProblems.js
+   │  │  ├─ NewPage.js
+   │  │  ├─ Questionrecords.json
+   │  │  └─ Questionset.js
+   │  ├─ Login&Signin
+   │  │  ├─ Login.css
+   │  │  ├─ Login.js
+   │  │  ├─ Signin.css
+   │  │  └─ Signin.js
+   │  ├─ News
+   │  │  ├─ Favourite.js
+   │  │  ├─ News.css
+   │  │  └─ News.js
+   │  ├─ Portfolio
+   │  │  ├─ History
+   │  │  │  ├─ TradingHistory.js
+   │  │  │  └─ TradingHistory.json
+   │  │  ├─ Portfolio.js
+   │  │  └─ PortfolioWallet
+   │  │     ├─ PortfolioWallet.css
+   │  │     └─ PortfolioWallet.js
+   │  ├─ Quiz
+   │  │  ├─ Quiz.css
+   │  │  └─ Quiz.js
+   │  ├─ SimulateTradingPlatform
+   │  │  ├─ assets.json
+   │  │  ├─ TradingPlatForm.css
+   │  │  └─ TradingPlatform.js
+   │  ├─ Suggestions
+   │  │  ├─ portfolio-data.json
+   │  │  └─ Suggestions.js
+   │  ├─ Summary
+   │  │  ├─ dailysummary.css
+   │  │  ├─ Dailysummary.js
+   │  │  ├─ Monthlysummary.css
+   │  │  └─ Monthlysummary.js
+   │  ├─ User
+   │  │  ├─ UserProfileTab.css
+   │  │  ├─ UserProfileTab.js
+   │  │  ├─ VerifyUser.css
+   │  │  └─ VerifyUser.js
+   │  └─ Watchlist
+   │     ├─ AdDashboard.css
+   │     ├─ AdDashboard.js
+   │     ├─ Admin.css
+   │     ├─ Admin.js
+   │     ├─ CoinPage.css
+   │     ├─ CoinPage.js
+   │     ├─ CustomizeWatchlist.css
+   │     ├─ CustomizeWatchlist.js
+   │     ├─ Users.css
+   │     ├─ Users.js
+   │     ├─ ViewAll.css
+   │     ├─ ViewAll.js
+   │     ├─ Watchlist.css
+   │     └─ Watchlist.js
+   ├─ reportWebVitals.js
+   ├─ Routes
+   │  ├─ New.js
+   │  ├─ Router.js
+   │  └─ Sub-Routes
+   │     ├─ EducationRoutes.js
+   │     ├─ ForumRoutes.js
+   │     ├─ NewsRoutes.js
+   │     ├─ PortfolioRoutes.js
+   │     ├─ SummaryRoutes.js
+   │     ├─ WalletRoutes.js
+   │     └─ WatchlistRoutes.js
+   └─ setupTests.js
+
+```
