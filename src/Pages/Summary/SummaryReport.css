@@ -1,0 +1,32 @@
+.summary-report {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #dff9fb;
+    color: black;
+  }
+  
+  .summary-report h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .summary-report h3 {
+    color: #555;
+    margin-top: 30px;
+  }
+  
+  .summary-report table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .summary-report th, .summary-report td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .summary-report th {
+    background-color: black;
+  }
