@@ -1,0 +1,22 @@
+{
+    "topGainers": [
+      { "symbol": "BTC", "price": 50000 },
+      { "symbol": "ETH", "price": 4000 },
+      { "symbol": "BNB", "price": 500 }
+    ],
+    "topLosers": [
+      { "symbol": "DOGE", "price": 0.1 },
+      { "symbol": "XRP", "price": 0.5 },
+      { "symbol": "ADA", "price": 1.2 }
+    ],
+    "customCoins": [
+      { "name": "Bitcoin", "priceChange": 5.2 },
+      { "name": "Ethereum", "priceChange": 3.1 },
+      { "name": "Solana", "priceChange": 7.8 }
+    ],
+    "trendingCoin": {
+      "name": "Bitcoin",
+      "time": ["09:00", "10:00", "11:00", "12:00"],
+      "price": [49000, 49500, 50200, 50500]
+    }
+  }

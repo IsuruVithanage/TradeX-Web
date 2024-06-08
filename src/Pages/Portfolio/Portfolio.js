@@ -16,43 +16,39 @@ export default function Portfolio() {
     const [initialData, setInitialData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user && user.id;
+
+
 
     useEffect(() => {
         setIsLoading(true);
-
+        
         axios
-            .get(backendApiEndpoint, {
-                params: {
-                    userId,
-                    timezoneOffset: new Date().getTimezoneOffset()
-                }
-            })
+        .get( backendApiEndpoint, { params: { userId } })
+        
+        .then(res => {
+            setAssets(res.data.assets);
+            setPercentages(res.data.percentages);
+            setInitialData(res.data.historyData);
+            setPortfolioValue(res.data.portfolioValue);
+            setUsdBalance(res.data.usdBalance);
+            setIsLoading(false);
+        })
 
+        .catch(error => {
+            setIsLoading(false);
+            setPortfolioValue(0);
+            setUsdBalance(0);
+            console.log("error getting assets");
 
-            .then(res => {
-                setAssets(res.data.assets);
-                setPercentages(res.data.percentages);
-                setInitialData(res.data.historyData);
-                setPortfolioValue(res.data.portfolioValue);
-                setUsdBalance(res.data.usdBalance);
-                setIsLoading(false);
-            })
-
-            .catch(error => {
-                setIsLoading(false);
-                setPortfolioValue(0);
-                setUsdBalance(0);
-                console.log("error", error);
-
-                error.response ?
-                    showMessage(error.response.status, error.response.data.message) :
-                    showMessage('error', 'Database connection failed..!');
-            });
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Database connection failed..!') ;
+        });
 
     }, []);
+  
 
 
     return (

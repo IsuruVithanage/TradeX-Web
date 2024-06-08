@@ -1,4 +1,4 @@
-.Info {
+/* .Info {
     color: #ffffff;
     background-color: #0E0E0F;
     width: 1005px;
@@ -56,4 +56,9 @@
   .Stat p{
     color:#ffffff;
     margin-left: 70px;
+  } */
+  .coinDescription{
+    width: calc(94vw - 365px) !important;
+    padding: 20px;
+    text-align: justify;
   }
