@@ -9,7 +9,9 @@ import {PiUserFocus} from "react-icons/pi";
 import {LuLogOut} from "react-icons/lu";
 
 export default function TopNavBar(props) {
-    const userName = "Kamal Silva";
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
+    const userName = user ? user.username : 'Kamal Silva';
 
     const navigate = useNavigate();
 
@@ -41,6 +43,8 @@ export default function TopNavBar(props) {
     }, [currentLocation]);
 
     function navigateToHome() {
+        localStorage.removeItem('user');
+        localStorage.removeItem('access-token');
         navigate('/');
     }
 
@@ -78,8 +82,8 @@ export default function TopNavBar(props) {
                 </div>
             </div>
 
-            <div className={`profile-menu ${isProfileMenuVisible ? "active" : ""}`}>
-                <div className='profile-raw' style={{marginBottom:'1rem'}}>
+            <div className={`profile-menu ${isProfileMenuVisible ? "active" : ""}`} style={{height:user.isVerified === "No" ? "200px":"160px"}}>
+                <div className='profile-raw' style={{marginBottom: '1rem'}}>
                     <FaUserLarge size={22} fill='#21DB9A'/>
                     <span className='row-name'>{userName}</span>
                 </div>
@@ -87,12 +91,14 @@ export default function TopNavBar(props) {
                     <HiOutlineUserCircle size={28}/>
                     <span className='row-name'>Profile</span>
                 </div>
-                <div className='profile-raw' onClick={() => navigate('/verify')}>
-                    <PiUserFocus size={28} fill='#6D6D6D'/>
-                    <span className='row-name'>Verify User</span>
-                </div>
+                {user.isVerified === "No" &&
+                    <div className='profile-raw' onClick={() => navigate('/verify')}>
+                        <PiUserFocus size={28} fill='#6D6D6D'/>
+                        <span className='row-name'>Verify User</span>
+                    </div>
+                }
                 <div className='profile-raw'>
-                    <LuLogOut size={27} />
+                    <LuLogOut size={27}/>
                     <span className='row-name' onClick={navigateToHome}>Logout</span>
                 </div>
 
