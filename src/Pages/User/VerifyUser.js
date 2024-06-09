@@ -82,6 +82,25 @@ export default function VerifyUser() {
         }
     }
 
+    const updateUserVerifyStatus = async () => {
+        const ob = {
+            id: user.id,
+            status: "Pending",
+        }
+        try {
+            await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
+                body: JSON.stringify(ob)
+            });
+        } catch (error) {
+            console.error("Error allocating starting fund:", error);
+        }
+    }
+
     const videoConstraints = {
         width: '100%',
         height: 720,
@@ -235,8 +254,7 @@ export default function VerifyUser() {
             saveData().then(r => {
                 setIsSubmit(false);
                 showMessage('Success', 'Data saved successfully');
-                navigate('/watchList');
-
+                updateUserVerifyStatus().then(r => navigate('/watchList'));
             });
 
         }
