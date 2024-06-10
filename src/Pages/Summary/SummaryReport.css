@@ -1,19 +1,33 @@
 .summary-report {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background-color: #dff9fb;
+    background-color: white;
     color: black;
   }
   
-  .summary-report h2 {
+  /* .summary-report h2 {
     text-align: center;
     color: #333;
-  }
+  } */
+
+
   
   .summary-report h3 {
-    color: #555;
-    margin-top: 30px;
+    color: #273B4A;
+    text-align: center;
+    
+    margin-bottom: 15px;
   }
+  .summary-report h5{
+    color: #0E0E0F;
+  }
+  .summary-report h4{
+    color: #0E0E0F;
+    margin-top: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
   
   .summary-report table {
     width: 100%;
@@ -28,5 +42,22 @@
   }
   
   .summary-report th {
-    background-color: black;
+    background-color: white;
+    font-size: 12px;
+    color: #9E9E9E;
+  }
+
+  .summary-report td{
+    font-size: 11px;
+  }
+  .coin-image {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .coin-symbol {
+    font-weight: bold;
+    vertical-align: middle;
   }
