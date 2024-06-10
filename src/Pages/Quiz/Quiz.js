@@ -27,6 +27,8 @@ export default function Quiz() {
         { label: "Quiz", path: "/quiz" },
     ];
 
+
+
     function shuffleArray(array) {
         const shuffledArray = [...array];
         for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -44,7 +46,11 @@ export default function Quiz() {
             }
         });
         setScore(currentScore);
-        allocateStartingFund(currentScore);
+        allocateStartingFund(currentScore).then(r => {
+            console.log("userID",user.id);
+            updateUserState();
+
+        });
     }
 
     const loadQuestions = async () => {
@@ -69,6 +75,20 @@ export default function Quiz() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(ob)
+            });
+        } catch (error) {
+            console.error("Error allocating starting fund:", error);
+        }
+    }
+
+    const updateUserState = async () => {
+        try {
+            await fetch(`http://localhost:8004/user/updateUserHasTakenQuiz/${user.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
             });
         } catch (error) {
             console.error("Error allocating starting fund:", error);

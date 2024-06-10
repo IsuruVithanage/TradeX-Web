@@ -123,6 +123,22 @@
     transition: top 0.5s ease, opacity 0.5s ease;
 }
 
+.profile-menu-verify {
+    height: 160px;
+    width: 200px;
+    position: absolute;
+    top: -6%;
+    right: 0.6%;
+    background-color: #0E0E0F;
+    color: #9E9E9E;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0;
+    z-index: 1;
+    visibility: hidden;
+    transition: top 0.5s ease, opacity 0.5s ease;
+}
+
 .profile-raw {
     display: flex; /* Add this line to make it a flex container */
     align-items: center; /* Vertically center the content within the flex container */

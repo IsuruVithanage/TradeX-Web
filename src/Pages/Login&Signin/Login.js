@@ -50,7 +50,13 @@ function Login({firebase}) {
           localStorage.setItem("access-token", token);
           console.log("Login success");
           firebase.getToken();
-          navigate("/watchlist");
+
+          if (user.hasTakenQuiz) {
+              navigate("/watchlist");
+          }else {
+              navigate("/quiz");
+          }
+
         })
         .catch((err) => {
           console.error("Login error:", err);
