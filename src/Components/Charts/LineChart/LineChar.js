@@ -56,7 +56,7 @@ export default function LineChart(props) {
                 vertLine: {
                     style: 0,
                     width: 1.3,
-                    visible: (chartData && chartData.length > 0),
+                    visible: !(!chartData || chartData.length === 0),
                 },
                 horzLine: {
                     labelBackgroundColor: '#000000',
