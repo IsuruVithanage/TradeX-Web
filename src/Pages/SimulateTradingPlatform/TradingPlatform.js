@@ -18,23 +18,15 @@ export default function TradingPlatform({firebase}) {
     const userTemp = localStorage.getItem('user');
     const user = JSON.parse(userTemp);
 
+    const Tabs = [
+        { label: "Spot", path: "/simulate" },
+    ];
+
     useEffect(() => {
         const t=localStorage.getItem('user');
         console.log("t",JSON.parse(t))
         console.log(localStorage.getItem('user'));
     }, []);
-
-    /////////////////////////////////////////////////////////////////////
-    useEffect(() => {
-        firebase.onMessage(() => {
-            console.log('Message received:');
-            console.log('Message EKA AWAMA METHANA OONE DEYAK KARAPANNN');
-        });
-    }, [firebase]);
-
-    const Tabs = [
-        {label: "Spot", path: "/simulate"}
-    ];
 
     const [latestPrice, setLatestPrice] = useState(0);
     const [latestTime, setLatestTime] = useState(0);
@@ -149,7 +141,7 @@ export default function TradingPlatform({firebase}) {
 
         try {
             const res = await axiosInstance.get(
-                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
+                `/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
             );
             setLimitOrder(res.data);
 
