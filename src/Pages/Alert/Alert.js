@@ -57,7 +57,8 @@ export default function Alert({firebase}) {
                 });
         }
 
-        firebase.onMessage(() => {
+        firebase.onMessage((a) => {
+            console.log(a);
             getAlerts();
         });
 

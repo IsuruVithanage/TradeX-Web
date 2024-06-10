@@ -22,12 +22,7 @@ class Firebase {
                 this.registerServiceWorker();
                 this.getToken();
 
-                this.onMessage((payload) => {
-                    new Notification(payload.notification.title, {
-                        body: payload.notification.body,
-                        icon: payload.notification.icon,
-                    });
-                });
+                this.onMessage();
             }
         });  
     }
@@ -126,14 +121,19 @@ class Firebase {
 
 
     async onMessage(functionToExecute) {
-        onMessage(this.messaging, (payload) => {
-            new Notification(payload.notification.title, {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-                badge: 'https://raw.githubusercontent.com/IsuruVithanage/TradeX-Web/dev/src/Assets/Images/TradeX-mini-logo.png'
-            });
+        onMessage(this.messaging, ({notification, data}) => {
+            if(notification){
+                new Notification(notification.title, {
+                    body: notification.body,
+                    icon: notification.icon,
+                    badge: 'https://raw.githubusercontent.com/IsuruVithanage/TradeX-Web/dev/src/Assets/Images/TradeX-mini-logo.png'
+                });
+            }
+            if(data){
+                console.log(data);
+            }
 
-            functionToExecute(payload);
+            functionToExecute({notification, data});
         });
     }
 
