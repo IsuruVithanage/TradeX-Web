@@ -57,8 +57,8 @@ export default function Suggestions() {
 
     const loadOrderHistory = async () => {
         try {
-            const res = await axiosInstance.get(
-                `${apiGateway}/order/getOrderByCato/${type}`
+            const res = await axios.get(
+                `${process.env.REACT_APP_API_GATEWAY}/order/getOrderByCato/${type}`
             );
             setOrderHistory(res.data);
             setSelectedOrder(res.data[0]);
@@ -134,17 +134,14 @@ export default function Suggestions() {
         setError(false);
 
         try {
-            const res = await fetch(`${apiGateway}/suggestion/buyOrderSuggestion`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-                },
-                body: JSON.stringify(geminiData),
-            });
-            if (!res.ok) throw new Error('Network response was not ok');
-            const data = await res.json();
-            console.log(data)
+            const res = await axiosInstance.post('/suggestion/buyOrderSuggestion', geminiData);
+
+            if (res.status !== 200) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = res.data;
+            console.log(data);
             setSuggestion(data);
         } catch (error) {
             console.error('Error:', error);

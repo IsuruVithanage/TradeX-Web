@@ -82,7 +82,9 @@ export default function TopNavBar(props) {
                 </div>
             </div>
 
-            <div className={`profile-menu ${isProfileMenuVisible ? "active" : ""}`} style={{height:user.isVerified === "No" ? "200px":"160px"}}>
+            {/*style={{height:user.isVerified === "No" ? "200px":"160px"}*/}
+            <div
+                className={`profile-menu ${isProfileMenuVisible ? "active" : ""}`} >
                 <div className='profile-raw' style={{marginBottom: '1rem'}}>
                     <FaUserLarge size={22} fill='#21DB9A'/>
                     <span className='row-name'>{userName}</span>
@@ -91,12 +93,17 @@ export default function TopNavBar(props) {
                     <HiOutlineUserCircle size={28}/>
                     <span className='row-name'>Profile</span>
                 </div>
-                {user.isVerified === "No" &&
+                {/*{user.isVerified === "No" &&
                     <div className='profile-raw' onClick={() => navigate('/verify')}>
                         <PiUserFocus size={28} fill='#6D6D6D'/>
                         <span className='row-name'>Verify User</span>
                     </div>
-                }
+                }*/}
+
+                <div className='profile-raw' onClick={() => navigate('/verify')}>
+                    <PiUserFocus size={28} fill='#6D6D6D'/>
+                    <span className='row-name'>Verify User</span>
+                </div>
                 <div className='profile-raw'>
                     <LuLogOut size={27}/>
                     <span className='row-name' onClick={navigateToHome}>Logout</span>
