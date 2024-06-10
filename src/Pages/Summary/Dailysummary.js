@@ -5,8 +5,8 @@ import Input from "../../Components/Input/Input";
 import Switch from "@mui/material/Switch";
 import { Box } from "@mui/system";
 import Modal from "antd/es/modal/Modal";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+
 import { useRef } from "react";
 import symbols from "../../Assets/Images/Coin Images.json";
 import axios from "axios";
@@ -14,6 +14,7 @@ import SummaryReport from "./SummaryReport";
 import ReactDOM from "react-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import TrendingCoinChart from "./TrendingCoinChart";
 
 function Dailysummary() {
   // create the tabs
@@ -38,13 +39,12 @@ function Dailysummary() {
   const [showTradingHistory, setShowTradingHistory] = useState(false);
   const [showTradingSuggestions, setShowTradingSuggestions] = useState(false);
 
-  const [trendingPrices, setTrendingPrices] = useState([]);
   const [tradingHistory, setTradingHistory] = useState([]);
   const [tradingSuggestions, setTradingSuggestions] = useState([]);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-
+  const [selectedCoins, setSelectedCoins] = useState([]);
   // for customized coin
-  const [customizedCoins, setCustomizedCoins] = useState([]);
+  // const [customizedCoins, setCustomizedCoins] = useState([]);
 
   // coin table
   useEffect(() => {
@@ -82,12 +82,30 @@ function Dailysummary() {
       priceChange: selectedCoin.priceChange,
       marketcap: formatCurrency(selectedCoin.quoteVolume),
     };
-    // console.log(coinDetails);
-    // setIsCoinSelected(true);
 
     // for pdf use
-    setCustomizedCoins([...customizedCoins, coinDetails]);
-    setIsDeleteModalOpen(false);
+    //   setCustomizedCoins([...customizedCoins, coinDetails]);
+    // setIsDeleteModalOpen(false);
+  };
+
+  const handleCoinSelect = (coin) => {
+    const isCoinSelected = selectedCoins.some((c) => c.symbol === coin.symbol);
+
+    if (isCoinSelected) {
+      setSelectedCoins(selectedCoins.filter((c) => c.symbol !== coin.symbol));
+    } else if (selectedCoins.length < 5) {
+      setSelectedCoins([...selectedCoins, coin]);
+    } else {
+      alert("You can select up to 5 coins.");
+    }
+  };
+
+  const handleOkClick = () => {
+    if (selectedCoins.length > 0) {
+      setIsDeleteModalOpen(false);
+    } else {
+      alert("Please select at least one coin.");
+    }
   };
 
   const formatCurrency = (amount) => {
@@ -102,18 +120,6 @@ function Dailysummary() {
     symbols[coin.symbol]?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const fetchTrendingCoinData = async (symbol) => {
-    try {
-      const res = await axios.get(
-        `https://api.binance.com/api/v3/klines?symbol=${symbol}USDT&interval=1d&limit=30`
-      );
-      return res.data.map((candle) => parseFloat(candle[4]));
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  };
-
   const fetchTradingHistory = async () => {
     // Replace with your actual API call
     return [{ coin: "BTC", type: "Buy", price: 50000, date: "2024-01-01" }];
@@ -125,21 +131,13 @@ function Dailysummary() {
   };
 
   useEffect(() => {
-    if (showTrendingCoin && coins.length > 0) {
-      const trendingCoin = coins.reduce((prev, curr) =>
-        prev.quoteVolume > curr.quoteVolume ? prev : curr
-      );
-      fetchTrendingCoinData(trendingCoin.symbol).then((prices) =>
-        setTrendingPrices(prices)
-      );
-    }
     if (showTradingHistory)
       fetchTradingHistory().then((history) => setTradingHistory(history));
     if (showTradingSuggestions)
       fetchTradingSuggestions().then((suggestions) =>
         setTradingSuggestions(suggestions)
       );
-  }, [showTrendingCoin, coins, showTradingHistory, showTradingSuggestions]);
+  }, [showTradingHistory, showTradingSuggestions]);
 
   //generate pdf
 
@@ -155,35 +153,29 @@ function Dailysummary() {
         showTopGainers={showTopGainers}
         showTopLosses={showTopLosses}
         showTrendingCoin={showTrendingCoin}
-        customizedCoins={customizedCoins}
-        trendingPrices={trendingPrices}
+        selectedCoins={selectedCoins}
+        // customizedCoins={customizedCoins}
         tradingHistory={tradingHistory}
         tradingSuggestions={tradingSuggestions}
       />,
-      reportElement
+      reportElement,
+      async () => {
+        // Wait for a moment to ensure all charts are rendered
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        const canvas = await html2canvas(reportElement, { scale: 2 });
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // A4 size
+
+        const pdfBlob = pdf.output("blob");
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl);
+
+        document.body.removeChild(reportElement);
+      }
     );
-
-    const canvas = await html2canvas(reportElement);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF();
-    pdf.addImage(imgData, "PNG", 0, 0);
-    pdf.save("daily_summary.pdf");
-
-    document.body.removeChild(reportElement);
   };
-
-  <Modal open={isPreviewModalOpen} onClose={() => setIsPreviewModalOpen(false)}>
-    <SummaryReport
-      coins={coins}
-      showTopGainers={showTopGainers}
-      showTopLosses={showTopLosses}
-      showTrendingCoin={showTrendingCoin}
-      customizedCoins={customizedCoins}
-      trendingPrices={trendingPrices}
-      tradingHistory={tradingHistory}
-      tradingSuggestions={tradingSuggestions}
-    />
-  </Modal>;
 
   return (
     // daily summary front end
@@ -193,12 +185,6 @@ function Dailysummary() {
         <div className="left-side">
           <div className="add-items">
             <div className="add-coins">
-              {/* <Input
-            type="search"
-            placeholder="Search"
-            style={{ width: "300px", float: "right", marginRight: "50px" }}
-            onChange={(e) => setSearch(e.target.value)}
-          /> */}
               <div>
                 <div
                   className="tog-name"
@@ -226,6 +212,8 @@ function Dailysummary() {
                 <Modal
                   open={isDeleteModalOpen}
                   close={() => setIsDeleteModalOpen(false)}
+                  onOk={handleOkClick}
+                  okText="OK"
                 >
                   <div style={{ width: "450px" }}>
                     <h2>Select Coin</h2>
@@ -253,7 +241,7 @@ function Dailysummary() {
                         <tr>
                           <td>Coin</td>
                           <td>Price</td>
-                          <td></td>
+                          <td>Select</td>
                         </tr>
                       </thead>
                       <tbody>
@@ -280,6 +268,20 @@ function Dailysummary() {
 
                             <td className="coin-price-add">
                               {formatCurrency(coin.lastPrice)}
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                style={{
+                                  width: "20px",
+                                  height: "20px",
+                                  textAlign: "right",
+                                }}
+                                onChange={() => handleCoinSelect(coin)}
+                                checked={selectedCoins.some(
+                                  (c) => c.symbol === coin.symbol
+                                )}
+                              ></input>
                             </td>
                           </tr>
                         ))}
@@ -378,8 +380,13 @@ function Dailysummary() {
           </div>
         </div>
 
+        {/* right side */}
         <div className="right-side">
-          <div className="template"></div>
+          <div className="template">
+            {showTopGainers}
+            {showTopLosses}
+            {showTrendingCoin && <TrendingCoinChart />}
+          </div>
           <div className="buttons">
             <Input
               type="button"
@@ -401,6 +408,24 @@ function Dailysummary() {
           </div>
         </div>
       </div>
+      <Modal
+        open={isPreviewModalOpen}
+        onCancel={() => setIsPreviewModalOpen(false)}
+        width="80%"
+        footer={null}
+      >
+        <SummaryReport
+          coins={coins}
+          showTopGainers={true}
+          showTopLosses={true}
+          showTrendingCoin={true}
+          /// customizedCoins={[]}
+          tradingHistory={[]}
+          tradingSuggestions={[]}
+          selectedCoins={selectedCoins}
+        />
+      </Modal>
+      ;
     </BasicPage>
   );
 }
