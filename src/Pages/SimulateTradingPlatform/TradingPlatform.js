@@ -12,11 +12,12 @@ import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
-import axiosInstance from "../../Authentication/axiosInstance";
+import axiosInstance, {useAuthInterceptor} from "../../Authentication/axiosInstance";
 
 export default function TradingPlatform({firebase}) {
     const userTemp = localStorage.getItem('user');
     const user = JSON.parse(userTemp);
+    const axiosInstance = useAuthInterceptor();
 
     const Tabs = [
         { label: "Spot", path: "/simulate" },
