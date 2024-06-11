@@ -7,11 +7,16 @@ import {FaUserLarge} from "react-icons/fa6";
 import {HiOutlineUserCircle} from "react-icons/hi";
 import {PiUserFocus} from "react-icons/pi";
 import {LuLogOut} from "react-icons/lu";
+import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
+import {useDispatch} from "react-redux";
+import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
 
 export default function TopNavBar(props) {
     const userTemp = localStorage.getItem('user');
     const user = JSON.parse(userTemp);
+    const dispatch = useDispatch();
     const userName = user ? user.username : 'Kamal Silva';
+    const axiosInstance = useAuthInterceptor();
 
     const navigate = useNavigate();
 
@@ -42,10 +47,16 @@ export default function TopNavBar(props) {
         setActiveLink(currentLocation);
     }, [currentLocation]);
 
-    function navigateToHome() {
-        localStorage.removeItem('user');
-        localStorage.removeItem('access-token');
-        navigate('/');
+    async function navigateToHome() {
+
+        const response = await axiosInstance.post('/user/logout');
+
+        if (response.status === 200){
+            localStorage.removeItem('user');
+            dispatch(clearAccessToken());
+            navigate('/');
+        }
+
     }
 
     return (
