@@ -11,6 +11,7 @@ import './TopNavBar.css';
 import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
 import {useDispatch} from "react-redux";
 import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
+import Cookies from 'js-cookie';
 
 
 export default function TopNavBar(props) {
@@ -44,9 +45,11 @@ export default function TopNavBar(props) {
     async function navigateToHome() {
         const response = await axiosInstance.post('/user/logout');
 
+
         if (response.status === 200){
             localStorage.removeItem('user');
             dispatch(clearAccessToken());
+            Cookies.remove('refresh-token');
             navigate('/');
         }
 
