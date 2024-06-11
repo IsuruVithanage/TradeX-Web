@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { store } from '../index';
-import { setAccessToken } from '../Features/authSlice';
-import { useCustomNavigate } from '../Utils/navigation';
+import {store} from '../index'; // Adjust the import path if needed
+import {setAccessToken} from '../Features/authSlice';
+import {useCustomNavigate} from "../Utils/navigation";
 
 const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_GATEWAY,
@@ -18,7 +18,6 @@ export const useAuthInterceptor = () => {
         (config) => {
             const state = store.getState();
             const token = state.auth.accessToken;
-
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -29,30 +28,28 @@ export const useAuthInterceptor = () => {
         }
     );
 
+
     axiosInstance.interceptors.response.use(
         (response) => response,
         async (error) => {
             const originalRequest = error.config;
-            if (error.response && !error.response.status === 401 && !originalRequest._retry) {
+            if (error.response && error.response.status === 401 && !originalRequest._retry) {
+                console.log('error.response', error.response);
                 originalRequest._retry = true;
                 try {
-                    const { data } = await axiosInstance.post('/user/refreshToken');
-
+                    const {data} = await axiosInstance.post('/user/refreshToken');
                     store.dispatch(setAccessToken(data.accessToken));
                     originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
                     return axiosInstance(originalRequest);
                 } catch (err) {
-                    console.log('Error refreshing token:', err);
-                    customNavigate('/'); // Use the custom navigate function
+                    customNavigate('/');
                     return Promise.reject(err);
                 }
-            } else if (error.response && error.response.status === 401) {
-                console.log('Error 401:', error.response.data.message);
-                customNavigate('/'); // Use the custom navigate function
             }
             return Promise.reject(error);
         }
     );
 
     return axiosInstance;
-};
+}
+

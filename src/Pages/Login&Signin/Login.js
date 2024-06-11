@@ -5,7 +5,7 @@ import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import "./Login.css";
 import { useDispatch } from 'react-redux';
-import axiosInstance, {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import { setAccessToken } from '../../Features/authSlice'; // Adjust the import path if needed
 
 function Login({ firebase }) {

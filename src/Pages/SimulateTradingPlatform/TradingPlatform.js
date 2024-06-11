@@ -368,27 +368,18 @@ export default function TradingPlatform({firebase}) {
                         setWalletBalance(data[1].balance);
                     }
 
-                    return await fetch(`${apiGateway}/order`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-                        },
-                        body: JSON.stringify(placeOrder())
-                    });
-                })
-                .then(response => {
-                    if (response.ok) {
+                    const res= await axiosInstance.post('/order', placeOrder());
+                    if (res) {
                         setIsLoading(true);
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
                         if (order.category === 'Limit') {
                             fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                         }
-
-                    } else {
-                        console.error('Failed to save order:', response);
+                    }else {
+                        console.error('Failed to save order:', res);
                     }
+
                 })
                 .catch(error => {
                     console.error('Failed to save order:', error);
