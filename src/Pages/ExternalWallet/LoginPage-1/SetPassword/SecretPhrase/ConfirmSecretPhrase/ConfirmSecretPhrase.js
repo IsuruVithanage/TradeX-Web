@@ -12,12 +12,13 @@ export default function ConfirmSecretPhrase() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const word = queryParams.get('word');
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user.user);
 
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
     const [words, setWords] = useState([]);
     const [seedPraseDetails, setSeedPraseDetails] = useState({
-        userId:user.user.id,
+        username:user.username,
+        password:user.password,
         seedphrase:word
     });
     const inputRefs = useRef([]);
@@ -58,7 +59,7 @@ export default function ConfirmSecretPhrase() {
 
     const saveSeedPrase = async () => {
         try {
-            const response = await fetch("http://localhost:8006/seedphrase/saveSeedPrase", {
+            const response = await fetch("http://localhost:8006/walletLogin/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,6 +68,7 @@ export default function ConfirmSecretPhrase() {
             });
 
             if (response.ok) {
+                navigate('/wallet/dashboard');
                 console.log("Data sent successfully");
 
             } else {
@@ -84,8 +86,8 @@ export default function ConfirmSecretPhrase() {
         if (isWordChecked) {
             
             saveSeedPrase();
-            navigate('/wallet/dashboard');
-        } else {
+        }
+         else {
             alert('Incorrect secret phrase');
             // Clear the input fields and reset inputValues array
             setInputValues(Array(12).fill(''));
