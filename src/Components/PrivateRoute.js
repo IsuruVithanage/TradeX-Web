@@ -4,6 +4,8 @@ import {useSelector} from "react-redux";
 
 const PrivateRoute = ({ children }) => {
     const { accessToken } = useSelector((state) => state.auth);
+    const userTemp = localStorage.getItem('user');
+    const user = JSON.parse(userTemp);
 
     return accessToken ? children : <Navigate to="/" />;
 };

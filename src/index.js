@@ -19,7 +19,7 @@ const store = configureStore({
 });
 const firebase = new Firebase();
 
-export { store }; // Export the store
+export { store };
 
 root.render(
     <Suspense fallback={<Loading />}>

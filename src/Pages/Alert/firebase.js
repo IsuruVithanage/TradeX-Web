@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 import { saveDeviceToken } from "./alertServices";
+import {getUser} from "../../Storage/SecureLs";
 
 
 class Firebase {
@@ -84,7 +85,7 @@ class Firebase {
 
 
     async getToken() {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = getUser();
         const userId = user && user.id;
 
 

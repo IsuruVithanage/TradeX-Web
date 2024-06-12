@@ -10,16 +10,21 @@ import {Spin} from "antd";
 import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
 import {LuRefreshCw} from "react-icons/lu";
-import {useSelector} from "react-redux";
-import axiosInstance, {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function Suggestions() {
     const axiosInstance = useAuthInterceptor();
 
-    const user = useSelector(state => state.user);
     const Tabs = [
         {label: "Suggestions", path: "/suggestion"},
     ];
+
+    const user = getUser();
+
+    useEffect(() => {
+        console.log('User:', user);
+    }, []);
 
     const [coinData, setCoinData] = useState({
         name: '',
@@ -239,7 +244,7 @@ export default function Suggestions() {
 
     const filterOrders = () => {
         const now = new Date();
-        let filteredOrders = [];
+        let filteredOrders;
 
         switch (activateDuration) {
             case "Today":

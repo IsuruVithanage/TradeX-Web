@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {store} from '../index'; // Adjust the import path if needed
-import {setAccessToken} from '../Features/authSlice';
 import {useCustomNavigate} from "../Utils/navigation";
+import {setAccessToken, getAccessToken} from '../Storage/SecureLs';
+
 
 const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_GATEWAY,
@@ -16,8 +16,7 @@ export const useAuthInterceptor = () => {
 
     axiosInstance.interceptors.request.use(
         (config) => {
-            const state = store.getState();
-            const token = state.auth.accessToken;
+            const token = getAccessToken();
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -38,7 +37,7 @@ export const useAuthInterceptor = () => {
                 originalRequest._retry = true;
                 try {
                     const {data} = await axiosInstance.post('/user/refreshToken');
-                    store.dispatch(setAccessToken(data.accessToken));
+                    setAccessToken(data.accessToken);
                     originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
                     return axiosInstance(originalRequest);
                 } catch (err) {

@@ -9,9 +9,9 @@ import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
 import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
-import {useDispatch} from "react-redux";
 import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
 import Cookies from 'js-cookie';
+import {getUser} from "../../../Storage/SecureLs";
 
 
 export default function TopNavBar(props) {
@@ -19,13 +19,9 @@ export default function TopNavBar(props) {
     const [activePage, setActivePage] = useState(props.subPages ? props.subPages.pages[0].value : undefined);
     const [activeLink, setActiveLink] = useState(currentLocation);
     const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
-    const navigate = useNavigate();
- 
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const dispatch = useDispatch();
+
+    const user = getUser();
     const userName = user ? user.username : 'Kamal Silva';
-    const axiosInstance = useAuthInterceptor();
 
 
     const handleSubPagesClick = (page) => {
@@ -42,18 +38,6 @@ export default function TopNavBar(props) {
         setActiveLink(currentLocation);
     }, [currentLocation]);
 
-    async function navigateToHome() {
-        const response = await axiosInstance.post('/user/logout');
-
-
-        if (response.status === 200){
-            localStorage.removeItem('user');
-            dispatch(clearAccessToken());
-            Cookies.remove('refresh-token');
-            navigate('/');
-        }
-
-    }
 
 
     return (
