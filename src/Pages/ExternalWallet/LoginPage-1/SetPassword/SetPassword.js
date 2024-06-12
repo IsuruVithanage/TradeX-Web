@@ -17,6 +17,11 @@ export default function SetPassword() {
   function navigateToLogin() {
     navigete2('/wallet/login');
   }
+
+  function register() {
+    
+  }
+
   return (
     <div className='main-background'>
       <Head/>
@@ -24,10 +29,13 @@ export default function SetPassword() {
       
       <BlackBar>
         <h1 className='set-pass'>Set Password</h1>
-        <p className='para'>This password is used to protect your wallet and provide access <br/> to the browser web wallet.</p>
-        
+        <p className='para-1'>This password is used to protect your wallet and provide access <br/> to the browser web wallet.</p>
+
+        <input type="text" placeholder="Enter your user name" className="user-name" />
+
         <input type="password" placeholder="Enter your new password" className="password-input" />
         <input type="password" placeholder="Confirm your password" className="confirm-password-input" />
+
 
         <div className="terms-checkbox">
           <input type="checkbox" id="terms-checkbox" />
