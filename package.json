@@ -45,6 +45,7 @@
     "react-webcam": "^7.2.0",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
+    "secure-ls": "^1.2.6",
     "socket.io-client": "^4.7.5",
     "universal-cookie": "^7.1.4",
     "uuid": "^9.0.1",

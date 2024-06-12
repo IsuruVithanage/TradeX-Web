@@ -8,26 +8,19 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
-import axiosInstance, {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function TradingPlatform({firebase}) {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+    const user = getUser();
     const axiosInstance = useAuthInterceptor();
 
     const Tabs = [
         { label: "Spot", path: "/simulate" },
     ];
-
-    useEffect(() => {
-        const t=localStorage.getItem('user');
-        console.log("t",JSON.parse(t))
-        console.log(localStorage.getItem('user'));
-    }, []);
 
     const [latestPrice, setLatestPrice] = useState(0);
     const [latestTime, setLatestTime] = useState(0);
