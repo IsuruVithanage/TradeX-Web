@@ -4,9 +4,13 @@ import BlackBar from "../../../../../Components/WalletComponents/BlackBar";
 import Head from "../../../../../Components/WalletComponents/Head";
 import WalletImage from "../../../../../Assets/Images/wallet.png";
 import { useNavigate } from "react-router-dom";
+import {useSelector} from "react-redux";
+
 
 export default function SecretPhrase() {
   const navigate = useNavigate();
+
+  const user = useSelector(state => state.user);
 
   const [words, setWords] = useState([]);
 
@@ -19,6 +23,7 @@ export default function SecretPhrase() {
 
   useEffect(() => {
     fetchWords(); // Fetch words when component mounts
+    console.log(user);
   }, []);
 
   const fetchWords = async () => {
