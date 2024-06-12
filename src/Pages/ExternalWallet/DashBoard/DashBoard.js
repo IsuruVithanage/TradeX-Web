@@ -8,7 +8,6 @@ import Table, { TableRow,Coin} from '../../../Components/Table/Table'
 import axios from 'axios';
 import { showMessage } from '../../../Components/Message/Message';
 
-
 export default function DashBoard() {
 
 
