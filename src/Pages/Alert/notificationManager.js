@@ -186,7 +186,7 @@ class NotificationManager {
 
 
     async connectWebSocket() {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = getUser();
         const userId = user && user.id;
 
         if(!userId){
