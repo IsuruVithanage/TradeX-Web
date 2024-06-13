@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import notificationManager from "../Alert/notificationManager";
 import axios from "axios";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
@@ -10,7 +11,7 @@ import axiosInstance from "../../Authentication/axiosInstance";
 import Cookies from 'universal-cookie';
 
 
-function Login({firebase}) {
+function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cookies = new Cookies();
@@ -50,7 +51,7 @@ function Login({firebase}) {
                 console.log("Token:", token);
                 localStorage.setItem('user', JSON.stringify(userData));
                 console.log("Login success");
-                firebase.getToken();
+                notificationManager.getToken();
 
                 cookies.set('access_token', token, {
                     path: '/',

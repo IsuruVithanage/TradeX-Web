@@ -19,7 +19,7 @@ export default function TopNavBar(props) {
     const userTemp = localStorage.getItem('user');
     const user = JSON.parse(userTemp);
     const userName = user ? user.username : 'Kamal Silva';
-
+   
 
     const handleSubPagesClick = (page) => {
         setActivePage(page);
@@ -75,7 +75,7 @@ export default function TopNavBar(props) {
                         <ProfileMenu {...{isProfileMenuVisible, user}}/>
                     </div>
 
-                    <AppNotification user={user}/>
+                    <AppNotification user={user} />
                     
                 </div>
             </div>

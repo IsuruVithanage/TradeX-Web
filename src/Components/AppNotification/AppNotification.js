@@ -1,96 +1,108 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import notificationManager from '../../Pages/Alert/notificationManager';
+import axios from 'axios';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActiveOutlined';
-// import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import NotificationsActiveOutlined from '@mui/icons-material/NotificationsActiveOutlined';
+import NotificationsActive from '@mui/icons-material/NotificationsActive';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import './AppNotification.css';
 
+
 export default function AppNotification({ user }) {
     const [isAppNotificationsVisible, setAppNotificationsVisible] = useState(false);
-    const [showClearMessage, setShowClearMessage] = useState(false);
-    const [badgeVisible, setBadgeVisible] = useState(true);
+    const [badgeVisible, setBadgeVisible] = useState(false);
     const [notifications, setNotifications] = useState([]);
 
-    const isAppNotificationsVisibleRef = useRef(false);
-    const openAppNotificationRef = useRef(null);
     const isVerified = user ? user.isVerified === "Yes" : false;
+    const userId = user && user.id;
+
+    
+    const verifyAccountNotification = {
+        icon: "verify",
+        title: "Verify your Account",
+        body: "Please verify your account to get full access to the platform.",
+        onClick: 'http://localhost:3000/verify'
+    };
 
 
-    const closeNotifications = () => {
-        setAppNotificationsVisible(false);
-        setShowClearMessage(false);
-        if(!badgeVisible){
-            setNotifications([]);
-        }
-    }
 
-
-    const openAppNotifications = () => { 
-        setAppNotificationsVisible(true);
-
-        if(notifications.length > 0){
+    useEffect(() => {
+        if(badgeVisible && isAppNotificationsVisible){
             setTimeout(() => {
-                if(isAppNotificationsVisibleRef.current){
-                    setBadgeVisible(false);
-                    setShowClearMessage(true);
+                if (isAppNotificationsVisible) {
+
+                    const viewedNotificationIds = notifications
+                        .map(notification => !notification.isViewed ? notification.notificationId : null)
+                        .filter(notificationId => notificationId !== null);
+
+                    if (viewedNotificationIds.length === 0) return;
+
+                    axios.post('http://localhost:8002/notification/markAsViewed', { 
+                        userId, notificationIds: viewedNotificationIds 
+                    })
+
+                    .then((res) => {
+                        setNotifications(res.data.notifications);
+                        setBadgeVisible(res.data.isNew);
+                    })
+
+                    .catch(() => {
+                        console.log("Notifications mark as viewed failed");
+                    });
                 }
             }, 2000);
         }
-    };
+    }, [badgeVisible, isAppNotificationsVisible, notifications, userId]);
 
-    openAppNotificationRef.current = openAppNotifications;
+
+
 
     useEffect(() => {
-        if(!isVerified){
-            setNotifications([
-                {
-                    icon: "verify",
-                    title: "Verify your Account",
-                    body: "Please verify your account to get full access to the platform.",
-                    onClick: '/verify'
-                },
-                {
-                    title: "Verify your Account",
-                    body: "Please verify your account to get full access to the platform. Please verify your account to get",
-                },
-                {
-                    title: "Verify your Account",
-                    body: "Please verify your account to get full access to the platform."
-                },
-                {
-                    title: "Verify your Account",
-                    body: "Please verify your account to get full access to the platform.",
-                },
-            ]);
+        const getNotifications = async () => {
+            axios.get('http://localhost:8002/notification/getAll', {
+                params: { userId: userId }
+            })
+            
+            .then(res => {
+                setNotifications(res.data.notifications);
+                setBadgeVisible(res.data.isNew);
+            })
+
+            .catch(() => {
+                console.log("App Notifications getting failed");
+            });
         }
-    }, [isVerified]);
+
+        getNotifications();
 
 
-    useEffect(() => {
-        isAppNotificationsVisibleRef.current = isAppNotificationsVisible;
-    }, [isAppNotificationsVisible]);
+        notificationManager.onAppNotification(() => {
+            getNotifications();
+        });
+    }, [userId]);
 
 
-    return(
-        <div onMouseEnter={openAppNotificationRef.current} onMouseLeave={closeNotifications}>
-            <div className="in-app-icon-container">
-                <Badge 
-                    badgeContent={notifications.length} 
-                    variant="dot" 
+
+    return (
+        <div 
+            onMouseEnter={() => setAppNotificationsVisible(true)} 
+            onMouseLeave={() => setAppNotificationsVisible(false)} >
+            <div className="notification-icon-container">
+                <Badge
+                    badgeContent={0}
+                    variant="dot"
                     showZero={badgeVisible}>
-                    <NotificationsIcon className="notification-icon"/>
+                    <NotificationsIcon className="notification-icon" />
                 </Badge>
             </div>
 
-            <div className={`app-notification-container ${isAppNotificationsVisible  ? "active" : ""}`} >
-                {   notifications && notifications.length > 0 ? 
-                    <div style={{overflowY: "auto", maxHeight: "310px"}}>
-                        <p className="app-notification-clear-warn-message">
-                            {showClearMessage ? 'Notifications will be clear after closing this' : ''}
-                        </p>
-                        {notifications.map((notification, index) => <AppNotificationRow key={index} {...notification}/> ) }
+            <div className={`app-notification-container ${isAppNotificationsVisible ? "active" : ""}`} >
+                {(notifications && notifications.length > 0) || !isVerified ?
+                    <div style={{ overflowY: "auto", maxHeight: "348px" }}>
+                        {!isVerified && <AppNotificationRow {...verifyAccountNotification} />}
+                        {notifications.map((notification, index) => <AppNotificationRow key={index} {...notification} />)}
                     </div> :
                     <p className="app-notification-empty-message">No new Notifications</p>
                 }
@@ -99,23 +111,23 @@ export default function AppNotification({ user }) {
     );
 }
 
-
-function AppNotificationRow ({icon, title, body, onClick}){
+function AppNotificationRow({ icon, title, body, onClick, isViewed, sentAt }) {
     const navigate = useNavigate();
+    onClick = !onClick ? null : onClick.slice(21);
+    sentAt = !sentAt ? null : new Date(sentAt).toLocaleTimeString('en-us', { timeStyle: 'short', hour12: true});
+    icon =  
+        icon === "verify" ? <VerifiedIcon size={25} style={{ color: "#ffd700" }} /> : 
+        isViewed ? <NotificationsActiveOutlined size={25} /> : <NotificationsActive size={25} />;
 
-    icon = icon === "verify" ? 
-        <VerifiedIcon size={25} style={{color: "#ffd700"}} /> : 
-        <NotificationsActiveIcon size={25} />;
-    
-
-    return(
-        <div 
-            className='app-notification-item' 
-            onClick={() => navigate(onClick)} 
-            style={{cursor: !onClick ? 'default' : 'pointer'}}>
+    return (
+        <div
+            className='app-notification-item'
+            onClick={() => navigate(onClick)}
+            style={{ cursor: !onClick ? 'default' : 'pointer' }}>
 
             <div className='app-notification-icon'>{icon}</div>
             <div className='app-notification-content'>
+                <div className='app-notification-time'>{sentAt}</div>
                 <div className='app-notification-title'>{title}</div>
                 <div className='app-notification-body'>{body}</div>
             </div>

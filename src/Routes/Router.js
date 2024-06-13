@@ -20,16 +20,16 @@ import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login";
 import Favorites from "../Pages/Forum/Favorites";
 
-export default function Router({ firebase }) {
+export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login firebase={firebase} />,
+      element: <Login />,
       errorElement: <App />,
     },
     {
       path: "/signup",
-      element: <Signup firebase={firebase} />,
+      element: <Signup />,
     },
     {
       path: "/home",
@@ -73,11 +73,11 @@ export default function Router({ firebase }) {
     },
     {
       path: "/simulate",
-      element: <Simulation firebase={firebase} />,
+      element: <Simulation />,
     },
     {
       path: "/alert",
-      element: <Alert firebase={firebase} />,
+      element: <Alert />,
     },
     {
       path: "/suggestion",

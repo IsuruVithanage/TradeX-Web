@@ -14,7 +14,7 @@ import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
 import axiosInstance from "../../Authentication/axiosInstance";
 
-export default function TradingPlatform({firebase}) {
+export default function TradingPlatform() {
     const userTemp = localStorage.getItem('user');
     const user = JSON.parse(userTemp);
 
