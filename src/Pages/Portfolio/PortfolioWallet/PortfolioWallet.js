@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import { useLocation } from 'react-router-dom'
+import { showMessage } from '../../../Components/Message/Message';
+import { getUser } from '../../../Storage/SecureLs';
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Modal from '../../../Components/Modal/Modal'
-import Table, { TableRow, Coin } from '../../../Components/Table/Table'
-import { showMessage } from '../../../Components/Message/Message';
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
@@ -28,7 +29,7 @@ export default function FundingWallet() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = getUser();
     const userId = user && user.id;
     const userName = user && user.userName;
     
@@ -81,7 +82,7 @@ export default function FundingWallet() {
                 showMessage(error.response.status, error.response.data.message)   :
                 showMessage('error', 'Database connection failed..!') ;
             });
-    }, [ currentWallet ]);
+    }, [ currentWallet, userId ]);
 
 
 

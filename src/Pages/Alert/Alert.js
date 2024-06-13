@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import notificationManager from "./notificationManager";
 import {showMessage} from "../../Components/Message/Message";
+import { getUser } from "../../Storage/SecureLs";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
@@ -21,8 +22,9 @@ export default function Alert() {
     const [isRegistered, setIsRegistered] = useState(false);
     const [isInvalid, setIsInvalid] = useState([true, null]);
     const selectedPageRef = useRef(selectedPage);
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = getUser();
     const userId = user && user.id;
+
 
 
     useEffect(() => {

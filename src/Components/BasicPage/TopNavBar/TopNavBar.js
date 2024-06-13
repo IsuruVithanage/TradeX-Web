@@ -5,13 +5,10 @@ import { FaUserLarge } from "react-icons/fa6";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { PiUserFocus } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
+import { getUser } from "../../../Storage/SecureLs";
 import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
-import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
-import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
-import Cookies from 'js-cookie';
-import {getUser} from "../../../Storage/SecureLs";
 
 
 export default function TopNavBar(props) {
@@ -21,7 +18,7 @@ export default function TopNavBar(props) {
     const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
 
     const user = getUser();
-    const userName = user ? user.username : 'Kamal Silva';
+    const userName = user ? user.userName : 'Kamal Silva';
    
 
     const handleSubPagesClick = (page) => {
@@ -71,8 +68,8 @@ export default function TopNavBar(props) {
                 <div className="top-right-container">
                     <div onMouseEnter={()=>setProfileMenuVisible(true)} onMouseLeave={()=>setProfileMenuVisible(false)}>
                         <div className="top-right-icon-container">
-                            <span className="user-name" >{userName}</span>
-                            <BiSolidUserRectangle className="profile-icon"/>
+                            <span className="top-nav-user-name" >{userName}</span>
+                            <BiSolidUserRectangle className="top-nav-profile-icon"/>
                         </div>
 
                         <ProfileMenu {...{isProfileMenuVisible, user}}/>
@@ -102,7 +99,7 @@ function ProfileMenu (props){
         <div className={`floating-container ${isProfileMenuVisible ? "active" : ""}`} style={{width: "200px"}} >
             <div className='profile-raw' >
                 <span className='row-icon'><FaUserLarge size={22} fill='#21DB9A'/></span>
-                <span className='row-name'>{user ? user.username : "Kasun Silva"}</span>
+                <span className='row-name'>{user ? user.userName : "Kasun Silva"}</span>
             </div>
             <div className='profile-raw' onClick={() => navigate('/profile')}>
                 <span className='row-icon'><HiOutlineUserCircle size={28}/></span>
