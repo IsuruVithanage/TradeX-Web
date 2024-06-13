@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 
-.in-app-icon-container{
+.notification-icon-container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: -moz-fit-content;
-    width: fit-content;
+    width: 38px;
+    margin-right: 5px;
     cursor: pointer;
 }
 
@@ -26,15 +26,14 @@
     width: 500px;
     position: absolute;
     top: -6%;
-    right: 0.6%;
+    right: 0.3%;
     background-color: #0E0E0F;
     padding: 10px;
     border-radius: 10px;
     opacity: 0;
     z-index: 1;
     visibility: hidden;
-    transition: top 0.5s ease, opacity 0.5s ease;
-    box-shadow: inset 0px 0px 12px 0px #282828C0;
+    transition: top 0.5s ease, opacity 0.7s ease;
 }
 
 .app-notification-container.active{
@@ -48,7 +47,6 @@
 .app-notification-item {
     display: flex;
     margin: 0.5rem 0.6rem 0.7rem 0.5rem;
-    padding: 3px;
     background-color: #141414;
     border-radius: 5px;
 }
@@ -62,18 +60,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 10%;
+    width: 12%;
     color: #21DB9A;
 }
 
 .app-notification-content{
-    padding: 7px;
-    width: 90%;
+    padding: 7px 10px 15px 0;
+    width: 88%;
 }
 
 
 .app-notification-title {
-    color: #FFFFFF;
+    color: #FFFFFFE0;
     font-weight: 500;
 }
 
@@ -83,16 +81,18 @@
     margin-top: 5px;
 }
 
+.app-notification-time{
+    height: 11px;
+    text-align: right;
+    font-size: 9px;
+    font-weight: 600;
+    color: #21db9aD0;
+}
+
 .app-notification-empty-message{
     text-align: center;
     color: #6D6D6D;
     font-size: 14px;
     font-weight: 500;
     padding: 20px;
-}
-
-.app-notification-clear-warn-message{
-    text-align: center;
-    color: #ffd70080;
-    font-size: 12px;
 }

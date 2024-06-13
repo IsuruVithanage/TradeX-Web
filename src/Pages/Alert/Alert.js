@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
+import notificationManager from "./notificationManager";
 import {showMessage} from "../../Components/Message/Message";
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
@@ -10,7 +11,7 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import './Alert.css';
 
 
-export default function Alert({firebase}) {
+export default function Alert() {
     const [selectedPage, setSelectedPage] = useState("Running");
     const [alerts, setAlerts] = useState([]);
     const [currentAlert, setCurrentAlert] = useState({});
@@ -25,14 +26,14 @@ export default function Alert({firebase}) {
 
 
     useEffect(() => {
-        firebase.updateRegister(setIsRegistered);
-        firebase.requestPermission()
+        notificationManager.updateRegister(setIsRegistered);
+        notificationManager.requestPermission()
             .then((isAllowed) => {
                 if (!isAllowed) {
                     showMessage('warning', "Please allow notifications in your browser settings to use this feature.", 3);
                 }
             });
-    }, [firebase]);
+    }, []);
 
 
     useEffect(() => {
@@ -57,14 +58,17 @@ export default function Alert({firebase}) {
                 });
         }
 
-        firebase.onMessage((a) => {
-            console.log(a);
+        notificationManager.addOnMessage(() => {
             getAlerts();
         });
 
         getAlerts();
 
-    }, [selectedPage, isRegistered, firebase, userId]);
+        return () => {
+            notificationManager.removeOnMessage();
+        }
+
+    }, [selectedPage, isRegistered, userId]);
 
 
     useEffect(() => {
@@ -143,7 +147,7 @@ export default function Alert({firebase}) {
 
 
     const openAddAlertModal = async () => {
-        if(!isRegistered && !await firebase.requestPermission()){
+        if(!isRegistered && !await notificationManager.requestPermission()){
             showMessage('warning', "Please allow notifications in your browser settings to use this feature.", 3);
             return;
         }

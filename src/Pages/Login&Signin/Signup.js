@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import notificationManager from "../Alert/notificationManager";
 import "./Signup.css";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import trade from "../../Assets/Images/trade.png";
@@ -8,7 +9,7 @@ import Validation from "./SignupValidation";
 import {setAccessToken} from "../../Features/authSlice";
 import { useDispatch } from 'react-redux';
 
-function Signup({firebase}) {
+function Signup() {
     const navigate = useNavigate();
     const [values, setvalues] = useState({
         userName: "",
@@ -51,7 +52,7 @@ function Signup({firebase}) {
                 dispatch(setAccessToken(token));
                 console.log('Access token ', token);
                 console.log('Login success');
-                firebase.getToken(user.userId);
+                notificationManager.getToken();
                 navigate("/quiz")
             })
             .catch((err) => console.log(err));

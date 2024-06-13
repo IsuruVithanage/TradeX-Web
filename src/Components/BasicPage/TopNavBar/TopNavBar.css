@@ -2,7 +2,7 @@
 
 .top-navbar{
     background-color: #0E0E0F;
-    padding: 0 10px 0 10px;
+    padding-left: 10px;
     position: fixed;
     top: 0;
     left: 6%;
@@ -98,7 +98,6 @@
 .profile-icon{
     color: #21db9a;
     font-size: 1.5rem;
-    margin-right: 7px;
 }
 
 .floating-container {
@@ -114,7 +113,7 @@
     opacity: 0;
     z-index: 1;
     visibility: hidden;
-    transition: top 0.5s ease, opacity 0.5s ease;
+    transition: top 0.5s ease, opacity 0.7s ease;
     box-shadow: inset 0px 0px 12px 0px #282828C0;
 }
 

@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import "./Login.css";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {setAccessToken, setUser} from "../../Storage/SecureLs";
 
-function Login({firebase}) {
+function Login() {
     const navigate = useNavigate();
     const axiosInstance = useAuthInterceptor();
 
@@ -31,6 +32,7 @@ function Login({firebase}) {
             const user = response.data.user;
             setUser(user);
             setAccessToken(token);
+            notificationManager.getToken();
 
             console.log('Login success');
 
