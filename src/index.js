@@ -4,19 +4,23 @@ import Loading from './Components/Loading/Loading';
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import userReducer from "./Features/User";
+import authReducer from './Features/authSlice';
 import './Pages/Summary/globals'
 import './index.css';
 
-const Router = lazy(() => import("./Routes/Router"));
+const Router = lazy(() => import('./Routes/Router'));
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = configureStore({ reducer: { user: userReducer }});
+const store = configureStore({
+    reducer: {
+        user: userReducer,
+        auth: authReducer,
+    },
+});
 
+export { store };
 
 root.render(
-    // <React.StrictMode>
-    //   <RouterProvider router={router}/>
-    // </React.StrictMode>
-    <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading />}>
         <Provider store={store}>
             <Router /> 
         </Provider>

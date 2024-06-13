@@ -6,6 +6,8 @@ import trade from "../../Assets/Images/trade.png";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Validation from "./SignupValidation";
+import {setAccessToken} from "../../Features/authSlice";
+import { useDispatch } from 'react-redux';
 
 function Signup() {
     const navigate = useNavigate();
@@ -17,6 +19,7 @@ function Signup() {
         hasTakenQuiz: false,
         level: "",
     });
+    const dispatch = useDispatch();
 
     const [errors, setErrors] = useState({});
 
@@ -38,25 +41,17 @@ function Signup() {
         }
 
         axios
-            .post("http://localhost:8004/user/register", values)
+            .post(`${process.env.REACT_APP_API_GATEWAY}/user/register`, values)
             .then((res) => {
-                const token = res.data.token;
+                const token = res.data.accessToken;
                 const user = res.data.user;
 
-                const userData = {
-                    id: user.userId,
-                    username: user.userName,
-                    email: user.email,
-                    isVerified: user.isVerified,
-                    hasTakenQuiz: user.hasTakenQuiz,
-                    level: user.level,
-                };
+                console.log('User', user);
 
-
-                console.log("Token:", token);
-                localStorage.setItem('user', JSON.stringify(userData));
-                localStorage.setItem("access-token", token);
-                console.log("Login success");
+                localStorage.setItem('user', JSON.stringify(user));
+                dispatch(setAccessToken(token));
+                console.log('Access token ', token);
+                console.log('Login success');
                 notificationManager.getToken();
                 navigate("/quiz")
             })

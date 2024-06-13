@@ -8,6 +8,10 @@ import { LuLogOut } from "react-icons/lu";
 import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
+import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
+import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
+import Cookies from 'js-cookie';
+import {getUser} from "../../../Storage/SecureLs";
 
 
 export default function TopNavBar(props) {
@@ -15,9 +19,8 @@ export default function TopNavBar(props) {
     const [activePage, setActivePage] = useState(props.subPages ? props.subPages.pages[0].value : undefined);
     const [activeLink, setActiveLink] = useState(currentLocation);
     const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
- 
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+
+    const user = getUser();
     const userName = user ? user.username : 'Kamal Silva';
    
 

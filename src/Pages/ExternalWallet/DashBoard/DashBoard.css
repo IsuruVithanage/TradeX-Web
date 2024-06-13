@@ -11,3 +11,11 @@
     overflow-y: auto;
     box-sizing: border-box;
 }
+.address{
+    width: 270px;
+    user-select: text;
+    word-wrap: break-word;
+    text-align: center;
+    margin-top: 50px;
+
+}

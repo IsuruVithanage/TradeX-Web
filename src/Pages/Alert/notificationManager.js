@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 import { saveDeviceToken } from "./alertServices";
+import { getUser } from "../../Storage/SecureLs";
+
 
 
 class NotificationManager {
@@ -109,7 +111,7 @@ class NotificationManager {
 
 
     async getToken() {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = getUser();
         const userId = user && user.id;
         const permission = await this.requestPermission();
 

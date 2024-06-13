@@ -8,25 +8,19 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
-import axiosInstance from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function TradingPlatform() {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+    const user = getUser();
+    const axiosInstance = useAuthInterceptor();
 
     const Tabs = [
         { label: "Spot", path: "/simulate" },
     ];
-
-    useEffect(() => {
-        const t=localStorage.getItem('user');
-        console.log("t",JSON.parse(t))
-        console.log(localStorage.getItem('user'));
-    }, []);
 
     const [latestPrice, setLatestPrice] = useState(0);
     const [latestTime, setLatestTime] = useState(0);
@@ -367,27 +361,18 @@ export default function TradingPlatform() {
                         setWalletBalance(data[1].balance);
                     }
 
-                    return await fetch(`${apiGateway}/order`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-                        },
-                        body: JSON.stringify(placeOrder())
-                    });
-                })
-                .then(response => {
-                    if (response.ok) {
+                    const res= await axiosInstance.post('/order', placeOrder());
+                    if (res) {
                         setIsLoading(true);
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
                         if (order.category === 'Limit') {
                             fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                         }
-
-                    } else {
-                        console.error('Failed to save order:', response);
+                    }else {
+                        console.error('Failed to save order:', res);
                     }
+
                 })
                 .catch(error => {
                     console.error('Failed to save order:', error);
