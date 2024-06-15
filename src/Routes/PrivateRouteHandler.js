@@ -1,16 +1,17 @@
 import React from "react";
 import Unauthorized from "../Pages/Unauthorized/Unauthorized";
 import { Navigate } from "react-router-dom";
-import { getUser } from "../Storage/SecureLs";
+import { getUser, getAccessToken } from "../Storage/SecureLs";
 
 
 const PrivateRouteHandler = ({ permittedRole, children }) => {
+    const token = getAccessToken();
     const user = getUser();
     const role = user ? user.role : "Guest";
     const levelOf = { "Guest": 0, "User": 1, "Trader": 2, "Admin": 3 };
 
 
-    if (role === 'Guest'){
+    if (!token || role === 'Guest'){
         return <Navigate to='/' replace/>
     }
 
@@ -19,7 +20,7 @@ const PrivateRouteHandler = ({ permittedRole, children }) => {
             return children;
         }
         else {
-            return <div>Verified</div>;
+            return <Unauthorized />;
         }
     }
 
