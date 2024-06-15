@@ -100,7 +100,7 @@ export default function MyProblems() {
         header="Favourites"
         sidePanel={
           <div>
-            <Link to="/Questionbar/Detailed">
+            <Link to="/forum/discussion">
               {favorites.map((fav) => (
                 <p key={fav.id} className="sub-title">
                   {fav.title}

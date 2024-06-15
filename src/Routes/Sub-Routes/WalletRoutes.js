@@ -1,5 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
+import NotFound from '../../Pages/NotFound/NotFound';
 import Welcome from '../../Pages/ExternalWallet/Welcome/Welcome';
 import LoginPage1 from '../../Pages/ExternalWallet/LoginPage-1/LoginPage1';
 import HaveAccount from '../../Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
@@ -24,6 +25,7 @@ export default function WalletRoutes() {
         <Route path='/login/changepassword' element={<ChangePassword />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/history" element={<History />} />
+        <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

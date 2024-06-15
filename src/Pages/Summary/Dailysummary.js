@@ -19,8 +19,8 @@ import TrendingCoinChart from "./TrendingCoinChart";
 function Dailysummary() {
   // create the tabs
   const Tabs = [
-    { label: "Daily", path: "/Summary/Dailysummary" },
-    { label: "Monthly", path: "Dailysummary/Monthlysummary" },
+    { label: "Daily", path: "/summary/daily" },
+    { label: "Monthly", path: "/summary/monthly" },
   ];
   // imported
   const label = { inputProps: { "aria-label": "Switch demo" } };

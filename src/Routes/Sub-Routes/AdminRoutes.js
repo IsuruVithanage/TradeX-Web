@@ -1,5 +1,6 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
+import NotFound from '../../Pages/NotFound/NotFound';
 import AdDashboard from '../../Pages/Watchlist/AdDashboard';
 import ViewAll from '../../Pages/Watchlist/ViewAll';
 import ViewIssues from '../../Pages/Watchlist/ViewIssues';
@@ -14,6 +15,7 @@ export default function AdminRoutes() {
         <Route path="/ViewAll" element={<ViewAll />} />
         <Route path="/ViewIssues" element={<ViewIssues />} />
         <Route path="/Users" element={<Users />} />  
+        <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

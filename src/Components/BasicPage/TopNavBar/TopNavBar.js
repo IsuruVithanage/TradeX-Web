@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BiSolidUserRectangle } from "react-icons/bi";
 import { FaUserLarge } from "react-icons/fa6";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { PiUserFocus } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
+import { BiShieldX } from "react-icons/bi";
 import { getUser } from "../../../Storage/SecureLs";
 import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
@@ -17,6 +18,7 @@ export default function TopNavBar(props) {
     const [activeLink, setActiveLink] = useState(currentLocation);
     const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
 
+    const navigate = useNavigate();
     const user = getUser();
     const userName = user ? user.userName : 'Kamal Silva';
    
@@ -48,11 +50,12 @@ export default function TopNavBar(props) {
             <div className={`top-navbar ${props.icon === false && "full-width"}`}>
                 <nav className="links-container">
                     {(props.tabs) && props.tabs.map((tab) => (
-                        <Link key={tab.label} to={tab.path} className="top-link">
-                            <span className={`top-nav-link ${active(tab.path)}`}>
-                                {tab.label}
-                            </span>
-                        </Link>
+                        <span
+                            key={tab.label}
+                            className={`top-nav-link ${active(tab.path)}`}
+                            onClick={() => navigate(tab.path)} >
+                            {tab.label}
+                        </span>
                     ))}
 
                     {(props.subPages) && props.subPages.pages.map((page) => (
@@ -60,8 +63,8 @@ export default function TopNavBar(props) {
                             key={page.value}
                             className={`top-nav-link ${(activePage === page.value) ? "active" : ""}`}
                             onClick={() => handleSubPagesClick(page.value)}>
-                    {page.label}
-                  </span>
+                            {page.label}
+                        </span>
                     ))}
                 </nav>
 
@@ -111,9 +114,17 @@ function ProfileMenu (props){
                     <span className='row-name'>Verify User</span>
                 </div>
             }
-            <div className='profile-raw'>
-                <span className='row-icon'><LuLogOut size={25}/></span>
-                <span className='row-name' onClick={logoutUser}>Logout</span>
+            {user && user.role !== "User" && 
+                <div className='profile-raw' onClick={() => window.open('/wallet', '_blank')}>
+                    <span className='row-icon'><BiShieldX size={29}/></span>
+                    <span className='row-name'>TradeX Wallet</span>
+                </div>
+            }
+            <div className='profile-raw' onClick={logoutUser}>
+                <span className='row-icon' style={{paddingLeft: "5px"}}>
+                    <LuLogOut size={28}/>
+                </span>
+                <span className='row-name'>Logout</span>
             </div>
 
         </div>

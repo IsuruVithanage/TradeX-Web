@@ -18,35 +18,38 @@
 }
 
 .nav-link {
+    display: flex;
+    align-items: center;
     color: #6D6D6D;
     margin-bottom: 25%;
     padding: 8px;
     margin: auto;
     font-size: 1.3rem;
+    position: relative;
 }
 
 .nav-label{
     position: absolute;
-    background-color: #0e0e0fe3;
-    height: 8vh;
-    width: 180px;
-    left: 4.6vw;
-    align-items: center;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #21DB9A;
+    left: -0.2vw;
+    z-index: 1;
     display: none;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-}
-
-.nav-link-container{
-    display: flex;
+    height: 6vh;
+    width: max-content;
     align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #21DB9A;
+    background-color: #181818;
+    padding-left: 3vw;
+    padding-right: 20px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px 3px #0b0b0b;
 }
 
 .nav-link svg {
     transition: fill 0.3s ease;
+    z-index: 2;
 }
 
 .nav-link:hover .nav-label{
