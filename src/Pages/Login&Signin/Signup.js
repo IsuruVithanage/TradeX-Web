@@ -111,7 +111,7 @@ function Signup() {
 
                     <div className="have-account">
                         <div className="have-text">Already have an account?</div>
-                        <Link to="/">
+                        <Link to="/login">
                             <div className="login-link">Login</div>
                         </Link>
                     </div>

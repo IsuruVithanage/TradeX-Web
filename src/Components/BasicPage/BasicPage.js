@@ -5,7 +5,7 @@ import {PageLoading} from "../Loading/Loading";
 import './BasicPage.css'
 
 
-export default function BasicPage(props) {
+function BasicPage(props) {
     return (
         <div>
             {props.sideNavBar !== false && <SideNavBar/>}
@@ -21,3 +21,5 @@ export default function BasicPage(props) {
         </div>
     )
 }
+
+export default BasicPage;

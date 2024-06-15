@@ -40,16 +40,6 @@
     width: fit-content;
 }
 
-.top-link{
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.links-container a{
-    text-decoration: none;
-}
-
 .top-nav-link{
     text-decoration: none;
     color: #9E9E9E;
@@ -70,7 +60,6 @@
     background-color: #21DB9A;
     color: #ffffff;
 }
-
 
 .top-right-container{
     margin-left: auto;
@@ -102,7 +91,7 @@
 
 .floating-container {
     height: fit-content;
-    width: 200px;
+    width: 250px;
     position: absolute;
     top: -6%;
     right: 0.6%;
@@ -128,9 +117,11 @@
 .profile-raw {
     display: flex;
     align-items: center;
-    margin: 0.5rem 0.6rem 0.7rem 0.5rem;
-    padding: 0.3rem;
+    margin: 0.5rem 0.5rem 0.8rem 0.5rem;
+    padding: 0.5rem 0.3rem;
     color: #6D6D6D;
+    border-radius: 5px;
+    height: 40px;
 }
 
 .profile-raw:hover{
@@ -143,9 +134,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
+    width: 20%;
 }
 
 .row-name {
     padding-left: 0.7rem;
+    font-weight: 600;
+    width: 80%;
 }
