@@ -8,7 +8,7 @@ import authReducer from './Features/authSlice';
 import './Pages/Summary/globals'
 import './index.css';
 
-const Router = lazy(() => import('./Routes/HandledRoutes'));
+const Router = lazy(() => import('./Routes/Router'));
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = configureStore({
     reducer: {

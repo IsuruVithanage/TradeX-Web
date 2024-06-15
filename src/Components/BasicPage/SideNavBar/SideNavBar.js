@@ -1,33 +1,23 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-
-import { MdOutlineCandlestickChart } from "react-icons/md";
-
-
 import { VscListUnordered } from "react-icons/vsc";
-import { MdAutoGraph } from "react-icons/md";
-import { MdOutlineCurrencyExchange } from "react-icons/md";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { MdOutlineAssignment } from "react-icons/md";
-import { MdOutlineAutoStories } from "react-icons/md";
-import { BsChatText } from "react-icons/bs";
-import { MdOutlineNewspaper } from "react-icons/md";
-import { MdOutlineTipsAndUpdates } from "react-icons/md";
-
-
-
 import { FaRegBell } from "react-icons/fa";
-
-
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
-import NewspaperOutlinedIcon from '@mui/icons-material/NewspaperOutlined';
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
-import CandlestickChartOutlinedIcon from '@mui/icons-material/CandlestickChartOutlined';
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import { BsChatText } from "react-icons/bs";
+import { RiShieldUserLine } from "react-icons/ri";
+import { 
+    MdAutoGraph, 
+    MdOutlineCandlestickChart, 
+    MdOutlineAssignment, 
+    MdOutlineAutoStories, 
+    MdOutlineNewspaper, 
+    MdOutlineTipsAndUpdates,
+} from "react-icons/md";
 import "./SideNavBar.css";
+
+
+
+
+
 
 export default function SideNavBar() {
     const currentLocation = useLocation().pathname;
@@ -57,6 +47,13 @@ export default function SideNavBar() {
 
             <nav className="icon-container">
                 <div 
+                    className={`nav-link ${isActive("/admin")}`}
+                    onClick={() => navigate("/admin")}>
+                    <RiShieldUserLine size={24} />
+                    <span className="nav-label">Admin</span>
+                </div>
+
+                <div 
                     className={`nav-link ${isActive("/watchlist")}`}
                     onClick={() => navigate("/watchlist")}>
                     <VscListUnordered size={22} />
@@ -73,7 +70,7 @@ export default function SideNavBar() {
                 <div 
                     className={`nav-link ${isActive("/simulate")}`}
                     onClick={() => navigate("/simulate")}>
-                    <MdOutlineCurrencyExchange size={20} style={{ fontSize: "26px" }} />
+                    <MdOutlineCandlestickChart size={26} style={{ fontSize: "26px" }} />
                     <span className="nav-label">Trading Platform</span>
                 </div>
 
@@ -108,7 +105,7 @@ export default function SideNavBar() {
                 <div 
                     className={`nav-link ${isActive("/news")}`}
                     onClick={() => navigate("/news")}>
-                    <MdOutlineNewspaper size={21} style={{ fontSize: "22px" }} />
+                    <MdOutlineNewspaper size={22} style={{ fontSize: "22px" }} />
                     <span className="nav-label">Crypto News</span>
                 </div>
 
