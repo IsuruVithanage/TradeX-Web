@@ -7,8 +7,8 @@ import Input from '../../Components/Input/Input';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
 import alertServices from "./alertServices";
-import DeleteIcon from '@mui/icons-material/Delete';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import './Alert.css';
 
 
@@ -330,9 +330,10 @@ function DeleteOrClearModal (props) {
                     <h1 style={{textAlign:"center"}}>{deleteOrClearAlert === 'clearAll' ? 'Clear All Alerts' : 'Delete the Alert'}</h1>
                     <p style={{textAlign:"center", marginTop: "10px", color: "#9e9e9e"}}>{deleteOrClearAlert === 'clearAll' ? 'Are you sure you want to clear all alerts?' : 'Are you sure you want to delete the alert?'}</p>
                     <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>{
-                        deleteOrClearAlert === 'clearAll' ? 
-                        <DeleteSweepIcon style={{color: '#49494980', fontSize: '80px'}}/> : 
-                        <DeleteIcon style={{color: '#49494980', fontSize: '70px'}}/>
+                        // deleteOrClearAlert === 'clearAll' ? 
+                        // <DeleteSweepIcon style={{color: '#49494980', fontSize: '80px'}}/> : 
+                        // <DeleteIcon style={{color: '#49494980', fontSize: '70px'}}/>
+                        <div>Icon</div>
                     }</div>
                     <div className="edit-alert-modal-button-container" style={{width: '250px', marginTop: '30px'}}>
                         <Input type="button" style={{width:"110px"}} onClick={() => call(deleteOrClearAlert)} value={deleteOrClearAlert === 'clearAll' ? 'Clear All' : 'Delete'} red/>

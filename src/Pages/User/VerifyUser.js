@@ -7,18 +7,17 @@ import './VerifyUser.css'
 import {ImCamera} from "react-icons/im";
 import {validationSchema} from "../../Validation/UserValidation";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useSelector} from "react-redux";
+import {get, useForm} from "react-hook-form";
 import AWS from 'aws-sdk';
 import {v4 as uuidv4} from 'uuid';
 import {Upload} from 'antd';
 import {showMessage} from "../../Components/Message/Message";
 import LinearWithValueLabel from "../../Components/Loading/LinearWithValueLabel";
 import {useNavigate} from "react-router-dom";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function VerifyUser() {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+    const user = getUser();
 
     useEffect(() => {
         console.log("userId", user.id);

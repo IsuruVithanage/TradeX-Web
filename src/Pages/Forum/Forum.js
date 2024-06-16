@@ -10,7 +10,6 @@ import "./forum.css";
 import Questionset from "./Questionset";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
-import { Shuffle } from "@mui/icons-material";
 
 export default function Forum() {
   let { id } = useParams();

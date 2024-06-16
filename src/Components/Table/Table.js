@@ -34,6 +34,8 @@ export default function Table(props) {
     )
 }
 
+
+
 export function TableRow(props) {
     return (
         <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={props.onClick}>
@@ -45,6 +47,8 @@ export function TableRow(props) {
         </tr>
     );
 }
+
+
 
 export function Coin(props) {
     const coinData = require('../../Assets/Images/Coin Images.json')[props.children];	

@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import notificationManager from '../../Pages/Alert/notificationManager';
 import axios from 'axios';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import NotificationsActiveOutlined from '@mui/icons-material/NotificationsActiveOutlined';
-import NotificationsActive from '@mui/icons-material/NotificationsActive';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import './AppNotification.css';
+
+import { 
+    MdVerified,
+    MdNotifications,
+    MdOutlineNotificationsActive,
+    MdNotificationsActive
+} from "react-icons/md";
+
+
 
 
 export default function AppNotification({ user }) {
@@ -17,6 +22,8 @@ export default function AppNotification({ user }) {
 
     const isVerified = user ? user.isVerified === "Yes" : false;
     const userId = user && user.id;
+
+    console.log("isVerified: ", isVerified)
 
     
     const verifyAccountNotification = {
@@ -94,7 +101,7 @@ export default function AppNotification({ user }) {
                     badgeContent={0}
                     variant="dot"
                     showZero={badgeVisible}>
-                    <NotificationsIcon className="notification-icon" />
+                    <MdNotifications className="notification-icon" />
                 </Badge>
             </div>
 
@@ -116,8 +123,8 @@ function AppNotificationRow({ icon, title, body, onClick, isViewed, sentAt }) {
     onClick = !onClick ? null : onClick.slice(21);
     sentAt = !sentAt ? null : new Date(sentAt).toLocaleTimeString('en-us', { timeStyle: 'short', hour12: true});
     icon =  
-        icon === "verify" ? <VerifiedIcon size={25} style={{ color: "#ffd700" }} /> : 
-        isViewed ? <NotificationsActiveOutlined size={25} /> : <NotificationsActive size={25} />;
+        icon === "verify" ? <MdVerified size={25} fill='#FFD700' /> : 
+        isViewed ? <MdOutlineNotificationsActive size={25} /> : <MdNotificationsActive size={25} />;
 
     return (
         <div

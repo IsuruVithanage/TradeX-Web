@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useState} from "react";
 import BlackBar from "../../../../Components/WalletComponents/BlackBar";
 import Head from "../../../../Components/WalletComponents/Head";
 import "./HaveAccount.css";
@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../../Components/Input/Input";
 import axios from "axios";
 import { showMessage } from '../../../../Components/Message/Message';
-import {useSelector} from "react-redux";
 import { useDispatch } from 'react-redux';
 import { setAccessToken } from '../../../../Features/authSlice';
 

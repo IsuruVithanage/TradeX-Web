@@ -114,7 +114,7 @@ function ProfileMenu (props){
                     <span className='row-name'>Verify User</span>
                 </div>
             }
-            {user && user.role !== "User" && 
+            {/* {user && user.role !== "User" &&  */ true &&
                 <div className='profile-raw' onClick={() => window.open('/wallet', '_blank')}>
                     <span className='row-icon'><BiShieldX size={29}/></span>
                     <span className='row-name'>TradeX Wallet</span>

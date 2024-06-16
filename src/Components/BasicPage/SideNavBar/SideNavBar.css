@@ -1,5 +1,6 @@
 .side-navbar {
-    width: 6%;
+    width: 6vw;
+    min-width: 50px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -10,46 +11,50 @@
 }
 
 .icon-container {
-    padding: 22%;
+    padding: 20px 0;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     background-color: #0E0E0F;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-link {
     display: flex;
+    height: 6.3vh;
     align-items: center;
     color: #6D6D6D;
-    margin-bottom: 25%;
-    padding: 8px;
-    margin: auto;
-    font-size: 1.3rem;
     position: relative;
+}
+
+.nav-icon{
+    width: 0;
+    height: 0;
+    z-index: 2;
 }
 
 .nav-label{
     position: absolute;
-    left: -0.2vw;
+    left: -25px;
     z-index: 1;
     display: none;
-    height: 6vh;
+    height: 6.3vh;
     width: max-content;
     align-items: center;
     font-size: 16px;
     font-weight: 500;
     color: #21DB9A;
-    background-color: #181818;
-    padding-left: 3vw;
+    background-color: #151515;
+    padding-left: 48px;
     padding-right: 20px;
-    border-radius: 20px;
-    box-sizing: border-box;
+    border-radius: 22px;
     box-shadow: 0 0 15px 3px #0b0b0b;
 }
 
-.nav-link svg {
+.nav-icon svg {
     transition: fill 0.3s ease;
-    z-index: 2;
+    transform: translate(-50%, -50%);
 }
 
 .nav-link:hover .nav-label{
@@ -59,11 +64,11 @@
 .nav-link:hover svg,
 .nav-link.active svg {
     fill: #21DB9A;
+    color: #21DB9A;
 }
 
 .logo-container {
-    padding-top: 27%;
-    padding-bottom: 23%;
+    padding-top: 25%;
     text-align: center;
     background-color: #0E0E0F;
 }

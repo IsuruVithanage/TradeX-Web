@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import { Radio, Space} from 'antd';
 import './QuestionBar.css';
-import {Input, Radio, Space} from 'antd';
+
 
 export default function QuestionBar(props) {
     const [value, setValue] = useState(0);

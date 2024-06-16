@@ -3,9 +3,10 @@ import {Link, useNavigate} from "react-router-dom";
 import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
-import "./Login.css";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {setAccessToken, setUser} from "../../Storage/SecureLs";
+import "./Login.css";
+
 
 function Login() {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Login() {
     });
 
     const [errors, setErrors] = useState({});
+    
     const handleInput = (event) => {
         setValues({
             ...values,
@@ -32,6 +34,7 @@ function Login() {
             const user = response.data.user;
             setUser(user);
             setAccessToken(token);
+
             notificationManager.getToken();
 
             console.log('Login success');
