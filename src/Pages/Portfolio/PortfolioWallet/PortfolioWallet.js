@@ -12,6 +12,7 @@ import Modal from '../../../Components/Modal/Modal'
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
+import {getUser} from "../../../Storage/SecureLs";
 
 
 

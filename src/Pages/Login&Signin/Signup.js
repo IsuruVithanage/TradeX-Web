@@ -10,6 +10,7 @@ import "./Signup.css";
 
 
 
+
 function Signup() {
     const navigate = useNavigate();
     const axiosInstance = useAuthInterceptor();
@@ -59,6 +60,7 @@ function Signup() {
         } catch (err) {
             console.error('Login error:', err);
         }
+
     };
 
 

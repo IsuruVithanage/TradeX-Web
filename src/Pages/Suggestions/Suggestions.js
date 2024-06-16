@@ -63,7 +63,7 @@ export default function Suggestions() {
     const loadOrderHistory = async () => {
         try {
             const res = await axiosInstance.get(
-                `/order/getOrderByCato/${type}`
+                `/order/getAllOrdersByIdAndCato/${type}/${user.id}`
             );
             setOrderHistory(res.data);
             setSelectedOrder(res.data[0]);

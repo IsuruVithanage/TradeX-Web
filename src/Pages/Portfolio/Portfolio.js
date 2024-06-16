@@ -8,6 +8,7 @@ import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
 import axios from 'axios';
+import {getUser} from "../../Storage/SecureLs";
 
 
 export default function Portfolio() {

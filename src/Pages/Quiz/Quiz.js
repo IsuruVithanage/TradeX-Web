@@ -7,7 +7,7 @@ import QuizTimer from "../../Components/QuizComponents/QuizTImer";
 import Modal from "../../Components/Modal/Modal";
 import Input from "../../Components/Input/Input";
 import { useNavigate } from "react-router-dom";
-import { getUser } from '../../Storage/SecureLs';
+import {getUser} from "../../Storage/SecureLs";
 
 export default function Quiz() {
     const user = getUser();
