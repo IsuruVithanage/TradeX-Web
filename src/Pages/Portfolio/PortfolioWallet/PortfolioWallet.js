@@ -11,6 +11,7 @@ import { showMessage } from '../../../Components/Message/Message';
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
+import {getUser} from "../../../Storage/SecureLs";
 
 
 export default function FundingWallet() {
@@ -28,9 +29,9 @@ export default function FundingWallet() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user && user.id;
-    const userName = user && user.userName;
+    const user = getUser();
+    const userId = user.id;
+    const userName = user.userName;
     
 
     useEffect(() => {

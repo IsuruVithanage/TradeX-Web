@@ -5,8 +5,7 @@ import trade from "../../Assets/Images/trade.png";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import Validation from "./SignupValidation";
-import {setAccessToken} from "../../Features/authSlice";
-import { useDispatch } from 'react-redux';
+import {setAccessToken, setUser} from "../../Storage/SecureLs";
 
 function Signup({firebase}) {
     const navigate = useNavigate();
@@ -18,7 +17,6 @@ function Signup({firebase}) {
         hasTakenQuiz: false,
         level: "",
     });
-    const dispatch = useDispatch();
 
     const [errors, setErrors] = useState({});
 
@@ -44,11 +42,9 @@ function Signup({firebase}) {
             .then((res) => {
                 const token = res.data.accessToken;
                 const user = res.data.user;
+                setUser(user);
+                setAccessToken(token);
 
-                console.log('User', user);
-
-                localStorage.setItem('user', JSON.stringify(user));
-                dispatch(setAccessToken(token));
                 console.log('Access token ', token);
                 console.log('Login success');
                 firebase.getToken(user.userId);

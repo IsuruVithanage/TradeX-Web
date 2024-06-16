@@ -6,6 +6,7 @@ import Input from '../../Components/Input/Input';
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import { showMessage } from '../../Components/Message/Message'
 import coins from '../../Assets/Images/Coin Images.json'
+import {getUser} from "../../Storage/SecureLs";
 
 export default function History() {
     const [selectedSection, setSelectedSection] = useState("Trading");
@@ -20,8 +21,8 @@ export default function History() {
     const backendAPI = (selectedSection === "Trading") ? 
     "http://localhost:8005/order/getAllOrders" : 
     'http://localhost:8011/portfolio/history/';
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user && user.id;
+    const user = getUser();
+    const userId = user.id;
 
     
     const coinOptions = [...new Set(historyData.map(item => item.coin))].map(coin => ({

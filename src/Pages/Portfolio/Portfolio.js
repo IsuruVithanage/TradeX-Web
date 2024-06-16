@@ -7,6 +7,7 @@ import ValueBar from '../../Components/ValueBar/ValueBar';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import {showMessage} from '../../Components/Message/Message';
 import axios from 'axios';
+import {getUser} from "../../Storage/SecureLs";
 
 export default function Portfolio() {
     const [assets, setAssets] = useState([]);
@@ -16,7 +17,7 @@ export default function Portfolio() {
     const [initialData, setInitialData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = getUser();
     const userId = user && user.id;
 
 

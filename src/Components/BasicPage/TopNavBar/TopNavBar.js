@@ -8,9 +8,6 @@ import { LuLogOut } from "react-icons/lu";
 import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
-import {clearAccessToken, setAccessToken} from "../../../Features/authSlice";
-import {useAuthInterceptor} from "../../../Authentication/axiosInstance";
-import Cookies from 'js-cookie';
 import {getUser} from "../../../Storage/SecureLs";
 
 
@@ -71,7 +68,7 @@ export default function TopNavBar(props) {
                 <div className="top-right-container">
                     <div onMouseEnter={()=>setProfileMenuVisible(true)} onMouseLeave={()=>setProfileMenuVisible(false)}>
                         <div className="top-right-icon-container">
-                            <span className="user-name" >{userName}</span>
+                            <span className="topnavbar-user-name" >{userName}</span>
                             <BiSolidUserRectangle className="profile-icon"/>
                         </div>
 
