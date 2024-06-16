@@ -2,12 +2,9 @@ import React from "react";
 import "./dailysummary.css";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
-import Switch from "@mui/material/Switch";
-import { Box } from "@mui/system";
 import Modal from "antd/es/modal/Modal";
 import { useState, useEffect } from "react";
 
-import { useRef } from "react";
 import symbols from "../../Assets/Images/Coin Images.json";
 import axios from "axios";
 import SummaryReport from "./SummaryReport";
@@ -19,8 +16,8 @@ import TrendingCoinChart from "./TrendingCoinChart";
 function Dailysummary() {
   // create the tabs
   const Tabs = [
-    { label: "Daily", path: "/Summary/Dailysummary" },
-    { label: "Monthly", path: "Dailysummary/Monthlysummary" },
+    { label: "Daily", path: "/summary/daily" },
+    { label: "Monthly", path: "/summary/monthly" },
   ];
   // imported
   const label = { inputProps: { "aria-label": "Switch demo" } };

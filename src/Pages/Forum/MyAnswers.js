@@ -8,12 +8,12 @@ import { useParams } from "react-router-dom";
 import Answerset from "./Answerset";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
-
-import { useSelector } from "react-redux";
+import { getUser } from "../../Storage/SecureLs";
+import { get } from "react-hook-form";
 
 export default function MyAnswers() {
   let { id } = useParams();
-  const user = useSelector((state) => state.user);
+  const user = getUser();
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },

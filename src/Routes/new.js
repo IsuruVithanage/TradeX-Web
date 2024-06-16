@@ -13,14 +13,13 @@ import BasicPage from "../Components/BasicPage/BasicPage";
 import Simulation from "../Pages/SimulateTradingPlatform/TradingPlatform";
 import Alert from "../Pages/Alert/Alert";
 import Suggestions from "../Pages/Suggestions/Suggestions";
-import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login";
 import PrivateRoute from "../Components/PrivateRoute";
 
-export default function Router({ firebase }) {
+export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
@@ -73,19 +72,15 @@ export default function Router({ firebase }) {
     },
     {
       path: "/simulate",
-      element: <PrivateRoute><Simulation firebase={firebase} /></PrivateRoute>,
+      element: <PrivateRoute><Simulation /></PrivateRoute>,
     },
     {
       path: "/alert",
-      element: <PrivateRoute><Alert firebase={firebase} /></PrivateRoute>,
+      element: <PrivateRoute><Alert /></PrivateRoute>,
     },
     {
       path: "/suggestion",
       element: <PrivateRoute><Suggestions /></PrivateRoute>,
-    },
-    {
-      path: "/Questionbar/Detailed/:id",
-      element: <PrivateRoute><Detailed /></PrivateRoute>,
     },
     {
       path: "/quiz",

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import { useLocation } from 'react-router-dom'
+import { showMessage } from '../../../Components/Message/Message';
+import { getUser } from '../../../Storage/SecureLs';
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import { MdOutlineAssignment, } from "react-icons/md";
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Modal from '../../../Components/Modal/Modal'
-import Table, { TableRow, Coin } from '../../../Components/Table/Table'
-import { showMessage } from '../../../Components/Message/Message';
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
 import {getUser} from "../../../Storage/SecureLs";
+
 
 
 export default function FundingWallet() {
@@ -30,8 +32,8 @@ export default function FundingWallet() {
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const user = getUser();
-    const userId = user.id;
-    const userName = user.userName;
+    const userId = user && user.id;
+    const userName = user && user.userName;
     
 
     useEffect(() => {
@@ -82,7 +84,7 @@ export default function FundingWallet() {
                 showMessage(error.response.status, error.response.data.message)   :
                 showMessage('error', 'Database connection failed..!') ;
             });
-    }, [ currentWallet ]);
+    }, [ currentWallet, userId ]);
 
 
 
@@ -276,7 +278,7 @@ export default function FundingWallet() {
                                     <Input type="text" label='Wallet Address' value={walletAddressValue} onChange={(e) => setWalletAddressValue(e.target.value)}/> 
                                 </div>
                                 <div className="paste-text-button" onClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}>
-                                    <AssignmentOutlinedIcon/>
+                                    <MdOutlineAssignment/>
                                 </div>
                                 <div className='paste-bottom-layer' />
                             </div> 

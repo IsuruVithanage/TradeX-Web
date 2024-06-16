@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
+import {showMessage} from '../../Components/Message/Message';
+import { getUser } from '../../Storage/SecureLs';
+import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
-import Table, {TableRow, Coin} from '../../Components/Table/Table';
-import {showMessage} from '../../Components/Message/Message';
 import axios from 'axios';
 import {getUser} from "../../Storage/SecureLs";
+
 
 export default function Portfolio() {
     const [assets, setAssets] = useState([]);
@@ -48,7 +50,7 @@ export default function Portfolio() {
             showMessage('error', 'Database connection failed..!') ;
         });
 
-    }, []);
+    }, [userId]);
   
 
 

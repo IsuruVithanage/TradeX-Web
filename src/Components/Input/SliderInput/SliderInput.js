@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Slider} from 'antd';
+import { Slider } from 'antd';
 import "./SliderInput.css"
 
 const marks = {

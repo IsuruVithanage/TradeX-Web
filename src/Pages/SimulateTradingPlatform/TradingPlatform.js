@@ -14,7 +14,7 @@ import BuyButton from "../../Components/Input/Button/BuyButton";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {getUser} from "../../Storage/SecureLs";
 
-export default function TradingPlatform({firebase}) {
+export default function TradingPlatform() {
     const user = getUser();
     const axiosInstance = useAuthInterceptor();
 

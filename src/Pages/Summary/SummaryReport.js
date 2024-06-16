@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto"; // This is important for Chart.js v3
 import "./SummaryReport.css";
 import symbols from "../../Assets/Images/Coin Images.json";
-import { display } from "@mui/system";
 import TrendingCoinChart from "./TrendingCoinChart";
 
 const SummaryReport = ({
