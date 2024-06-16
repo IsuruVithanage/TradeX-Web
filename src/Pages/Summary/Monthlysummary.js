@@ -2,8 +2,6 @@ import React from 'react'
 import './Monthlysummary.css'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
-import Switch from '@mui/material/Switch';
-import { Box } from '@mui/system';
 
 
 function Dailysummary() {

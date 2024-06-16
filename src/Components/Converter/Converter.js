@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './Converter.css';
 import Input from "../Input/Input";
+import './Converter.css';
 
 const CurrencyConverter = () => {
     const [amount, setAmount] = useState(1);

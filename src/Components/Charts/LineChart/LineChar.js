@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
-import {createChart} from 'lightweight-charts';
-import {Tooltip} from "antd";
+import React, { useState, useEffect, useRef } from 'react';
+import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
+import { createChart } from 'lightweight-charts';
+import { Tooltip } from "antd";
 import './LineChart.css';
 
 

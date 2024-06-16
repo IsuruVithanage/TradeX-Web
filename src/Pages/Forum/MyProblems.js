@@ -9,12 +9,11 @@ import { useParams } from "react-router-dom";
 import Questionset from "./Questionset";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
-import { Shuffle } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { getUser } from "../../Storage/SecureLs";
 
 export default function MyProblems() {
   let { id } = useParams();
-  const user = useSelector((state) => state.user);
+  const user = getUser();
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },

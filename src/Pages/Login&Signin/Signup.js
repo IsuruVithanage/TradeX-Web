@@ -1,17 +1,20 @@
 import React, {useState} from "react";
 import notificationManager from "../Alert/notificationManager";
-import "./Signup.css";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import trade from "../../Assets/Images/trade.png";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {setAccessToken, setUser} from "../../Storage/SecureLs";
 import Validation from "./SignupValidation";
-import {setAccessToken} from "../../Features/authSlice";
-import { useDispatch } from 'react-redux';
+import "./Signup.css";
+
+
 
 function Signup() {
     const navigate = useNavigate();
-    const [values, setvalues] = useState({
+    const axiosInstance = useAuthInterceptor();
+
+    const [values, setValues] = useState({
         userName: "",
         email: "",
         password: "",
@@ -19,44 +22,46 @@ function Signup() {
         hasTakenQuiz: false,
         level: "",
     });
-    const dispatch = useDispatch();
 
     const [errors, setErrors] = useState({});
 
     const handleChange = (event) => {
-        setvalues({
+        setValues({
             ...values,
             [event.target.name]: event.target.value,
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setErrors(Validation(values));
-        console.log(values);
 
-        if (values.userName === "" || values.email === "" || values.password === "") {
-            console.log("Please fill all the fields");
-            return;
+        try{
+            const response = await axiosInstance.post('/user/register', values);
+            const token = response.data.accessToken;
+            const user = response.data.user;
+            setUser(user);
+            setAccessToken(token);
+
+            notificationManager.getToken();
+
+            console.log('Signup success');
+
+            if (user.role === 'User') {
+                if (user.hasTakenQuiz) {
+                    navigate('/watchlist');
+                } else {
+                    navigate('/quiz');
+                }
+            } else {
+                navigate('/admin/AdDashboard');
+            }
+        } catch (err) {
+            console.error('Login error:', err);
         }
-
-        axios
-            .post(`${process.env.REACT_APP_API_GATEWAY}/user/register`, values)
-            .then((res) => {
-                const token = res.data.accessToken;
-                const user = res.data.user;
-
-                console.log('User', user);
-
-                localStorage.setItem('user', JSON.stringify(user));
-                dispatch(setAccessToken(token));
-                console.log('Access token ', token);
-                console.log('Login success');
-                notificationManager.getToken();
-                navigate("/quiz")
-            })
-            .catch((err) => console.log(err));
     };
+
+
     return (
         // Sign in box of the page
         <BasicPage
@@ -112,7 +117,7 @@ function Signup() {
                     <div className="have-account">
                         <div className="have-text">Already have an account?</div>
                         <Link to="/login">
-                            <div className="login-link">Login</div>
+                            <div className="login-link" >Login</div>
                         </Link>
                     </div>
                 </div>

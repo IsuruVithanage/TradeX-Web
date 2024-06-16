@@ -5,13 +5,14 @@ import { getUser } from '../../../Storage/SecureLs';
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import { MdOutlineAssignment, } from "react-icons/md";
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Modal from '../../../Components/Modal/Modal'
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
+
 
 
 export default function FundingWallet() {
@@ -276,7 +277,7 @@ export default function FundingWallet() {
                                     <Input type="text" label='Wallet Address' value={walletAddressValue} onChange={(e) => setWalletAddressValue(e.target.value)}/> 
                                 </div>
                                 <div className="paste-text-button" onClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}>
-                                    <AssignmentOutlinedIcon/>
+                                    <MdOutlineAssignment/>
                                 </div>
                                 <div className='paste-bottom-layer' />
                             </div> 
