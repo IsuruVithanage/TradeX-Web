@@ -8,21 +8,21 @@ import Table, { TableRow,Coin} from '../../../Components/Table/Table'
 import axios from 'axios';
 import { showMessage } from '../../../Components/Message/Message';
 
-
 export default function DashBoard() {
 
 
     const [action,setAction] = useState("Send")
     const [assets,setAssets] = useState([])
-    const userId = 1;
     const [portfolioValue,setPortfolioValue] = useState(0)
     const [usdBalance,setUsdBalance] = useState(0)
     const [isLoading,setIsLoading] = useState(true)
     const [receivingWallet,setReceivingWallet] = useState(null)
     const [selectedCoin,setSelectedCoin] = useState("")
     const [quantity,setQuantity] = useState(null)
-    const walletAddress = "wwwww"
     const [isInvalid,setIsInvalid] = useState([true,null])
+    const [walletAddress,setWalletAddress] = useState("")
+    const userId = 1;
+    const userName = "sayya";
 
 
 // initial data fetching
@@ -34,6 +34,7 @@ export default function DashBoard() {
           })
         .then(res=>{
             console.log(res.data);
+            setWalletAddress(res.data.address)
             setPortfolioValue (res.data.portfolioValue) 
             setUsdBalance  (res.data.usdBalance)
             setAssets(res.data.assets)
@@ -100,6 +101,19 @@ export default function DashBoard() {
         });
 }
 
+const regenerateAddress = async()=>{
+    axios.post("http://localhost:8006/wallet/generateAddress",{
+        userId,userName,withCredentials: true
+    })
+    .then((res) =>{
+        setWalletAddress(res.data.walletAddress);
+    })
+    .catch((error)=>{
+        console.log("Address regenerate failed",error);
+        showMessage("error","Address regenerate failed");
+    })
+}
+
 // validate inputs fields
 useEffect(() => {
 
@@ -160,7 +174,16 @@ useEffect(() => {
 
                         <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>     
                      </div>
-                     : <p>...Wallet Address</p>
+                     : 
+                      <div>
+                        <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                        <Input type = "button" value = "Copy" style = {{marginTop:"20px"}}  onClick = {() => {
+                            navigator.clipboard.writeText(walletAddress); 
+                            showMessage("info","Address copied");
+                        }}/>
+
+                        <Input type = "button" value = "Regenerate" red style = {{marginTop:"20px"}} onClick = {regenerateAddress}/>
+                      </div> 
                      }
 
                                               

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { getUser } from '../../Storage/SecureLs';
+import { showMessage } from '../../Components/Message/Message'
+import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import axios from 'axios';
 import BasicPage from '../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../Components/Input/Input';
-import Table, { TableRow, Coin } from '../../Components/Table/Table';
-import { showMessage } from '../../Components/Message/Message'
 import coins from '../../Assets/Images/Coin Images.json'
+import {getUser} from "../../Storage/SecureLs";
+
 
 export default function History() {
     const [selectedSection, setSelectedSection] = useState("Trading");
@@ -20,7 +23,7 @@ export default function History() {
     const backendAPI = (selectedSection === "Trading") ? 
     "http://localhost:8005/order/getAllOrders" : 
     'http://localhost:8011/portfolio/history/';
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = getUser();
     const userId = user && user.id;
 
     
@@ -71,7 +74,7 @@ export default function History() {
             showMessage('error', 'Database connection failed..!') ;
         });
 
-    }, [selectedSection, backendAPI]);
+    }, [userId, selectedSection, backendAPI]);
 
 
 

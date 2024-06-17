@@ -9,7 +9,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-import { width } from "@mui/system";
+
 
 const socket = io("/", {
   reconnection: true,

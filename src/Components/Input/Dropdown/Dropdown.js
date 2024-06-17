@@ -1,4 +1,3 @@
-import { borderBottom, borderBottomColor, borderTop, padding } from '@mui/system';
 import Select from 'react-select';
 
 export default function Dropdown (props) {

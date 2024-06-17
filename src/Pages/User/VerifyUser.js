@@ -7,18 +7,17 @@ import './VerifyUser.css'
 import {ImCamera} from "react-icons/im";
 import {validationSchema} from "../../Validation/UserValidation";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useSelector} from "react-redux";
+import {get, useForm} from "react-hook-form";
 import AWS from 'aws-sdk';
 import {v4 as uuidv4} from 'uuid';
 import {Upload} from 'antd';
 import {showMessage} from "../../Components/Message/Message";
 import LinearWithValueLabel from "../../Components/Loading/LinearWithValueLabel";
 import {useNavigate} from "react-router-dom";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function VerifyUser() {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+    const user = getUser();
 
     useEffect(() => {
         console.log("userId", user.id);
@@ -79,6 +78,25 @@ export default function VerifyUser() {
                 .catch(error => {
                     console.error('Error:', error);
                 })
+        }
+    }
+
+    const updateUserVerifyStatus = async () => {
+        const ob = {
+            id: user.id,
+            status: "Pending",
+        }
+        try {
+            await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
+                body: JSON.stringify(ob)
+            });
+        } catch (error) {
+            console.error("Error allocating starting fund:", error);
         }
     }
 
@@ -235,8 +253,7 @@ export default function VerifyUser() {
             saveData().then(r => {
                 setIsSubmit(false);
                 showMessage('Success', 'Data saved successfully');
-                navigate('/watchList');
-
+                updateUserVerifyStatus().then(r => navigate('/watchList'));
             });
 
         }
