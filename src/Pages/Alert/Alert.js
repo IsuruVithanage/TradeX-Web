@@ -60,14 +60,12 @@ export default function Alert() {
                 });
         }
 
-        notificationManager.addOnMessage(() => {
-            getAlerts();
-        });
+        notificationManager.onPushNotification(getAlerts);
 
         getAlerts();
 
         return () => {
-            notificationManager.removeOnMessage();
+            notificationManager.onPushNotification(() => {});
         }
 
     }, [selectedPage, isRegistered, userId]);
