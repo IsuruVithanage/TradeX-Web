@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NotFound from "../Pages/NotFound/NotFound";
 import App from "../App";
 import Simulation from "../Pages/SimulateTradingPlatform/TradingPlatform";
 import Alert from "../Pages/Alert/Alert";
@@ -23,16 +24,15 @@ export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
-      errorElement: <App />,
+      element: <App />,
     },
     {
       path: "/signup",
       element: <Signup />,
     },
     {
-      path: "/home",
-      element: <App />,
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "/admin/*",
@@ -85,6 +85,10 @@ export default function Router() {
     {
       path: "/verify",
       element: <VerifyUser />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 
