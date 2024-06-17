@@ -104,9 +104,8 @@ class NotificationManager {
 
 
     async getToken() {
-         // const user = getUser();
-        // const userId = user && user.id;
-        const userId = false;
+        const user = getUser();
+        const userId = user && user.id;
         const permission = await this.requestPermission();
 
 
@@ -187,9 +186,8 @@ class NotificationManager {
 
 
     async connectWebSocket() {
-        // const user = getUser();
-        // const userId = user && user.id;
-        const userId = false;
+        const user = getUser();
+        const userId = user && user.id;
 
         if(!userId){
             return;

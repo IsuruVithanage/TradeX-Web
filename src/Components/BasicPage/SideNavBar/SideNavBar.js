@@ -17,11 +17,8 @@ import "./SideNavBar.css";
 
 
 
-
-
-
 export default function SideNavBar() {
-    user = getUser();
+    const user = getUser();
     const userRole = user && user.role;
     const currentLocation = useLocation().pathname;
     const navigate = useNavigate();

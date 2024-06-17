@@ -12,7 +12,7 @@ export default function App() {
   const width = document.documentElement.clientWidth;
 
   return (
-    <BasicPage sideNavBar={false} icon={<img src={trade} width="73px" alt='tradex'/>}>
+    <BasicPage sideNavBar={false} topNavBar={false} icon={<img src={trade} width="73px" alt='tradex'/>}>
       <div style={{display:"flex", position:"absolute", bottom:"10px"}}>
         <p>Height : {height}</p>
         <p style={{marginLeft:"55px"}}>Width : {width}</p>
