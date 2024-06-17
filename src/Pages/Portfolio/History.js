@@ -7,7 +7,6 @@ import BasicPage from '../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import Input from '../../Components/Input/Input';
 import coins from '../../Assets/Images/Coin Images.json'
-import {getUser} from "../../Storage/SecureLs";
 
 
 export default function History() {
