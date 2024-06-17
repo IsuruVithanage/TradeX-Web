@@ -34,6 +34,7 @@ export default function DashBoard() {
           })
         .then(res=>{
             console.log(res.data);
+            console.log("run");
             setWalletAddress(res.data.address)
             setPortfolioValue (res.data.portfolioValue) 
             setUsdBalance  (res.data.usdBalance)
