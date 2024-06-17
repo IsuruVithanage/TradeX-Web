@@ -14,7 +14,8 @@ import { useSelector } from "react-redux";
 
 export default function MyProblems() {
   let { id } = useParams();
-  const user = useSelector((state) => state.user);
+  const usertemp = localStorage.getItem("user");
+  const user = JSON.parse(usertemp);
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -23,10 +24,14 @@ export default function MyProblems() {
 
   const [questionlist, setQuestionList] = useState([]);
 
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   const loadQuestions = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/forum/getQuestionsByUserId/${user.user.id}`
+        `http://localhost:8010/forum/getQuestionsByUserId/${user.id}`
       );
       console.log(result.data);
       setQuestionList(result.data);

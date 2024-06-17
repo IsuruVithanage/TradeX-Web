@@ -7,13 +7,15 @@ import "./forum.css";
 import { useParams } from "react-router-dom";
 import Answerset from "./Answerset";
 import Input from "../../Components/Input/Input";
+
 import axios from "axios";
 
 import { useSelector } from "react-redux";
 
 export default function MyAnswers() {
   let { id } = useParams();
-  const user = useSelector((state) => state.user);
+  const usertemp = localStorage.getItem("user");
+  const user = JSON.parse(usertemp);
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -29,7 +31,7 @@ export default function MyAnswers() {
   const loadAnswers = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/answers/getAnswersByUserId/${user.user.id}`
+        `http://localhost:8010/answers/getAnswersByUserId/${user.id}`
       );
 
       const cleanedData = result.data.map((answer) => ({
@@ -117,17 +119,19 @@ export default function MyAnswers() {
           </div>
         }
       >
-        <div className="topic-row">
-          <div className="topic" style={{ marginLeft: "1.2rem" }}>
-            <h4>Topic</h4>
+        <div className="answer-component">
+          <div className="topic-row">
+            <div className="topic" style={{ marginLeft: "1.2rem" }}>
+              <h4>Topic</h4>
+            </div>
           </div>
-        </div>
 
-        {answerlist.length > 0 ? (
-          <Answerset answerlist={answerlist} />
-        ) : (
-          <div></div>
-        )}
+          {answerlist.length > 0 ? (
+            <Answerset answerlist={answerlist} />
+          ) : (
+            <div></div>
+          )}
+        </div>
       </SidePanelWithContainer>
     </BasicPage>
   );

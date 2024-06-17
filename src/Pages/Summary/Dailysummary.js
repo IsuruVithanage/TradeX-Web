@@ -36,15 +36,17 @@ function Dailysummary() {
   const [showTopGainers, setShowTopGainers] = useState(false);
   const [showTopLosses, setShowTopLosses] = useState(false);
   const [showTrendingCoin, setShowTrendingCoin] = useState(false);
-  const [showTradingHistory, setShowTradingHistory] = useState(false);
+  // const [showTradingHistory, setShowTradingHistory] = useState(false);
   const [showTradingSuggestions, setShowTradingSuggestions] = useState(false);
 
-  const [tradingHistory, setTradingHistory] = useState([]);
+  //const [tradingHistory, setTradingHistory] = useState([]);
   const [tradingSuggestions, setTradingSuggestions] = useState([]);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [selectedCoins, setSelectedCoins] = useState([]);
   // for customized coin
   // const [customizedCoins, setCustomizedCoins] = useState([]);
+
+  const [previewContent, setPreviewContent] = useState(null);
 
   // coin table
   useEffect(() => {
@@ -120,24 +122,19 @@ function Dailysummary() {
     symbols[coin.symbol]?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const fetchTradingHistory = async () => {
-    // Replace with your actual API call
-    return [{ coin: "BTC", type: "Buy", price: 50000, date: "2024-01-01" }];
-  };
-
   const fetchTradingSuggestions = async () => {
     // Replace with your actual API call
     return [{ coin: "ETH", action: "Sell", price: 2000, date: "2024-01-02" }];
   };
 
   useEffect(() => {
-    if (showTradingHistory)
-      fetchTradingHistory().then((history) => setTradingHistory(history));
+    // if (showTradingHistory)
+    //   fetchTradingHistory().then((history) => setTradingHistory(history));
     if (showTradingSuggestions)
       fetchTradingSuggestions().then((suggestions) =>
         setTradingSuggestions(suggestions)
       );
-  }, [showTradingHistory, showTradingSuggestions]);
+  }, [showTradingSuggestions]);
 
   //generate pdf
 
@@ -147,6 +144,7 @@ function Dailysummary() {
     reportElement.style.left = "-9999px";
     document.body.appendChild(reportElement);
 
+    // Render the SummaryReport component inside the hidden div
     ReactDOM.render(
       <SummaryReport
         coins={coins}
@@ -154,8 +152,6 @@ function Dailysummary() {
         showTopLosses={showTopLosses}
         showTrendingCoin={showTrendingCoin}
         selectedCoins={selectedCoins}
-        // customizedCoins={customizedCoins}
-        tradingHistory={tradingHistory}
         tradingSuggestions={tradingSuggestions}
       />,
       reportElement,
@@ -166,7 +162,7 @@ function Dailysummary() {
         const canvas = await html2canvas(reportElement, { scale: 2 });
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // A4 size
+        pdf.addImage(imgData, "PNG", 0, 0, 215.9, 355.6); // Legal size
 
         const pdfBlob = pdf.output("blob");
         const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -174,6 +170,18 @@ function Dailysummary() {
 
         document.body.removeChild(reportElement);
       }
+    );
+
+    //2 preview
+    setPreviewContent(
+      <SummaryReport
+        coins={coins}
+        showTopGainers={showTopGainers}
+        showTopLosses={showTopLosses}
+        showTrendingCoin={showTrendingCoin}
+        selectedCoins={selectedCoins}
+        tradingSuggestions={tradingSuggestions}
+      />
     );
   };
 
@@ -198,14 +206,14 @@ function Dailysummary() {
                 </div>
                 <div
                   className="coin-button"
-                  style={{ display: "inline-block", marginLeft: "6.5rem" }}
+                  style={{ display: "inline-block", marginLeft: "5rem" }}
                 >
                   <Input
                     type="button"
                     value="Add Coin"
                     outlined
                     green
-                    style={{ width: "150px", marginLeft: "120%" }}
+                    style={{ width: "150px", marginLeft: "15%" }}
                     onClick={() => setIsDeleteModalOpen(true)}
                   />
                 </div>
@@ -333,7 +341,7 @@ function Dailysummary() {
                   </div>
                 </div>
 
-                <div className="data">
+                {/* <div className="data">
                   <div className="tog-name">
                     <span>Trading History</span>
                   </div>
@@ -347,7 +355,7 @@ function Dailysummary() {
                       }
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <div className="data">
                   <div className="tog-name">
@@ -382,18 +390,14 @@ function Dailysummary() {
 
         {/* right side */}
         <div className="right-side">
-          <div className="template">
-            {showTopGainers}
-            {showTopLosses}
-            {showTrendingCoin && <TrendingCoinChart />}
-          </div>
+          <div className="template">{previewContent}</div>
           <div className="buttons">
             <Input
               type="button"
               value="Generate"
               className="generate-button"
               style={{ width: "87px" }}
-              onClick={() => setIsPreviewModalOpen(true)}
+              onClick={generatePDF}
             />
 
             <div className="preview"></div>

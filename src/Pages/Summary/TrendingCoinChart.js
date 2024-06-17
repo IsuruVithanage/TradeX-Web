@@ -68,7 +68,7 @@ const TrendingCoinChart = () => {
           {
             label: `${coinData.id.toUpperCase()} Price (USD)`,
             data,
-            borderColor: "rgb(75, 192, 192)",
+            borderColor: "#60a3bc",
             tension: 0.1,
           },
         ],

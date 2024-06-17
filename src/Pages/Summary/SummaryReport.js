@@ -5,6 +5,7 @@ import "./SummaryReport.css";
 import symbols from "../../Assets/Images/Coin Images.json";
 import { display } from "@mui/system";
 import TrendingCoinChart from "./TrendingCoinChart";
+import trade from "../../Assets/Images/trade.png";
 
 const SummaryReport = ({
   coins,
@@ -40,10 +41,11 @@ const SummaryReport = ({
       {
         label: "Average Price",
         data: selectedCoins.map((coin) => parseFloat(coin.lastPrice)),
-        backgroundColor: selectedCoins.map(
-          (coin, index) =>
-            `hsl(${(index * 360) / selectedCoins.length}, 70%, 50%)`
-        ),
+        // backgroundColor: selectedCoins.map(
+        //   (coin, index) =>
+        //     `hsl(${(index * 360) / selectedCoins.length}, 70%, 50%)`
+        // ),
+        backgroundColor: "#21DB9A",
         borderColor: "white",
         borderWidth: 1,
       },
@@ -88,110 +90,105 @@ const SummaryReport = ({
 
   return (
     <div className="summary-report">
-      <h3>Daily Summary Report : {new Date().toISOString().split("T")[0]}</h3>
-
-      {showTopGainers && (
-        <div className="top-gainers" style={{ display: "inline-block" }}>
-          <h5>Top Gainers</h5>
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>Difference</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topGainers.map((coin) => (
-                <tr key={coin.symbol}>
-                  <td>
-                    {" "}
-                    <img
-                      src={
-                        process.env.REACT_APP_COIN_IMAGE_BASE_URL +
-                        symbols[coin.symbol]?.img
-                      }
-                      alt={coin.symbol}
-                      style={{ width: "20px", marginRight: "10px" }}
-                    />
-                    {coin.symbol}
-                  </td>
-                  <td>{formatCurrency(coin.lastPrice)}</td>
-                  <td
-                    style={{
-                      color:
-                        parseFloat(coin.priceChangePercent) >= 0
-                          ? "green"
-                          : "red",
-                    }}
-                  >
-                    {parseFloat(coin.priceChangePercent).toFixed(2)}%
-                  </td>
+      {<img src={trade} width="50px" alt="tradex" style={{ float: "right" }} />}
+      <h3>
+        Daily Summary Report <br></br> {new Date().toISOString().split("T")[0]}
+      </h3>
+      <div className="tables">
+        {showTopGainers && (
+          <div className="top-gainers" style={{ display: "inline-block" }}>
+            <h5>Top Gainers</h5>
+            <table>
+              <thead>
+                <tr>
+                  <th>Coin</th>
+                  <th>Price</th>
+                  <th>Difference</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {showTopLosses && (
-        <div
-          className="top-losers"
-          style={{ display: "inline-block", marginLeft: "0.5rem" }}
-        >
-          <h5>Top Losses</h5>
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>Difference</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topLosers.map((coin) => (
-                <tr key={coin.symbol}>
-                  <td>
-                    {" "}
-                    <img
-                      src={
-                        process.env.REACT_APP_COIN_IMAGE_BASE_URL +
-                        symbols[coin.symbol]?.img
-                      }
-                      alt={coin.symbol}
-                      style={{ width: "20px", marginRight: "10px" }}
-                    />
-                    {coin.symbol}
-                  </td>
-                  <td>{formatCurrency(coin.lastPrice)}</td>
-                  <td
-                    style={{
-                      color:
-                        parseFloat(coin.priceChangePercent) >= 0
-                          ? "green"
-                          : "red",
-                    }}
-                  >
-                    {parseFloat(coin.priceChangePercent).toFixed(2)}%
-                  </td>
+              </thead>
+              <tbody>
+                {topGainers.map((coin) => (
+                  <tr key={coin.symbol}>
+                    <td>
+                      {" "}
+                      <img
+                        src={symbols[coin.symbol]?.img}
+                        alt={coin.symbol}
+                        style={{ width: "20px", marginRight: "10px" }}
+                      />
+                      {coin.symbol}
+                    </td>
+                    <td>{formatCurrency(coin.lastPrice)}</td>
+                    <td
+                      style={{
+                        color:
+                          parseFloat(coin.priceChangePercent) >= 0
+                            ? "green"
+                            : "red",
+                      }}
+                    >
+                      {parseFloat(coin.priceChangePercent).toFixed(2)}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {showTopLosses && (
+          <div
+            className="top-losers"
+            style={{ display: "inline-block", marginLeft: "0.5rem" }}
+          >
+            <h5>Top Losses</h5>
+            <table>
+              <thead>
+                <tr>
+                  <th>Coin</th>
+                  <th>Price</th>
+                  <th>Difference</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
+              </thead>
+              <tbody>
+                {topLosers.map((coin) => (
+                  <tr key={coin.symbol}>
+                    <td>
+                      {" "}
+                      <img
+                        src={symbols[coin.symbol]?.img}
+                        alt={coin.symbol}
+                        style={{ width: "20px", marginRight: "10px" }}
+                      />
+                      {coin.symbol}
+                    </td>
+                    <td>{formatCurrency(coin.lastPrice)}</td>
+                    <td
+                      style={{
+                        color:
+                          parseFloat(coin.priceChangePercent) >= 0
+                            ? "green"
+                            : "red",
+                      }}
+                    >
+                      {parseFloat(coin.priceChangePercent).toFixed(2)}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
       {showTrendingCoin && (
         <div className="trending-coin" style={{ height: "400px" }}>
           <h4>Trending Coin</h4>
           <TrendingCoinChart />
         </div>
       )}
-
       {selectedCoins.length > 0 && (
         <div
           className="selected-coins"
-          style={{ height: "400px", marginTop: "10px" }}
+          style={{ height: "400px", marginTop: "2px" }}
         >
           <h4>Customized Coins</h4>
           <Bar
@@ -200,7 +197,6 @@ const SummaryReport = ({
           />
         </div>
       )}
-
       {/* {showTrendingCoin && trendingPrices.length > 0 && (
         <div className="trending-coin" style={{ height: "400px" }}>
           <h3>Trending Coin: {customizedCoins[0]?.name || "Unknown"}</h3>
@@ -274,7 +270,6 @@ const SummaryReport = ({
           />
         </div>
       )} */}
-
       {/* {customizedCoins.length > 0 && (
         <div className="customized-coins">
           <h3>Customized Coins</h3>
@@ -314,7 +309,6 @@ const SummaryReport = ({
       {/* />
         </div>
       )} */}
-
       {/* Add sections for tradingHistory and tradingSuggestions if needed */}
     </div>
   );
