@@ -7,7 +7,7 @@ export default function NotFound() {
     return (
         <BasicPage>
             <div className='page-not-found-container'>
-                <div className='unauthorized-sub-container'>
+                <div className='page-not-found-sub-container'>
                     <span><VscSearchStop/></span>
                     <h1>404</h1>
                     <h2>Page Not Found</h2>
