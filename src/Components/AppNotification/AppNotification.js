@@ -23,8 +23,6 @@ export default function AppNotification({ user }) {
     const isVerified = user ? user.isVerified === "Yes" : false;
     const userId = user && user.id;
 
-    console.log("isVerified: ", isVerified)
-
     
     const verifyAccountNotification = {
         icon: "verify",
@@ -85,9 +83,7 @@ export default function AppNotification({ user }) {
         getNotifications();
 
 
-        notificationManager.onAppNotification(() => {
-            getNotifications();
-        });
+        notificationManager.setAppNotificationsSetter(getNotifications);
     }, [userId]);
 
 

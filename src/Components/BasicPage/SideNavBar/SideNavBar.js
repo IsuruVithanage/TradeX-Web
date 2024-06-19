@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getUser } from "../../../Storage/SecureLs";
 import { VscListUnordered } from "react-icons/vsc";
 import { FaRegBell } from "react-icons/fa";
 import { BsChatText } from "react-icons/bs";
@@ -16,10 +17,9 @@ import "./SideNavBar.css";
 
 
 
-
-
-
 export default function SideNavBar() {
+    const user = getUser();
+    const userRole = user && user.role;
     const currentLocation = useLocation().pathname;
     const navigate = useNavigate();
     const [activeIcon, setActiveIcon] = useState(currentLocation);
@@ -46,12 +46,14 @@ export default function SideNavBar() {
             </div>
 
             <nav className="icon-container">
+                {/*  userRole === "admin" &&  */ true &&
                 <div 
                     className={`nav-link ${isActive("/admin")}`}
                     onClick={() => navigate("/admin")}>
                     <span className="nav-icon"><RiShieldUserLine size={24} /></span>
                     <span className="nav-label">Admin</span>
                 </div>
+                }
 
                 <div 
                     className={`nav-link ${isActive("/watchlist")}`}

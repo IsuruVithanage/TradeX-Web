@@ -16,7 +16,7 @@ export default function DashBoard() {
     const [portfolioValue,setPortfolioValue] = useState(0)
     const [usdBalance,setUsdBalance] = useState(0)
     const [isLoading,setIsLoading] = useState(true)
-    const [receivingWallet,setReceivingWallet] = useState(null)
+    const [receivingWallet,setReceivingWallet] = useState("")
     const [selectedCoin,setSelectedCoin] = useState("")
     const [quantity,setQuantity] = useState(null)
     const [isInvalid,setIsInvalid] = useState([true,null])
@@ -34,6 +34,7 @@ export default function DashBoard() {
           })
         .then(res=>{
             console.log(res.data);
+            console.log("run");
             setWalletAddress(res.data.address)
             setPortfolioValue (res.data.portfolioValue) 
             setUsdBalance  (res.data.usdBalance)
@@ -57,10 +58,8 @@ export default function DashBoard() {
 
 // assets tranfering function
   const transfer = () => {
-    setReceivingWallet(null);
-    setSelectedCoin(null);
-    setQuantity(null);
     setIsLoading(true);
+    console.log("quantity",quantity);
 
 
     const data = {
@@ -87,6 +86,9 @@ export default function DashBoard() {
             setAssets(res.data.assets);
             setUsdBalance( res.data.usdBalance );
             setPortfolioValue( res.data.portfolioValue);
+            setReceivingWallet("");
+            setSelectedCoin(null);
+            setQuantity(null);
             setIsLoading(false);
             showMessage('success', 'Transaction Successful..!') ;
         })
@@ -99,6 +101,7 @@ export default function DashBoard() {
             showMessage(error.response.status, error.response.data.message)   :
             showMessage('error', 'Transaction Failed..!') ;
         });
+        
 }
 
 const regenerateAddress = async()=>{
@@ -158,7 +161,7 @@ useEffect(() => {
 
                      {action === "Send" ?
                         <div> 
-                            <Input type="text" label='Wallet Address'  onChange={(e)=> setReceivingWallet (e.target.value)}/> 
+                            <Input type="text" label='Wallet Address' value = {receivingWallet}  onChange={(e)=> setReceivingWallet (e.target.value)}/> 
 
                             <Input type="dropdown" label='Coin' value = {selectedCoin} onChange={setSelectedCoin} options={
                                 Object.values(assets).map(asset => ({
@@ -166,7 +169,7 @@ useEffect(() => {
                                     label: asset.coin
                                 }))
                             } />
-                            <Input type="number" label='Quantity' value = {quantity} onChange={setQuantity} />
+                            <Input type="number" label='Quantity' min = {0} value = {quantity} onChange={setQuantity} />
 
 
 
@@ -175,12 +178,20 @@ useEffect(() => {
                         <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>     
                      </div>
                      : 
-                      <div>
-                        <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                      <div style={{height: "100%",display: "flex",flexDirection: "column",justifyContent: "space-between"}}>
+                        <div  style={{marginTop:"30px"}}>
+                            <p style={{fontSize : "20px",  fontWeight: "bold"}}>Wallet Address:</p>
+                            <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                        </div>
                         <Input type = "button" value = "Copy" style = {{marginTop:"20px"}}  onClick = {() => {
                             navigator.clipboard.writeText(walletAddress); 
                             showMessage("info","Address copied");
                         }}/>
+
+                        <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
+                                <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
+                                &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
+                        </p> 
 
                         <Input type = "button" value = "Regenerate" red style = {{marginTop:"20px"}} onClick = {regenerateAddress}/>
                       </div> 
