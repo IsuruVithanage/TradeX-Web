@@ -45,17 +45,40 @@
 .page-content{
     display: flex;
 }
-.template{
-    width: 400px;
-    height: 500px;
-    background-color: #9e9e9e;
-    margin-top: 17%;
-    
-    grid-template-columns: repeat(3,50px) 1fr;
-    color: #FFF;
-    display: flex;
-    border-radius: 0.938rem;
-    margin-bottom: 1%;
+.template {
+  width: 400px;
+  height: 500px;
+  background-color: #9e9e9e;
+  margin-top: 5%;
+  color: #FFF;
+  border-radius: 0.938rem;
+  margin-bottom: 1%;
+  overflow: hidden; /* Hide overflow */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+}
+.preview-scroll {
+  flex-grow: 1; /* Take up all available space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px;
+}
+
+.right-side {
+  width: 40%; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.page-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px; /* Add some padding */
+}
+
+.left-side {
+  width: 55%; /* Slightly reduce width to give more space to right side */
 }
 .left-side{
     width: 60%;
@@ -70,7 +93,7 @@
 .buttons{
 
     display: flex;
-    margin-left: 50%;
+    margin-left: 35%;
     margin-top: 5%;
     
 }

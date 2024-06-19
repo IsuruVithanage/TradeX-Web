@@ -4,12 +4,11 @@ import SideNavBar from "./SideNavBar/SideNavBar";
 import { PageLoading } from "../Loading/Loading";
 import "./BasicPage.css";
 
-export default function BasicPage(props) {
+function BasicPage(props) {
   return (
     <div>
       {props.sideNavBar !== false && <SideNavBar />}
-
-      {props.TopNavBar !== false && <TopNavBar {...props} />}
+      {props.sideNavBar !== false && <TopNavBar {...props} />}
 
       {props.isLoading && <PageLoading />}
       {props.isLoading && <div className="page-loading-dimmer" />}
@@ -24,3 +23,5 @@ export default function BasicPage(props) {
     </div>
   );
 }
+
+export default BasicPage;

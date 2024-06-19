@@ -10,16 +10,21 @@ import {Spin} from "antd";
 import symbols from "../../Assets/Images/Coin Images.json";
 import {showMessage} from "../../Components/Message/Message";
 import {LuRefreshCw} from "react-icons/lu";
-import {useSelector} from "react-redux";
-import axiosInstance from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function Suggestions() {
-    const apiGateway = process.env.REACT_APP_API_GATEWAY;
+    const axiosInstance = useAuthInterceptor();
 
-    const user = useSelector(state => state.user);
     const Tabs = [
         {label: "Suggestions", path: "/suggestion"},
     ];
+
+    const user = getUser();
+
+    useEffect(() => {
+        console.log('User:', user);
+    }, []);
 
     const [coinData, setCoinData] = useState({
         name: '',
@@ -58,7 +63,7 @@ export default function Suggestions() {
     const loadOrderHistory = async () => {
         try {
             const res = await axiosInstance.get(
-                `${apiGateway}/order/getOrderByCato/${type}`
+                `/order/getAllOrdersByIdAndCato/${type}/${user.id}`
             );
             setOrderHistory(res.data);
             setSelectedOrder(res.data[0]);
@@ -133,18 +138,15 @@ export default function Suggestions() {
         setLoading(true);
         setError(false);
 
+        if (geminiData.tradingData.length === 0) {
+            setLoading(false);
+            return;
+        }
+
         try {
-            const res = await fetch(`${apiGateway}/suggestion/buyOrderSuggestion`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-                },
-                body: JSON.stringify(geminiData),
-            });
-            if (!res.ok) throw new Error('Network response was not ok');
-            const data = await res.json();
-            console.log(data)
+            const res = await axiosInstance.post(`/suggestion/buyOrderSuggestion`, geminiData,);
+            const data = res.data;
+            console.log(data);
             setSuggestion(data);
         } catch (error) {
             console.error('Error:', error);
@@ -242,7 +244,7 @@ export default function Suggestions() {
 
     const filterOrders = () => {
         const now = new Date();
-        let filteredOrders = [];
+        let filteredOrders;
 
         switch (activateDuration) {
             case "Today":

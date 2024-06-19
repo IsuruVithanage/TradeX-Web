@@ -7,11 +7,10 @@ import QuizTimer from "../../Components/QuizComponents/QuizTImer";
 import Modal from "../../Components/Modal/Modal";
 import Input from "../../Components/Input/Input";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function Quiz() {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
+    const user = getUser();
 
     const [questions, setQuestions] = useState([]);
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
@@ -65,21 +64,32 @@ export default function Quiz() {
     const allocateStartingFund = async (score) => {
         const ob = {
             userId: user.id,
-            userName: user.username,
+            userName: user.userName,
             quantity: score >= 5 ? 100000 : 50000,
-        }
+        };
         try {
-            await fetch("http://localhost:8011/portfolio/asset/allocate", {
+            console.log("Sending allocation request with payload:", ob);
+            const response = await fetch("http://localhost:8011/portfolio/asset/allocate", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(ob)
             });
+
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                console.error("Error response from server:", errorDetails);
+                throw new Error(`Error allocating starting fund: ${response.status} ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log("Allocation successful:", result);
         } catch (error) {
             console.error("Error allocating starting fund:", error);
         }
-    }
+    };
+
 
     const updateUserState = async () => {
         try {

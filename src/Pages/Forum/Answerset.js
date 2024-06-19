@@ -59,7 +59,7 @@ function Answerset(props) {
             <div className="question-row">
               <Link to={`/Questionbar/Detailed/${record.answerId}`}>
                 <div className="question-title">
-                  <p> {questionTitle}</p>
+                  {/* <p> {questionTitle}</p> */}
                   <p
                     style={{
                       fontSize: "15px",
@@ -67,7 +67,7 @@ function Answerset(props) {
                       width: "53rem",
                     }}
                   >
-                    <h6 style={{ display: "inline-block" }}>Answer : </h6>
+                    {/* <h6 style={{ display: "inline-block" }}>Answer : </h6> */}
                     {record.comment}
                   </p>
                   <div

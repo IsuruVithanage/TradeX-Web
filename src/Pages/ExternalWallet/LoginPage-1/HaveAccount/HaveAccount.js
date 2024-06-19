@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useState} from "react";
 import BlackBar from "../../../../Components/WalletComponents/BlackBar";
 import Head from "../../../../Components/WalletComponents/Head";
 import "./HaveAccount.css";
@@ -7,16 +7,20 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../../Components/Input/Input";
 import axios from "axios";
 import { showMessage } from '../../../../Components/Message/Message';
-import {useSelector} from "react-redux";
+import { useDispatch } from 'react-redux';
+import { setAccessToken } from '../../../../Features/authSlice';
 
 export default function () {
 
   const [state, setState] = useState("login")
 
-  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const userTemp = localStorage.getItem('user');
+
+  const user = JSON.parse(userTemp);  
 
   const navigete = useNavigate();
-
   
   const navigete2 = useNavigate();
 
@@ -32,6 +36,7 @@ export default function () {
   function navigateToSeedPrase(){
     navigete(`/wallet/login/changepassword/recoverwallet?userId=${user.user.id}`);
   }
+  
 
   function login() {
     console.log(document.getElementById("username").value);
@@ -39,17 +44,25 @@ export default function () {
 
     axios
       .post(
-        "http://localhost:8006/login/login",
+        "http://localhost:8080/walletLogin/login",
         {
           username: document.getElementById("username").value,
           password: document.getElementById("password").value,
         },
-        {
-          withCredentials: true,
-        }
+      
       )
       .then((res) => {
-          res.data.login ? navigateToDashBoard() : showMessage("error", "inavalid username or password");
+       
+          const token = res.data.accessToken;
+                const user = res.data.user;
+
+                console.log('User', user);
+
+                localStorage.setItem('user', JSON.stringify(user));
+                dispatch(setAccessToken(token));
+                console.log('Access token ', token);
+                console.log('Login success');
+                navigateToDashBoard();
 
       })
 
@@ -85,6 +98,8 @@ export default function () {
             style={{ marginTop: "25px" }}
           />
         </div>
+
+
 
         <div>
           <p className="reset-para">{state=== "login" ? "Can't login? You can erase your current wallet and set up a new one" :  ""}

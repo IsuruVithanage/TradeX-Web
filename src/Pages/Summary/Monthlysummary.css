@@ -49,7 +49,7 @@
     width: 400px;
     height: 500px;
     background-color: #9e9e9e;
-    margin-top: 17%;
+    margin-top: 5%;
     
     grid-template-columns: repeat(3,50px) 1fr;
     color: #FFF;
@@ -70,7 +70,7 @@
 .buttons{
 
     display: flex;
-    margin-left: 50%;
+    margin-left: 35%;
     margin-top: 5%;
     
 }

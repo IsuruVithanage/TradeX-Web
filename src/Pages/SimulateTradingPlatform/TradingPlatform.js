@@ -8,32 +8,18 @@ import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
-import axiosInstance from "../../Authentication/axiosInstance";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
-export default function TradingPlatform({firebase}) {
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-
-    useEffect(() => {
-        const t=localStorage.getItem('user');
-        console.log("t",JSON.parse(t))
-        console.log(localStorage.getItem('user'));
-    }, []);
-
-    /////////////////////////////////////////////////////////////////////
-    useEffect(() => {
-        firebase.onMessage(() => {
-            console.log('Message received:');
-            console.log('Message EKA AWAMA METHANA OONE DEYAK KARAPANNN');
-        });
-    }, [firebase]);
+export default function TradingPlatform() {
+    const user = getUser();
+    const axiosInstance = useAuthInterceptor();
 
     const Tabs = [
-        {label: "Spot", path: "/simulate"}
+        { label: "Spot", path: "/simulate" },
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
@@ -149,7 +135,7 @@ export default function TradingPlatform({firebase}) {
 
         try {
             const res = await axiosInstance.get(
-                `http://localhost:8005/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
+                `/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
             );
             setLimitOrder(res.data);
 
@@ -375,27 +361,18 @@ export default function TradingPlatform({firebase}) {
                         setWalletBalance(data[1].balance);
                     }
 
-                    return await fetch(`${apiGateway}/order`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-                        },
-                        body: JSON.stringify(placeOrder())
-                    });
-                })
-                .then(response => {
-                    if (response.ok) {
+                    const res= await axiosInstance.post('/order', placeOrder());
+                    if (res) {
                         setIsLoading(true);
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
                         if (order.category === 'Limit') {
                             fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                         }
-
-                    } else {
-                        console.error('Failed to save order:', response);
+                    }else {
+                        console.error('Failed to save order:', res);
                     }
+
                 })
                 .catch(error => {
                     console.error('Failed to save order:', error);

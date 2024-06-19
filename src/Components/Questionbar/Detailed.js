@@ -9,8 +9,13 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-
-import { width } from "@mui/system";
+import { showMessage } from "../../Components/Message/Message";
+import {
+  MdThumbUp,
+  MdThumbDown,
+  MdOutlineThumbUp,
+  MdOutlineThumbDown,
+} from "react-icons/md";
 
 const socket = io("/", {
   reconnection: true,
@@ -35,12 +40,63 @@ function Detailed() {
   });
   const [submittedAnswer, setSubmittedAnswer] = useState([]);
   const [posts, setPosts] = useState([]);
-
+  const [isLike, setIsLike] = useState(false);
+  const [isDislike, setIsDislike] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
   const handleDescriptionChange = (content) => {
     setValues((prevOrder) => ({
       ...prevOrder,
       comment: content,
     }));
+  };
+
+  // Event handler for incrementing like count
+  const handleLikeClick = () => {
+    if (isDislike && !isLike) {
+      dislike(false);
+    }
+
+    like(!isLike);
+  };
+
+  const like = async (likeStatus) => {
+    axios
+      .post("http://localhost:8010/forum/like", {
+        questionId: id,
+        userId: 1,
+        isLike: likeStatus,
+      })
+      .then((res) => {
+        setLikeCount(parseInt(res.data.likeCount, 10) || 0);
+        setIsLike(likeStatus);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleDislikeClick = () => {
+    if (isDislike && !isLike) {
+      like(false);
+    }
+    dislike(!isDislike);
+  };
+
+  const dislike = async (dislikeStatus) => {
+    axios
+      .post("http://localhost:8010/forum/dislike", {
+        questionId: id,
+        userId: 1,
+        isDislike: dislikeStatus,
+      })
+      .then((res) => {
+        setDislikeCount(parseInt(res.data.dislikeCount, 10) || 0);
+        setIsDislike(dislikeStatus);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //add favorites
@@ -102,6 +158,7 @@ function Detailed() {
         values
       );
       console.log("Data added success");
+      showMessage("success", "Answer posted", 1.5);
       setSubmittedAnswer([...submittedAnswer, response.data]); // Update submittedAnswer state to display the submitted answer below
     } catch (err) {
       console.log(err);
@@ -132,35 +189,35 @@ function Detailed() {
 
   // add likes and dislikes
 
-  const [postAddLike, setPostAddLike] = useState([]);
-  const [postRemoveLike, setPostRemoveLike] = useState([]);
+  // const [postAddLike, setPostAddLike] = useState([]);
+  // const [postRemoveLike, setPostRemoveLike] = useState([]);
 
-  const addLike = async (qid, uid) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8010/forum/addLike/${qid}/${uid}`
-      );
-      setPosts(response.data.posts);
-      // Update the question likes locally for immediate UI feedback
-      setQuestion((prevQuestion) => ({
-        ...prevQuestion,
-        likes: prevQuestion.likes + 1,
-      }));
-    } catch (error) {
-      console.log(error.response ? error.response.data.error : error);
-    }
-  };
+  // const addLike = async (qid, uid) => {
+  //   try {
+  //     const response = await axios.put(
+  //       `http://localhost:8010/forum/addLike/${qid}/${uid}`
+  //     );
+  //     setPosts(response.data.posts);
+  //     // Update the question likes locally for immediate UI feedback
+  //     setQuestion((prevQuestion) => ({
+  //       ...prevQuestion,
+  //       likes: prevQuestion.likes + 1,
+  //     }));
+  //   } catch (error) {
+  //     console.log(error.response ? error.response.data.error : error);
+  //   }
+  // };
 
-  useEffect(() => {
-    socket.on("add-like", (newPosts) => {
-      setPostAddLike(newPosts);
-      setPostRemoveLike([]);
-    });
-    socket.on("remove-like", (newPosts) => {
-      setPostRemoveLike(newPosts);
-      setPostAddLike([]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("add-like", (newPosts) => {
+  //     setPostAddLike(newPosts);
+  //     setPostRemoveLike([]);
+  //   });
+  //   socket.on("remove-like", (newPosts) => {
+  //     setPostRemoveLike(newPosts);
+  //     setPostAddLike([]);
+  //   });
+  // }, []);
 
   useEffect(() => {
     loadQuestions();
@@ -168,26 +225,66 @@ function Detailed() {
     fetchFavorites(1);
   }, [id]);
 
-  let uiPosts =
-    postAddLike.length > 0
-      ? postAddLike
-      : postRemoveLike.length > 0
-      ? postRemoveLike
-      : posts;
+  // let uiPosts =
+  //   postAddLike.length > 0
+  //     ? postAddLike
+  //     : postRemoveLike.length > 0
+  //     ? postRemoveLike
+  //     : posts;
 
   return (
     <BasicPage tabs={Tabs}>
       {/* favorite side bar */}
       <SidePanelWithContainer
-        style={{ height: "91vh", width: "40vh" }}
-        header="Favourites"
+        style={{ height: "91vh", width: "50vh" }}
+        header={
+          <div className="header-container">
+            <button className="add-question-btn">Add Answer</button>
+          </div>
+        }
         sidePanel={
           <div>
-            {favorites.map((fav) => (
-              <p key={fav.id} className="sub-title">
-                {fav.title}
-              </p>
-            ))}
+            {/* Rectangle Box */}
+            <div className="container">
+              <div className="stats">
+                <div className="statItem">
+                  Answers
+                  <br />
+                  22
+                </div>
+                <div className="statItem">
+                  Best Answers
+                  <br />
+                  71
+                </div>
+                <br></br>
+                {/* <div className="statItem">
+                  Best Answers
+                  <br />
+                  15
+                </div>
+                <div className="statItem">
+                  Users
+                  <br />
+                  37
+                </div> */}
+              </div>
+            </div>
+
+            <div>
+              <div
+                className="favorite-header"
+                style={{ fontSize: "20px", marginTop: "3rem" }}
+              >
+                Favorites
+              </div>
+              <hr className="favorite-separator"></hr>
+              {favorites.map((fav) => (
+                <p key={fav.id} className="sub-title">
+                  {fav.title}
+                </p>
+              ))}
+            </div>
           </div>
         }
       >
@@ -201,12 +298,21 @@ function Detailed() {
                 <p>{question.description}</p>
 
                 {/* add like & dislike */}
-                <AiOutlineLike
+                {/* <AiOutlineLike
                   className="like-button"
                   onClick={() => addLike(question.questionId, 1)}
                 />
-                <AiOutlineDislike className="dislike-button" />
+                <AiOutlineDislike className="dislike-button" /> */}
+                <div className="prefer-buttons">
+                  <div onClick={handleLikeClick} className="like-button">
+                    {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
+                  </div>
 
+                  <div onClick={handleDislikeClick} className="dislike-button">
+                    {dislikeCount}{" "}
+                    {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
+                  </div>
+                </div>
                 {/* add favorites */}
                 {isFavorite(question.questionId) ? (
                   <MdFavorite

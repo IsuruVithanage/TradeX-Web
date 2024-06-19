@@ -9,13 +9,14 @@ import Answerset from "./Answerset";
 import Input from "../../Components/Input/Input";
 
 import axios from "axios";
-
-import { useSelector } from "react-redux";
+import { getUser } from "../../Storage/SecureLs";
+import { get } from "react-hook-form";
 
 export default function MyAnswers() {
   let { id } = useParams();
-  const usertemp = localStorage.getItem("user");
-  const user = JSON.parse(usertemp);
+
+  const user = getUser();
+
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -31,7 +32,7 @@ export default function MyAnswers() {
   const loadAnswers = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/answers/getAnswersByUserId/${user.id}`
+        `http://localhost:8010/answers/getAnswersByUserId/${1}`
       );
 
       const cleanedData = result.data.map((answer) => ({
@@ -122,7 +123,7 @@ export default function MyAnswers() {
         <div className="answer-component">
           <div className="topic-row">
             <div className="topic" style={{ marginLeft: "1.2rem" }}>
-              <h4>Topic</h4>
+              <h4>Answers</h4>
             </div>
           </div>
 

@@ -2,12 +2,9 @@ import React from "react";
 import "./dailysummary.css";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
-import Switch from "@mui/material/Switch";
-import { Box } from "@mui/system";
 import Modal from "antd/es/modal/Modal";
 import { useState, useEffect } from "react";
 
-import { useRef } from "react";
 import symbols from "../../Assets/Images/Coin Images.json";
 import axios from "axios";
 import SummaryReport from "./SummaryReport";
@@ -19,8 +16,8 @@ import TrendingCoinChart from "./TrendingCoinChart";
 function Dailysummary() {
   // create the tabs
   const Tabs = [
-    { label: "Daily", path: "/Summary/Dailysummary" },
-    { label: "Monthly", path: "Dailysummary/Monthlysummary" },
+    { label: "Daily", path: "/summary/daily" },
+    { label: "Monthly", path: "/summary/monthly" },
   ];
   // imported
   const label = { inputProps: { "aria-label": "Switch demo" } };
@@ -162,7 +159,7 @@ function Dailysummary() {
         const canvas = await html2canvas(reportElement, { scale: 2 });
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 0, 0, 215.9, 355.6); // Legal size
+        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Legal size
 
         const pdfBlob = pdf.output("blob");
         const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -390,7 +387,9 @@ function Dailysummary() {
 
         {/* right side */}
         <div className="right-side">
-          <div className="template">{previewContent}</div>
+          <div className="template">
+            <div className="preview-scroll">{previewContent}</div>
+          </div>
           <div className="buttons">
             <Input
               type="button"
@@ -399,9 +398,6 @@ function Dailysummary() {
               style={{ width: "87px" }}
               onClick={generatePDF}
             />
-
-            <div className="preview"></div>
-
             <Input
               type="button"
               value="Download"
@@ -429,7 +425,6 @@ function Dailysummary() {
           selectedCoins={selectedCoins}
         />
       </Modal>
-      ;
     </BasicPage>
   );
 }

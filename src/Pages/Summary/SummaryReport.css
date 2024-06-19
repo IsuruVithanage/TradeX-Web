@@ -3,6 +3,7 @@
     padding: 20px;
     background-color: white;
     color: black;
+    border: 10px solid black;
   }
   
   /* .summary-report h2 {
@@ -23,9 +24,8 @@
   }
   .summary-report h4{
     color: black;
-    margin-top: 2.5rem;
     text-align: center;
-    margin-bottom: 1rem;
+    
   }
   
   
@@ -35,9 +35,6 @@
     margin-top: 10px;
   }
   
-  .tables{
-
-  }
   .summary-report th, .summary-report td {
     border: 1px solid black;
     padding: 8px;

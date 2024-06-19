@@ -198,7 +198,7 @@ const clearAll = async (userId) => {
 export const saveDeviceToken = async (userId, deviceToken) => {
     return axios
         .post(
-            backendApiEndpoint + "deviceToken",
+            "http://localhost:8002/notification/deviceToken",
             {
                 userId: userId,
                 deviceToken: deviceToken
@@ -213,10 +213,7 @@ export const saveDeviceToken = async (userId, deviceToken) => {
 
 
 
-
-
-
-export default {
+const alertServices = {
     getAlerts,
     editAlert,
     addAlert,
@@ -224,3 +221,6 @@ export default {
     deleteAlert,
     clearAll,
 };
+
+
+export default alertServices;

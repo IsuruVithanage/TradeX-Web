@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto"; // This is important for Chart.js v3
 import "./SummaryReport.css";
 import symbols from "../../Assets/Images/Coin Images.json";
-import { display } from "@mui/system";
 import TrendingCoinChart from "./TrendingCoinChart";
 import trade from "../../Assets/Images/trade.png";
 
@@ -90,10 +89,12 @@ const SummaryReport = ({
 
   return (
     <div className="summary-report">
-      {<img src={trade} width="50px" alt="tradex" style={{ float: "right" }} />}
-      <h3>
-        Daily Summary Report <br></br> {new Date().toISOString().split("T")[0]}
-      </h3>
+      <div className="summary-header">
+        <h3>
+          Daily Summary Report <br /> {new Date().toISOString().split("T")[0]}
+        </h3>
+        {/* <img src={trade} width="50px" alt="tradex" /> */}
+      </div>
       <div className="tables">
         {showTopGainers && (
           <div className="top-gainers" style={{ display: "inline-block" }}>
@@ -180,7 +181,10 @@ const SummaryReport = ({
         )}
       </div>
       {showTrendingCoin && (
-        <div className="trending-coin" style={{ height: "400px" }}>
+        <div
+          className="trending-coin"
+          style={{ height: "400px", marginTop: "1.8rem" }}
+        >
           <h4>Trending Coin</h4>
           <TrendingCoinChart />
         </div>
@@ -188,7 +192,7 @@ const SummaryReport = ({
       {selectedCoins.length > 0 && (
         <div
           className="selected-coins"
-          style={{ height: "400px", marginTop: "2px" }}
+          style={{ height: "400px", marginTop: "0.5rem" }}
         >
           <h4>Customized Coins</h4>
           <Bar

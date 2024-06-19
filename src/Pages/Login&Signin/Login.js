@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
+import { useAuthInterceptor } from "../../Authentication/axiosInstance";
+import { setAccessToken, setUser } from "../../Storage/SecureLs";
 import "./Login.css";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../Features/User";
 
-function Login({ firebase }) {
+function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const axiosInstance = useAuthInterceptor();
 
   const [values, setValues] = useState({
     email: "",
@@ -17,6 +17,7 @@ function Login({ firebase }) {
   });
 
   const [errors, setErrors] = useState({});
+
   const handleInput = (event) => {
     setValues({
       ...values,
@@ -24,46 +25,37 @@ function Login({ firebase }) {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const response = await axiosInstance.post("/user/login", values);
+      const token = response.data.accessToken;
+      const user = response.data.user;
+      setUser(user);
+      setAccessToken(token);
 
-    console.log(values);
-    axios
-      .post("http://localhost:8004/user/login", values)
-      .then((res) => {
-        const token = res.data.token;
-        const user = res.data.user;
+      notificationManager.getToken();
 
-        const userData = {
-          id: user.userId,
-          username: user.userName,
-          email: user.email,
-          isVerified: user.isVerified,
-          hasTakenQuiz: user.hasTakenQuiz,
-          level: user.level,
-        };
+      console.log("Login success");
 
-        console.log("Token:", token);
-        localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem("access-token", token);
-        console.log("Login success");
-        firebase.getToken();
-
+      if (user.role === "User") {
         if (user.hasTakenQuiz) {
           navigate("/watchlist");
         } else {
           navigate("/quiz");
         }
-      })
-      .catch((err) => {
-        console.error("Login error:", err);
-      });
+      } else {
+        navigate("/admin/AdDashboard");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    }
   };
 
   return (
     <BasicPage
       sideNavBar={false}
-      TopNavBar={false}
+      topNavBar={false}
       icon={<img src={trade} width="73px" alt="tradex" />}
     >
       <div>

@@ -9,13 +9,13 @@ import { useParams } from "react-router-dom";
 import Questionset from "./Questionset";
 import Input from "../../Components/Input/Input";
 import axios from "axios";
-import { Shuffle } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { getUser } from "../../Storage/SecureLs";
 
 export default function MyProblems() {
   let { id } = useParams();
-  const usertemp = localStorage.getItem("user");
-  const user = JSON.parse(usertemp);
+
+  const user = getUser();
+
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -25,7 +25,7 @@ export default function MyProblems() {
   const [questionlist, setQuestionList] = useState([]);
 
   useEffect(() => {
-    console.log(user);
+    console.log("user", getUser());
   }, []);
 
   const loadQuestions = async () => {
@@ -105,7 +105,7 @@ export default function MyProblems() {
         header="Favourites"
         sidePanel={
           <div>
-            <Link to="/Questionbar/Detailed">
+            <Link to="/forum/discussion">
               {favorites.map((fav) => (
                 <p key={fav.id} className="sub-title">
                   {fav.title}

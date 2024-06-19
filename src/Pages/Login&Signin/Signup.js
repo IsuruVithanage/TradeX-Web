@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import "./Signup.css";
+import notificationManager from "../Alert/notificationManager";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import trade from "../../Assets/Images/trade.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuthInterceptor } from "../../Authentication/axiosInstance";
+import { setAccessToken, setUser } from "../../Storage/SecureLs";
 import Validation from "./SignupValidation";
+import "./Signup.css";
 
-function Signup({ firebase }) {
+function Signup() {
   const navigate = useNavigate();
-  const [values, setvalues] = useState({
+  const axiosInstance = useAuthInterceptor();
+
+  const [values, setValues] = useState({
     userName: "",
     email: "",
     password: "",
@@ -20,55 +24,45 @@ function Signup({ firebase }) {
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
-    setvalues({
+    setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors(Validation(values));
-    console.log(values);
 
-    if (
-      values.userName === "" ||
-      values.email === "" ||
-      values.password === ""
-    ) {
-      console.log("Please fill all the fields");
-      return;
+    try {
+      const response = await axiosInstance.post("/user/register", values);
+      const token = response.data.accessToken;
+      const user = response.data.user;
+      setUser(user);
+      setAccessToken(token);
+
+      notificationManager.getToken();
+
+      console.log("Signup success");
+
+      if (user.role === "User") {
+        if (user.hasTakenQuiz) {
+          navigate("/watchlist");
+        } else {
+          navigate("/quiz");
+        }
+      } else {
+        navigate("/admin/AdDashboard");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
     }
-
-    axios
-      .post("http://localhost:8004/user/register", values)
-      .then((res) => {
-        const token = res.data.token;
-        const user = res.data.user;
-
-        const userData = {
-          id: user.userId,
-          username: user.userName,
-          email: user.email,
-          isVerified: user.isVerified,
-          hasTakenQuiz: user.hasTakenQuiz,
-          level: user.level,
-        };
-
-        console.log("Token:", token);
-        localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem("access-token", token);
-        console.log("Login success");
-        firebase.getToken(user.userId);
-        navigate("/quiz");
-      })
-      .catch((err) => console.log(err));
   };
+
   return (
     // Sign in box of the page
     <BasicPage
       sideNavBar={false}
-      TopNavBar={false}
       icon={<img src={trade} width="73px" alt="tradex" />}
     >
       <div>
@@ -119,7 +113,7 @@ function Signup({ firebase }) {
 
           <div className="have-account">
             <div className="have-text">Already have an account?</div>
-            <Link to="/">
+            <Link to="/login">
               <div className="login-link">Login</div>
             </Link>
           </div>
