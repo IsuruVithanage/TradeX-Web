@@ -118,13 +118,13 @@ export default function RecoverWallet() {
                 <p className='con-secret-para'>Please select each word in the correct order to verify <br />
                     you have saved your Secret Phrase..</p>
                 <div>
-                    <div>
+                    <div> 
                         {[...Array(12)].map((_, index) => (
                             <div key={index}>
                                 <input
                                     ref={el => inputRefs.current[index] = el}
                                     type="text"
-                                    className={`input-col-${index + 1}`}
+                                     className={`input-col-${index + 1}`}
                                     value={inputValues[index]}
                                     onChange={e => handleInputChange(index, e.target.value)}
                                     onKeyDown={e => handleKeyDown(index, e)}
@@ -135,7 +135,7 @@ export default function RecoverWallet() {
                 </div>
 
                 <div>
-                    <button className='clear-button' onClick={() => {
+                    <button className='clear-button1' onClick={() => {
                         setInputValues(Array(12).fill(''));
                         inputRefs.current[0].focus();
                     }}>Clear all</button>
@@ -144,10 +144,10 @@ export default function RecoverWallet() {
               
 
                 <div >
-                    <button className='confirm-button' onClick={navigateToDashBoard}>Confirm</button>
+                    <button className='confirm-button1' onClick={navigateToDashBoard}>Confirm</button>
                 </div>
                 <div >
-                    <button className='back-to-secret-button' onClick={navigateToHaveAccount} >Back</button>
+                    <button className='back-to-secret-button1' onClick={navigateToHaveAccount} >Back</button>
                 </div>
             </BlackBar>
         </div>

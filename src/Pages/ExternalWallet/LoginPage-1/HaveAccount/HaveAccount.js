@@ -9,6 +9,7 @@ import axios from "axios";
 import { showMessage } from '../../../../Components/Message/Message';
 import { useDispatch } from 'react-redux';
 import { setAccessToken } from '../../../../Features/authSlice';
+import { setUser, getUser} from "../../../../Storage/SecureLs";
 
 export default function () {
 
@@ -16,9 +17,7 @@ export default function () {
 
   const dispatch = useDispatch();
 
-  const userTemp = localStorage.getItem('user');
-
-  const user = JSON.parse(userTemp);  
+  const user = getUser();  
 
   const navigete = useNavigate();
   
@@ -34,7 +33,7 @@ export default function () {
   }
 
   function navigateToSeedPrase(){
-    navigete(`/wallet/login/changepassword/recoverwallet?userId=${user.user.id}`);
+    navigete(`/wallet/login/changepassword/recoverwallet?userId=${user.id}`);
   }
   
 
@@ -58,7 +57,9 @@ export default function () {
 
                 console.log('User', user);
 
-                localStorage.setItem('user', JSON.stringify(user));
+    
+                setUser(user);
+                // setAccessToken(token);
                 dispatch(setAccessToken(token));
                 console.log('Access token ', token);
                 console.log('Login success');

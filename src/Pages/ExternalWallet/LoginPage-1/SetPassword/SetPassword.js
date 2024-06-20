@@ -44,12 +44,11 @@ export default function SetPassword() {
       <img src={WalletImage} alt="Wallet Description" className='wallet-img' />
       
       <BlackBar>
-        <h1 className='set-pass'>Set Password</h1>
+        <h1 className='set-pass'>Set Password </h1>
         <p className='para-1'>This password is used to protect your wallet and provide access <br/> to the browser web wallet.</p>
 
         <input type="text" placeholder="Enter your user name" className="user-name" id='username'/>
-
-        <input type="password" placeholder="Enter your new password" className="password-input" id='password'/>
+        <input type="password" placeholder="Enter your new password" className="pass-input" id='password'/>
         <input type="password" placeholder="Confirm your password" className="confirm-password-input" id='confirm-password'/>
 
         <div className="terms-checkbox">

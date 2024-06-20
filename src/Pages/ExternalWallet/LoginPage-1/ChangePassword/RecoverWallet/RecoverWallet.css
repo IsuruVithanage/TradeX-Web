@@ -185,14 +185,14 @@
     border: none;
     border-radius: 4px;
 }
-.clear-button{
+.clear-button1{
     border-radius: 8px;
     background: #0E0E0F;
     width: 65px;
     height: 24px;
     position: fixed;
-    top: 60%;
-    left: 44%;
+    top: 65%;
+    left: 43%;
     transform: translate(22%, -94%);
     color: #FFF;
     font-family: Inter;
@@ -217,14 +217,14 @@
 
 }
 
-.confirm-button{
+.confirm-button1{
     border-radius: 8px;
     background: #21db9a;
     width: 110px;
     height: 35px;
     flex-shrink: 0;
     position: fixed;
-    top: 93%;
+    top: 85%;
     left: 63%;
     transform: translate(34%, -75%);
     color: #FFF;
@@ -237,14 +237,14 @@
     border: none;
 
 }
-.back-to-secret-button{
+.back-to-secret-button1{
     border-radius: 8px;
     background: #0E0E0F;
     width: 110px;
     height: 35px;
     flex-shrink: 0;
     position: fixed;
-    top: 93%;
+    top: 85%;
     left: 7%;
     transform: translate(34%, -75%);
     color: #FFF;
