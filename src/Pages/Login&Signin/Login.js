@@ -6,6 +6,7 @@ import BasicPage from "../../Components/BasicPage/BasicPage";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {setAccessToken, setUser} from "../../Storage/SecureLs";
 import "./Login.css";
+import axios from "axios";
 
 
 function Login() {
@@ -29,7 +30,7 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axiosInstance.post('/user/login', values);
+            const response = await axios.post('http://localhost:8004/user/login', values);
             const token = response.data.accessToken;
             const user = response.data.user;
             setUser(user);
