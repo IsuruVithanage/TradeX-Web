@@ -51,6 +51,8 @@ export function TableRow(props) {
 
 
 export function Coin(props) {
+    if(!props.children) return null;
+    
     const coinData = require('../../Assets/Images/Coin Images.json')[props.children];	
 
     return (
