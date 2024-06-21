@@ -104,6 +104,7 @@ class NotificationManager {
 
 
     async getToken() {
+        console.log("getting device Token")
         const user = getUser();
         const userId = user && user.id;
         const permission = await this.requestPermission();
