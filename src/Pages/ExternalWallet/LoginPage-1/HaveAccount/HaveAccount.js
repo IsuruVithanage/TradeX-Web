@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import BlackBar from "../../../../Components/WalletComponents/BlackBar";
 import Head from "../../../../Components/WalletComponents/Head";
 import "./HaveAccount.css";
@@ -9,78 +9,77 @@ import axios from "axios";
 import { showMessage } from '../../../../Components/Message/Message';
 import { useDispatch } from 'react-redux';
 import { setAccessToken } from '../../../../Features/authSlice';
+import { setUser, getUser } from "../../../../Storage/SecureLs";
 
 export default function () {
-
-  const [state, setState] = useState("login")
+  const [state, setState] = useState("login");
 
   const dispatch = useDispatch();
+  const user = getUser();
 
-  const userTemp = localStorage.getItem('user');
-
-  const user = JSON.parse(userTemp);  
-
-  const navigete = useNavigate();
-  
-  const navigete2 = useNavigate();
+  const navigate = useNavigate();
+  const navigate2 = useNavigate();
+  const navigate3 = useNavigate();
 
   function navigateToLogin() {
-    navigete2("/wallet/login");
+    navigate2("/wallet/login");
   }
-  const navigete3 = useNavigate();
 
   function navigateToDashBoard() {
-    navigete3("/wallet/dashboard");
+    navigate3("/wallet/dashboard");
   }
 
-  function navigateToSeedPrase(){
-    navigete(`/wallet/login/changepassword/recoverwallet?userId=${user.user.id}`);
+  function navigateToSeedPhrase() {
+    navigate(`/wallet/login/changepassword/recoverwallet?userId=${user.id}`);
   }
-  
+
+  function clearFields() {
+    document.getElementById("username").value = '';
+    document.getElementById("password").value = '';
+  }
 
   function login() {
-    console.log(document.getElementById("username").value);
-    console.log(document.getElementById("password").value);
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!username || !password) {
+      alert("All fields are required. Please fill in all the fields.");
+      clearFields();
+      return;
+    }
 
     axios
       .post(
         "http://localhost:8080/walletLogin/login",
-        {
-          username: document.getElementById("username").value,
-          password: document.getElementById("password").value,
-        },
-      
+        { username, password },
       )
       .then((res) => {
-       
-          const token = res.data.accessToken;
-                const user = res.data.user;
+        const token = res.data.accessToken;
+        const user = res.data.user;
 
-                console.log('User', user);
+        console.log('User', user);
 
-                localStorage.setItem('user', JSON.stringify(user));
-                dispatch(setAccessToken(token));
-                console.log('Access token ', token);
-                console.log('Login success');
-                navigateToDashBoard();
-
+        setUser(user);
+        dispatch(setAccessToken(token));
+        console.log('Access token ', token);
+        console.log('Login success');
+        navigateToDashBoard();
       })
-
       .catch((error) => {
         console.log(error);
-        showMessage("error", "inavalid username or password");
+        showMessage("error", "Invalid username or password");
+        clearFields();
       });
   }
+
   return (
     <div className="main-background">
       <Head />
       <img src={WalletImage} alt="Wallet Description" className="wallet-img" />
 
       <BlackBar>
-        <h1 className="set-pass">{state==="login" ? "LOGIN" : "Recover Wallet"}</h1>
-        <p className="para">{state==="login" ? "This password is used to protect your wallet and provide access to the browser web wallet." : 
-         "This password is used to protect your wallet and provide access to the browser web wallet."}
-        </p>
+        <h1 className="set-pass">{state === "login" ? "LOGIN" : "Recover Wallet"}</h1>
+        <p className="para">{state === "login" ? "This password is used to protect your wallet and provide access to the browser web wallet." : "This password is used to protect your wallet and provide access to the browser web wallet."}</p>
 
         <div style={{ width: "58%", margin: "auto" }}>
           <Input
@@ -92,23 +91,19 @@ export default function () {
           />
           <Input
             type="password"
-            placeholder={state==="login" ? "Enter your password" : "Enter your new password"}
+            placeholder={state === "login" ? "Enter your password" : "Enter your new password"}
             id="password"
             className="login-input"
             style={{ marginTop: "25px" }}
           />
         </div>
 
-
-
         <div>
-          <p className="reset-para">{state=== "login" ? "Can't login? You can erase your current wallet and set up a new one" :  ""}
-           
-          </p>
+          <p className="reset-para">{state === "login" ? "Can't login? You can erase your current wallet and set up a new one" : ""}</p>
         </div>
 
         <div>
-          <button className="reset-button" onClick={navigateToSeedPrase}>
+          <button className="reset-button" onClick={navigateToSeedPhrase}>
             Reset Wallet
           </button>
         </div>

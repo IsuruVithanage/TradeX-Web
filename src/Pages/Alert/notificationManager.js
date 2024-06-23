@@ -8,29 +8,22 @@ import { getUser } from "../../Storage/SecureLs";
 class NotificationManager {
     constructor() {
         isSupported().then((isSupported) => {
-                const firebaseConfig = {
-                    apiKey: process.env.REACT_APP_FCM_API_KEY,
-                    authDomain: process.env.REACT_APP_FCM_AUTH_DOMAIN,
-                    projectId: process.env.REACT_APP_FCM_PROJECT_ID,
-                    storageBucket: process.env.REACT_APP_FCM_STORAGE_BUCKET,
-                    messagingSenderId: process.env.REACT_APP_FCM_MESSAGING_SENDER_ID,
-                    appId: process.env.REACT_APP_FCM_APP_ID,
-                };
+            const firebaseConfig = {
+                apiKey: process.env.REACT_APP_FCM_API_KEY,
+                authDomain: process.env.REACT_APP_FCM_AUTH_DOMAIN,
+                projectId: process.env.REACT_APP_FCM_PROJECT_ID,
+                storageBucket: process.env.REACT_APP_FCM_STORAGE_BUCKET,
+                messagingSenderId: process.env.REACT_APP_FCM_MESSAGING_SENDER_ID,
+                appId: process.env.REACT_APP_FCM_APP_ID,
+            };
 
-                const notify = (notification) => {
-                    if(notification.title){
-                        new Notification(notification.title, {
-                            body: notification.body,
-                            icon: notification.icon,
-                        });
-                    }
-                };
            
             if (isSupported) {
                 this.isRequestingPermission = false;
                 this.deviceToken = null;
                 this.setIsRegistered = null;
-                this.onMessageFunctions = [notify, null];
+                this.appNotificationsSetter = () => {};
+                this.onPushNotificationFunction = () => {};
                 this.onAppNotificationFunction = () => {};
                 const app = initializeApp(firebaseConfig);
                 this.messaging = getMessaging(app);
@@ -111,6 +104,7 @@ class NotificationManager {
 
 
     async getToken() {
+        console.log("getting device Token")
         const user = getUser();
         const userId = user && user.id;
         const permission = await this.requestPermission();
@@ -128,6 +122,7 @@ class NotificationManager {
 
         .then((deviceToken) => {
             this.deviceToken = deviceToken;
+            console.log("device Token", deviceToken);
             saveDeviceToken(userId, deviceToken);
 
             if(this.setIsRegistered){
@@ -144,34 +139,40 @@ class NotificationManager {
     }
 
 
+    setAppNotificationsSetter(functionToExecute) {
+        this.appNotificationsSetter = functionToExecute;
+    };
+
+
     onAppNotification(functionToExecute) {
         this.onAppNotificationFunction = functionToExecute;
     }
 
 
-    addOnMessage(functionToExecute) {
-        this.onMessageFunctions[1] = functionToExecute;
+    onPushNotification(functionToExecute) {
+        this.onPushNotificationFunction = functionToExecute;
     }
 
 
-    removeOnMessage() {
-        this.onMessageFunctions[1] = null;
-    }
-
-
-
-    async runOnMessageFunctions(a) {
-        const {notification, data} = a
-        console.log("payload", a);
+    async runOnMessageFunctions({notification, data}) {
         if(notification){
-            this.onMessageFunctions.forEach((functionToExecute) => {
-                if(typeof functionToExecute === 'function'){
-                    functionToExecute(notification);
-                }
-            });
+            if(notification.title){
+                new Notification(notification.title, {
+                    body: notification.body,
+                    icon: notification.icon,
+                });
+            }
+            
+            if(typeof this.onPushNotificationFunction === 'function'){
+                this.onPushNotificationFunction(notification);
+            }
         }
+
         if(data){
-            this.onAppNotificationFunction();
+            this.appNotificationsSetter();
+            if(typeof this.onAppNotificationFunction === 'function'){
+                this.onAppNotificationFunction(data);
+            }
         }
     }
 

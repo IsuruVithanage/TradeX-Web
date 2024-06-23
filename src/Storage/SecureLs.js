@@ -21,7 +21,6 @@ const setUser = (user) => {
 
 const getUser = () => {
     const userData = ls.get('user');
-    console.log('userData', userData);
     return userData ? userData : null;
 };
 
