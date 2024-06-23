@@ -25,20 +25,28 @@ export default function LoginAccount () {
   function navigateToRest(){
     navigate('/wallet/recover', {state: user.id});
   }
+
+
+  function clearFields() {
+    document.getElementById("username").value = '';
+    document.getElementById("password").value = '';
+  }
   
 
   function login() {
-    console.log(document.getElementById("username").value);
-    console.log(document.getElementById("password").value);
+    const userName = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!userName || !password) {
+      alert("All fields are required. Please fill in all the fields.");
+      clearFields();
+      return;
+    }
 
     axios
       .post(
         "http://localhost:8080/walletLogin/login",
-        {
-          username: document.getElementById("username").value,
-          password: document.getElementById("password").value,
-        },
-      
+        { userName, password },
       )
       .then((res) => {
           // const token = res.data.accessToken;
@@ -56,6 +64,7 @@ export default function LoginAccount () {
       .catch((error) => {
         console.log(error);
         showMessage("error", "inavalid username or password");
+        clearFields();
       });
   }
   return (
@@ -97,7 +106,7 @@ export default function LoginAccount () {
         </div>
         <div>
           <button className="dash-button" onClick={login}>
-            Unlock
+            Login
           </button>
         </div>
 

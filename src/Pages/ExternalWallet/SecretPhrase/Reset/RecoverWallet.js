@@ -118,7 +118,7 @@ export default function RecoverWallet() {
                 <h1 className='con-secret-phrase'>Confirm Your Secret Phrase</h1>
                 <p className='con-secret-para'>Please select each word in the correct order to verify <br />
                     you have saved your Secret Phrase..</p>
-                <div>
+              
                     <div> 
                         {[...Array(12)].map((_, index) => (
                             <div key={index}>
@@ -133,7 +133,7 @@ export default function RecoverWallet() {
                             </div>
                         ))}
                     </div>
-                </div>
+            
 
                 <div>
                     <button className='clear-button1' onClick={() => {
