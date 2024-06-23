@@ -9,8 +9,6 @@ import Validation from "./SignupValidation";
 import "./Signup.css";
 
 
-
-
 function Signup() {
     const navigate = useNavigate();
     const axiosInstance = useAuthInterceptor();
@@ -37,7 +35,7 @@ function Signup() {
         event.preventDefault();
         setErrors(Validation(values));
 
-        try{
+        try {
             const response = await axiosInstance.post('/user/register', values);
             const token = response.data.accessToken;
             const user = response.data.user;
@@ -48,14 +46,12 @@ function Signup() {
 
             console.log('Signup success');
 
-            if (user.role === 'User') {
-                if (user.hasTakenQuiz) {
-                    navigate('/watchlist');
-                } else {
-                    navigate('/quiz');
-                }
-            } else {
+            if (user.role === 'User' || (user.role === 'Trader' && user.hasTakenQuiz)) {
+                navigate('/watchlist');
+            } else if (user.role === 'Admin') {
                 navigate('/admin/AdDashboard');
+            } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
+                navigate('/quiz');
             }
         } catch (err) {
             console.error('Login error:', err);
@@ -119,7 +115,7 @@ function Signup() {
                     <div className="have-account">
                         <div className="have-text">Already have an account?</div>
                         <Link to="/login">
-                            <div className="login-link" >Login</div>
+                            <div className="login-link">Login</div>
                         </Link>
                     </div>
                 </div>

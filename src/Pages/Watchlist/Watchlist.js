@@ -65,7 +65,7 @@ const Watchlist = () => {
             tabs={[
                 { label: "All", path: "/watchlist" },
                 { label: "Custom", path: "/watchlist/customize" },
-                { label: "CoinPage", path: "/watchlist/coin/BTC" },
+                /*{ label: "CoinPage", path: "/watchlist/coin/BTC" },*/
 
             ]}>
 

@@ -25,7 +25,7 @@ export default function MyProblems() {
   const loadQuestions = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/forum/getQuestionsByUserId/${user.user.id}`
+        `http://localhost:8010/forum/getQuestionsByUserId/${user.id}`
       );
       console.log(result.data);
       setQuestionList(result.data);
