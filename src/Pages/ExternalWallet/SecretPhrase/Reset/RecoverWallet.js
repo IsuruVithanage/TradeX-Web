@@ -10,22 +10,12 @@ export default function RecoverWallet() {
     const userId = useLocation().state;
 
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
-    const [words, setWords] = useState(null);
+    const [words, setWords] = useState({});
     const inputRefs = useRef([]);
 
     function navigateToLogin() {
       navigate("/wallet/login");
     }
-
-    useEffect(() => {
-        if (!userId) {
-            navigateToLogin();
-        }
-        fetchWords();
-        // Initialize inputValues state with empty strings
-        setInputValues(Array(12).fill(''));
-    }, []);
-
 
 
     function handleInputChange(index, value) {
@@ -47,9 +37,6 @@ export default function RecoverWallet() {
         }
     }
 
-    function concatenateInputValues() {
-        return inputValues.join(' ');
-    }
 
     function navigateToDashBoard() {
         if (!userId) {
@@ -70,22 +57,27 @@ export default function RecoverWallet() {
         }
     }
 
-   
 
-    const fetchWords = async () => {
-        try {
-            const response = await fetch("http://localhost:8006/seedphrase/getSeedPreseById",{userId:userId}); // Replace "/api/words" with your actual endpoint
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch words");
-            }
-            const data = await response.json();
-            console.log(data)
-            setWords(data[0]); // Assuming your API returns an object with a "words" property containing the array of words
-        } catch (error) {
-            console.error("Error fetching words:", error);
+    useEffect(() => {
+        if (!userId) {
+            navigate("/wallet/login");
         }
-    };
+
+        fetch("http://localhost:8006/seedphrase/getSeedPreseById", {userId:userId})
+        .then((response) => {
+            console.log(response)
+            setWords(response[0]);
+        })
+        .catch((error) => {
+            console.error("Error fetching words:", error);
+        });
+
+
+        // Initialize inputValues state with empty strings
+        setInputValues(Array(12).fill(''));
+    }, [userId, navigate]);
+
+
 
    
 

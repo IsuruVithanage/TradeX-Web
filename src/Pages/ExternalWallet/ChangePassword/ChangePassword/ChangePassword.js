@@ -7,14 +7,16 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ChangePassword() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  function navigateToRecoverWallet() {
-    navigate('/wallet/recover');
+  function validateAndProceed() {
+    console.log('Validating and Proceeding');
   }
 
   function navigateToLogin() {
     navigate('/wallet/login');
   }
+
   return (
     <div className='main-background'>
       <Head />

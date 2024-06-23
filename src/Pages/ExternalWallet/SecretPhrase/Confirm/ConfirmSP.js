@@ -5,6 +5,7 @@ import WalletImage from "../../../../Assets/Images/wallet.png";
 import axios from "axios";
 import "./ConfirmSP.css";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { getUser, setUser } from '../../../../Storage/SecureLs';
 
 
 export default function ConfirmSP() {
@@ -13,7 +14,7 @@ export default function ConfirmSP() {
     const [words, setWords] = useState([]);
     const inputRefs = useRef([]);
     const seedPraseDetails = useLocation().state;
-    const word = seedPraseDetails.seedphrase;
+    const word = !seedPraseDetails ? {} : seedPraseDetails.seedphrase;
 
     console.log("seedPraseDetails", seedPraseDetails);
 
@@ -30,7 +31,7 @@ export default function ConfirmSP() {
         fetchWords();
         // Initialize inputValues state with empty strings
         setInputValues(Array(12).fill(''));
-    }, []);
+    }, [seedPraseDetails, navigate]);
 
 
 
@@ -52,17 +53,17 @@ export default function ConfirmSP() {
         }
     }
 
-    function concatenateInputValues() {
-        return inputValues.join(' ');
-    }
-
 
     const saveSeedPrase = async () => {
         try {
             await axios.post("http://localhost:8006/walletLogin/register", seedPraseDetails)
             .then((res) => {
+                const user = getUser();
+                const walletUserName = res.data.user.userName;
+                const walletId = res.data.user.walletId;
+
+                setUser({...user, walletUserName, walletId});
                 navigate('/wallet/dashboard');
-                console.log("Data sent successfully");
             })
             .catch((error) => {
                 console.log("Error sending data:", error);

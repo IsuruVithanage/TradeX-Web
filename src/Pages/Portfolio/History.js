@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import notificationManager from '../Alert/notificationManager';
 import { getUser } from '../../Storage/SecureLs';
 import { showMessage } from '../../Components/Message/Message'
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
@@ -55,23 +56,35 @@ export default function History() {
         setIsLoading(true);
 
 
-        axios 
-        .get( backendAPI, { params: { userId: userId }})
+        const getHistoryData = () => {
+            axios 
+            .get( backendAPI, { params: { userId: userId }})
 
-        .then((res) => {
-            setHistoryData(res.data);
-            setFilteredData(res.data);
-            setIsLoading(false);
-        })
+            .then((res) => {
+                setHistoryData(res.data);
+                setFilteredData(res.data);
+                setIsLoading(false);
+            })
 
-        .catch((error) => {
-            setIsLoading(false);
-            console.log("Error fetching historyData", error);
-            
-            error.response ? 
-            showMessage(error.response.status, error.response.data.message)   :
-            showMessage('error', 'Database connection failed..!') ;
+            .catch((error) => {
+                setIsLoading(false);
+                console.log("Error fetching historyData", error);
+                
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
+            });
+        }
+
+        getHistoryData();
+
+        notificationManager.onAppNotification(() => {
+            getHistoryData();
         });
+
+        return () => {
+            notificationManager.onAppNotification(() => {});
+        }
 
     }, [userId, selectedSection, backendAPI]);
 

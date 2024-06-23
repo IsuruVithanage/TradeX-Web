@@ -16,17 +16,6 @@ export default function WalletRoutes() {
   return (
     <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<StartPage />} />
-        <Route path="/login/HaveAccount" element={<LoginAccount />} />
-        <Route path="/login/setpassword" element={<CreateWallet />} />
-        <Route path="/login/setpassword/secretphrase" element={<GenerateSP />} />
-        <Route path="/login/setpassword/secretphrase/confirmsecretphrase" element={<ConfirmSP />} />
-        <Route path='/login/changepassword/recoverwallet' element={<RecoverWallet />} />
-        <Route path='/login/changepassword' element={<ChangePassword />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/history" element={<History />} />
-
-        <Route path="/" element={<Home />} />
         <Route path="/start" element={<StartPage />} />
         <Route path="/login" element={<LoginAccount />} />
         <Route path="/create" element={<CreateWallet />} />

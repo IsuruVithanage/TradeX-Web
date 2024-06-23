@@ -45,16 +45,17 @@ export default function LoginAccount () {
 
     axios
       .post(
-        "http://localhost:8080/walletLogin/login",
+        "http://localhost:8006/walletLogin/login",
         { userName, password },
       )
       .then((res) => {
           // const token = res.data.accessToken;
           const walletUserName = res.data.user.userName;
+          const walletId = res.data.user.walletId;
 
           console.log('User', user);
 
-          setUser({...user, walletUserName});
+          setUser({...user, walletUserName, walletId});
           // setAccessToken(token);
           console.log('Login success');
           navigateToDashBoard();
@@ -63,7 +64,10 @@ export default function LoginAccount () {
 
       .catch((error) => {
         console.log(error);
-        showMessage("error", "inavalid username or password");
+
+        !error.response ?
+        showMessage("error", "Login Failed. Please try again") :
+        showMessage("error", error.response.data.message);
         clearFields();
       });
   }
