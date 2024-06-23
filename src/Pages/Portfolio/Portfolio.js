@@ -30,6 +30,7 @@ export default function Portfolio() {
         .get( backendApiEndpoint, { params: { userId } })
         
         .then(res => {
+            console.log(res.data);
             setAssets(res.data.assets);
             setPercentages(res.data.percentages);
             setInitialData(res.data.historyData);

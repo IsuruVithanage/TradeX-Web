@@ -9,15 +9,14 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ChangePassword() {
-  const navigete = useNavigate();
+  const navigate = useNavigate();
 
   function navigateToRecoverWallet() {
-    navigete('/wallet/login/changepassword/recoverwallet');
+    navigate('/wallet/recover');
   }
-  const navigete2 = useNavigate();
 
-  function navigateToHaveAccount() {
-    navigete2('/wallet/login/haveaccount');
+  function navigateToLogin() {
+    navigate('/wallet/login');
   }
   return (
     <div className='main-background'>
@@ -39,7 +38,7 @@ export default function ChangePassword() {
         <button className='rec-button' onClick={navigateToRecoverWallet} >Next</button>
         </div>
         <div >
-        <button className='back-to-login-button' onClick={navigateToHaveAccount}>Back</button>
+        <button className='back-to-login-button' onClick={navigateToLogin}>Back</button>
         </div>
       </BlackBar>
     </div>

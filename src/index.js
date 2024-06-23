@@ -21,8 +21,6 @@ export { store };
 
 root.render(
     <Suspense fallback={<Loading />}>
-        <Provider store={store}>
-            <Router/>
-        </Provider>
+        <Router/>
     </Suspense>
 );

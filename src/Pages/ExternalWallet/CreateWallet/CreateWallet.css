@@ -1,5 +1,5 @@
 .main-background{
-    background-image: url("../../../../Assets/Images/coverx.png");
+    background-image: url("../../../Assets/Images/coverx.png");
     background-color: #151516;
     background-size: cover;
     background-repeat: no-repeat;
@@ -21,43 +21,55 @@
     line-height: normal;
     margin-top: 30px;
 }
-.para{
+.para-1{
     color: #FFF;
     text-align: center;
     font-family: Inter;
-    margin-top: 45px;
-    width: 80%;
-    margin: auto;
+    margin-top: 15px;
 }
-.password-input{
+.pass-input{
     display: flex;
     color: white;
     position: fixed;
-    top: 45%;
-    left: 1%;
+    top: 51%;
+    left: 3%;
     transform: translate(34%, -75%);
-    width: 60%;
-    height: 9%;
+    width: 58%;
+    height: 7%;
     background-color: #3C3C3C4D;
     border-bottom-color: #21DB9A;
     border-right: none;
     border-top: none;
     border-left: none;
     border-radius: 7px;
-
 }
-
-.terms-checkbox{
+.confirm-password-input{
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 63%;
+    left: 3%;
+    transform: translate(34%, -75%);
+    width: 58%;
+    height: 7%;
+    background-color: #3C3C3C4D;
+    border-bottom-color: #21DB9A;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    border-radius: 7px;
+}
+.terms-checkbox1{
     color: white;
     display: flex;
     color: white;
     position: fixed;
     top: 73%;
-    left: 10%;
+    left: 32%;
     transform: translate(34%, -75%);
     font-size: 85%;
 }
-.back-to-login-button{
+.back-button{
     border-radius: 8px;
     background: #0E0E0F;
     width: 120px;
@@ -76,41 +88,7 @@
     letter-spacing: -0.34px;
     border: none;
 }
-.reset-button{
-    border-radius: 8px;
-    background: #0E0E0F;
-    width: 120px;
-    height: 38px;
-    flex-shrink: 0;
-    position: fixed;
-    top: 79%;
-    left: 35%;
-    transform: translate(34%, -75%);
-    color: #21db9a;
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-    letter-spacing: -0.34px;
-    border: none;
-}
-.reset-para{
-    color: #FFF;
-    font-family: Inter;
-    display: flex;
-    position: fixed;
-    top: 69%;
-    left: 9%;
-    transform: translate(34%, -75%);
-    text-align: center;
-    font-size: small;
-    width: 50%;
-    margin: auto;
-
-
-}
-.dash-button{
+.next-button{
     border-radius: 8px;
     background: #21db9a;
     width: 120px;
@@ -128,4 +106,20 @@
     line-height: normal;
     letter-spacing: -0.34px;
     border: none;
+}
+.user-name{
+    display: flex;
+    color: white;
+    position: fixed;
+    top: 38%;
+    left: 3%;
+    transform: translate(34%, -75%);
+    width: 58%;
+    height: 7%;
+    background-color: #3C3C3C4D;
+    border-bottom-color: #21DB9A;
+    border-right: none;
+    border-top: none;
+    border-left: none;
+    border-radius: 7px;
 }

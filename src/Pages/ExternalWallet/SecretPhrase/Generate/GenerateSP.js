@@ -1,27 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import "./SecretPhrase.css";
-import BlackBar from "../../../../../Components/WalletComponents/BlackBar";
-import Head from "../../../../../Components/WalletComponents/Head";
-import WalletImage from "../../../../../Assets/Images/wallet.png";
-import { useNavigate } from "react-router-dom";
-import {useSelector} from "react-redux";
+import "./GenerateSP.css";
+import BlackBar from "../../../../Components/WalletComponents/BlackBar";
+import Head from "../../../../Components/WalletComponents/Head";
+import WalletImage from "../../../../Assets/Images/wallet.png";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
-export default function SecretPhrase() {
+export default function GenerateSP() {
   const navigate = useNavigate();
-
-  const user = useSelector(state => state.user);
-
+  const user = useLocation().state;
   const [words, setWords] = useState([]);
 
-  let wordString = "";
-
 
   useEffect(() => {
-     wordString = words.join(' ');
-  }, [words]);
-
-  useEffect(() => {
+    if(!user || !user.username || !user.password) {
+      // Redirect to setpassword if user object is not passed
+      navigateToCreateWallet();
+    } 
     fetchWords(); // Fetch words when component mounts
     console.log(user);
   }, []);
@@ -39,14 +34,21 @@ export default function SecretPhrase() {
     }
   };
 
+
   function navigateToConfirmSecretPhrase() {
-    console.log(wordString);
-    navigate(`/wallet/login/setpassword/secretphrase/confirmsecretphrase?word=${wordString}`);
+    const seedphrase = words.join(' ');
+
+    if(!user || !user.username || !user.password) {
+      // Redirect to setpassword if user object is not passed
+      navigateToCreateWallet();
+    } else {
+      navigate('/wallet/secret-phrase/confirm', { state: {...user, seedphrase } });
+    }
   }
   
 
-  function navigateToSetPassword() {
-    navigate("/wallet/login/setpassword");
+  function navigateToCreateWallet() {
+    navigate("/wallet/create");
   }
 
   
@@ -95,7 +97,7 @@ export default function SecretPhrase() {
           </button>
         </div>
         <div>
-          <button className="cancel-btn" onClick={navigateToSetPassword}>
+          <button className="cancel-btn" onClick={navigateToCreateWallet}>
             Cancel
           </button>
         </div>

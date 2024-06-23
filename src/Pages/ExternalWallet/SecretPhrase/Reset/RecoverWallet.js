@@ -1,38 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
-import BlackBar from '../../../../../../Components/WalletComponents/BlackBar';
-import Head from '../../../../../../Components/WalletComponents/Head';
-import WalletImage from "../../../../../../Assets/Images/wallet.png";
-import "./ConfirmSecretPhrase.css";
+import BlackBar from '../../../../Components/WalletComponents/BlackBar';
+import Head from '../../../../Components/WalletComponents/Head';
+import WalletImage from "../../../../Assets/Images/wallet.png";
+import "./RecoverWallet.css";
 import { useNavigate, useLocation } from 'react-router-dom';
-import {useSelector} from "react-redux";
 
-
-export default function ConfirmSecretPhrase() {
+export default function RecoverWallet() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const word = queryParams.get('word');
-    const user = useSelector(state => state.user.user);
+    const userId = useLocation().state;
 
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
-    const [words, setWords] = useState([]);
-    const [seedPraseDetails, setSeedPraseDetails] = useState({
-        username:user.username,
-        password:user.password,
-        seedphrase:word
-    });
+    const [words, setWords] = useState(null);
     const inputRefs = useRef([]);
 
+    function navigateToLogin() {
+      navigate("/wallet/login");
+    }
+
     useEffect(() => {
+        if (!userId) {
+            navigateToLogin();
+        }
         fetchWords();
         // Initialize inputValues state with empty strings
         setInputValues(Array(12).fill(''));
-        console.log("word", word);
-    }, [word]);
+    }, []);
 
-    useEffect(() => {
-        console.log(inputValues);
-    }, [inputValues]);
+
 
     function handleInputChange(index, value) {
         setInputValues(prevState => {
@@ -41,6 +35,7 @@ export default function ConfirmSecretPhrase() {
             return updatedValues;
         });
     }
+
 
     function handleKeyDown(index, event) {
         if (event.key === 'Enter') {
@@ -56,38 +51,17 @@ export default function ConfirmSecretPhrase() {
         return inputValues.join(' ');
     }
 
-
-    const saveSeedPrase = async () => {
-        try {
-            const response = await fetch("http://localhost:8006/walletLogin/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(seedPraseDetails),
-            });
-
-            if (response.ok) {
-                navigate('/wallet/dashboard');
-                console.log("Data sent successfully");
-
-            } else {
-                console.error("Error sending data:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching words:", error);
-        }
-    };
-
-
     function navigateToDashBoard() {
-        // Compare concatenated input values with the word variable
-        const isWordChecked = checkWords(word, inputValues);
-        if (isWordChecked) {
-            
-            saveSeedPrase();
+        if (!userId) {
+            navigate('/wallet/login');
         }
-         else {
+        // Compare concatenated input values with the word variable
+        const isWordChecked = checkWords(inputValues);
+        if (isWordChecked) {
+          console.log("sucess");
+          navigate("/wallet/changePassword");
+
+        } else {
             alert('Incorrect secret phrase');
             // Clear the input fields and reset inputValues array
             setInputValues(Array(12).fill(''));
@@ -96,44 +70,28 @@ export default function ConfirmSecretPhrase() {
         }
     }
 
-    function navigateToSecretPhrase() {
-        navigate('/wallet/login/setpassword/secretphrase');
-    }
+   
 
     const fetchWords = async () => {
         try {
-            const response = await fetch("http://localhost:8006/seedphrase/getUniqueShuffledWords"); // Replace "/api/words" with your actual endpoint
+            const response = await fetch("http://localhost:8006/seedphrase/getSeedPreseById",{userId:userId}); // Replace "/api/words" with your actual endpoint
+
             if (!response.ok) {
                 throw new Error("Failed to fetch words");
             }
             const data = await response.json();
-            setWords(data.words); // Assuming your API returns an object with a "words" property containing the array of words
+            console.log(data)
+            setWords(data[0]); // Assuming your API returns an object with a "words" property containing the array of words
         } catch (error) {
             console.error("Error fetching words:", error);
         }
     };
 
-    function renderWordTable() {
-        const tableRows = [];
-        for (let i = 0; i < words.length; i += 4) {
-            const rowWords = words.slice(i, i + 4);
-            const rowCells = rowWords.map((word, index) => (
-                <td key={index} className="word-cell">
-                    {word}
-                </td>
-            ));
-            tableRows.push(
-                <tr key={i / 4} className="word-row">
-                    {rowCells}
-                </tr>
-            );
-        }
-        return tableRows;
-    }
+   
 
-    function checkWords(wordString, inputValues) {
+    function checkWords() {
         // Split the wordString into an array of words
-        const wordArray = wordString.split(' ');
+        const wordArray = words.seedphrase.split(' ');
 
         // Check if the length of wordArray matches the length of inputValues
         if (wordArray.length !== inputValues.length) {
@@ -161,13 +119,13 @@ export default function ConfirmSecretPhrase() {
                 <p className='con-secret-para'>Please select each word in the correct order to verify <br />
                     you have saved your Secret Phrase..</p>
                 <div>
-                    <div>
+                    <div> 
                         {[...Array(12)].map((_, index) => (
                             <div key={index}>
                                 <input
                                     ref={el => inputRefs.current[index] = el}
                                     type="text"
-                                    className={`input-col-${index + 1}`}
+                                     className={`input-col-${index + 1}`}
                                     value={inputValues[index]}
                                     onChange={e => handleInputChange(index, e.target.value)}
                                     onKeyDown={e => handleKeyDown(index, e)}
@@ -178,23 +136,19 @@ export default function ConfirmSecretPhrase() {
                 </div>
 
                 <div>
-                    <button className='clear-button' onClick={() => {
+                    <button className='clear-button1' onClick={() => {
                         setInputValues(Array(12).fill(''));
                         inputRefs.current[0].focus();
                     }}>Clear all</button>
                 </div>
 
-                <div className='word-box-2'>
-                    <table className="word-table">
-                        <tbody>{renderWordTable()}</tbody>
-                    </table>
-                </div>
+              
 
                 <div >
-                    <button className='confirm-button' onClick={navigateToDashBoard}>Confirm</button>
+                    <button className='confirm-button1' onClick={navigateToDashBoard}>Confirm</button>
                 </div>
                 <div >
-                    <button className='back-to-secret-button' onClick={navigateToSecretPhrase}>Back</button>
+                    <button className='back-to-secret-button1' onClick={navigateToLogin} >Back</button>
                 </div>
             </BlackBar>
         </div>

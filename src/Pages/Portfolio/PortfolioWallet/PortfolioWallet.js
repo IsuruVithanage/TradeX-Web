@@ -66,6 +66,7 @@ export default function FundingWallet() {
             )
     
             .then(res => {
+                console.log(res.data);
                 setAssets(res.data.assets);
                 setUsdBalance(res.data.usdBalance);
                 setPortfolioValue(res.data.portfolioValue);
@@ -328,20 +329,14 @@ export default function FundingWallet() {
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
-                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2,
-                                }) : "",
+                                asset.value,
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
-                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2,
-                                }) : "",
+                                asset.value,
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>

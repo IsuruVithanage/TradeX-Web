@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import BlackBar from '../../../../Components/WalletComponents/BlackBar';
-import Head from '../../../../Components/WalletComponents/Head';
-import "./SetPassword.css";
-import WalletImage from "../../../../Assets/Images/wallet.png";
+import BlackBar from '../../../Components/WalletComponents/BlackBar';
+import Head from '../../../Components/WalletComponents/Head';
+import "./CreateWallet.css";
+import WalletImage from "../../../Assets/Images/wallet.png";
 import { useNavigate } from 'react-router-dom';
-import { setUser } from '../../../../Features/User'; 
-import { useDispatch } from 'react-redux';
+import { getUser } from '../../../Storage/SecureLs';
+import axios from 'axios';
 
-export default function SetPassword() {
+export default function CreateWallet() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const [showPassword, setShowPassword] = useState(false);
 
-  function navigateToSecretPhrase() {
-    navigate('/wallet/login/setpassword/secretphrase');
+  function navigateToGenerateSP(user) {
+    navigate('/wallet/secret-phrase', { state: user});
   }
 
-  function navigateToLogin() {
-    navigate('/wallet/login');
+  function navigateToStart() {
+    navigate('/wallet/start');
   }
 
   function clearFields() {
@@ -70,12 +68,21 @@ export default function SetPassword() {
     }
 
     const user = {
+      userId: getUser().id,
       username: username,
       password: password
     };
 
-    dispatch(setUser(user));
-    navigateToSecretPhrase();
+    axios.get('http://localhost:8006/walletLogin/checkUsername/' + username)
+      .then(() => navigateToGenerateSP(user))
+      .catch((error) => {
+        if(error.response){
+          alert(error.response.data.message);
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        clearFields();
+      });
   }
 
   function toggleShowPassword() {
@@ -108,7 +115,7 @@ export default function SetPassword() {
           <button className='next-button' onClick={register}>Next</button>
         </div>
         <div>
-          <button className='back-button' onClick={navigateToLogin}>Back</button>
+          <button className='back-button' onClick={navigateToStart}>Back</button>
         </div>
       </BlackBar>
     </div>

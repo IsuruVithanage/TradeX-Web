@@ -232,11 +232,8 @@ export default function DashBoard() {
                                 coin.marketPrice,
                                 coin.value,
                                 <span
-                                    style={{
-                                        color: coin.RoiColor
-
-                                    }}>
-                                    {`${coin.ROI} %`}
+                                    style={{ color: coin.RoiColor }}>
+                                    {coin.ROI}
                                 </span>
                             ]}
                         />
