@@ -16,13 +16,13 @@ const removeAccessToken = () => {
 
 const setUser = (user) => {
     console.log('userLS', JSON.parse(JSON.stringify(user)));
-    ls.set('user', JSON.parse(JSON.stringify(user))); // Serialize user data as JSON string
+    ls.set('user', JSON.parse(JSON.stringify(user)));
 };
 
 const getUser = () => {
     const userData = ls.get('user');
     console.log('userData', userData);
-    return userData ? userData : null; // Parse the JSON string back to an object
+    return userData ? userData : null;
 };
 
 const removeUser = () => {

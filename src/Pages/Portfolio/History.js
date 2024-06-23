@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { getUser } from '../../Storage/SecureLs';
 import { showMessage } from '../../Components/Message/Message'
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import axios from 'axios';

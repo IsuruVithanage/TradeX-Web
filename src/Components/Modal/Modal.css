@@ -39,3 +39,7 @@
 .ant-modal-close-icon:hover svg{
     color: #21DB9A;
 }
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-modal {
+    width: auto !important;
+}
