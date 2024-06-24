@@ -4,7 +4,7 @@ import './Table.css'
 export default function Table(props) {
     useEffect(() => {
         const table = document.querySelector('.table-body');
-        console.log(props.restart);
+      
         if(!table.classList.contains('restart')) {
             table.classList.add('restart');
         }
@@ -34,6 +34,8 @@ export default function Table(props) {
     )
 }
 
+
+
 export function TableRow(props) {
     return (
         <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={props.onClick}>
@@ -46,7 +48,11 @@ export function TableRow(props) {
     );
 }
 
+
+
 export function Coin(props) {
+    if(!props.children) return null;
+    
     const coinData = require('../../Assets/Images/Coin Images.json')[props.children];	
 
     return (

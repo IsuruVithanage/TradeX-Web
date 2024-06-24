@@ -18,6 +18,31 @@
     border-radius: 2px;
 }
 
+
+
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-slider .ant-slider-track {
+    background-color: #21db9a;
+    border-radius: 2px;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-slider .ant-slider-handle::after {
+    background-color: rgba(33, 219, 154, 0.56);
+    box-shadow: 0 0 0 2px #21db9a;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-slider .ant-slider-rail {
+    position: absolute;
+    background-color: #21db9a5e;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-slider .ant-slider-dot {
+    background-color: #21db9a;
+    border: 2px solid #21db9a;
+}
+
+
+
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider {
     margin: 1rem 0.6rem;
 }

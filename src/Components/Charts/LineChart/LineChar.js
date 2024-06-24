@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
-import {createChart} from 'lightweight-charts';
-import {Tooltip} from "antd";
+import React, { useState, useEffect, useRef } from 'react';
+import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
+import { createChart } from 'lightweight-charts';
+import { Tooltip } from "antd";
 import './LineChart.css';
 
 
@@ -56,7 +56,7 @@ export default function LineChart(props) {
                 vertLine: {
                     style: 0,
                     width: 1.3,
-                    visible: (chartData && chartData.length > 0),
+                    visible: !(!chartData || chartData.length === 0),
                 },
                 horzLine: {
                     labelBackgroundColor: '#000000',

@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+
+.notification-icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 38px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.notification-icon{
+    color: #21db9a;
+    font-size: 1.5rem;
+}
+
+.MuiBadge-badge{
+    background-color: #ff3a3a;
+    transform: scale(0.9);
+}
+
+.app-notification-container {
+    height: fit-content;
+    width: 500px;
+    position: absolute;
+    top: -6%;
+    right: 0.3%;
+    background-color: #0E0E0F;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0;
+    z-index: 1;
+    visibility: hidden;
+    transition: top 0.5s ease, opacity 0.7s ease;
+}
+
+.app-notification-container.active{
+    position: absolute;
+    top: 6vh;
+    opacity: 1;
+    z-index: -1;
+    visibility: visible;
+}
+
+.app-notification-item {
+    display: flex;
+    margin: 0.5rem 0.6rem 0.7rem 0.5rem;
+    background-color: #141414;
+    border-radius: 5px;
+}
+
+.app-notification-item:hover{
+    background-color: rgba(141, 141, 141, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.app-notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12%;
+    color: #21DB9A;
+}
+
+.app-notification-content{
+    padding: 7px 10px 15px 0;
+    width: 88%;
+}
+
+
+.app-notification-title {
+    color: #FFFFFFE0;
+    font-weight: 500;
+}
+
+.app-notification-body {
+    font-size: 13px;
+    color: #6D6D6D;
+    margin-top: 5px;
+}
+
+.app-notification-time{
+    height: 11px;
+    text-align: right;
+    font-size: 9px;
+    font-weight: 600;
+    color: #21db9aD0;
+}
+
+.app-notification-empty-message{
+    text-align: center;
+    color: #6D6D6D;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 20px;
+}

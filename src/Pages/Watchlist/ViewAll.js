@@ -131,10 +131,9 @@ export default function ViewAll() {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Date</th>
-                <th>NIC</th>
-                <th>Contact</th>
-                <th>Age</th>
+                <th>Email</th>
+                <th>Level</th>
+                <th>Quiz Taken</th>
                 <th>Upload Materials</th>
               </tr>
             </thead>
@@ -142,10 +141,9 @@ export default function ViewAll() {
               {pendingUsers.map((user) => (
                 <tr key={user.userId}>
                   <td style={{ textAlign: "left" }}>{user.userName}</td>
-                  <td>{user.Date}</td>
-                  <td>{user.NIC}</td>
-                  <td>{user.Contact}</td>
-                  <td>{user.Age}</td>
+                  <td>{user.email}</td>
+                  <td>{user.level}</td>
+                  <td>{user.hasTakenQuiz}</td>
                   <td>
                     <Input
                       type="button"

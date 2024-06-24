@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import crypto from "../../Assets/Images/crypto.png";
-import "./EducationItems.css";
 import axios from "axios";
+import "./EducationItems.css";
+
 
 
 const EducationItem = (props) => {

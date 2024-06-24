@@ -27,6 +27,27 @@
 
 }
 
+:where(.css-dev-only-do-not-override-zg0ahe).ant-radio-group {
+    box-sizing: border-box;
+    padding-left: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-radio-wrapper span.ant-radio+* {
+    color: #9E9E9E;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+    border-color: #21db9a;
+    background-color: #21db9a;
+}
+
+:where(.css-dev-only-do-not-override-zg0ahe).ant-radio-wrapper .ant-radio-inner {
+    background-color: rgba(25, 118, 210, 0.04);
+    border-color: #d9d9d9;
+}
+
+
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper {
     box-sizing: border-box;
@@ -41,11 +62,7 @@
     padding-bottom: 2rem;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper .ant-radio-inner {
-    background-color: #151517;
-    border-color: #21db9a;
-    border-width: 0.15rem;
-}
+
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-radio-wrapper:hover .ant-radio-inner {
     border-color: #1aab80;
