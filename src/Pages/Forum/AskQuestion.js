@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import './askQuestion.css';
-import { height } from '@mui/system';
 import Input from "../../Components/Input/Input";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';

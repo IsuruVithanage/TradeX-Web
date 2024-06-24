@@ -2,14 +2,12 @@ import React from 'react'
 import './Monthlysummary.css'
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
-import Switch from '@mui/material/Switch';
-import { Box } from '@mui/system';
 
 
 function Dailysummary() {
     const Tabs = [
-        { label: "Daily", path: "Dailysummary" },
-        { label: "Monthly", path: "Summary/Monthlysummary" },
+      { label: "Daily", path: "/summary/daily" },
+      { label: "Monthly", path: "/summary/monthly" },
        
         
       ];

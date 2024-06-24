@@ -2,7 +2,7 @@
 
 .top-navbar{
     background-color: #0E0E0F;
-    padding: 0 10px 0 10px;
+    padding-left: 10px;
     position: fixed;
     top: 0;
     left: 6%;
@@ -40,16 +40,6 @@
     width: fit-content;
 }
 
-.top-link{
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.links-container a{
-    text-decoration: none;
-}
-
 .top-nav-link{
     text-decoration: none;
     color: #9E9E9E;
@@ -71,27 +61,14 @@
     color: #ffffff;
 }
 
-
-
-.user-name{
-    color: #9E9E9E;
-    font-weight: 500;
-    font-size: 16px;
-    margin-right: 13px;
-    font-family: 'Inter', sans-serif;
-
-}
-.profile-icon{
-    color: #21db9a;
-    font-size: 1.5rem;
-    
-}
-
-.profile-icon-containar{
+.top-right-container{
     margin-left: auto;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+}
+
+.top-right-icon-container{
+    display: flex;
+    justify-content: center;
     align-items: center;
     height: 100%;
     width: -moz-fit-content;
@@ -99,17 +76,22 @@
     cursor: pointer;
 }
 
-.profile-menu.active{
-    position: absolute;
-    top: 6%;
-    opacity: 1;
-    z-index: 1;
-    visibility: visible;
+.top-nav-user-name{
+    color: #9E9E9E;
+    font-weight: 500;
+    font-size: 16px;
+    margin-right: 8px;
+    font-family: 'Inter', sans-serif;
 }
 
-.profile-menu {
-    height: 200px;
-    width: 200px;
+.top-nav-profile-icon{
+    color: #21db9a;
+    font-size: 1.5rem;
+}
+
+.floating-container {
+    height: fit-content;
+    width: 250px;
     position: absolute;
     top: -6%;
     right: 0.6%;
@@ -120,25 +102,43 @@
     opacity: 0;
     z-index: 1;
     visibility: hidden;
-    transition: top 0.5s ease, opacity 0.5s ease;
+    transition: top 0.5s ease, opacity 0.7s ease;
+    box-shadow: inset 0px 0px 12px 0px #282828C0;
+}
+
+.floating-container.active{
+    position: absolute;
+    top: 6vh;
+    opacity: 1;
+    z-index: -1;
+    visibility: visible;
 }
 
 .profile-raw {
-    display: flex; /* Add this line to make it a flex container */
-    align-items: center; /* Vertically center the content within the flex container */
-    width: 100%;
-    margin: 0.3rem 0.6rem 0.6rem 0.5rem;
-    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0.5rem 0.8rem 0.5rem;
+    padding: 0.5rem 0.3rem;
     color: #6D6D6D;
+    border-radius: 5px;
+    height: 40px;
 }
-
-.row-name {
-    padding-left: 0.7rem;
-}
-
 
 .profile-raw:hover{
     cursor: pointer;
     background-color: rgba(141, 141, 141, 0.1);
     transition: background-color 0.3s ease;
+}
+
+.row-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
+.row-name {
+    padding-left: 0.7rem;
+    font-weight: 600;
+    width: 80%;
 }

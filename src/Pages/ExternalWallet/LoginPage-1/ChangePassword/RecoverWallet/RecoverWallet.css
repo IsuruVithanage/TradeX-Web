@@ -29,15 +29,19 @@
     margin-top: 6px;
     font-size: 14px;
 }
+.big-box{
+    margin-block-end: 10px;
+
+}
 .input-col-1{
     display: flex;
     color: white;
     position: fixed;
     top: 30%;
     left: 5%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(26%, -75%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -48,9 +52,9 @@
     position: fixed;
     top: 37%;
     left: 5%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(26%, 0%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -61,9 +65,9 @@
     position: fixed;
     top: 44%;
     left: 5%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(26%, 75%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -74,9 +78,9 @@
     position: fixed;
     top: 51%;
     left: 5%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(26%, 150%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -87,9 +91,9 @@
     position: fixed;
     top: 30%;
     left: 35%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(30%, -75%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -100,9 +104,9 @@
     position: fixed;
     top: 37%;
     left: 35%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(30%, -0%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -113,9 +117,9 @@
     position: fixed;
     top: 44%;
     left: 35%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(30%, 75%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -126,9 +130,9 @@
     position: fixed;
     top: 51%;
     left: 35%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(30%, 150%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -140,8 +144,8 @@
     top: 30%;
     left: 65%;
     transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -152,9 +156,9 @@
     position: fixed;
     top: 37%;
     left: 65%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(34%, 0%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -165,9 +169,9 @@
     position: fixed;
     top: 44%;
     left: 65%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(34%, 75%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
@@ -178,21 +182,21 @@
     position: fixed;
     top: 51%;
     left: 65%;
-    transform: translate(34%, -75%);
-    width: 18%;
-    height: 3%;
+    transform: translate(34%, 150%);
+    width: 20%;
+    height: 4%;
     background-color: #3C3C3C4D;
     border: none;
     border-radius: 4px;
 }
-.clear-button{
+.clear-button1{
     border-radius: 8px;
     background: #0E0E0F;
     width: 65px;
     height: 24px;
     position: fixed;
-    top: 60%;
-    left: 44%;
+    top: 74%;
+    left: 43%;
     transform: translate(22%, -94%);
     color: #FFF;
     font-family: Inter;
@@ -217,14 +221,14 @@
 
 }
 
-.confirm-button{
+.confirm-button1{
     border-radius: 8px;
     background: #21db9a;
     width: 110px;
     height: 35px;
     flex-shrink: 0;
     position: fixed;
-    top: 93%;
+    top: 85%;
     left: 63%;
     transform: translate(34%, -75%);
     color: #FFF;
@@ -237,14 +241,14 @@
     border: none;
 
 }
-.back-to-secret-button{
+.back-to-secret-button1{
     border-radius: 8px;
     background: #0E0E0F;
     width: 110px;
     height: 35px;
     flex-shrink: 0;
     position: fixed;
-    top: 93%;
+    top: 85%;
     left: 7%;
     transform: translate(34%, -75%);
     color: #FFF;

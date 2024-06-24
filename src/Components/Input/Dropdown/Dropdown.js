@@ -1,4 +1,3 @@
-import { borderBottom, borderBottomColor, borderTop, padding } from '@mui/system';
 import Select from 'react-select';
 
 export default function Dropdown (props) {
@@ -105,7 +104,7 @@ export default function Dropdown (props) {
             isClearable={true} 
             isSearchable={props.searchable === undefined ? true : props.searchable}
             isDisabled={props.disabled}
-            options={props.options} 
+            options={(props.options)} 
             value={(props.value === null ) ? null : props.value && props.options.find(opt => opt.value === props.value)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}

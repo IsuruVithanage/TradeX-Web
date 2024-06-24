@@ -11,7 +11,7 @@ function Questionset(props) {
           props.questionlist && props.questionlist.map(record => {
               return(
                 <div className='question-row'>
-                <Link to={`/Questionbar/Detailed/${record.questionId}`}>
+                <Link to={`/forum/discussion/${record.questionId}`}>
                     <div className='question-title'>
                         { record.title}<br/><br/>
                   

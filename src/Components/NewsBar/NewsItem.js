@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import defaultImage from '../../Assets/Images/image.jpg'; 
-import './NewsItem.css'; 
 import axios from 'axios'; 
+import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
+import { 
+  MdThumbUp,
+  MdThumbDown,
+  MdOutlineThumbUp,
+  MdOutlineThumbDown
+ } from "react-icons/md";
+ import './NewsItem.css'; 
+
 
 
 const NewsItem = (props) => {
@@ -114,11 +117,11 @@ const NewsItem = (props) => {
           </div>
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
-              {likeCount} {isLike ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
+              {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
 
             </div>
             <div onClick={handleDislikeClick}>
-              {dislikeCount} {isDislike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
+              {dislikeCount} {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
             </div>
           </div>
         </div>

@@ -11,3 +11,20 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+    if (payload.notification) {
+        payload.notification.title = null;
+    };
+
+
+    clients.matchAll().then(clients => {
+        clients.forEach(client => {
+            client.postMessage({
+                msg: 'onBackground',
+                data: payload.data,
+                notification: payload.notification,
+            });
+        });
+    });
+});

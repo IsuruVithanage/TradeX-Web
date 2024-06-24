@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import { useLocation } from 'react-router-dom'
+import { showMessage } from '../../../Components/Message/Message';
+import { getUser } from '../../../Storage/SecureLs';
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import { MdOutlineAssignment, } from "react-icons/md";
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Modal from '../../../Components/Modal/Modal'
-import Table, { TableRow, Coin } from '../../../Components/Table/Table'
-import { showMessage } from '../../../Components/Message/Message';
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
+
 
 
 export default function FundingWallet() {
@@ -28,16 +30,16 @@ export default function FundingWallet() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
-    const userName = user.userName;
+    const user = getUser();
+    const userId = user && user.id;
+    const userName = user && user.userName;
     
 
     useEffect(() => {
         if(!isModalOpen) 
         setIsRegenerate(false);
     }, [isModalOpen]);
+
 
 
     useEffect(() => {
@@ -49,7 +51,7 @@ export default function FundingWallet() {
         setUsdBalance(null);
         setPortfolioValue(null);
         setIsLoading(true);
-        //setAssets([]);
+        setAssets([]);
             
         axios
             .get(
@@ -81,7 +83,7 @@ export default function FundingWallet() {
                 showMessage(error.response.status, error.response.data.message)   :
                 showMessage('error', 'Database connection failed..!') ;
             });
-    }, [ currentWallet ]);
+    }, [ currentWallet, userId ]);
 
 
 
@@ -248,10 +250,10 @@ export default function FundingWallet() {
                 sidePanel = {
                     <div>
                         <Input type="dropdown" label='Coin' value={selectedCoin} onChange={setSelectedCoin} options={
-                            assets.map(asset => ({
+                            assets.map(asset => (asset.symbol ? {
                                 value: asset.symbol, 
                                 label: asset.symbol + " - " + coins[asset.symbol].name,
-                            }))
+                            } : null)).filter(option => option !== null)
                         } />
 
 
@@ -275,7 +277,7 @@ export default function FundingWallet() {
                                     <Input type="text" label='Wallet Address' value={walletAddressValue} onChange={(e) => setWalletAddressValue(e.target.value)}/> 
                                 </div>
                                 <div className="paste-text-button" onClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}>
-                                    <AssignmentOutlinedIcon/>
+                                    <MdOutlineAssignment/>
                                 </div>
                                 <div className='paste-bottom-layer' />
                             </div> 
@@ -326,20 +328,20 @@ export default function FundingWallet() {
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
-                                "$ " + asset.value.toLocaleString("en-US", { 
+                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
                                     minimumFractionDigits: 2, 
                                     maximumFractionDigits: 2,
-                                }),
+                                }) : "",
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
-                                "$ " + asset.value.toLocaleString("en-US", { 
+                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
                                     minimumFractionDigits: 2, 
                                     maximumFractionDigits: 2,
-                                }),
+                                }) : "",
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>

@@ -58,6 +58,7 @@
     margin-left: 70px;
   } */
   .coinDescription{
-    width: calc(92vw - 340px);
-
+    width: calc(94vw - 365px) !important;
+    padding: 20px;
+    text-align: justify;
   }

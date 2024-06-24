@@ -1,8 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import './TabSwitch.css';
 
 export default function Tab(props) {
-
     const [selectedButton, setSelectedButton] = useState(props.buttons[0]);
 
     const selectHandler = (buttonNo) => {

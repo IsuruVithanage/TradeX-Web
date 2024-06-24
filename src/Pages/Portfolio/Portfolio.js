@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react'
+import {showMessage} from '../../Components/Message/Message';
+import { getUser } from '../../Storage/SecureLs';
+import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import BasicPage from '../../Components/BasicPage/BasicPage';
 import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
-import Table, {TableRow, Coin} from '../../Components/Table/Table';
-import {showMessage} from '../../Components/Message/Message';
 import axios from 'axios';
+
 
 export default function Portfolio() {
     const [assets, setAssets] = useState([]);
@@ -16,9 +18,9 @@ export default function Portfolio() {
     const [initialData, setInitialData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/overview';
-    const userTemp = localStorage.getItem('user');
-    const user = JSON.parse(userTemp);
-    const userId = user.id;
+    const user = getUser();
+    const userId = user && user.id;
+
 
 
     useEffect(() => {
@@ -40,14 +42,14 @@ export default function Portfolio() {
             setIsLoading(false);
             setPortfolioValue(0);
             setUsdBalance(0);
-            console.log("error", error);
+            console.log("error getting assets");
 
             error.response ? 
             showMessage(error.response.status, error.response.data.message)   :
             showMessage('error', 'Database connection failed..!') ;
         });
 
-    }, []);
+    }, [userId]);
   
 
 

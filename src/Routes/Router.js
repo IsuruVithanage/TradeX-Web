@@ -1,104 +1,94 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NotFound from "../Pages/NotFound/NotFound";
 import App from "../App";
-import Admin from "./Sub-Routes/AdminRoutes";
-import Watchlist from "./Sub-Routes/WatchlistRoutes";
-import Portfolio from "./Sub-Routes/PortfolioRoutes";
-import Forum from "./Sub-Routes/ForumRoutes";
-import Summary from "./Sub-Routes/SummaryRoutes";
-import Education from "./Sub-Routes/EducationRoutes";
-import News from "./Sub-Routes/NewsRoutes";
-import Wallet from "./Sub-Routes/WalletRoutes";
-
-import BasicPage from "../Components/BasicPage/BasicPage";
 import Simulation from "../Pages/SimulateTradingPlatform/TradingPlatform";
 import Alert from "../Pages/Alert/Alert";
 import Suggestions from "../Pages/Suggestions/Suggestions";
-import Detailed from "../Components/Questionbar/Detailed";
 import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
 import Login from "../Pages/Login&Signin/Login";
-import Favorites from "../Pages/Forum/Favorites";
 
-export default function Router({ firebase }) {
+import AdminRoutes from "./Sub-Routes/AdminRoutes";
+import WatchlistRoutes from "./Sub-Routes/WatchlistRoutes";
+import PortfolioRoutes from "./Sub-Routes/PortfolioRoutes";
+import ForumRoutes from "./Sub-Routes/ForumRoutes";
+import SummaryRoutes from "./Sub-Routes/SummaryRoutes";
+import EducationRoutes from "./Sub-Routes/EducationRoutes";
+import NewsRoutes from "./Sub-Routes/NewsRoutes";
+import WalletRoutes from "./Sub-Routes/WalletRoutes";
+
+
+
+export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
-      errorElement: <App />,
+      element: <App />,
     },
     {
       path: "/signup",
       element: <Signup />,
     },
     {
-      path: "/home",
-      element: <App />,
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "/admin/*",
-      element: <Admin />,
+      element: <AdminRoutes />,
     },
     {
       path: "/watchlist/*",
-      element: <Watchlist />,
+      element: <WatchlistRoutes />,
     },
     {
       path: "/portfolio/*",
-      element: <Portfolio />,
+      element: <PortfolioRoutes />,
     },
     {
       path: "/forum/*",
-      element: <Forum />,
+      element: <ForumRoutes />,
     },
     {
       path: "/summary/*",
-      element: <Summary />,
+      element: <SummaryRoutes />,
     },
     {
       path: "/education/*",
-      element: <Education />,
+      element: <EducationRoutes />,
     },
     {
       path: "/news/*",
-      element: <News />,
+      element: <NewsRoutes />,
     },
     {
       path: "/wallet/*",
-      element: <Wallet />,
-    },
-    {
-      path: "/settings",
-      element: <BasicPage />,
+      element: <WalletRoutes />,
     },
     {
       path: "/simulate",
-      element: <Simulation firebase={firebase} />,
+      element: <Simulation />,
     },
     {
       path: "/alert",
-      element: <Alert firebase={firebase} />,
+      element: <Alert />,
     },
     {
       path: "/suggestion",
       element: <Suggestions />,
     },
     {
-      path: "/Questionbar/Detailed/:id",
-      element: <Detailed />,
-    },
-
-    {
       path: "/quiz",
       element: <Quiz />,
     },
-    // {
-    //     path: "/profile",
-    //     element: <UserProfileTab />,
-    // },
     {
       path: "/verify",
       element: <VerifyUser />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 
