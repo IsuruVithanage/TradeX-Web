@@ -23,7 +23,7 @@ export default function Users() {
   const loadUsers = async () => {
     try {
       const result = await axios.get(
-        "http://localhost:8004/user/getAllUsers"
+        "http://localhost:8004/admin/getAllUsers"
       );
       setUserList(result.data);
     } catch (error) {
@@ -41,6 +41,7 @@ export default function Users() {
         { label: "Dashboard", path: "/admin/AdDashboard" },
         { label: "Users", path: "/admin/Users" },
         { label: "Admin", path: "/admin" },
+        { label: "Education", path: "/admin/AddResources" },
 
       ]}
     >
