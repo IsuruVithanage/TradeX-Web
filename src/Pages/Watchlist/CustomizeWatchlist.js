@@ -5,7 +5,8 @@ import Input from "../../Components/Input/Input";
 import "./CustomizeWatchlist.css";
 import Modal from "../../Components/Modal/Modal";
 import symbols from "../../Assets/Images/Coin Images.json";
-
+import { getUser } from "../../Storage/SecureLs";
+import Table, {TableRow,Coin} from "../../Components/Table/Table";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
@@ -15,6 +16,45 @@ const Watchlist1 = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCoinSelected, setIsCoinSelected] = useState(false);
   const [modalFilteredCoins, setModalFilteredCoins] = useState([]);
+  const user = getUser();
+  const userId = user && user.id;
+  
+  useEffect(() => {
+
+   if(!isDeleteModalOpen && selectedCoins.length > 0){
+      const customCoins = selectedCoins.map((coin) => coin.symbol)
+      console.log("Selected coin", customCoins)
+
+      axios.post("http://localhost:8007/watchlist", {
+        userId: userId,
+        coins: customCoins
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log("coin updating failed", error);
+      })
+    }
+  }, [selectedCoins,isDeleteModalOpen]);
+
+  useEffect(() => {
+
+    if(coins.length > 0){
+      axios.get("http://localhost:8007/watchlist/" + userId)
+      .then ((res) => {
+        const customSymbols = res.data.coins;
+        const customCoins = coins.filter((coin) => customSymbols.includes(coin.symbol));
+        setSelectedCoins (customCoins);
+        console.log("received coins", res.data);
+        console.log("coins",customCoins);
+      })
+      .catch((error) => {
+        console.log("error getting coins", error);
+      })
+    }
+
+   }, [coins, userId]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,7 +72,7 @@ const Watchlist1 = () => {
             })
             .sort((a, b) => b.quoteVolume - a.quoteVolume);
           setCoins(data);
-          setModalFilteredCoins(data); // Set filtered coins for modal initially
+
         } else {
           console.error("API response is not an array:", res.data);
         }
@@ -42,6 +82,8 @@ const Watchlist1 = () => {
         console.log(error);
         setIsLoading(false);
       });
+
+      
   }, []);
 
   const handleRowClick = (selectedCoin) => {
@@ -88,7 +130,15 @@ const Watchlist1 = () => {
     }
   };
 
+  const handleCoinSelect = (coin) => {
+    const isCoinSelected = selectedCoins.some((c) => c.symbol === coin.symbol);
 
+    if (isCoinSelected) {
+      setSelectedCoins(selectedCoins.filter((c) => c.symbol !== coin.symbol));
+    } else {
+      setSelectedCoins([...selectedCoins, coin]);
+    }
+  };
 
   const formatCurrency = (amount) => {
     const amountString = parseFloat(amount).toLocaleString("en-US", {
@@ -167,64 +217,105 @@ const Watchlist1 = () => {
               onClick={() => setIsDeleteModalOpen(true)}
             />
             <Modal
-              open={isDeleteModalOpen}
-              close={() => setIsDeleteModalOpen(false)}
-            >
-              <div style={{ width: "450px" }}>
-                <h2>Select Coin</h2>
-                <div>
-                  <Input
-                    type="text"
-                    placeholder="Search"
-                    style={{
-                      width: "400px",
-                      float: "right",
-                      marginRight: "50px",
-                    }}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
+                  open={isDeleteModalOpen}
+                  close={() => setIsDeleteModalOpen(false)}
+                
+                >
+                  <div style={{ width: "550px" , paddingTop:"25px"}}>
+                    
+                    <div>
+                      <Input
+                        type="search"
+                        placeholder="Search"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
 
-                <table className="watchlist-table-modal">
-                  <thead
-                    style={{
-                      color: "#dbdbdb",
-                      fontSize: "18px",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    <tr>
-                      <td>Coin</td>
-                      <td>Price</td>
-                      <td></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {modalFilteredCoins.map((coin) => (
-                      <tr key={coin.id} onClick={() => handleRowClick(coin)}>
-                        <td
-                          style={{ marginLeft: "100px", marginBottom: "50px" }}
-                        >
-                          <img
-                            className="coin-image-add"
-                            src={symbols[coin.symbol].img}
-                            alt={coin.symbol}
-                          />
+                    
+                      <Table hover={true} style={{height:"65vh", overflowY:"auto"}} tableTop={<h2 style={{textAlign:"center"}}>Select Coin</h2>}>
+                      <TableRow data = {["Coin", "Price", "Select"]}/>
+                      { coins.map((coin) => (
+                      <TableRow key={coin.symbol}
+                            onClick={() => handleRowClick(coin)} 
+                            data = {[
+                              <Coin>{coin.symbol}</Coin>,
+                              formatCurrency(coin.lastPrice),
+                              <input
+                                type="checkbox"
+                                style={{
+                                  width: "20px",
+                                  height: "20px",
+                                  textAlign: "right",
+                                }}
+                                onChange={() => handleCoinSelect(coin)}
+                                checked={selectedCoins.some(
+                                  (c) => c.symbol === coin.symbol
+                                )}
+                              />
+                            ]}/>
+                      ))
+                        }
+                    </Table>
 
-                          <span className="coin-symbol-add">
-                            {coin.symbol.toUpperCase()}
-                          </span>
-                        </td>
+                    {/* <table className="watchlist-table-modal">
+                      <thead
+                        style={{
+                          color: "#dbdbdb",
+                          fontSize: "18px",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        <tr>
+                          <td>Coin</td>
+                          <td>Price</td>
+                          <td>Select</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {coins.map((coin) => (
+                          <tr
+                            key={coin.id}
+                            onClick={() => handleRowClick(coin)}
+                          >
+                            <td
+                              style={{
+                                marginLeft: "100px",
+                                marginBottom: "50px",
+                              }}
+                            >
+                              <img
+                                className="coin-image-add"
+                                src={symbols[coin.symbol].img}
+                                alt={coin.symbol}
+                              />
+                              <span className="coin-symbol-add">
+                                {coin.symbol.toUpperCase()}
+                              </span>
+                            </td>
 
-                        <td className="coin-price-add">
-                          {formatCurrency(coin.lastPrice)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Modal>
+                            <td className="coin-price-add">
+                              {formatCurrency(coin.lastPrice)}
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                style={{
+                                  width: "20px",
+                                  height: "20px",
+                                  textAlign: "right",
+                                }}
+                                onChange={() => handleCoinSelect(coin)}
+                                checked={selectedCoins.some(
+                                  (c) => c.symbol === coin.symbol
+                                )}
+                              ></input>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table> */}
+                  </div>
+                </Modal>
           </div>
         </div>
 
@@ -234,7 +325,7 @@ const Watchlist1 = () => {
               <td colSpan={2}>Coin</td>
               <td>Price</td>
               <td>24h Change</td>
-              <td>Market Cap</td>
+              <td>Volume</td>
               <td></td>
             </tr>
           </thead>
@@ -253,11 +344,11 @@ const Watchlist1 = () => {
                   </td>
                   <td style={{ width: "150px" }}>
                     <div className="coin-name-container">
-                      <span className="coin-name">{coin.name}</span>
+                      <span className="coin-name">{symbols[coin.symbol].name}</span>
                       <span className="coin-symbol">{coin.symbol}</span>
                     </div>
                   </td>
-                  <td>{coin.price}</td>
+                  <td>{price}</td>
                   <td
                     style={{
                       color:
@@ -271,7 +362,7 @@ const Watchlist1 = () => {
                     {" "}
                     {parseFloat(coin.priceChange).toFixed(2)} %
                   </td>
-                  <td>{coin.marketcap}</td>
+                  <td>{volume}</td>
                   <td>
                     <Input
                       type="button"
