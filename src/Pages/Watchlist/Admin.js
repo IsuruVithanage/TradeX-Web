@@ -102,6 +102,7 @@ export default function Admin() {
                 {label: "Dashboard", path: "/admin/AdDashboard"},
                 {label: "Users", path: "/admin/Users"},
                 {label: "Admin", path: "/admin"},
+                { label: "Education", path: "/admin/AddResources" },
             ]}
         >
             <div>

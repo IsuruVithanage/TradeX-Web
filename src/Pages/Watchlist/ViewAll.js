@@ -7,12 +7,15 @@ import axios from "axios";
 import { FaUsers } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import "./AdminUserVerification";
 
 export default function ViewAll() {
   const [adminCount, setAdminCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -33,7 +36,7 @@ export default function ViewAll() {
     const fetchPendingUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getPendingUsers"
+          "http://localhost:8004/admin/getPendingUsers"
         );
         setPendingUsers(response.data);
       } catch (error) {
@@ -74,6 +77,11 @@ export default function ViewAll() {
     fetchVerifiedUserCount();
   }, []);
 
+  const viewDetails = (id) => {
+    navigate(`/Admin/AdminUserVerification/${id}`);
+
+  }
+
   return (
     <BasicPage
       tabs={[
@@ -83,14 +91,14 @@ export default function ViewAll() {
       ]}
     >
       <div style={{ display: "flex" }}>
-      <AdminCard>
+        <AdminCard>
           <div style={{ display: "flex" }}>
             <div>
               <div className="Dash-card">Users</div>
               <div className="count">{userCount}</div>
             </div>
             <div className="user-icon">
-            <FaUsers />
+              <FaUsers />
             </div>
           </div>
         </AdminCard>
@@ -101,7 +109,7 @@ export default function ViewAll() {
               <div className="count">{verifiedUserCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCheck />
+              <FaUserCheck />
             </div>
           </div>
         </AdminCard>
@@ -112,7 +120,7 @@ export default function ViewAll() {
               <div className="count">{adminCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCog />
+              <FaUserCog />
             </div>
           </div>
         </AdminCard>
@@ -143,6 +151,7 @@ export default function ViewAll() {
                       type="button"
                       value=" View"
                       style={{ width: "90px" }}
+                      onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
                     />
                   </td>
                 </tr>
@@ -151,6 +160,9 @@ export default function ViewAll() {
           </table>
         </div>
       </div>
+      <Link to="/Admin/AdminUserVerification">
+        <Input type="button" value="View" style={{ width: "90px" }} />
+      </Link>
     </BasicPage>
   );
 }
