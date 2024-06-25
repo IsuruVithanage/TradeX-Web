@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";

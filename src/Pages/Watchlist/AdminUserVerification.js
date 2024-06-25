@@ -1,4 +1,4 @@
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
@@ -8,7 +8,6 @@ import { ImCamera } from "react-icons/im";
 import { validationSchema } from "../../Validation/UserValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { Upload } from "antd";

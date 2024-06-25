@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage'
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
 import NewsItem from '../../Components/NewsBar/NewsItem'
 import "./News.css"
 import Input from '../../Components/Input/Input'

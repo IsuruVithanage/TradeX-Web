@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { showMessage } from '../../../../Components/Message/Message';
 import { getUser, setUser } from "../../../../Storage/SecureLs";
-import AuthPage from "../../../../Components/BasicPage/AuthPage/AuthPage";
+import AuthPage from "../../../../Components/Layouts/AuthPage/AuthPage";
 import axios from "axios";
 import "./ConfirmSP.css";
 

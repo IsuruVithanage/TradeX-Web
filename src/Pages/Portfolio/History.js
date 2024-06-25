@@ -4,8 +4,8 @@ import { getUser } from '../../Storage/SecureLs';
 import { showMessage } from '../../Components/Message/Message'
 import Table, { TableRow, Coin } from '../../Components/Table/Table';
 import axios from 'axios';
-import BasicPage from '../../Components/BasicPage/BasicPage'
-import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer';
 import Input from '../../Components/Input/Input';
 import coins from '../../Assets/Images/Coin Images.json'
 

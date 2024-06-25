@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import BasicPage from './Components/BasicPage/BasicPage';
+import BasicPage from './Components/Layouts/BasicPage/BasicPage';
 import trade from './Assets/Images/trade.png'
 import Input from './Components/Input/Input';
 import { useNavigate } from 'react-router-dom';

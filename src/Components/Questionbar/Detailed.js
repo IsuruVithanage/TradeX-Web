@@ -1,7 +1,7 @@
 import "./Detailed.css";
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";

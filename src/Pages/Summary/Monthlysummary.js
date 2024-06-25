@@ -1,6 +1,6 @@
 import React from 'react'
 import './Monthlysummary.css'
-import BasicPage from '../../Components/BasicPage/BasicPage';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import Input from "../../Components/Input/Input";
 
 

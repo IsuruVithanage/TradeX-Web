@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import EducationItem from "../../Components/EducationResources/EducationItems";
 import "./Education.css";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 
 function Education() {
 

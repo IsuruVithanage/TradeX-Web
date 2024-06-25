@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {showMessage} from '../../Components/Message/Message';
 import { getUser } from '../../Storage/SecureLs';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
-import BasicPage from '../../Components/BasicPage/BasicPage';
-import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
+import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
