@@ -1,33 +1,49 @@
 import React,{useState,useEffect} from 'react'
+import { getUser } from '../../../Storage/SecureLs';
+import notificationManager from '../../Alert/notificationManager';
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import Table, { TableRow,Coin } from '../../../Components/Table/Table';
+
 import axios from 'axios';
 
 
 export default function History() {
-    const userId = 1;
+    const user = getUser();
+    const walletId = user && user.walletId;
     const [historyData,setHistoryData] = useState([])
     const [isLoading,setIsLoading] = useState(true)
 
 
     useEffect(()=>{
         setIsLoading(true)
-        axios.get(
-            "http://localhost:8006/history",{
-            params:{userId:userId},
-            withCredentials: true,
-        })
-        .then((res)=>{
-            setHistoryData(res.data)
-            setIsLoading(false)
-            console.log(res.data)
-        })
-        .catch((error)=>{
-            console.log(error)
-            setIsLoading(false)
-        })
 
-    },[])
+        const getHistoryData = () => {
+            axios.get(
+                "http://localhost:8006/history",{
+                params:{walletId},
+                withCredentials: true,
+            })
+            .then((res)=>{
+                setHistoryData(res.data)
+                setIsLoading(false)
+                console.log(res.data)
+            })
+            .catch((error)=>{
+                console.log(error)
+                setIsLoading(false)
+            });
+        }   
+
+        getHistoryData();
+
+        notificationManager.onAppNotification(() => {
+            getHistoryData();
+        });
+
+        return () => {
+            notificationManager.onAppNotification(() => {});
+        };
+    },[walletId])
 
     return (
         <BasicPage 
