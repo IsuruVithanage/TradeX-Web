@@ -1,99 +1,22 @@
-.main-background{
-    background-image: url("../../../../Assets/Images/coverx.png");
-    background-color: #151516;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: fixed;
-    padding: 0.5%;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-.secret-phrase{
-    color: #FFF;
-    text-align: center;
-    font-family: Inter;
-    font-size: 38px;
-    font-style: normal;
-    font-weight: 501;
-    line-height: normal;
-    margin-top: 35px;
-    margin-bottom: 0;
-
-}
-.secret-para{
-    color: #FFF;
-    text-align: center;
-    font-family: Inter;
-    margin-top: 9px;
-    font-size: 0.8rem;
-}
 .word-box{
     width: 68%;
-    height: 50%;
+    min-height: 215px;
     background-color: #21212394;
     display: flex;
-    color: white;
-    position: fixed;
-    top: 67%;
-    left: -7%;
-    transform: translate(34%, -75%);
-    border-radius: 3%;
+    border-radius: 10px;
+    margin-top: 1vh;
+    padding: 10px;
 }
 
 .word-table {
     width: 100%;
     border-collapse: collapse;
-    color: white;
-
 }
 
 .word-cell {
-    padding: 8px 12px;
     text-align: center;
     font-size: 14px;
     line-height: 1.4;
     font-weight: bold;
-}
-
-
-.proceed-button{
-    border-radius: 8px;
-    background: #21db9a;
-    width: 120px;
-    height: 38px;
-    flex-shrink: 0;
-    position: fixed;
-    top: 89%;
-    left: 60%;
-    transform: translate(34%, -75%);
-    color: #FFF;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-    letter-spacing: -0.34px;
-    border: none;
-}
-.cancel-btn{
-    border-radius: 8px;
-    background: #0E0E0F;
-    width: 120px;
-    height: 38px;
-    flex-shrink: 0;
-    position: fixed;
-    top: 89%;
-    left: 10%;
-    transform: translate(34%, -75%);
-    color: #FFF;
-    font-family: Inter;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-    letter-spacing: -0.34px;
-    border: none;
+    color: #FFFFFFBB;
 }

@@ -15,7 +15,6 @@ import notificationManager from '../../Alert/notificationManager';
 export default function DashBoard() {
     const user = getUser();
     const userId = user && user.id;
-    const userName = user && user.walletUserName;
     const walletId = user && user.walletId;
     const [action, setAction] = useState("Send")
     const [assets, setAssets] = useState([])
@@ -119,7 +118,7 @@ export default function DashBoard() {
         setIsLoading(true);
 
         axios.post("http://localhost:8006/wallet/generateAddress", {
-            walletId, userName, withCredentials: true
+            walletId, withCredentials: true
         })
         .then((res) => {
             setWalletAddress(res.data.walletAddress);

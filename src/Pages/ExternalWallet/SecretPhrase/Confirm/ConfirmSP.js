@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import BlackBar from '../../../../Components/WalletComponents/BlackBar';
-import Head from '../../../../Components/WalletComponents/Head';
-import WalletImage from "../../../../Assets/Images/wallet.png";
+import { useNavigate, useLocation } from "react-router-dom";
+import { showMessage } from '../../../../Components/Message/Message';
+import { getUser, setUser } from "../../../../Storage/SecureLs";
+import AuthPage from "../../../../Components/BasicPage/AuthPage/AuthPage";
 import axios from "axios";
 import "./ConfirmSP.css";
-import { useNavigate, useLocation } from 'react-router-dom';
-import { getUser, setUser } from '../../../../Storage/SecureLs';
 
 
 export default function ConfirmSP() {
     const navigate = useNavigate();
+    const type = useLocation().pathname.slice(22);
     const [inputValues, setInputValues] = useState(Array(12).fill(''));
     const [words, setWords] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const inputRefs = useRef([]);
     const seedPraseDetails = useLocation().state;
-    const word = !seedPraseDetails ? {} : seedPraseDetails.seedphrase;
+    const word = !seedPraseDetails ? {} : seedPraseDetails.seedPhrase;
 
     console.log("seedPraseDetails", seedPraseDetails);
 
@@ -22,17 +24,29 @@ export default function ConfirmSP() {
 
     useEffect(() => {
         if( !seedPraseDetails || 
-            !seedPraseDetails.seedphrase || 
+            !seedPraseDetails.seedPhrase || 
             !seedPraseDetails.password || 
-            !seedPraseDetails.username
+            !seedPraseDetails.userName
         ) {
-            navigate('/wallet/login/setpassword');
+            if (type === 'confirm') {
+                navigate('/wallet/create');
+            } else {
+                navigate('/wallet/reset');
+            }
         }
-        fetchWords();
-        // Initialize inputValues state with empty strings
-        setInputValues(Array(12).fill(''));
-    }, [seedPraseDetails, navigate]);
 
+        fetchWords();
+
+        // Initialize inputValues state with empty strings
+        clearAll();
+    }, [seedPraseDetails, type, navigate]);
+
+
+    function clearAll() {
+        setErrorMessage('');
+        setInputValues(Array(12).fill(''));
+        inputRefs.current[0].focus();
+    }
 
 
     function handleInputChange(index, value) {
@@ -48,71 +62,91 @@ export default function ConfirmSP() {
             if (index < inputRefs.current.length - 1) {
                 inputRefs.current[index + 1].focus();
             } else {
-                inputRefs.current[index].blur(); // Optionally blur the last input field
+                inputRefs.current[0].focus();
             }
+        } else {
+            inputRefs.current[index].focus();
         }
     }
 
 
-    const saveSeedPrase = async () => {
+    const registerOrResetUser = async () => {
         try {
-            await axios.post("http://localhost:8006/walletLogin/register", seedPraseDetails)
+            setIsLoading(true);
+            const endPoint = "http://localhost:8006/walletLogin/" + (type === 'confirm' ? "register"  : "reset");
+
+            await axios.post(endPoint, seedPraseDetails)
             .then((res) => {
                 const user = getUser();
                 const walletUserName = res.data.user.userName;
                 const walletId = res.data.user.walletId;
 
                 setUser({...user, walletUserName, walletId});
+                setIsLoading(false);
                 navigate('/wallet/dashboard');
             })
             .catch((error) => {
+                setIsLoading(false);
                 console.log("Error sending data:", error);
+
+                error.response ?
+                showMessage("error", error.response.data.message) :
+                showMessage("error", "An error occurred. Please try again.");
             })
         } catch (error) {
-            console.error("Error fetching words:", error);
+            console.log("Error sending data:", error);
+            showMessage("error", "An error occurred. Please try again.");
         }
     };
 
 
     function navigateToDashBoard() {
         if( !seedPraseDetails || 
-            !seedPraseDetails.seedphrase || 
+            !seedPraseDetails.seedPhrase || 
             !seedPraseDetails.password || 
-            !seedPraseDetails.username
+            !seedPraseDetails.userName
         ) {
-            navigate('/wallet/create');
+            if (type === 'confirm') {
+                navigate('/wallet/create');
+            } else {
+                navigate('/wallet/reset');
+            }
         }
 
         // Compare concatenated input values with the word variable
         const isWordChecked = checkWords(word, inputValues);
         if (isWordChecked) {
-            
-            saveSeedPrase();
+            registerOrResetUser();
         }
-         else {
-            alert('Incorrect secret phrase');
+        else {
             // Clear the input fields and reset inputValues array
-            setInputValues(Array(12).fill(''));
-            // Reset focus to the first input field
-            inputRefs.current[0].focus();
+            clearAll();
+            setErrorMessage('Incorrect secret phrase');
         }
     }
 
-    function navigateToGenerateSP() {
-        navigate('/wallet/secret-phrase', { state: seedPraseDetails });
+
+    function goBack() {
+        if (type === 'confirm') {
+            navigate('/wallet/secret-phrase', { state: seedPraseDetails });
+        } else {
+            navigate('/wallet/reset');
+        }
     }
+
 
     const fetchWords = async () => {
-        try {
-            const response = await fetch("http://localhost:8006/seedphrase/getUniqueShuffledWords"); // Replace "/api/words" with your actual endpoint
-            if (!response.ok) {
-                throw new Error("Failed to fetch words");
-            }
-            const data = await response.json();
-            setWords(data.words); // Assuming your API returns an object with a "words" property containing the array of words
-        } catch (error) {
-            console.error("Error fetching words:", error);
-        }
+        setIsLoading(true);
+        fetch("http://localhost:8006/seedPhrase/getWords")
+        .then(async(res) => {
+            res =  await res.json();
+            setWords(res);
+            setIsLoading(false);
+        })
+        .catch(() => {
+            setIsLoading(false);
+            console.error("Error fetching words",);
+        });
     };
 
     function renderWordTable() {
@@ -120,22 +154,19 @@ export default function ConfirmSP() {
         for (let i = 0; i < words.length; i += 4) {
             const rowWords = words.slice(i, i + 4);
             const rowCells = rowWords.map((word, index) => (
-                <td key={index} className="word-cell">
+                <td key={index} className="word-cell-confirm">
                     {word}
                 </td>
             ));
-            tableRows.push(
-                <tr key={i / 4} className="word-row">
-                    {rowCells}
-                </tr>
-            );
+            tableRows.push(<tr key={i / 4}> {rowCells} </tr>);
         }
         return tableRows;
     }
 
+
     function checkWords(wordString, inputValues) {
         // Split the wordString into an array of words
-        const wordArray = wordString.split(' ');
+        const wordArray = wordString.split(',');
 
         // Check if the length of wordArray matches the length of inputValues
         if (wordArray.length !== inputValues.length) {
@@ -154,51 +185,44 @@ export default function ConfirmSP() {
     }
 
     return (
-        <div className='main-background'>
-            <Head />
-            <img src={WalletImage} alt="Wallet Description" className='wallet-img' />
-
-            <BlackBar>
-                <h1 className='con-secret-phrase'>Confirm Your Secret Phrase</h1>
-                <p className='con-secret-para'>Please select each word in the correct order to verify <br />
-                    you have saved your Secret Phrase..</p>
+        <AuthPage
+            title="Confirm Secret Phrase"
+            description="Please insert each word in the correct order to verify. you have saved your Secret Phrase.."
+            nextButton="Confirm"
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            onNext={navigateToDashBoard}
+            onBack={goBack}
+        >
+                
                 <div>
-                    <div>
-                        {[...Array(12)].map((_, index) => (
-                            <div key={index}>
-                                <input
-                                    ref={el => inputRefs.current[index] = el}
-                                    type="text"
-                                    className={`input-col-${index + 1}`}
-                                    value={inputValues[index]}
-                                    onChange={e => handleInputChange(index, e.target.value)}
-                                    onKeyDown={e => handleKeyDown(index, e)}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    {[...Array(4)].map((v, rowNo) => (
+                        <div key={rowNo} className='input-row'>
+                            {[...Array(3)].map((v, colNo) => {
+                                const index = (rowNo * 3) + colNo;
+                                return (
+                                    <input
+                                        key={index}
+                                        ref={el => inputRefs.current[index] = el}
+                                        type="text"
+                                        className='input-cell'
+                                        value={inputValues[index]}
+                                        onChange={e => handleInputChange(index, e.target.value)}
+                                        onKeyDown={e => handleKeyDown(index, e)}
+                                    />
+                                );
+                            })}
+                        </div>
+                    ))}
                 </div>
 
-                <div>
-                    <button className='clear-button' onClick={() => {
-                        setInputValues(Array(12).fill(''));
-                        inputRefs.current[0].focus();
-                    }}>Clear all</button>
-                </div>
+                <button className='clear-button' onClick={clearAll}>Clear All</button>
 
-                <div className='word-box-2'>
-                    <table className="word-table">
+                <div className='word-box-confirm'>
+                    <table className="word-table-confirm">
                         <tbody>{renderWordTable()}</tbody>
                     </table>
                 </div>
-
-                <div >
-                    <button className='confirm-button' onClick={navigateToDashBoard}>Confirm</button>
-                </div>
-                <div >
-                    <button className='back-to-secret-button' onClick={navigateToGenerateSP}>Back</button>
-                </div>
-            </BlackBar>
-        </div>
+        </AuthPage>
     );
 }
