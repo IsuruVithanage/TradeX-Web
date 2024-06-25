@@ -4,8 +4,8 @@ import { showMessage } from '../../../Components/Message/Message';
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'
-import BasicPage from '../../../Components/BasicPage/BasicPage'
-import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../../Components/Layouts/SidePanel/SidePanelWithContainer'
 import { MdOutlineAssignment, } from "react-icons/md";
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'

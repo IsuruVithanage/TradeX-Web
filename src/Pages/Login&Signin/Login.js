@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {setAccessToken, setUser, getUser} from "../../Storage/SecureLs";
 import "./Login.css";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./DashBoard.css";
-import BasicPage from '../../../Components/BasicPage/BasicPage'
-import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../../Components/Layouts/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'

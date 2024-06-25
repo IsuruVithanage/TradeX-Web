@@ -1,4 +1,4 @@
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import React, {useEffect, useRef, useState} from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import QuestionBar from "../../Components/QuizComponents/QuestionBar";
 import './Quiz.css';
 import axios from "axios";

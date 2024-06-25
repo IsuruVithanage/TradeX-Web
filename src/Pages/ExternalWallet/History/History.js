@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
-import BasicPage from '../../../Components/BasicPage/BasicPage'
+import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
 import Table, { TableRow,Coin } from '../../../Components/Table/Table';
 
 import axios from 'axios';

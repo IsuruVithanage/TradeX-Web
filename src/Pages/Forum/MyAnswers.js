@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import { RiSoundModuleLine } from "react-icons/ri";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./forum.css";
 import { useParams } from "react-router-dom";
@@ -140,7 +140,7 @@ export default function MyAnswers() {
 // import Input from "../../Components/Input/Input";
 // import './forum.css';
 // import { RiSoundModuleLine } from "react-icons/ri";
-// import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
+// import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer'
 // import { Link } from 'react-router-dom'
 
 //  function MyAnswers() {

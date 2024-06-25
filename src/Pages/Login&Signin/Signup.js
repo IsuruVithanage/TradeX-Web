@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import notificationManager from "../Alert/notificationManager";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import trade from "../../Assets/Images/trade.png";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";

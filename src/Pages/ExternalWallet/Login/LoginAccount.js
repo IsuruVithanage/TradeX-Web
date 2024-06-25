@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { showMessage } from '../../../Components/Message/Message';
 import { getUser, setUser } from "../../../Storage/SecureLs";
 import { PiEye, PiEyeClosed } from "react-icons/pi";
-import AuthPage from "../../../Components/BasicPage/AuthPage/AuthPage";
+import AuthPage from "../../../Components/Layouts/AuthPage/AuthPage";
 import Input from "../../../Components/Input/Input";
 import axios from "axios";
 import "./LoginAccount.css";
