@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { showMessage } from '../../../Components/Message/Message';
 import { getUser } from '../../../Storage/SecureLs';
+import notificationManager from '../../Alert/notificationManager';
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
@@ -51,10 +52,10 @@ export default function FundingWallet() {
         setUsdBalance(null);
         setPortfolioValue(null);
         setIsLoading(true);
-        setAssets([]);
-            
-        axios
-            .get(
+        setAssets([]); 
+
+        const getWalletData = async () => {  
+            await axios.get(
                 currentWallet === "tradingWallet" ? 
                 backendApiEndpoint + "trading" :
                 backendApiEndpoint + "funding",
@@ -66,15 +67,14 @@ export default function FundingWallet() {
             )
     
             .then(res => {
+                console.log(res.data);
                 setAssets(res.data.assets);
                 setUsdBalance(res.data.usdBalance);
                 setPortfolioValue(res.data.portfolioValue);
                 setWalletAddress(res.data.walletAddress);
-                setIsLoading(false);
             })
     
             .catch(error => {
-                setIsLoading(false);
                 setUsdBalance(0);
                 setPortfolioValue(0);
                 console.log("error", error);
@@ -83,6 +83,18 @@ export default function FundingWallet() {
                 showMessage(error.response.status, error.response.data.message)   :
                 showMessage('error', 'Database connection failed..!') ;
             });
+        }
+
+        getWalletData().then(() => setIsLoading(false));
+        
+
+        notificationManager.onAppNotification(() => {
+            getWalletData();
+        });
+
+        return () => {
+            notificationManager.onAppNotification(() => {});
+        }
     }, [ currentWallet, userId ]);
 
 
@@ -328,20 +340,14 @@ export default function FundingWallet() {
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
-                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2,
-                                }) : "",
+                                asset.value,
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
-                                asset.value ? "$ " + asset.value.toLocaleString("en-US", { 
-                                    minimumFractionDigits: 2, 
-                                    maximumFractionDigits: 2,
-                                }) : "",
+                                asset.value,
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>

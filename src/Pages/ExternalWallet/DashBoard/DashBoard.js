@@ -9,8 +9,13 @@ import axios from 'axios';
 import { showMessage } from '../../../Components/Message/Message';
 import { MdOutlineAssignment, } from "react-icons/md";
 import coins from '../../../Assets/Images/Coin Images.json';
+import { getUser } from '../../../Storage/SecureLs';
+import notificationManager from '../../Alert/notificationManager';
 
 export default function DashBoard() {
+    const user = getUser();
+    const userId = user && user.id;
+    const walletId = user && user.walletId;
     const [action, setAction] = useState("Send")
     const [assets, setAssets] = useState([])
     const [portfolioValue, setPortfolioValue] = useState(0)
@@ -21,17 +26,17 @@ export default function DashBoard() {
     const [quantity, setQuantity] = useState(null)
     const [isInvalid, setIsInvalid] = useState([true, null])
     const [walletAddress, setWalletAddress] = useState("")
-    const userId = 1;
-    const userName = "sayya";
 
 
     // initial data fetching
     useEffect(() => {
-        setIsLoading(true)
-
-        axios.get("http://localhost:8006/wallet/" + userId, {
-            withCredentials: true,
-        })
+        
+        const getWalletData = async () => {
+            setIsLoading(true);
+            
+            axios.get("http://localhost:8006/wallet/" + walletId, {
+                withCredentials: true,
+            })
             .then(res => {
                 console.log(res.data);
                 setWalletAddress(res.data.address)
@@ -46,22 +51,32 @@ export default function DashBoard() {
                 setIsLoading(false)
 
                 error.response ?
-                    showMessage(error.response.status, error.response.data.message) :
-                    showMessage('error', 'Database connection Failed..!');
+                showMessage(error.response.status, error.response.data.message) :
+                showMessage('error', 'Database connection Failed..!');
 
-            })
+            });
+        }
 
-    }, [])
+        getWalletData();
+
+        notificationManager.onAppNotification(() => {
+            getWalletData();
+        });
+
+        return () => {
+            notificationManager.onAppNotification(() => { });
+        }
+
+    }, [walletId])
 
 
 
     // assets tranfering function
     const transfer = () => {
         setIsLoading(true);
-        console.log("quantity", quantity);
-
 
         const data = {
+            walletId: walletId,
             userId: userId,
             coin: selectedCoin,
             quantity: quantity,
@@ -73,11 +88,7 @@ export default function DashBoard() {
         axios
             .put(
                 "http://localhost:8006/wallet/",
-                data,
-                {
-                    params: { userId: userId },
-                    withCredentials: true,
-                }
+                data, {  withCredentials: true, }
             )
             // set new fetch data
             .then(res => {
@@ -107,7 +118,7 @@ export default function DashBoard() {
         setIsLoading(true);
 
         axios.post("http://localhost:8006/wallet/generateAddress", {
-            userId, userName, withCredentials: true
+            walletId, withCredentials: true
         })
         .then((res) => {
             setWalletAddress(res.data.walletAddress);
@@ -128,7 +139,7 @@ export default function DashBoard() {
 
             const asset = assets.find(asset => asset.coin === selectedCoin);
 
-            if (quantity > asset.balance) {
+            if (asset && quantity > asset.balance) {
                 setIsInvalid([true, "Insufficient Balance"]);
             }
         } else {
@@ -141,8 +152,7 @@ export default function DashBoard() {
 
         }
 
-    }
-        , [assets, selectedCoin, quantity, receivingWallet]);
+    }, [assets, selectedCoin, quantity, receivingWallet]);
 
 
 
@@ -232,11 +242,8 @@ export default function DashBoard() {
                                 coin.marketPrice,
                                 coin.value,
                                 <span
-                                    style={{
-                                        color: coin.RoiColor
-
-                                    }}>
-                                    {`${coin.ROI} %`}
+                                    style={{ color: coin.RoiColor }}>
+                                    {coin.ROI}
                                 </span>
                             ]}
                         />

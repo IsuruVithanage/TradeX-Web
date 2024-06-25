@@ -21,6 +21,11 @@
     width: 100%;
 }
 
+.main-container.full-height{
+    top: 0;
+    height: 100%;
+}
+
 .page-loading-dimmer{
     background-color: #00000030;
     height: 100vh;

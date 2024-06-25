@@ -4,7 +4,7 @@ import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
-import {setAccessToken, setUser} from "../../Storage/SecureLs";
+import {setAccessToken, setUser, getUser} from "../../Storage/SecureLs";
 import "./Login.css";
 
 
@@ -35,18 +35,16 @@ function Login() {
             setUser(user);
             setAccessToken(token);
 
-            notificationManager.getToken();
+            await notificationManager.getToken();
 
             console.log('Login success');
 
-            if (user.role === 'User') {
-                if (user.hasTakenQuiz) {
-                    navigate('/watchlist');
-                } else {
-                    navigate('/quiz');
-                }
-            } else {
+            if (user.role === 'User' || (user.role === 'Trader' && user.hasTakenQuiz)) {
+                navigate('/watchlist');
+            } else if (user.role === 'Admin') {
                 navigate('/admin/AdDashboard');
+            } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
+                navigate('/quiz');
             }
         } catch (err) {
             console.error('Login error:', err);

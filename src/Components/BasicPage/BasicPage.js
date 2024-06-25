@@ -16,7 +16,12 @@ function BasicPage(props) {
             {props.isLoading && <div className="page-loading-dimmer"/>}
 
 
-            <div className={`main-container ${props.sideNavBar === false && 'full-width'}`}>
+            <div className={
+                `main-container 
+                ${props.sideNavBar === false && 'full-width'}
+                ${props.topNavBar === false && 'full-height'}`
+            }>
+
                 {props.children}
             </div>
         </div>

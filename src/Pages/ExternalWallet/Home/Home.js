@@ -1,14 +1,14 @@
 import React from 'react';
-import "./Welcome.css";
+import "./Home.css";
 import TradeImage from "../../../Assets/Images/trade.png";
 import WalletImage from "../../../Assets/Images/wallet.png";
 import { useNavigate } from 'react-router-dom';
 
-export default function Welcome() {
-  const navigete = useNavigate();
+export default function Home() {
+  const navigate = useNavigate();
 
-  function navigateToLogin() {
-    navigete('/wallet/login');
+  function navigateToStart() {
+    navigate('/wallet/start');
   }
 
   return (
@@ -29,7 +29,7 @@ export default function Welcome() {
            </p> 
       </div>
       <div >
-      <button className='custom-button' onClick={navigateToLogin}>GET START</button>
+      <button className='custom-button' onClick={navigateToStart}>GET START</button>
       </div>
 
         <img src={WalletImage} alt="Wallet Description" className='wallet-image' />

@@ -52,7 +52,6 @@ export default function TradingPlatform() {
     });
 
     useEffect(() => {
-        console.log("user",user[0])
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
