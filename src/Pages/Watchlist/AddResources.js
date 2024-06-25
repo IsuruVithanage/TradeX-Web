@@ -42,7 +42,7 @@ export default function AddResources() {
       ]}
     >
       <div style={{ display: "flex", justifyContent: "center", marginTop: "2.5rem" }}>
-        <div className="container">
+        <div className="add-edu-container">
           <h2>Add Educational Resource</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">

@@ -16,7 +16,7 @@ export default function News() {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('http://localhost:8008/news/' + userId)
+    axios.get('http://localhost:8008/news/' + userId) // ashan gen ahanna
       .then(res => {
         setArticles(res.data); 
         console.log(res.data)

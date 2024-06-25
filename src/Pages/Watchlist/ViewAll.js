@@ -51,7 +51,7 @@ export default function ViewAll() {
     const fetchUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getUserCount"
+          "http://localhost:8004/admin/getUserCount"
         );
         setUserCount(response.data.count);
       } catch (error) {
@@ -66,7 +66,7 @@ export default function ViewAll() {
     const fetchVerifiedUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getVerifiedUserCount"
+          "http://localhost:8004/admin/getVerifiedUserCount"
         );
         setVerifiedUserCount(response.data.count);
       } catch (error) {
