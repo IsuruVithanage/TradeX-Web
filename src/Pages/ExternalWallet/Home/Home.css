@@ -33,7 +33,7 @@
     position: fixed;
     top: 36%;
     left: -6%;
-    transform: translate(34%, -75%);
+    transform: translate(35%, -75%);
     font-weight: 900;
 }
 .head-line2{
@@ -44,17 +44,19 @@
     color: white;
     position: fixed;
     top: 52%;
-    left: -18%;
-    transform: translate(34%, -75%);
+    left: -17%;
+    transform: translate(32%, -75%);
     margin-left: 5rem;
     margin-top: 35px;
+    font-family: sans-serif;
+    font-weight: 600;
 }
 .platform{
     color: #21db9a;
     position: fixed;
     top: 42%;
     left: -3%;
-    transform: translate(34%, -75%);
+    transform: translate(36%, -75%);
     font-weight: 900;
     font-size: 28px;
     margin-top: 10px;
@@ -69,7 +71,7 @@
     position: fixed;
     top: 67%;
     left: 2%;
-    transform: translate(34%, -75%);
+    transform: translate(40%, -75%);
     color: #FFF;
     font-family: Inter;
     font-size: 20px;
