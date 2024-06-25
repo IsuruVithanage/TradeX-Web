@@ -73,14 +73,14 @@ export default function AdminUserVerification() {
                   label="Last Name"
                   name="lastName"
                   type="text"
-                  // value={user.lastName}
+                  value={user?user.lastName:""}
                 />
               </td>
               <td>
                 <Input label="Age" 
                 name="age" 
                 type="text" 
-                // value={user.age} 
+                value={user?user.age:""}
                 />
               </td>
             </tr>
@@ -90,14 +90,14 @@ export default function AdminUserVerification() {
                   label="Phone Number"
                   name="phoneNumber"
                   type="text"
-                  // value={user.age}
+                  value={user?user.phoneNumber:""}
                 />
               </td>
               <td>
                 <Input label="NIC" 
                 name="nic" 
                 type="text" 
-                // value={user.nic}
+                value={user?user.nic:""}
                  />
               </td>
             </tr>
@@ -107,7 +107,7 @@ export default function AdminUserVerification() {
                   label="Date of Birth"
                   name="dateOfBirth"
                   type="date"
-                  // value={user.dateOfBirth}
+                  value={user?user.dateOfBirth:""}
                 />
               </td>
             </tr>
@@ -126,10 +126,9 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              {/* <img src={user.userImg} /> */}
+              <img src={user?.user.userImg} />
             </div>
           </div>
-
           <div className="material-div">
             <span
               style={{
@@ -141,7 +140,7 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              {/* <img src={user.nicImg1} /> */}
+              <img src={user?.user.nicImg1} />
             </div>
           </div>
         </div>
@@ -158,7 +157,7 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              {/* <img src={user.nicImg2} /> */}
+              <img src={user?.user.nicImg2} />
             </div>
           </div>
 

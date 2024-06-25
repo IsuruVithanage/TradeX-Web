@@ -23,20 +23,24 @@ const Watchlist1 = () => {
 
    if(!isDeleteModalOpen && selectedCoins.length > 0){
       const customCoins = selectedCoins.map((coin) => coin.symbol)
-      console.log("Selected coin", customCoins)
+      updateCustomCoins(customCoins);
 
-      axios.post("http://localhost:8007/watchlist", {
-        userId: userId,
-        coins: customCoins
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log("coin updating failed", error);
-      })
     }
   }, [selectedCoins,isDeleteModalOpen]);
+
+  const updateCustomCoins = (customCoins) => {
+    axios.post("http://localhost:8007/watchlist", {
+      userId: userId,
+      coins: customCoins
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.log("coin updating failed", error);
+    })
+
+  }
 
   useEffect(() => {
 
@@ -204,19 +208,84 @@ const Watchlist1 = () => {
       </div>
 
       <div className="watchlist-table-container">
-        <div
-          style={{ display: "flex", marginLeft: "700px", marginBottom: "0px" }}
-        >
-          <div>
+          <div className="btn">
             <Input
               type="button"
               value="Add Coin"
-              outlined
               green
-              style={{ width: "150px", marginLeft: "120%" }}
+              style={{ width: "150px" }}
               onClick={() => setIsDeleteModalOpen(true)}
             />
-            <Modal
+            <Input
+              type="button"
+              value="Remove All"
+              red
+              style={{ width: "150px", marginLeft: "10px" }}
+              onClick={() => {updateCustomCoins([]); setSelectedCoins([])} }
+            />   
+        </div>
+
+        <table className="watchlist-table">
+          <thead>
+            <tr>
+              <td colSpan={2}>Coin</td>
+              <td>Price</td>
+              <td>24h Change</td>
+              <td>Volume</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            {selectedCoins.map((coin) => {
+              const price = formatCurrency(coin.lastPrice);
+              const volume = formatCurrency(coin.quoteVolume);
+              return (
+                <tr key={coin.symbol}>
+                  <td style={{ width: "40px" }}>
+                    <img
+                      className="coin-image"
+                      src={symbols[coin.symbol].img}
+                      alt={coin.symbol}
+                    />
+                  </td>
+                  <td style={{ width: "150px" }}>
+                    <div className="coin-name-container">
+                      <span className="coin-name">{symbols[coin.symbol].name}</span>
+                      <span className="coin-symbol">{coin.symbol}</span>
+                    </div>
+                  </td>
+                  <td>{price}</td>
+                  <td
+                    style={{
+                      color:
+                        coin.priceChange> 0
+                          ? "#21DB9A"
+                          : coin.priceChange < 0
+                          ? "#FF0000"
+                          : "#FFFFFF",
+                    }}
+                  >
+                    {" "}
+                    {parseFloat(coin.priceChange).toFixed(2)} %
+                  </td>
+                  <td>{volume}</td>
+                  <td>
+                    <Input
+                      type="button"
+                      value="Remove"
+                      outlined
+                      red
+                      style={{ width: "150px" }}
+                      onClick={() => handleRemoveCoin(coin.symbol)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <Modal
                   open={isDeleteModalOpen}
                   close={() => setIsDeleteModalOpen(false)}
                 
@@ -316,69 +385,6 @@ const Watchlist1 = () => {
                     </table> */}
                   </div>
                 </Modal>
-          </div>
-        </div>
-
-        <table className="watchlist-table">
-          <thead>
-            <tr>
-              <td colSpan={2}>Coin</td>
-              <td>Price</td>
-              <td>24h Change</td>
-              <td>Volume</td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            {selectedCoins.map((coin) => {
-              const price = formatCurrency(coin.lastPrice);
-              const volume = formatCurrency(coin.quoteVolume);
-              return (
-                <tr key={coin.symbol}>
-                  <td style={{ width: "40px" }}>
-                    <img
-                      className="coin-image"
-                      src={symbols[coin.symbol].img}
-                      alt={coin.symbol}
-                    />
-                  </td>
-                  <td style={{ width: "150px" }}>
-                    <div className="coin-name-container">
-                      <span className="coin-name">{symbols[coin.symbol].name}</span>
-                      <span className="coin-symbol">{coin.symbol}</span>
-                    </div>
-                  </td>
-                  <td>{price}</td>
-                  <td
-                    style={{
-                      color:
-                        coin.priceChange> 0
-                          ? "#21DB9A"
-                          : coin.priceChange < 0
-                          ? "#FF0000"
-                          : "#FFFFFF",
-                    }}
-                  >
-                    {" "}
-                    {parseFloat(coin.priceChange).toFixed(2)} %
-                  </td>
-                  <td>{volume}</td>
-                  <td>
-                    <Input
-                      type="button"
-                      value="Remove"
-                      outlined
-                      red
-                      style={{ width: "150px" }}
-                      onClick={() => handleRemoveCoin(coin.symbol)}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
     </BasicPage>
   );
 };
