@@ -228,7 +228,7 @@ function AddOrEditModal (props) {
 
     return(
         <Modal open={addOrEditAlert} close={setAddOrEditAlert}>
-            <div style={{width:"420px", WebkitUserSelect: "none", userSelect: "none"}}>
+            <div style={{width:"430px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
                     <h1 style={{textAlign:"center"}}>{`${ addOrEditAlert } Alert`}</h1>
                     <Input 
