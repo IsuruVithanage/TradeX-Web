@@ -8,8 +8,8 @@ import {
   MdOutlineThumbUp,
   MdOutlineThumbDown
  } from "react-icons/md";
- import './NewsItem.css'; 
-
+import './NewsItem.css'; 
+import { showMessage } from '../Message/Message';
 
 
 const NewsItem = (props) => {
@@ -29,10 +29,12 @@ const NewsItem = (props) => {
         }
       ).then (res =>{
         setIsHeartFilled(!isHeartFilled);
-        console.log(res.data)
+        if(!isHeartFilled){
+        showMessage("success",'Added to Favourite');
+        }
       }) 
       .catch(error => {
-        console.log(error);
+        showMessage("success",error);
       });
     
   };
