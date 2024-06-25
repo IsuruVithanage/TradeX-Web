@@ -317,7 +317,7 @@ export default function Suggestions() {
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
                             </div>
-                        ) : suggestion ? (
+                        ) : suggestion && Array.isArray(suggestion.suggestions) && Array.isArray(suggestion.resources) ? (
                             <div>
                                 <div style={{display: 'flex'}}>
                                     <div>
@@ -340,25 +340,29 @@ export default function Suggestions() {
                                 </div>
                                 <div>
                                     <p className='s-lables'>Suggestions</p>
-                                    <ul className='s-data'>
-                                        {suggestion.suggestions.map((item, index) => (
-                                            <li key={index} style={{marginBottom: '10px'}}>{"• " + item}</li>
-                                        ))}
-                                    </ul>
+                                    {Array.isArray(suggestion.suggestions) && (
+                                        <ul className='s-data'>
+                                            {suggestion.suggestions.map((item, index) => (
+                                                <li key={index} style={{marginBottom: '10px'}}>{"• " + item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                                 <div>
                                     <p className='s-lables'>Resources</p>
-                                    <ul className='s-data'>
-                                        {suggestion.resources.map((item, index) => (
-                                            <li key={index} style={{
-                                                marginBottom: '10px',
-                                                fontWeight: 'normal',
-                                                color: '#21DB9A'
-                                            }}>
-                                                <a href={item} target="_blank" rel="noopener noreferrer">{item}</a>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    {Array.isArray(suggestion.resources) && (
+                                        <ul className='s-data'>
+                                            {suggestion.resources.map((item, index) => (
+                                                <li key={index} style={{
+                                                    marginBottom: '10px',
+                                                    fontWeight: 'normal',
+                                                    color: '#21DB9A'
+                                                }}>
+                                                    <a href={item} target="_blank" rel="noopener noreferrer">{item}</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                             </div>
                         ) : (
