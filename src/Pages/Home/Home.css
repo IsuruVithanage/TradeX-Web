@@ -1,0 +1,52 @@
+.home-entry-container{
+    width: 100%;
+    height: 100vh;
+    padding: 6% 0 0 6%;
+    background-image: url("../../Assets//Images/coverx.png");
+    background-color: #151516;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    box-sizing: border-box;
+}
+
+.home-details-container{
+    background-color: #151516;
+    display: flex;
+}
+
+.home-anchor-container{
+    width: 210px;
+    background-color: #0E0E0F;
+    border-radius: 12px;
+}
+
+.ant-anchor-ink.ant-anchor-ink-visible{
+    background-color: #21DB9A !important;
+    inset-inline-start: auto !important;
+    inset-inline-end: 0;
+}
+
+.ant-anchor-link{
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    margin: 1px 0 0 1px;
+}
+
+.ant-anchor-link:hover,
+.ant-anchor-link-active{
+    background-color: #21DB9A10;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.ant-anchor-link .ant-anchor-link-title{
+    color: #6D6D6D !important;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 5px 0;
+}
+
+.ant-anchor-link.ant-anchor-link-active .ant-anchor-link-title{
+    color: #21DB9A !important;
+}
