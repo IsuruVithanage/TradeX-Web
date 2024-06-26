@@ -7,7 +7,7 @@ import Suggestions from "../Pages/Suggestions/Suggestions";
 import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
 import Signup from "../Pages/Login&Signin/Signup";
-import Login from "../Pages/Login&Signin/Login";
+import Login from "../Pages/Login/Login";
 
 import AdminRoutes from "./Sub-Routes/AdminRoutes";
 import WatchlistRoutes from "./Sub-Routes/WatchlistRoutes";
