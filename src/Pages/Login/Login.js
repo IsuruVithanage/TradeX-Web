@@ -102,9 +102,10 @@ function Login() {
                     <div className="login-form-input-container">
                         <div className="login-form-hidden-input">
                             <Input
-                                type="username"
+                                type="email"
                                 placeholder="Username"
                                 className="login-input login-username-input"
+                                value={values.username || ""}
                                 name="username"
                                 id="username"
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
