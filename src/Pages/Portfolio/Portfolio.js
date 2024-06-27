@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {showMessage} from '../../Components/Message/Message';
 import { getUser } from '../../Storage/SecureLs';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
-import BasicPage from '../../Components/BasicPage/BasicPage';
-import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
+import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer';
 import LineChart from '../../Components/Charts/LineChart/LineChar';
 import BarChart from '../../Components/Charts/BarChart/BarChart';
 import ValueBar from '../../Components/ValueBar/ValueBar';
@@ -25,32 +25,33 @@ export default function Portfolio() {
 
     useEffect(() => {
         setIsLoading(true);
-        
+
         axios
-        .get( backendApiEndpoint, { params: { userId } })
-        
-        .then(res => {
-            setAssets(res.data.assets);
-            setPercentages(res.data.percentages);
-            setInitialData(res.data.historyData);
-            setPortfolioValue(res.data.portfolioValue);
-            setUsdBalance(res.data.usdBalance);
-            setIsLoading(false);
-        })
+            .get( backendApiEndpoint, { params: { userId } })
 
-        .catch(error => {
-            setIsLoading(false);
-            setPortfolioValue(0);
-            setUsdBalance(0);
-            console.log("error getting assets");
+            .then(res => {
+                console.log(res.data);
+                setAssets(res.data.assets);
+                setPercentages(res.data.percentages);
+                setInitialData(res.data.historyData);
+                setPortfolioValue(res.data.portfolioValue);
+                setUsdBalance(res.data.usdBalance);
+                setIsLoading(false);
+            })
 
-            error.response ? 
-            showMessage(error.response.status, error.response.data.message)   :
-            showMessage('error', 'Database connection failed..!') ;
-        });
+            .catch(error => {
+                setIsLoading(false);
+                setPortfolioValue(0);
+                setUsdBalance(0);
+                console.log("error getting assets");
+
+                error.response ?
+                    showMessage(error.response.status, error.response.data.message)   :
+                    showMessage('error', 'Database connection failed..!') ;
+            });
 
     }, [userId]);
-  
+
 
 
     return (

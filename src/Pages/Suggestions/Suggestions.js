@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import Table, {Coin, TableRow} from "../../Components/Table/Table";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";

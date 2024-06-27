@@ -60,6 +60,7 @@ function InputField(props) {
                 onBlur={props.onBlur}
                 onChange={props.onChange ? handleChange : null}
                 onClick={props.onClick}
+                onKeyDown={props.onKeyDown}
                 autoComplete="off"
             />
             

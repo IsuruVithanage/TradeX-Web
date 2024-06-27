@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";
@@ -103,6 +103,7 @@ export default function Admin() {
                 {label: "Dashboard", path: "/admin/AdDashboard"},
                 {label: "Users", path: "/admin/Users"},
                 {label: "Admin", path: "/admin"},
+                { label: "Education", path: "/admin/AddResources" },
             ]}
         >
             <div>

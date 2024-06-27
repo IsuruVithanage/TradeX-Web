@@ -1,0 +1,121 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { showMessage } from '../../../Components/Message/Message';
+import { getUser, setUser } from "../../../Storage/SecureLs";
+import { PiEye, PiEyeClosed } from "react-icons/pi";
+import AuthPage from "../../../Components/Layouts/AuthPage/AuthPage";
+import Input from "../../../Components/Input/Input";
+import axios from "axios";
+import "./LoginAccount.css";
+
+
+export default function LoginAccount () {
+  const user = getUser();  
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  
+
+  function navigateToStart() {
+    navigate("/wallet/start");
+  }
+
+  function navigateToDashBoard() {
+    navigate("/wallet/dashboard");
+  }
+
+  function navigateToRest(){
+    navigate('/wallet/reset', {state: user.id});
+  }
+
+  function toggleShowPassword() {
+    setShowPassword(!showPassword);
+  }
+
+  function clearFields() {
+    document.getElementById("username").value = '';
+    document.getElementById("password").value = '';
+  }
+  
+
+  function login() {
+    const userName = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!userName || !password) {
+      setErrorMessage("All fields are required. Please fill in all the fields.");
+      return;
+    }
+
+    setIsLoading(true);
+    axios
+      .post(
+        "http://localhost:8006/walletLogin/login",
+        { userName, password },
+      )
+      .then((res) => {
+          // const token = res.data.accessToken;
+          const walletUserName = res.data.user.userName;
+          const walletId = res.data.user.walletId;
+
+          setUser({...user, walletUserName, walletId});
+          // setAccessToken(token);
+
+          setIsLoading(false);
+          navigateToDashBoard();
+      })
+
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+
+        !error.response ?
+        showMessage("error", "Login Failed. Please try again") :
+        showMessage("error", error.response.data.message);
+        clearFields();
+      });
+  }
+
+
+  return (
+    <AuthPage
+      title="Login"
+      description="This password is used to protect your wallet and provide access to the browser web wallet."
+      nextButton="Login"
+      isLoading={isLoading}
+      errorMessage={errorMessage} 
+      onNext={login}
+      onBack={navigateToStart}
+    >
+      <Input
+        type="text"	
+        placeholder="Enter user name"
+        id="username"
+        className="login-input"
+        style={{marginTop: "4vh", width: "350px"}}
+      />
+
+      <div className="login-password-container">
+        <div style={{width: "90%", zIndex: "1"}}><Input
+          type={showPassword ? "text" : "password"}
+          placeholder="Enter your password"
+          id="password"
+          className="login-input"/>
+        </div>
+
+        <div className="show-password-icon" onClick={toggleShowPassword}>
+          {!showPassword ? <PiEyeClosed /> : <PiEye />}
+        </div>
+
+        <div className="login-password-bottom-layer"/>
+      </div>
+  
+      <p className="reset-para">
+        Can't login? here You can&nbsp;
+        <span style={{color: "#21DB9A"}} className="reset-wallet-button" onClick={navigateToRest}>reset</span>
+        &nbsp;your password
+      </p>
+    </AuthPage>
+  );
+}

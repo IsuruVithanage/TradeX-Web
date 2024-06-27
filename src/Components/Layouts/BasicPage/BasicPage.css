@@ -1,0 +1,43 @@
+.main-container{
+    background-image: url("../../../Assets/Images/coverx.png");
+    background-color: #151516;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0.5%;
+    position: fixed;
+    left: 6%;
+    top: 6%;
+    width: 94%;
+    height: 94%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    z-index: -1;
+    animation: begin 0.3s ease-in-out;
+    -webkit-animation: begin 0.3s ease-in-out;
+}
+
+.main-container.full-width{
+    left: 0;
+    width: 100%;
+}
+
+.main-container.full-height{
+    top: 0;
+    height: 100%;
+}
+
+.page-loading-dimmer{
+    background-color: #00000030;
+    height: 100vh;
+}
+
+@keyframes begin{
+    0%{
+        opacity: 0;
+}
+    100%{
+        opacity: 1;
+    }
+}

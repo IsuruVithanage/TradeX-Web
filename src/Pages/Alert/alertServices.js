@@ -40,6 +40,7 @@ const editAlert = async (userId, currentAlertId, selectedCoin, selectedPrice, se
         .put(
             backendApiEndpoint,
             {
+                alertId: currentAlertId,
                 userId: userId,
                 coin: selectedCoin,
                 price: selectedPrice,
@@ -49,8 +50,7 @@ const editAlert = async (userId, currentAlertId, selectedCoin, selectedPrice, se
             },
             {
                 params: {
-                    alertId: currentAlertId,
-                    runningStatus: true
+                    returnStatus: true
                 }
             }
         )
@@ -109,14 +109,14 @@ const restoreAlert = async (userId, alertId) => {
     return axios
         .put(
             backendApiEndpoint,
-            {   
+            {
+                alertId: alertId,
                 userId: userId,
                 runningStatus: true
             },
             {
                 params: {
-                    alertId: alertId,
-                    runningStatus: false
+                    returnStatus: false
                 }
             }
         )
