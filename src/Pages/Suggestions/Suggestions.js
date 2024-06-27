@@ -59,7 +59,6 @@ export default function Suggestions() {
     const [activateDuration, setActivateDuration] = useState("All");
     const [filteredOrderHistory, setFilteredOrderHistory] = useState([]);
 
-
     const loadOrderHistory = async () => {
         try {
             const res = await axiosInstance.get(
