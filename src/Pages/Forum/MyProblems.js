@@ -37,7 +37,7 @@ export default function MyProblems() {
   useEffect(() => {
     loadQuestions();
     fetchFavorites(1);
-  }, [id]);
+  }, []);
 
   console.log(questionlist);
 

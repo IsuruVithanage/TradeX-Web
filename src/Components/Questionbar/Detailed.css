@@ -3,7 +3,7 @@ body{
     
 }
 .ques{
-width: 80%;
+width: 85%;
 height: auto;
 flex-shrink: 0;
 margin-top: 20px;
@@ -16,10 +16,10 @@ box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 .quill-editor-my-custom-class {
     /* Add styles specific to the text area */
     height: 8rem;
-    width: 120%;
+    
   }
 .text-editor{
-    width: 80%;
+    width: 70%;
     
     color: #151517;
 }
@@ -52,7 +52,7 @@ h5{
     margin-top: 0.6rem;
 }
 .answer-title{
-    margin-left: 8rem;
+    margin-left: 0.5rem;
 
     margin-top: 2.5rem;
     font-size: 21px;
@@ -63,7 +63,11 @@ p{
    
 
 }
+.prefer-buttons{
+    display: -webkit-inline-box;
+}
  .like-button{
+    
     color: aliceblue;
     padding-top: 4%;
     height: 3rem !important;
@@ -85,7 +89,7 @@ p{
     width: 3rem !important;
 }
 .add-answer{
-    width: 68%;
+    width: 75%;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
@@ -93,7 +97,7 @@ p{
     background: #151517;
     padding:0% 0% 2% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
-    margin-left: 8rem;
+    margin-left: 1rem;
 
 }
 .count{
@@ -108,7 +112,7 @@ h2{
     color: aliceblue;
 }
 .answer{
-    width: 70%;
+    width: 85%;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
@@ -116,9 +120,83 @@ h2{
     background: #151517;
     padding:1% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
-    margin-left: 8rem;
+    margin-left: 0.5rem;
 
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #282c34;
+    color: white;
+  }
+  
+  .add-question-btn {
+    background-color: #21DB9A;
+    color: white;
+    padding: 10px 80px;
+    margin-left: .5rem;
+    margin-bottom: 20px;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .statItem {
+    background-color: #424242;
+    padding: 10px;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .statItem:not(:last-child) {
+    margin-right: 10px;
+  }
+  
+  .questionsContainer {
+    width: 100%;
+  }
+  
+  .question {
+    background-color: #424242;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #bdbdbd;
+    margin-right: 10px;
+  }
+  
+  .questionText {
+    margin: 0;
+  }
+  
+  .answersCount {
+    background-color: #3f51b5;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-left: auto;
+  }
+  .favorite-separator {
+    border: none;
+    height: 1px;
+    background-color: #424242;
+    margin: 10px 0;
+    margin-bottom: 1rem;
+  }
 
  
   
