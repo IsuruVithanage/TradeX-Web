@@ -6,10 +6,11 @@ import './LineChart.css';
 
 export default function LineChart(props) {
     let handleResize = useRef(null);
+	const { data, currentMarkerTime, suggestMarkerTime, title, lineType } = props;
+	const durations = !data ? [] : Object.keys(data);
     const [chartData, setChartData] = useState(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [activeDuration, setActiveDuration] = useState('');
-    const {data, currentMarkerTime, suggestMarkerTime, title, lineType} = props;
 
 
     const updateChartData = (duration) => {
@@ -27,9 +28,9 @@ export default function LineChart(props) {
 
 
     useEffect(() => {
-        if (data && Object.keys(data).length > 0) {
-            setChartData(data[Object.keys(data)[0]].data);
-            setActiveDuration(Object.keys(data)[0]);
+        if (durations.length > 0) {
+            setChartData(data[durations[0]].data);
+            setActiveDuration(durations[0]);
         }
     }, [data]);
 
@@ -136,7 +137,9 @@ export default function LineChart(props) {
             const setMarkers = (time, marker) => {
                 const coordinateX = chart.timeScale().timeToCoordinate(time);
                 const logical = chart.timeScale().coordinateToLogical(coordinateX);
-                const price = series.dataByIndex(Math.abs(logical)).value;
+				let price = 0;
+				try { price = series.dataByIndex(Math.abs(logical)).value; } 
+				catch {	console.log("error handled in marker");	}
                 const coordinateY = series.priceToCoordinate(price) + chartMargin;
 
                 if (coordinateX > 0) {
@@ -223,7 +226,8 @@ export default function LineChart(props) {
 			initializeMarkers();
 		};
 
-
+		if(currentMarker) currentMarker.style.display = 'none';
+        if(suggestMarker) suggestMarker.style.display = 'none';
 
         chartData && series.setData(chartData);
         chart.timeScale().fitContent();
@@ -244,13 +248,13 @@ export default function LineChart(props) {
         <div className={`chartContainer ${isFullScreen ? 'full-screen' : ''}`} style={props.style}>
             <div className='button-container'>
                 {
-                    (data && Object.keys(data).length > 1) &&
-                    (Object.keys(data).map((duration, index) => (
+                    (durations.length > 1) &&
+                    (durations.map((duration, index) => (
                         <button
                             key={index}
                             onClick={() => updateChartData(duration)}
                             className={`duration-button ${activeDuration === duration ? "active" : ""}`}>
-                            {duration}
+                            { duration }
                         </button>
                     )))
                 }

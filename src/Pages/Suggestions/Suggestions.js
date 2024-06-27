@@ -41,7 +41,6 @@ export default function Suggestions() {
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-
     const loadOrderHistory = async () => {
         try {
             const res = await axios.get(
@@ -219,11 +218,10 @@ export default function Suggestions() {
             isLoading={isLoading}
         >
             <SidePanelWithContainer
-
+                style={{height: '91vh'}}
                 header={'Suggestions'}
                 sidePanel={
-
-                    <div style={{height: '91vh', overflowY: 'auto'}}>
+                    <div style={{overflowY: 'auto'}}>
 
 
                         {loading ? (
