@@ -1,0 +1,35 @@
+.create-wallet-container{
+    width: 270px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transform: translateX(14px);
+}
+
+.wallet-start-arrow-icon{
+    width: 20%;
+    color: #21DB9A;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.wallet-start-heading {
+    color: #21DB9A;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.wallet-start-description {
+    color: #FFFFFFCC;
+    font-size: 13px;
+    text-align: center;
+}
+
+.wallet-middle-line{
+    border-color: #21db9a;
+    width: 55%;
+    margin: 2.5vh auto;
+}

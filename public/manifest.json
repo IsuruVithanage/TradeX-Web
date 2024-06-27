@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TradeX",
+  "name": "TradeX Simulated Trading Platform",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

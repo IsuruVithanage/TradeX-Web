@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import "./Users.css";
 import "./ViewAll.css";
 import axios from "axios";
@@ -23,7 +23,7 @@ export default function Users() {
   const loadUsers = async () => {
     try {
       const result = await axios.get(
-        "http://localhost:8004/user/getAllUsers"
+        "http://localhost:8004/admin/getAllUsers"
       );
       setUserList(result.data);
     } catch (error) {
@@ -41,6 +41,7 @@ export default function Users() {
         { label: "Dashboard", path: "/admin/AdDashboard" },
         { label: "Users", path: "/admin/Users" },
         { label: "Admin", path: "/admin" },
+        { label: "Education", path: "/admin/AddResources" },
 
       ]}
     >
@@ -50,11 +51,10 @@ export default function Users() {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Date</th>
-                <th>NIC</th>
-                <th>Contact</th>
-                <th>Age</th>
-                <th>Verified</th>
+                <th>Email</th>
+                <th>Verification Status</th>
+                <th>Levels</th>
+                <th>Quiz Taken</th>
                 <th>Delete</th>
               </tr>
             </thead>
@@ -62,11 +62,10 @@ export default function Users() {
             {userList.map((user, index) => (
                 <tr key={index}>
                   <td>{user.userName}</td>
-                  <td>{user.Date}</td>
-                  <td>{user.NIC}</td>
-                  <td>{user.Contact}</td>
-                  <td>{user.Age}</td>
-                  <td>{user.Verified}</td>
+                  <td>{user.email}</td>
+                  <td>{user.isVerified}</td>
+                  <td>{user.level}</td>
+                  <td>{user.hasTakenQuiz}</td>
                   <td><RiDeleteBin6Line /></td>
                 </tr>
               ))}

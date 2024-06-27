@@ -1,0 +1,46 @@
+.login-password-container{
+    position: relative;
+    display: flex;
+    width: 350px;
+    margin-top: 4vh;
+}
+
+.login-password-bottom-layer{
+    width: 350px;
+    height: 36.5px;
+    background-color: #3C3C3C;
+    position: absolute;
+    border-radius: 5px;
+    border-bottom: #21DB9A 2px solid;
+}   
+
+.show-password-icon{
+    width: 10%;
+    height: 37px;
+    cursor: pointer;
+    color: #21DB9A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.reset-wallet-button{
+    color: #21DB9A;
+    cursor: pointer;
+}
+
+.reset-wallet-button:hover{
+    text-decoration: underline;
+}
+
+.reset-para{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #6d6d6d;
+    font-size: 13px;
+    height: 16px;
+    margin-top: 4vh;
+}

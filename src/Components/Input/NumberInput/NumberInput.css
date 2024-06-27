@@ -52,6 +52,7 @@
     border-bottom-right-radius: 6px;
     margin-right: 8px;
     align-items: center;
+    opacity: 1 !important;
 
 }
 
@@ -69,7 +70,7 @@
 .ant-input-number-handler-down-inner {
     color: #21db9a;
     font-weight: bolder;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .ant-input-number
@@ -83,9 +84,13 @@
 .ant-input-number-handler-wrap
 .ant-input-number-handler
 .ant-input-number-handler-down-inner {
-    border-block-start: 1px solid #282828;
+    border-block-start: 2px solid #282828;
     width: 20px;
     justify-content: center;
+}
+
+.ant-input-number .ant-input-number-handler-down-disabled{
+    pointer-events: none;
 }
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-input-number-affix-wrapper {

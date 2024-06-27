@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useState} from "react";
+import React, {lazy, Suspense} from "react";
 import "./Input.css";
 
 const Dropdown = lazy(() => import("./Dropdown/Dropdown"));
@@ -6,7 +6,6 @@ const NumberInput = lazy(() => import("./NumberInput/NumberInput"));
 const Date = lazy(() => import("./Date/Date"));
 const TabSwitch = lazy(() => import("./TabSwitch/TabSwitch"));
 const Button = lazy(() => import("./Button/Button"));
-const FAB = lazy(() => import("./FAB/FAB"));
 const Toggle = lazy(() => import("./Toggle/Toggle"));
 
 export default function Input(props) {
@@ -22,8 +21,6 @@ export default function Input(props) {
                 return <TabSwitch {...props} />;
             case "toggle":
                 return <Toggle {...props} />;
-            case "fab":
-                return <FAB {...props} />;
             case "button":
                 return <Button {...props} />;
             default:
@@ -63,6 +60,7 @@ function InputField(props) {
                 onBlur={props.onBlur}
                 onChange={props.onChange ? handleChange : null}
                 onClick={props.onClick}
+                onKeyDown={props.onKeyDown}
                 autoComplete="off"
             />
             

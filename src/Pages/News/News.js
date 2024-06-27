@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import BasicPage from '../../Components/BasicPage/BasicPage'; 
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'; 
 import NewsItem from '../../Components/NewsBar/NewsItem'; 
 import "./News.css"; 
 import Input from '../../Components/Input/Input'; 
@@ -10,14 +10,16 @@ export default function News() {
   const [articles, setArticles] = useState([]); 
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
+  const userId = 1;
 
   useEffect(() => {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17')
+    axios.get('http://localhost:8008/news/' + userId) // ashan gen ahanna
       .then(res => {
-        setArticles(res.data.articles); 
+        setArticles(res.data); 
+        console.log(res.data)
         setIsLoading(false); 
       })
       .catch(error => {
@@ -26,7 +28,6 @@ export default function News() {
       });
   }, []); 
 
-  console.log(articles); 
 
   //Check the title
   const filteredNews = articles.filter((news) =>
@@ -50,7 +51,7 @@ export default function News() {
       <div className='news-container'>
         {/* Render news items */}
         {filteredNews.map((news, index) => (
-          <NewsItem key={index} title={news.title} description={news.description} src={news.urlToImage} url={news.url} />
+          <NewsItem key={index} userId={userId} {...news}/>
         ))}
       </div> 
     </BasicPage> 

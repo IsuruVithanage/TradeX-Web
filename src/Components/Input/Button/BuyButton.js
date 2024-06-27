@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Popconfirm} from "antd";
+import React from 'react';
+import { Popconfirm } from "antd";
 import Input from "../Input";
 import './CancelButton.css';
-export default function BuyButton(props){
 
+
+export default function BuyButton(props){
     const handleConfirm = () => {
         props.confirm();
     };

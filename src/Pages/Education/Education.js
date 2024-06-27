@@ -1,44 +1,47 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import EducationItem from "../../Components/EducationResources/EducationItems";
 import "./Education.css";
-import EducationItems from "../../Pages/Education/EduItem.json";
+import axios from "axios";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 
 
 function Education() {
   const [educationItems, setEducationItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userId=1;
 
   useEffect(() => {
-    setEducationItems(EducationItems);
+    setIsLoading(true);
+
+    axios.get("http://localhost:8009/education/getAllEduResources/" + userId)
+    .then((res) => {
+      setEducationItems(res.data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.log("error getting eduResources",error);
+      setEducationItems([]);
+      setIsLoading(false);
+    });
+
   }, []);
 
   return (
     <BasicPage
+      isLoading={isLoading}
       tabs={[
         { label: "All", path: "/education" },
         { label: "Favorite", path: "/education/Favorites" },
       ]}
     >
-      <div className="search">
-        <Input type={"search"} placeholder={"search"} />
-      </div>
-      <div style={{ display: "flex" }}>
-        <div className="education-resources">
-        
-          {educationItems.map((item, index) => (
-            <EducationItem
-              key={index}
-              title={item.title}
-              description={item.description}
-              src={item.image}
-              url={item.url}
-            />
-          ))}
-        </div>
-        <div className="video-list">
+      <SidePanelWithContainer
+        header="Video List"
+        style={{height:"91vh"}}
+        sidePanel={ <div className="video-list">
           <div style={{ display: "block" }}>
-            <h2 style={{ color: "white", margin: "10px" }}>Video List</h2>
+        
             <h4>Market Analysis</h4>
             <ul>
               <li>Technical Analysis</li>
@@ -58,8 +61,29 @@ function Education() {
               <li>Market Trends and Predictions</li>
             </ul>
           </div>
+        </div>}>
+
+        <div className="search">
+          <Input type={"search"} placeholder={"search"} />
         </div>
-      </div>
+
+        <div className="education-resources">
+        
+          {educationItems.map((item, index) => (
+            <EducationItem
+              key={index}
+              userId={userId}
+              {...item}
+            />
+          ))}
+        </div>
+
+      </SidePanelWithContainer>
+      
+      {/* <div style={{ display: "flex" }}>
+        
+       
+      </div> */}
     </BasicPage>
   );
 }

@@ -1,158 +1,94 @@
-import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Loading from "../Components/Loading/Loading";
+import App from "../App";
+import Admin from "./Sub-Routes/AdminRoutes";
+import Watchlist from "./Sub-Routes/WatchlistRoutes";
+import Portfolio from "./Sub-Routes/PortfolioRoutes";
+import Forum from "./Sub-Routes/ForumRoutes";
+import Summary from "./Sub-Routes/SummaryRoutes";
+import Education from "./Sub-Routes/EducationRoutes";
+import News from "./Sub-Routes/NewsRoutes";
+import Wallet from "./Sub-Routes/WalletRoutes";
 
-const App = lazy(() => import("../App"));
-const Watchlist = lazy(() => import("./Sub-Routes/WatchlistRoutes"));
-const Portfolio = lazy(() => import("./Sub-Routes/PortfolioRoutes"));
-const Forum = lazy(() => import("./Sub-Routes/ForumRoutes"));
-const Summary = lazy(() => import("./Sub-Routes/SummaryRoutes"));
-const Education = lazy(() => import("./Sub-Routes/EducationRoutes"));
-const News = lazy(() => import("./Sub-Routes/NewsRoutes"));
-const Wallet = lazy(() => import("./Sub-Routes/WalletRoutes"));
-const BasicPage = lazy(() => import("../Components/BasicPage/BasicPage"));
-const Simulation = lazy(() => import("../Pages/SimulateTradingPlatform/TradingPlatform"));
-const Alert = lazy(() => import("../Pages/Alert/Alert"));
-const Suggestions = lazy(() => import("../Pages/Suggestions/Suggestions"));
-const Detailed = lazy(() => import("../Components/Questionbar/Detailed"));
-const Quiz = lazy(() => import("../Pages/Quiz/Quiz"));
-const UserProfileTab = lazy(() => import("../Pages/User/UserProfileTab"));
-const VerifyUser = lazy(() => import("../Pages/User/VerifyUser"));
+import BasicPage from "../Components/BasicPage/BasicPage";
+import Simulation from "../Pages/SimulateTradingPlatform/TradingPlatform";
+import Alert from "../Pages/Alert/Alert";
+import Suggestions from "../Pages/Suggestions/Suggestions";
+import Quiz from "../Pages/Quiz/Quiz";
+import VerifyUser from "../Pages/User/VerifyUser";
+import Signup from "../Pages/Login&Signin/Signup";
+import Login from "../Pages/Login&Signin/Login";
+import PrivateRoute from "../Components/PrivateRoute";
 
 export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <Suspense fallback={<Loading/>}>
-            <App />
-        </Suspense>
-      ),
-      errorElement: (
-        <Suspense fallback={<Loading/>}>
-            <App />
-        </Suspense>
-      )
+      element: <Login />,
+      errorElement: <App />,
+    },
+    {
+      path: "/signup",
+      element: <Signup />,
+    },
+    {
+      path: "/home",
+      element: <PrivateRoute><App /></PrivateRoute>,
+    },
+    {
+      path: "/admin/*",
+      element: <PrivateRoute><Admin /></PrivateRoute>,
     },
     {
       path: "/watchlist/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Watchlist />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Watchlist /></PrivateRoute>,
     },
     {
       path: "/portfolio/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Portfolio />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Portfolio /></PrivateRoute>,
     },
     {
       path: "/forum/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Forum />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Forum /></PrivateRoute>,
     },
     {
       path: "/summary/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Summary />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Summary /></PrivateRoute>,
     },
     {
       path: "/education/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Education />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Education /></PrivateRoute>,
     },
     {
       path: "/news/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <News />
-        </Suspense>
-      ),
+      element: <PrivateRoute><News /></PrivateRoute>,
     },
     {
       path: "/wallet/*",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Wallet />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Wallet /></PrivateRoute>,
     },
     {
       path: "/settings",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <BasicPage />
-        </Suspense>
-      ),
+      element: <PrivateRoute><BasicPage /></PrivateRoute>,
     },
     {
       path: "/simulate",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Simulation />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Simulation /></PrivateRoute>,
     },
     {
       path: "/alert",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Alert />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Alert /></PrivateRoute>,
     },
     {
       path: "/suggestion",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Suggestions />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/Questionbar/Detailed",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Detailed />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Suggestions /></PrivateRoute>,
     },
     {
       path: "/quiz",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <Quiz />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/profile",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <UserProfileTab />
-        </Suspense>
-      ),
+      element: <PrivateRoute><Quiz /></PrivateRoute>,
     },
     {
       path: "/verify",
-      element: (
-        <Suspense fallback={<Loading/>}>
-          <VerifyUser />
-        </Suspense>
-      ),
+      element: <VerifyUser />,
     },
   ]);
 

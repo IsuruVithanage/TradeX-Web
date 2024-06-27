@@ -1,4 +1,3 @@
-import { borderBottom, borderBottomColor, borderTop } from '@mui/system';
 import Select from 'react-select';
 
 export default function Dropdown (props) {
@@ -65,13 +64,14 @@ export default function Dropdown (props) {
 
         indicatorSeparator: (provided) => ({
             ...provided,
-            backgroundColor: '#3c3c3c',
+            backgroundColor: '#282828',
         }),
 
         dropdownIndicator: (provided) => ({
             ...provided,
             color: '#21db9a',
             cursor: 'pointer',
+            paddingLeft: '4px',
             ':hover': {
                 color: '#9e9e9e',
             },
@@ -81,6 +81,7 @@ export default function Dropdown (props) {
             ...provided,
             color: '#21db9a',
             cursor: 'pointer',
+            padding: '8px 4px',
             ':hover': {
                 color: '#9e9e9e',
             },
@@ -103,7 +104,7 @@ export default function Dropdown (props) {
             isClearable={true} 
             isSearchable={props.searchable === undefined ? true : props.searchable}
             isDisabled={props.disabled}
-            options={props.options} 
+            options={(props.options)} 
             value={(props.value === null ) ? null : props.value && props.options.find(opt => opt.value === props.value)}
             placeholder={props.placeholder ? props.placeholder : ""}
             name={props.name}

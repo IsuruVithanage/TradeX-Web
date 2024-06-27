@@ -13,21 +13,23 @@
 .ant-message-notice-wrapper 
 .warning-message
 .ant-message-notice-content{
-    background: #483b00;
+    background: #634b00;
 }
 
 .ant-message-notice-wrapper 
 .error-message
 .ant-message-notice-content{
-    background: #6a0000;
+    background: #530909;
 }
 
 
 .ant-message 
 .ant-message-notice-wrapper 
 .ant-message-notice-content{
-    color: #FFFFFF;
+    color: #FFFFFFAA;
     height: 50px;
+    font-weight: 500;
+    font-size: 17px;
     display: flex;
     width: -moz-fit-content;
     width: fit-content;

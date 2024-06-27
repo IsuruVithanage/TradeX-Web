@@ -1,5 +1,4 @@
 {
-  "coins": {
       "BTC": {
           "name": "Bitcoin",
           "description": "Bitcoin (BTC) is the first and most well-known cryptocurrency, created by an anonymous person or group of people using the pseudonym Satoshi Nakamoto in 2009. It operates on a decentralized network called blockchain, allowing for peer-to-peer transactions without the need for intermediaries."
@@ -240,5 +239,5 @@
           "name": "Decentraland",
           "description": "Decentraland (MANA) is a virtual reality platform built on the Ethereum blockchain where users can create, explore, and monetize virtual worlds. It uses blockchain technology to establish true ownership of digital assets and provide users with unprecedented freedom and control over their virtual experiences."
       }
-  }
+  
 }

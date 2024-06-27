@@ -4,16 +4,22 @@ import './Table.css'
 export default function Table(props) {
     useEffect(() => {
         const table = document.querySelector('.table-body');
-        table.classList.add('restart');
-
+      
+        if(!table.classList.contains('restart')) {
+            table.classList.add('restart');
+        }
+        
         setTimeout(() => {
-            table.classList.remove('restart');  
-        }, 300);    
+            if(table.classList.contains('restart')) {
+                table.classList.remove('restart'); 
+            } 
+        }, 500);    
         
     }, [props.restart]);
 
     return (
         <div className='table-container' style={props.style}>
+            { props.tableTop }
             <table className='main-table' id={props.id}>
                 <thead className='table-head'>
                     { props.children[0] }
@@ -28,15 +34,11 @@ export default function Table(props) {
     )
 }
 
-export function TableRow(props) {
-    const handleRowClick = () => {
-        if (props.onClick) {
-            props.onClick();
-        }
-    };
 
+
+export function TableRow(props) {
     return (
-        <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={handleRowClick}>
+        <tr className={`table-row ${props.isSelected ? 'selected' : ''}`} onClick={props.onClick}>
             {props.data && props.data.map((cell, index) => (
                 <td key={index} className={`${props.classes && props.classes[index]}`}>
                     {cell}
@@ -46,7 +48,11 @@ export function TableRow(props) {
     );
 }
 
+
+
 export function Coin(props) {
+    if(!props.children) return null;
+    
     const coinData = require('../../Assets/Images/Coin Images.json')[props.children];	
 
     return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage'
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
 import NewsItem from '../../Components/NewsBar/NewsItem'
 import "./News.css"
 import Input from '../../Components/Input/Input'
@@ -8,15 +8,17 @@ import axios from 'axios'
 
 
 export default function News() {
+  const userId = 1;
   const [articles,setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
     setIsLoading(true);
       axios
-        .get('https://newsapi.org/v2/everything?q=bitcoin&apiKey=bc6db274836c4c21aa4569104f316c17')
+        .get('http://localhost:8008/news/fav/' + userId)
         .then(res => {
-            setArticles(res.data.articles);
+            console.log(res.data);
+            setArticles(res.data);
             setIsLoading(false);
         })
         .catch(error => {
@@ -43,7 +45,7 @@ export default function News() {
      <div className='news-container'>
         <div>
           {articles.map((news,index)=>{
-            return <NewsItem key={index} title={news.title} description={news.description} src={news.urlToImage} url ={news.url}/>
+            return <NewsItem key={index} userId={userId} {...news}/>
 
           })}
         </div>

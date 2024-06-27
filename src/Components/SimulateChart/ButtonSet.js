@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
 import './ButtonSet.css';
 
 export default function ButtonSet(props) {
@@ -21,6 +20,11 @@ export default function ButtonSet(props) {
             setIsBtnOne(false);
             setIsBtnThree(false);
             props.setOrderCatagory('Market');
+        }else if(props.selectedType==="Stop Limit") {
+            setIsBtnTwo(false);
+            setIsBtnOne(false);
+            setIsBtnThree(true);
+            props.setOrderCatagory('Stop Limit');
         }
     }, [props.selectedType]);
 

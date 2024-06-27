@@ -1,5 +1,5 @@
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import React, {useRef, useState} from "react";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import React, {useEffect, useRef, useState} from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
 import Modal from "../../Components/Modal/Modal";
@@ -7,15 +7,22 @@ import './VerifyUser.css'
 import {ImCamera} from "react-icons/im";
 import {validationSchema} from "../../Validation/UserValidation";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useSelector} from "react-redux";
+import {get, useForm} from "react-hook-form";
 import AWS from 'aws-sdk';
 import {v4 as uuidv4} from 'uuid';
 import {Upload} from 'antd';
 import {showMessage} from "../../Components/Message/Message";
+import LinearWithValueLabel from "../../Components/Loading/LinearWithValueLabel";
+import {useNavigate} from "react-router-dom";
+import {getUser} from "../../Storage/SecureLs";
 
 export default function VerifyUser() {
-    const user = useSelector(state => state.user);
+    const user = getUser();
+
+    useEffect(() => {
+        console.log("userId", user.id);
+    }, []);
+
 
     const {trigger, register, formState: {errors}} = useForm({
         resolver: yupResolver(validationSchema)
@@ -27,7 +34,7 @@ export default function VerifyUser() {
     const [isSetterModalOpen, setIsSetterModalOpen] = useState(false);
     const [isDateError, setIsDateError] = useState('');
     const [userDetail, setUserDetail] = useState({
-        userId: user.user.id,
+        userId: user.id,
         firstName: '',
         lastName: '',
         age: 0,
@@ -51,17 +58,11 @@ export default function VerifyUser() {
                 setIsAgeError('Please enter a valid age');
             }
         } else {
-            /*if (userDetail.dateOfBirth === '') {
-                setIsDateError('Please enter a valid date');
-                return;
-            }*/
-            /*if (userDetail.age === 0) {
-                setIsAgeError('Please enter a valid age');
-                return;
-            }*/
-            if (userDetail.userImg && userDetail.nicImg1 && userDetail.nicImg2) {
+            if (!userDetail.userImg || !userDetail.nicImg1 || !userDetail.nicImg2 || !userDetail.dateOfBirth || !userDetail.age || !userDetail.firstName || !userDetail.lastName || !userDetail.phoneNumber || !userDetail.nic) {
                 showMessage('Error', 'Some data are not defined!');
-                return
+                setIsSubmit(false);
+                restAll();
+                return;
             }
 
             fetch('http://localhost:8004/user/saveUserVerificationDetails', {
@@ -76,8 +77,26 @@ export default function VerifyUser() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-
                 })
+        }
+    }
+
+    const updateUserVerifyStatus = async () => {
+        const ob = {
+            id: user.id,
+            status: "PendingTrader",
+        }
+        try {
+            await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
+                body: JSON.stringify(ob)
+            });
+        } catch (error) {
+            console.error("Error allocating starting fund:", error);
         }
     }
 
@@ -111,7 +130,6 @@ export default function VerifyUser() {
             }));
         }
     }
-
 
 
     const handleCapture = async () => {
@@ -155,8 +173,8 @@ export default function VerifyUser() {
 
 
     AWS.config.update({
-        accessKeyId: 'AKIARWVGIPBREPLB4GWU',
-        secretAccessKey: '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'
+        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
     })
 
     const myBucket = new AWS.S3({
@@ -168,6 +186,7 @@ export default function VerifyUser() {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [fileCount, setFileCount] = useState(0);
     const [isFileSelected, setIsFileSelected] = useState(true);
+    const [isSubmit, setIsSubmit] = useState(false);
 
 
     const generateUUID = () => {
@@ -177,6 +196,12 @@ export default function VerifyUser() {
 
     const uploadSelectedFiles = async () => {
         try {
+            if (selectedFiles.length !== 3) {
+                showMessage('Error', 'Please select all files');
+                return;
+            }
+
+            setIsSubmit(true);
             const uploadedUrls = await uploadFiles(selectedFiles);
             console.log('Uploaded URLs:', uploadedUrls);
 
@@ -185,36 +210,54 @@ export default function VerifyUser() {
 
             uploadedUrls.forEach(url => {
                 if (url && url.endsWith('cimg.jpg')) {
-                    setUserDetail(prevDetails => ({
-                        ...prevDetails,
-                        userImg: url
-                    }));
+                    setUserDetail(prevDetails => {
+                        console.log('Updating userImg:', url);
+                        return {
+                            ...prevDetails,
+                            userImg: url
+                        };
+                    });
                     userImgCount++;
                 } else {
                     if (nicImgCount === 0) {
-                        setUserDetail(prevDetails => ({
-                            ...prevDetails,
-                            nicImg1: url
-                        }));
+                        setUserDetail(prevDetails => {
+                            console.log('Updating nicImg1:', url);
+                            return {
+                                ...prevDetails,
+                                nicImg1: url
+                            };
+                        });
                         nicImgCount++;
                     } else if (nicImgCount === 1) {
-                        setUserDetail(prevDetails => ({
-                            ...prevDetails,
-                            nicImg2: url
-                        }));
+                        setUserDetail(prevDetails => {
+                            console.log('Updating nicImg2:', url);
+                            return {
+                                ...prevDetails,
+                                nicImg2: url
+                            };
+                        });
                         nicImgCount++;
                     }
                 }
             });
-
-
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            await saveData();
         } catch (error) {
             console.error('Error uploading files:', error);
         }
-    }
+    };
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (userDetail.userImg && userDetail.nicImg1 && userDetail.nicImg2) {
+            console.log('Saving user detail:', userDetail);
+            saveData().then(r => {
+                setIsSubmit(false);
+                showMessage('Success', 'Data saved successfully');
+                updateUserVerifyStatus().then(r => navigate('/watchList'));
+            });
+
+        }
+    }, [userDetail.userImg, userDetail.nicImg1, userDetail.nicImg2]);
 
 
     const uploadFiles = (files) => {
@@ -279,6 +322,7 @@ export default function VerifyUser() {
         <BasicPage>
             <div className='uploaddata-container'>
                 <p>Verify Your Account</p>
+
                 <table className='input-table'>
                     <thead>
                     <tr>
@@ -324,7 +368,7 @@ export default function VerifyUser() {
                             <Upload
                                 listType="picture"
                                 maxCount={2}
-                                style={{marginTop:'2rem'}}
+                                style={{marginTop: '2rem'}}
                                 showUploadList={isFileSelected}
                                 multiple
                                 beforeUpload={(file) => {
@@ -337,9 +381,8 @@ export default function VerifyUser() {
                                     <Input type="button" value={fileCount !== 2 ? "Select Files" : "upload"}/>
                                 ) : (
                                     <>
-                                        <div style={{display:'flex',marginBottom:'0.8rem'}}>
+                                        <div style={{display: 'flex', marginBottom: '0.8rem'}}>
                                             <Input type="button" value='Cancel' outlined red onClick={restAll}/>
-                                            <p>{progress}</p>
                                         </div>
                                     </>
 
@@ -375,9 +418,10 @@ export default function VerifyUser() {
                     </div>
 
                 </div>
-                on
                 <div className='submit-container'>
-                    <Input type="button" value='Submit' onClick={uploadSelectedFiles}/>
+                    <img src="" alt=""/>
+                    <Input type="button" value='Submit' onClick={uploadSelectedFiles}
+                           disabled={selectedFiles.length !== 3}/>
                     <div style={{width: '10px'}}></div>
                     <Input type="button" value='Cancel' red/>
                     {capturedImage && (
@@ -389,6 +433,13 @@ export default function VerifyUser() {
 
 
             </div>
+
+            <Modal open={isSubmit} close={() => setIsSubmit(true)} closable={false}>
+                <div className='upload-progress'>
+                    <h1 style={{justifyContent:'center', fontSize:'1.3rem'}}>Uploading Details ....</h1>
+                    <LinearWithValueLabel progress={progress}/>
+                </div>
+            </Modal>
 
             <Modal open={isSetterModalOpen} close={() => setIsSetterModalOpen(false)}>
                 <Webcam

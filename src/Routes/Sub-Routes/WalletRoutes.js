@@ -1,29 +1,30 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
-import Welcome from '../../Pages/ExternalWallet/Welcome/Welcome';
-import LoginPage1 from '../../Pages/ExternalWallet/LoginPage-1/LoginPage1';
-import HaveAccount from '../../Pages/ExternalWallet/LoginPage-1/HaveAccount/HaveAccount';
-import SetPassword from '../../Pages/ExternalWallet/LoginPage-1/SetPassword/SetPassword';
-import SecretPhrase from '../../Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/SecretPhrase';
-import ConfirmSecretPhrase from '../../Pages/ExternalWallet/LoginPage-1/SetPassword/SecretPhrase/ConfirmSecretPhrase/ConfirmSecretPhrase';
-import RecoverWallet from '../../Pages/ExternalWallet/LoginPage-1/ChangePassword/RecoverWallet/RecoverWallet';
-import ChangePassword from '../../Pages/ExternalWallet/LoginPage-1/ChangePassword/ChangePassword';
+import NotFound from '../../Pages/NotFound/NotFound';
+import Home from '../../Pages/ExternalWallet/Home/Home';
+import StartPage from '../../Pages/ExternalWallet/Start/StartPage';
+import LoginAccount from '../../Pages/ExternalWallet/Login/LoginAccount';
+import CreateOrResetWallet from '../../Pages/ExternalWallet/CreateOrResetWallet/CreateOrResetWallet';
+import GenerateSP from '../../Pages/ExternalWallet/SecretPhrase/Generate/GenerateSP';
+import ConfirmSP from '../../Pages/ExternalWallet/SecretPhrase/Confirm/ConfirmSP';
 import DashBoard from '../../Pages/ExternalWallet/DashBoard/DashBoard';
 import History from '../../Pages/ExternalWallet/History/History';
+
 
 export default function WalletRoutes() {
   return (
     <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/login" element={<LoginPage1 />} />
-        <Route path="/login/HaveAccount" element={<HaveAccount />} />
-        <Route path="/login/setpassword" element={<SetPassword />} />
-        <Route path="/login/setpassword/secretphrase" element={<SecretPhrase />} />
-        <Route path="/login/setpassword/secretphrase/confirmsecretphrase" element={<ConfirmSecretPhrase />} />
-        <Route path='/login/changepassword/recoverwallet' element={<RecoverWallet />} />
-        <Route path='/login/changepassword' element={<ChangePassword />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/start" element={<StartPage />} />
+        <Route path="/login" element={<LoginAccount />} />
+        <Route path="/create" element={<CreateOrResetWallet />} />
+        <Route path="/reset" element={<CreateOrResetWallet />} />
+        <Route path="/secret-phrase" element={<GenerateSP />} />
+        <Route path="/secret-phrase/confirm" element={<ConfirmSP />} />
+        <Route path="/secret-phrase/validate" element={<ConfirmSP />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/history" element={<History />} />
+        <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

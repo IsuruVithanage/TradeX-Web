@@ -1,16 +1,17 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {createChart} from 'lightweight-charts';
-import {SlSizeActual, SlSizeFullscreen} from "react-icons/sl";
+import React, { useState, useEffect, useRef } from 'react';
+import { SlSizeActual, SlSizeFullscreen } from "react-icons/sl";
+import { createChart } from 'lightweight-charts';
+import { Tooltip } from "antd";
 import './LineChart.css';
 
 
 export default function LineChart(props) {
     let handleResize = useRef(null);
-	const { data, currentMarkerTime, suggestMarkerTime, title, lineType } = props;
 	const durations = !data ? [] : Object.keys(data);
     const [chartData, setChartData] = useState(null);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [activeDuration, setActiveDuration] = useState('');
+    const {data, currentMarkerTime, suggestMarkerTime, title, lineType, zoom} = props;
 
 
     const updateChartData = (duration) => {
@@ -40,6 +41,8 @@ export default function LineChart(props) {
         const toolTip = document.getElementById('tool-tip');
         const currentMarker = document.getElementById('current-marker');
         const suggestMarker = document.getElementById('suggest-marker');
+        const currentTooltip = document.getElementById('current-tooltip');
+        const suggestTooltip = document.getElementById('suggest-tooltip');
 
 
         const chart = createChart(chartDiv, {
@@ -47,14 +50,14 @@ export default function LineChart(props) {
             height: chartDiv.clientHeight,
 
             handleScale: {
-                mouseWheel: isFullScreen,
+                mouseWheel: zoom || isFullScreen,
             },
 
             crosshair: {
                 vertLine: {
                     style: 0,
                     width: 1.3,
-                    visible: !chartData ? false : true,
+                    visible: !(!chartData || chartData.length === 0),
                 },
                 horzLine: {
                     labelBackgroundColor: '#000000',
@@ -121,20 +124,22 @@ export default function LineChart(props) {
         const initializeMarkers = () => {
             if(currentMarker) currentMarker.style.display = 'none';
             if(suggestMarker) suggestMarker.style.display = 'none';
-			if( !currentMarkerTime ) return;
+            if(currentTooltip) currentTooltip.parentElement.parentElement.style.display = 'none';
+            if(suggestTooltip) suggestTooltip.parentElement.parentElement.style.display = 'none';
+            if( !currentMarkerTime ) return;
 
             setTimeout(() => {
-                currentMarkerTime && setMarkers(currentMarkerTime, currentMarker);
- 				suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker);
+                currentMarkerTime && setMarkers(currentMarkerTime, currentMarker, currentTooltip);
+                suggestMarkerTime && setMarkers(suggestMarkerTime, suggestMarker, suggestTooltip);    
             }, 300);
 
             let priceScaleWidth = 0;
-            try { priceScaleWidth = series.priceScale().width(); } 
-			catch {	console.log("error handled in marker");	}
+            try { priceScaleWidth = series.priceScale().width(); }
+            catch {	console.log("error handled in marker");	}
 
             const chartMargin = chartDiv.computedStyleMap().get('padding-top').value;
 
-            const setMarkers = (time, marker) => {
+            const setMarkers = (time, marker, tooltip) => {
                 const coordinateX = chart.timeScale().timeToCoordinate(time);
                 const logical = chart.timeScale().coordinateToLogical(coordinateX);
 				let price = 0;
@@ -142,10 +147,13 @@ export default function LineChart(props) {
 				catch {	console.log("error handled in marker");	}
                 const coordinateY = series.priceToCoordinate(price) + chartMargin;
 
-                if (coordinateX > 0) {
+                if (0 < coordinateX && coordinateX < chartDiv.clientWidth) {
                     marker.style.display = 'block';
                     marker.style.top = coordinateY + 'px';
                     marker.style.left = coordinateX + priceScaleWidth + 'px';
+                    setTimeout(() => {
+                        tooltip.parentElement.parentElement.style.display = 'block';
+                    }, 25);
                 }
             }
 
@@ -160,7 +168,7 @@ export default function LineChart(props) {
 
             let priceScaleWidth = 0;
             try { priceScaleWidth = series.priceScale().width(); }
-			catch { console.log("error handled in toolTip"); }
+            catch { console.log("error handled in toolTip"); }
 
             const dateStr = new Date(param.time * 1000).toLocaleString('en-GB',
                 (!data[activeDuration].showTime) ? {
@@ -187,13 +195,13 @@ export default function LineChart(props) {
 
             const coordinateX =
                 (pointX < priceScaleWidth + 5) ? priceScaleWidth + 5 :
-                (pointX + toolTipWidth < chartWidth) ? pointX :
-                (chartWidth - (toolTipWidth + 5));
+                    (pointX + toolTipWidth < chartWidth) ? pointX :
+                        (chartWidth - (toolTipWidth + 5));
 
             const coordinateY =
                 pointY - (toolTipHeight + toolTipMargin) > chartHeight / 5 ?
-                pointY - (toolTipHeight + toolTipMargin) :
-                pointY + toolTipMargin;
+                    pointY - (toolTipHeight + toolTipMargin) :
+                    pointY + toolTipMargin;
 
 
             toolTip.style.display = 'block';
@@ -213,7 +221,7 @@ export default function LineChart(props) {
 			`;
         }
 
-	
+
         handleResize.current = () => {
             chart.applyOptions({
                 width: chartDiv.clientWidth,
@@ -221,10 +229,10 @@ export default function LineChart(props) {
             });
         };
 
-		const resize = () => {
-			handleResize.current();
-			initializeMarkers();
-		};
+        const resize = () => {
+            handleResize.current();
+            initializeMarkers();
+        };
 
 		if(currentMarker) currentMarker.style.display = 'none';
         if(suggestMarker) suggestMarker.style.display = 'none';
@@ -241,7 +249,7 @@ export default function LineChart(props) {
             chart.timeScale().unsubscribeVisibleLogicalRangeChange(initializeMarkers);
             chart.remove();
         };
-    }, [isFullScreen, lineType, chartData, currentMarkerTime, suggestMarkerTime, activeDuration, data, title]);
+    }, [isFullScreen, lineType, chartData, currentMarkerTime, suggestMarkerTime, activeDuration, data, title, zoom]);
 
 
     return (
@@ -266,13 +274,21 @@ export default function LineChart(props) {
 				</span>
             </div>
 
-            {!chartData && <p className="empty-message">No data to show</p>}
+            {(!chartData || chartData.length === 0) && <p className="empty-message">No data to show</p>}
 
             <div id="chart">
-				<div id='tool-tip' className='tool-tip'/>
-				{currentMarkerTime && <div id='current-marker' className='marker current-marker'/>}
-				{suggestMarkerTime && <div id='suggest-marker' className='marker suggest-marker'/>}
-			</div>
+                <div id='tool-tip' className='tool-tip'/>
+                {currentMarkerTime &&
+                    <Tooltip id='current-tooltip' title={props.orderPrice} color='#ffb521' trigger="click" open>
+                        <div id='current-marker' className='marker current-marker'/>
+                    </Tooltip>
+                }
+                {suggestMarkerTime &&
+                    <Tooltip id='suggest-tooltip' title={props.suggestPrice} color='#0077FF' trigger="click" open>
+                        <div id='suggest-marker' className='marker suggest-marker'/>
+                    </Tooltip>
+                }
+            </div>
         </div>
     );
 };

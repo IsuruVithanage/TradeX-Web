@@ -1,0 +1,64 @@
+.monthly-summary-report {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: white;
+    color: black;
+    border: 10px solid black;
+  }
+  
+  /* .summary-report h2 {
+    text-align: center;
+    color: #333;
+  } */
+
+
+  
+  .monthly-summary-report h3 {
+    color: black;
+    text-align: center;
+    
+    margin-bottom: 40px;
+  }
+  .monthly-summary-report h5{
+    color: black;
+  }
+  .monthly-summary-report h4{
+    color: black;
+    text-align: center;
+    
+  }
+  
+  
+  .monthly-summary-report table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .monthly-summary-report th, .monthly-summary-report td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    color:black;
+  }
+  
+  .monthly-summary-report th {
+    
+    font-size: 12px;
+    color: #9E9E9E;
+  }
+
+  .monthly-summary-report td{
+    font-size: 11px;
+  }
+  .coin-image {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .coin-symbol {
+    font-weight: bold;
+    vertical-align: middle;
+  }

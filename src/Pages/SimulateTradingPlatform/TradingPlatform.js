@@ -1,33 +1,25 @@
 import React, {useEffect, useState} from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
 import Input from "../../Components/Input/Input";
-import TestChart from "./TestChart"
 import SliderInput from "../../Components/Input/SliderInput/SliderInput";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
-import {useSelector} from "react-redux";
 import {showMessage} from "../../Components/Message/Message";
 import CancelButton from "../../Components/Input/Button/CencelButton";
 import BuyButton from "../../Components/Input/Button/BuyButton";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {getUser} from "../../Storage/SecureLs";
 
-export default function TradingPlatform({firebase}) {
-    const user = useSelector(state => state.user);
-
-    /////////////////////////////////////////////////////////////////////
-    useEffect(() => {
-        firebase.onMessage(() => {
-            console.log('Message received:');
-            console.log('Message EKA AWAMA METHANA OONE DEYAK KARAPANNN');
-        });
-    }, [firebase]);
+export default function TradingPlatform() {
+    const user = getUser();
+    const axiosInstance = useAuthInterceptor();
 
     const Tabs = [
-        {label: "Spot", path: "/simulate"},
-        {label: "Quiz", path: "/quiz"},
+        { label: "Spot", path: "/simulate" },
     ];
 
     const [latestPrice, setLatestPrice] = useState(0);
@@ -43,12 +35,14 @@ export default function TradingPlatform({firebase}) {
     const [selectedType, setSelectedType] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
+    const apiGateway = process.env.REACT_APP_API_GATEWAY;
 
     const [order, setOrder] = useState({
         userId: user.id,
         type: 'Buy',
         date: '',
         category: 'Limit',
+        stopLimit: 0,
         coin: null,
         price: 0,
         quantity: 0,
@@ -72,6 +66,7 @@ export default function TradingPlatform({firebase}) {
                 type: 'Buy',
                 date: '',
                 category: 'Limit',
+                stopLimit: 0,
                 coin: null,
                 price: 0,
                 quantity: 0,
@@ -104,7 +99,7 @@ export default function TradingPlatform({firebase}) {
             if (order.type === 'Sell') {
                 setBalanceSymble(coin.symbol);
             }
-            fetchLimitOrders(coin.symbol.toUpperCase());
+            fetchOrderByCoinAndCate(coin.symbol.toUpperCase(), selectedType);
         }
     };
 
@@ -118,8 +113,11 @@ export default function TradingPlatform({firebase}) {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === 'order_completed') {
-                fetchLimitOrders(selectedCoin?.symbol?.toUpperCase());
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Limit");
                 showMessage('success', `Your order for ${data.order.coin} has been completed at ${data.order.price}`);
+            } else if (data.type === 'stopLimit_completed') {
+                fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), "Stop Limit");
+                showMessage('success', `Your Stop Limit order for ${data.order.coin} has been execute as Limit`);
             }
         };
 
@@ -128,21 +126,29 @@ export default function TradingPlatform({firebase}) {
         };
     }, [selectedCoin]);
 
-    const fetchLimitOrders = (coin) => {
-        fetch(`http://localhost:8005/order/getLimitOrderByCoin/${coin}/${user.user.id}`)
-            .then(response => response.json())
-            .then(data => {
-                setLimitOrder(data);
-            })
-            .catch(error => {
-                console.error('Failed to fetch limit orders:', error);
-            });
+    const fetchOrderByCoinAndCate = async (coin, category) => {
+        console.log('fetchOrderByCoinAndCate')
+        if (!order.coin) {
+            return;
+        }
+
+        try {
+            const res = await axiosInstance.get(
+                `/order/getOrderByCoinAndCategory/${coin}/${user.id}/${category}`
+            );
+            setLimitOrder(res.data);
+
+        } catch (error) {
+            console.log(error);
+            showMessage('error', 'Error fetching order history');
+        }
     };
 
     const getWalletBalance = () => {
-        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
+        fetch(`${apiGateway}/portfolio/asset/${user.id}/${balanceSymble === '$' ? 'USD' : selectedCoin.symbol}`)
             .then(response => response.json())
             .then(data => {
+                console.log('Wallet balance:', data[0]);
                 setWalletBalance(data[0].balance);
             })
             .catch(error => {
@@ -160,11 +166,12 @@ export default function TradingPlatform({firebase}) {
         const currentDate = new Date().toISOString();
         console.log(currentDate);
         return {
-            userId: user.user.id,
+            userId: user.id,
             coin: order.coin.symbol.toUpperCase(),
             quantity: order.quantity,
             date: currentDate,
             price: order.price,
+            stopLimit: order.stopLimit,
             type: order.type,
             category: order.category,
             totalPrice: order.total,
@@ -183,6 +190,7 @@ export default function TradingPlatform({firebase}) {
         if (value === 'Market') {
             setIsButtonSet(true);
             setSelectedType('Market');
+            handleStopLimitPriceChange(0);
             setMarketPrice();
             setIsDisabled(true);
         } else if (value === 'Limit') {
@@ -193,6 +201,7 @@ export default function TradingPlatform({firebase}) {
             }));
             setIsButtonSet(true);
             setSelectedType('Limit');
+            handleStopLimitPriceChange(0);
             setIsDisabled(false);
         } else if (value === 'Stop Limit') {
             setOrder(prevOrder => ({
@@ -232,6 +241,15 @@ export default function TradingPlatform({firebase}) {
 
     };
 
+    const handleStopLimitPriceChange = (value) => {
+        console.log(value)
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            stopLimit: value
+        }));
+
+    };
+
     const handleQuantityChange = (value) => {
         if (value <= 0.0) {
             setIsError('Quantity should be greater than 0');
@@ -265,6 +283,14 @@ export default function TradingPlatform({firebase}) {
     }
 
     useEffect(() => {
+        console.log('order', order)
+        if (order.coin) {
+            fetchOrderByCoinAndCate(order.coin.symbol.toUpperCase(), order.category);
+        }
+
+    }, [selectedType]);
+
+    useEffect(() => {
         getWalletBalance();
     }, [balanceSymble, selectedCoin]);
 
@@ -294,68 +320,88 @@ export default function TradingPlatform({firebase}) {
             return;
         }
 
-        const ob = {
-            userId: user.user.id,
-            coin: order.coin.symbol.toUpperCase(),
-            quantity: order.quantity,
-            price: order.price,
-            category: order.category,
-            type: order.type
-        }
-
-        if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
-            console.error('Invalid order:', ob);
-            return;
-        }
-
-        if (ob.quantity < 0) {
-            showMessage('Error', 'Please enter the quantity!');
-            return;
-        }
 
         setIsLoading(false);
 
+        if (order.category !== 'Stop Limit') {
+            const ob = {
+                userId: user.id,
+                coin: order.coin.symbol.toUpperCase(),
+                quantity: order.quantity,
+                price: order.price,
+                category: order.category,
+                type: order.type
+            }
 
-        fetch('http://localhost:8011/portfolio/asset/trade', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ob)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('gvgh', data);
-                if (order.type === 'Buy') {
-                    setWalletBalance(data[0].balance);
-                } else {
-                    setWalletBalance(data[1].balance);
-                }
+            if (!ob.userId || !ob.coin || !ob.quantity || !ob.price || !ob.category || !ob.type) {
+                console.error('Invalid order:', ob);
+                return;
+            }
 
-                return fetch('http://localhost:8005/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(placeOrder())
-                });
+            if (ob.quantity < 0) {
+                showMessage('Error', 'Please enter the quantity!');
+                return;
+            }
+            console.log('ob', ob);
+
+            fetch(`${apiGateway}/portfolio/asset/trade`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
+                body: JSON.stringify(ob)
             })
-            .then(response => {
-                if (response.ok) {
-                    setIsLoading(true);
-                    showMessage('success', 'The order has been placed successfully!');
-                    getWalletBalance();
-                    if (order.category === 'Limit') {
-                        fetchLimitOrders(selectedCoin.symbol.toUpperCase());
+                .then(response => response.json())
+                .then(async data => {
+                    console.log('gvgh', data);
+                    if (order.type === 'Buy') {
+                        setWalletBalance(data[0].balance);
+                    } else {
+                        setWalletBalance(data[1].balance);
                     }
-                    //fetchLimitOrders(selectedCoin.symbol);
-                } else {
-                    console.error('Failed to save order:', response);
-                }
+
+                    const res= await axiosInstance.post('/order', placeOrder());
+                    if (res) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (order.category === 'Limit') {
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
+                        }
+                    }else {
+                        console.error('Failed to save order:', res);
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
+                });
+        } else {
+            fetch(`${apiGateway}/order`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                },
+                body: JSON.stringify(placeOrder())
             })
-            .catch(error => {
-                console.error('Failed to save order:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoading(true);
+                        showMessage('success', 'The order has been placed successfully!');
+                        getWalletBalance();
+                        if (selectedType === 'Stop Limit') {
+                            fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), 'Stop Limit');
+                        }
+                    } else {
+                        console.error('Failed to save order:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to save order:', error);
+                });
+        }
     }
 
     useEffect(() => {
@@ -374,7 +420,7 @@ export default function TradingPlatform({firebase}) {
             let quantity = value / order.price;
             if (balancePr !== 0) {
                 setIsError(null);
-                quantity=parseFloat(quantity.toFixed(4));
+                quantity = parseFloat(quantity.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: quantity
@@ -390,7 +436,7 @@ export default function TradingPlatform({firebase}) {
             let value = (walletBalance * (balancePr / 100));
             if (balancePr !== 0) {
                 setIsError(null);
-                value=parseFloat(value.toFixed(4));
+                value = parseFloat(value.toFixed(4));
                 setOrder(prevOrder => ({
                     ...prevOrder,
                     quantity: value
@@ -424,13 +470,17 @@ export default function TradingPlatform({firebase}) {
 
 
     const confirm = (orderId) => {
-        fetch(`http://localhost:8005/order/deleteOrder/${orderId}`, {
+        fetch(`${apiGateway}/order/deleteOrder/${orderId}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+            },
         })
             .then(response => {
                 if (response.ok) {
                     showMessage('Success', 'Order deleted successfully');
-                    fetchLimitOrders(selectedCoin.symbol);
+                    fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
                     showMessage('Error', 'Failed to delete order');
                 }
@@ -457,6 +507,12 @@ export default function TradingPlatform({firebase}) {
                                    selectedType={selectedType}/>
                         <Input type={"switch"} buttons={["Buy", "Sell"]} onClick={setOrderType}/>
 
+                        {selectedType === 'Stop Limit' &&
+                            <Input label={'Stop Limit'} type={'number'} icon={"$"} isDisable={isDisabled}
+                                   value={order.stopLimit}
+                                   onChange={handleStopLimitPriceChange}/>
+                        }
+
                         <Input label={'Price'} type={'number'} icon={"$"} isDisable={isDisabled} value={order.price}
                                onChange={handlePriceChange}/>
                         <Input label={'Quantity'} type={'number'} min={1} value={order.quantity}
@@ -467,8 +523,9 @@ export default function TradingPlatform({firebase}) {
                         <Input label={'Total'} type={"number"} icon={"$"} isDisable={true} placehalder={"Total"}
                                value={order.total}/>
 
-                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet} title={'Confirm Order'}
-                                      message={`Are you sure to place this Order`}/>
+                        <BuyButton confirm={saveOrder} value={order.type} orderId={order.orderId} disabled={isButtonSet}
+                                   title={'Confirm Order'}
+                                   message={`Are you sure to place this Order`}/>
                         <p className={isError !== null ? 'order-error' : 'order-noerror'}>{isError}</p>
 
                     </div>
@@ -500,7 +557,8 @@ export default function TradingPlatform({firebase}) {
                             formatPrice(order.price),
                             order.quantity,
                             formatPrice(order.totalPrice),
-                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId} title={'Cancel the order'}
+                            <CancelButton confirm={confirm} name={'Cancel'} orderId={order.orderId}
+                                          title={'Cancel the order'}
                                           message={`Are you sure to cancel this Order`}/>
                         ]}
                     />

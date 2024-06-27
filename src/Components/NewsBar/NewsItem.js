@@ -1,52 +1,100 @@
 import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
-import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'; 
-import image from '../../Assets/Images/image.jpg'; 
-import './NewsItem.css'; 
+import defaultImage from '../../Assets/Images/image.jpg'; 
 import axios from 'axios'; 
-import { click } from '@testing-library/user-event/dist/click';
+import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
+import { 
+  MdThumbUp,
+  MdThumbDown,
+  MdOutlineThumbUp,
+  MdOutlineThumbDown
+ } from "react-icons/md";
+import './NewsItem.css'; 
+import { showMessage } from '../Message/Message';
 
 
-const NewsItem = ({ title, description, src, url }) => {
-  const [isHeartFilled, setIsHeartFilled] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [dislikeCount, setDislikeCount] = useState(0);
-  const userId = 1;
+const NewsItem = (props) => {
+  const { newsId, url, title, description, image, isFavorite, isLiked, isDisliked, userId, publishedAt } = props;
+  const [isHeartFilled, setIsHeartFilled] = useState(isFavorite || false);
+  const [isLike, setIsLike ] = useState(isLiked || false);
+  const [isDislike, setIsDislike ] = useState(isDisliked || false);  
+  const [likeCount, setLikeCount] = useState(props.likeCount || 0);
+  const [dislikeCount, setDislikeCount] = useState(props.dislikeCount || 0);
 
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
-    console.log("click");
       axios.post(
         "http://localhost:8008/news/fav/" + !isHeartFilled,
         {
-          title,description,url,image:src,userId
+          newsId,userId
         }
       ).then (res =>{
         setIsHeartFilled(!isHeartFilled);
-        console.log(res.data)
+        if(!isHeartFilled){
+        showMessage("success",'Added to Favourite');
+        }
       }) 
       .catch(error => {
-        console.log(error);
+        showMessage("success",error);
       });
     
   };
 
   // Event handler for incrementing like count
   const handleLikeClick = () => {
-    setLikeCount((prevLikeCount) => prevLikeCount + 1);
+    if(isDislike && !isLike){
+      dislike(false)
+    }
+    
+    like(!isLike)
+    
   };
 
   // Event handler for incrementing dislike count
   const handleDislikeClick = () => {
-    setDislikeCount((prevDislikeCount) => prevDislikeCount + 1);
+    if(!isDislike && isLike){
+      like(false)
+    }
+  
+    dislike(!isDislike)
+
   };
+
+  const like = async (likeStatus)=>{
+    axios.post(
+      "http://localhost:8008/news/like",
+      {
+        newsId,userId,isLike:likeStatus
+      }
+    ).then (res =>{
+      setLikeCount(parseInt(res.data.likeCount, 10) || 0);
+      setIsLike(likeStatus);
+    }) 
+    .catch(error => {
+      console.log(error);
+    });
+  } 
+ 
+  const dislike = async (dislikeStatus)=>{
+    axios.post(
+      "http://localhost:8008/news/dislike",
+      {
+        newsId,userId,isDislike:dislikeStatus
+      }
+    ).then (res =>{
+      setDislikeCount(parseInt(res.data.dislikeCount, 10) || 0);
+      setIsDislike(dislikeStatus);
+    }) 
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
   // Render the component
   return (
     <div className='newsbar-container'> 
       {/* Container for the news image */}
       <div className='img-container'>
-        <img src={src ? src : image} alt="..." /> 
+        <img src={image ? image : defaultImage} alt="..." /> 
       </div>
       
       <div className='desc-container'>
@@ -66,12 +114,16 @@ const NewsItem = ({ title, description, src, url }) => {
         </div>
 
         <div className='footer-bar'>
+          <div>
+            {new Date(publishedAt).toLocaleDateString('en-GB')}
+          </div>
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
-              {likeCount} <AiOutlineLike />
+              {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
+
             </div>
             <div onClick={handleDislikeClick}>
-              {dislikeCount} <AiOutlineDislike />
+              {dislikeCount} {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
             </div>
           </div>
         </div>
