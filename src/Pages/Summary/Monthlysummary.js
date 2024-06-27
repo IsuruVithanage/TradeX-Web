@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import React from "react";
-import "./Monthlysummary.css";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-=======
+
 import React from 'react'
 import './Monthlysummary.css'
 import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 import Input from "../../Components/Input/Input";
 import Modal from "antd/es/modal/Modal";
 import { useState, useEffect } from "react";
