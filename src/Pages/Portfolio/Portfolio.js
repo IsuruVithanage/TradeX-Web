@@ -25,33 +25,33 @@ export default function Portfolio() {
 
     useEffect(() => {
         setIsLoading(true);
-        
+
         axios
-        .get( backendApiEndpoint, { params: { userId } })
-        
-        .then(res => {
-            console.log(res.data);
-            setAssets(res.data.assets);
-            setPercentages(res.data.percentages);
-            setInitialData(res.data.historyData);
-            setPortfolioValue(res.data.portfolioValue);
-            setUsdBalance(res.data.usdBalance);
-            setIsLoading(false);
-        })
+            .get( backendApiEndpoint, { params: { userId } })
 
-        .catch(error => {
-            setIsLoading(false);
-            setPortfolioValue(0);
-            setUsdBalance(0);
-            console.log("error getting assets");
+            .then(res => {
+                console.log(res.data);
+                setAssets(res.data.assets);
+                setPercentages(res.data.percentages);
+                setInitialData(res.data.historyData);
+                setPortfolioValue(res.data.portfolioValue);
+                setUsdBalance(res.data.usdBalance);
+                setIsLoading(false);
+            })
 
-            error.response ? 
-            showMessage(error.response.status, error.response.data.message)   :
-            showMessage('error', 'Database connection failed..!') ;
-        });
+            .catch(error => {
+                setIsLoading(false);
+                setPortfolioValue(0);
+                setUsdBalance(0);
+                console.log("error getting assets");
+
+                error.response ?
+                    showMessage(error.response.status, error.response.data.message)   :
+                    showMessage('error', 'Database connection failed..!') ;
+            });
 
     }, [userId]);
-  
+
 
 
     return (

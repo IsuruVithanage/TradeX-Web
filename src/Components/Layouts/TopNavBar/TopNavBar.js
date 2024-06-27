@@ -21,7 +21,7 @@ export default function TopNavBar(props) {
     const navigate = useNavigate();
     const user = getUser();
     const userName = user ? user.userName : 'Kamal Silva';
-   
+
 
     const handleSubPagesClick = (page) => {
         setActivePage(page);
@@ -79,7 +79,7 @@ export default function TopNavBar(props) {
                     </div>
 
                     <AppNotification user={user} />
-                    
+
                 </div>
             </div>
         </div>
@@ -108,13 +108,13 @@ function ProfileMenu (props){
                 <span className='row-icon'><HiOutlineUserCircle size={28}/></span>
                 <span className='row-name'>Profile</span>
             </div>
-            {user && user.isVerified === "No" &&
+            {user && user.role === "User" &&
                 <div className='profile-raw' onClick={() => navigate('/verify')}>
                     <span className='row-icon'><PiUserFocus size={30} fill='#6D6D6D'/></span>
                     <span className='row-name'>Verify User</span>
                 </div>
             }
-            {/* {user && user.role !== "User" &&  */ true &&
+            {user && (user.role === "Trader" || user.role === "Admin") &&
                 <div className='profile-raw' onClick={() => window.open('/wallet', '_blank')}>
                     <span className='row-icon'><BiShieldX size={29}/></span>
                     <span className='row-name'>TradeX Wallet</span>
@@ -130,4 +130,3 @@ function ProfileMenu (props){
         </div>
     );
 }
-
