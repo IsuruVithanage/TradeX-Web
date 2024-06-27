@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import axios from "axios";
 import Input from "../../Components/Input/Input";
 import "./Watchlist.css";
@@ -65,7 +65,7 @@ const Watchlist = () => {
             tabs={[
                 { label: "All", path: "/watchlist" },
                 { label: "Custom", path: "/watchlist/customize" },
-                { label: "CoinPage", path: "/watchlist/coin/BTC" },
+                /*{ label: "CoinPage", path: "/watchlist/coin/BTC" },*/
 
             ]}>
 

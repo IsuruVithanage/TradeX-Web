@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
@@ -35,7 +35,7 @@ export default function AdDashboard() {
     const fetchPendingUsers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getPendingUsers"
+          "http://localhost:8004/admin/getPendingUsers"
         );
         setPendingUsers(response.data);
       } catch (error) {
@@ -50,7 +50,7 @@ export default function AdDashboard() {
     const fetchUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getUserCount"
+          "http://localhost:8004/admin/getUserCount"
         );
         setUserCount(response.data.count);
       } catch (error) {
@@ -65,7 +65,7 @@ export default function AdDashboard() {
     const fetchVerifiedUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getVerifiedUserCount"
+          "http://localhost:8004/admin/getVerifiedUserCount"
         );
         setVerifiedUserCount(response.data.count);
       } catch (error) {
@@ -80,9 +80,10 @@ export default function AdDashboard() {
     const fetchVerificationIssues = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getUsersWithVerificationIssues"
+          "http://localhost:8004/admin/getUsersWithVerificationIssues"
         );
         setVerificationIssues(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching verification issues:", error);
       }
@@ -97,6 +98,7 @@ export default function AdDashboard() {
         { label: "Dashboard", path: "/admin/AdDashboard" },
         { label: "Users", path: "/admin/Users" },
         { label: "Admin", path: "/admin" },
+        { label: "Education", path: "/admin/AddResources" },
       ]}
     >
       <div style={{ display: "flex" }}>

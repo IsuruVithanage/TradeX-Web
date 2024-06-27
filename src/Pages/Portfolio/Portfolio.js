@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { showMessage } from "../../Components/Message/Message";
-import { getUser } from "../../Storage/SecureLs";
-import Table, { TableRow, Coin } from "../../Components/Table/Table";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
-import LineChart from "../../Components/Charts/LineChart/LineChar";
-import BarChart from "../../Components/Charts/BarChart/BarChart";
-import ValueBar from "../../Components/ValueBar/ValueBar";
-import axios from "axios";
+
+import React, {useState, useEffect} from 'react'
+import {showMessage} from '../../Components/Message/Message';
+import { getUser } from '../../Storage/SecureLs';
+import Table, {TableRow, Coin} from '../../Components/Table/Table';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
+import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer';
+import LineChart from '../../Components/Charts/LineChart/LineChar';
+import BarChart from '../../Components/Charts/BarChart/BarChart';
+import ValueBar from '../../Components/ValueBar/ValueBar';
+import axios from 'axios';
+
 
 export default function Portfolio() {
   const [assets, setAssets] = useState([]);
@@ -26,6 +28,7 @@ export default function Portfolio() {
     axios
       .get(backendApiEndpoint, { params: { userId } })
 
+<<<<<<< HEAD
       .then((res) => {
         setAssets(res.data.assets);
         setPercentages(res.data.percentages);
@@ -34,6 +37,23 @@ export default function Portfolio() {
         setUsdBalance(res.data.usdBalance);
         setIsLoading(false);
       })
+=======
+    useEffect(() => {
+        setIsLoading(true);
+        
+        axios
+        .get( backendApiEndpoint, { params: { userId } })
+        
+        .then(res => {
+            console.log(res.data);
+            setAssets(res.data.assets);
+            setPercentages(res.data.percentages);
+            setInitialData(res.data.historyData);
+            setPortfolioValue(res.data.portfolioValue);
+            setUsdBalance(res.data.usdBalance);
+            setIsLoading(false);
+        })
+>>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 
       .catch((error) => {
         setIsLoading(false);

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
@@ -52,7 +52,6 @@ export default function TradingPlatform() {
     });
 
     useEffect(() => {
-        console.log("user",user[0])
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);

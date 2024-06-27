@@ -1,6 +1,6 @@
 import React from "react";
 import "./dailysummary.css";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import Modal from "antd/es/modal/Modal";
 import { useState, useEffect } from "react";

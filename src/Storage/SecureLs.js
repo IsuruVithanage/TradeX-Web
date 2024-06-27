@@ -20,9 +20,12 @@ const setUser = (user) => {
 };
 
 const getUser = () => {
-  const userData = ls.get("user");
-  console.log("userData", userData);
-  return userData ? userData : null;
+  try {
+    const userData = ls.get("user");
+    return userData ? userData : null;
+  } catch (error) {
+    return null;
+  }
 };
 
 const removeUser = () => {

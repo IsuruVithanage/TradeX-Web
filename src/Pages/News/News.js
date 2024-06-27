@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import BasicPage from '../../Components/BasicPage/BasicPage'; 
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'; 
 import NewsItem from '../../Components/NewsBar/NewsItem'; 
 import "./News.css"; 
 import Input from '../../Components/Input/Input'; 
@@ -16,7 +16,7 @@ export default function News() {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('http://localhost:8008/news/' + userId)
+    axios.get('http://localhost:8008/news/' + userId) // ashan gen ahanna
       .then(res => {
         setArticles(res.data); 
         console.log(res.data)

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";
@@ -14,9 +14,9 @@ export default function Admin() {
     const currentDate = new Date().toISOString();
     console.log(currentDate);
 
-    const {handleSubmit, register, formState: {errors}} = useForm({
+    /*const {handleSubmit, register, formState: {errors}} = useForm({
         resolver: yupResolver(validationSchema)
-    });
+    });*/
 
     const onSubmit = (data) => {
         console.log(data);
@@ -40,16 +40,16 @@ export default function Admin() {
         }));
     };
 
-    const handledSubmit = async (e) => {
+    const handledSubmit = async () => {
         const currentDate = new Date().toISOString();
         console.log(currentDate);
 
-        setAdmin({
+        /*setAdmin({
             AdminName: document.getElementById("AdminName").value,
             NIC: document.getElementById("NIC").value,
             Contact: document.getElementById("Contact").value,
             Age: document.getElementById("Age").value,
-        });
+        });*/
 
         console.log(admin);
 
@@ -87,6 +87,7 @@ export default function Admin() {
                 "http://localhost:8003/admin/getAllAdmins"
             );
             setAdminList(result.data);
+            console.log(result.data);
         } catch (error) {
             console.error("Error fetching Admins", error);
         }
@@ -102,6 +103,7 @@ export default function Admin() {
                 {label: "Dashboard", path: "/admin/AdDashboard"},
                 {label: "Users", path: "/admin/Users"},
                 {label: "Admin", path: "/admin"},
+                { label: "Education", path: "/admin/AddResources" },
             ]}
         >
             <div>
@@ -139,7 +141,7 @@ export default function Admin() {
                                             id="AdminName"
                                             value={admin.AdminName}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            /*register={register} errors={errors}*/
                                         />
                                         <Input
                                             type="text"
@@ -149,7 +151,7 @@ export default function Admin() {
                                             id="NIC"
                                             value={admin.NIC}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            /*register={register} errors={errors}*/
                                         />
                                         <Input
                                             type="text"
@@ -159,7 +161,7 @@ export default function Admin() {
                                             id="Contact"
                                             value={admin.Contact}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            /*register={register} errors={errors}*/
                                         />
                                         <Input
                                             type="text"
@@ -169,7 +171,7 @@ export default function Admin() {
                                             id="Age"
                                             value={admin.Age}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            /*register={register} errors={errors}*/
                                         />
 
                                         <div className="create-admin-btn">
@@ -177,7 +179,7 @@ export default function Admin() {
                                                 type="button"
                                                 style={{width: "110px"}}
                                                 value="Submit"
-                                                onClick={handleSubmit(handledSubmit)}
+                                                onClick={handledSubmit}
                                             />
                                             <Input
                                                 type="button"

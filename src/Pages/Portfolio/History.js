@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { getUser } from "../../Storage/SecureLs";
-import { showMessage } from "../../Components/Message/Message";
-import Table, { TableRow, Coin } from "../../Components/Table/Table";
-import axios from "axios";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
-import Input from "../../Components/Input/Input";
-import coins from "../../Assets/Images/Coin Images.json";
+
+import React, { useEffect, useState } from 'react';
+import notificationManager from '../Alert/notificationManager';
+import { getUser } from '../../Storage/SecureLs';
+import { showMessage } from '../../Components/Message/Message'
+import Table, { TableRow, Coin } from '../../Components/Table/Table';
+import axios from 'axios';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer';
+import Input from '../../Components/Input/Input';
+import coins from '../../Assets/Images/Coin Images.json'
+
 
 export default function History() {
   const [selectedSection, setSelectedSection] = useState("Trading");
@@ -75,6 +78,7 @@ export default function History() {
       });
   }, [userId, selectedSection, backendAPI]);
 
+<<<<<<< HEAD
   useEffect(() => {
     if (
       !selectedCoin &&
@@ -84,6 +88,70 @@ export default function History() {
       !selectedTo
     ) {
       setFilteredData(historyData);
+=======
+        const getHistoryData = () => {
+            axios 
+            .get( backendAPI, { params: { userId: userId }})
+
+            .then((res) => {
+                setHistoryData(res.data);
+                setFilteredData(res.data);
+                setIsLoading(false);
+            })
+
+            .catch((error) => {
+                setIsLoading(false);
+                console.log("Error fetching historyData", error);
+                
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
+            });
+        }
+
+        getHistoryData();
+
+        notificationManager.onAppNotification(() => {
+            getHistoryData();
+        });
+
+        return () => {
+            notificationManager.onAppNotification(() => {});
+        }
+
+    }, [userId, selectedSection, backendAPI]);
+
+
+
+
+    useEffect(() => {
+        if(!selectedCoin && !selectedType && !selectedAction && !selectedFrom && !selectedTo) {
+            setFilteredData(historyData);
+        }
+    }, [selectedCoin,selectedType, selectedAction, selectedFrom, selectedTo, historyData]);
+
+
+
+
+
+    const filterHistoryData = () => {
+        let filteredData = historyData.filter(data => {
+            if (selectedCoin && data.coin !== selectedCoin) return false;
+
+            if (selectedSection === "Transaction") {
+                if (selectedFrom && data.sendingWallet !== selectedFrom) return false;
+                if (selectedTo && data.receivingWallet !== selectedTo) return false;
+            } 
+            
+            else {
+                if (selectedType && data.category !== selectedType) return false;
+                if (selectedAction && data.type !== selectedAction) return false;
+            }
+            return true;
+        });
+    
+        setFilteredData(filteredData);
+>>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
     }
   }, [
     selectedCoin,

@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
+<<<<<<< HEAD
 import BasicPage from "../../Components/BasicPage/BasicPage";
 import { useAuthInterceptor } from "../../Authentication/axiosInstance";
 import { setAccessToken, setUser } from "../../Storage/SecureLs";
+=======
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import {useAuthInterceptor} from "../../Authentication/axiosInstance";
+import {setAccessToken, setUser, getUser} from "../../Storage/SecureLs";
+>>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 import "./Login.css";
 
 function Login() {
@@ -36,6 +42,7 @@ function Login() {
 
       notificationManager.getToken();
 
+<<<<<<< HEAD
       console.log("Login success");
 
       if (user.role === "User") {
@@ -43,6 +50,21 @@ function Login() {
           navigate("/watchlist");
         } else {
           navigate("/quiz");
+=======
+            await notificationManager.getToken();
+
+            console.log('Login success');
+
+            if (user.role === 'User' || (user.role === 'Trader' && user.hasTakenQuiz)) {
+                navigate('/watchlist');
+            } else if (user.role === 'Admin') {
+                navigate('/admin/AdDashboard');
+            } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
+                navigate('/quiz');
+            }
+        } catch (err) {
+            console.error('Login error:', err);
+>>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
         }
       } else {
         navigate("/admin/AdDashboard");
