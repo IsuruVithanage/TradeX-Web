@@ -2,9 +2,11 @@ import * as React from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto"; // This is important for Chart.js v3
 import "./SummaryReport.css";
-import symbols from "../../Assets/Images/Coin Images.json";
+import symbolsJson from "../../Assets/Images/Coin Images.json";
 import TrendingCoinChart from "./TrendingCoinChart";
 import trade from "../../Assets/Images/trade.png";
+import { useState, useEffect } from "react";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const SummaryReport = ({
   coins,
@@ -16,6 +18,40 @@ const SummaryReport = ({
   tradingSuggestions,
   selectedCoins,
 }) => {
+  const [symbols, setSymbols] = useState({});
+
+  useEffect(() => {
+    const loadSymbols = async () => {
+      const loadedSymbols = await Promise.all(
+        Object.entries(symbolsJson).map(async ([key, value]) => {
+          try {
+            const base64 = await getBase64FromUrl(value.img);
+            return [key, { ...value, img: base64 }];
+          } catch (error) {
+            console.error(`Failed to fetch image for ${key}:`, error);
+            return [key, value];
+          }
+        })
+      );
+      setSymbols(Object.fromEntries(loadedSymbols));
+    };
+
+    loadSymbols();
+  }, []);
+
+  const getBase64FromUrl = async (url) => {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        resolve(base64data);
+      };
+    });
+  };
+
   const topGainers = coins
     .sort((a, b) => b.priceChangePercent - a.priceChangePercent)
     .slice(0, 4);
@@ -44,7 +80,7 @@ const SummaryReport = ({
         //   (coin, index) =>
         //     `hsl(${(index * 360) / selectedCoins.length}, 70%, 50%)`
         // ),
-        backgroundColor: "#21DB9A",
+        backgroundColor: "#00d2d3",
         borderColor: "white",
         borderWidth: 1,
       },
@@ -53,6 +89,8 @@ const SummaryReport = ({
 
   // Chart options for selected coins
   const selectedCoinsChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -84,6 +122,15 @@ const SummaryReport = ({
           label: (context) => `Price: ${formatCurrency(context.parsed.y)}`,
         },
       },
+
+      datalabels: {
+        anchor: "end",
+        align: "end",
+        formatter: (value) => formatCurrency(value),
+        font: {
+          weight: "bold",
+        },
+      },
     },
   };
 
@@ -111,9 +158,11 @@ const SummaryReport = ({
                 {topGainers.map((coin) => (
                   <tr key={coin.symbol}>
                     <td>
-                      {" "}
                       <img
-                        src={symbols[coin.symbol]?.img}
+                        src={
+                          symbols[coin.symbol]?.img ||
+                          "path/to/default-image.png"
+                        }
                         alt={coin.symbol}
                         style={{ width: "20px", marginRight: "10px" }}
                       />
@@ -141,7 +190,7 @@ const SummaryReport = ({
             className="top-losers"
             style={{ display: "inline-block", marginLeft: "0.5rem" }}
           >
-            <h5>Top Losses</h5>
+            <h5>Top Losers</h5>
             <table>
               <thead>
                 <tr>
@@ -154,9 +203,11 @@ const SummaryReport = ({
                 {topLosers.map((coin) => (
                   <tr key={coin.symbol}>
                     <td>
-                      {" "}
                       <img
-                        src={symbols[coin.symbol]?.img}
+                        src={
+                          symbols[coin.symbol]?.img ||
+                          "path/to/default-image.png"
+                        }
                         alt={coin.symbol}
                         style={{ width: "20px", marginRight: "10px" }}
                       />
@@ -195,10 +246,13 @@ const SummaryReport = ({
           style={{ height: "400px", marginTop: "0.5rem" }}
         >
           <h4>Customized Coins</h4>
-          <Bar
-            data={selectedCoinsChartData}
-            options={selectedCoinsChartOptions}
-          />
+          <div style={{ height: "300px" }}>
+            <Bar
+              data={selectedCoinsChartData}
+              options={selectedCoinsChartOptions}
+              plugins={[ChartDataLabels]}
+            />
+          </div>
         </div>
       )}
       {/* {showTrendingCoin && trendingPrices.length > 0 && (

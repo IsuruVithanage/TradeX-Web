@@ -13,9 +13,7 @@ import { getUser } from "../../Storage/SecureLs";
 
 export default function MyProblems() {
   let { id } = useParams();
-
   const user = getUser();
-
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -23,10 +21,6 @@ export default function MyProblems() {
   ];
 
   const [questionlist, setQuestionList] = useState([]);
-
-  useEffect(() => {
-    console.log("user", getUser());
-  }, []);
 
   const loadQuestions = async () => {
     try {
@@ -43,7 +37,7 @@ export default function MyProblems() {
   useEffect(() => {
     loadQuestions();
     fetchFavorites(1);
-  }, [id]);
+  }, []);
 
   console.log(questionlist);
 

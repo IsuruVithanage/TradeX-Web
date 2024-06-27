@@ -32,7 +32,7 @@ export default function MyAnswers() {
   const loadAnswers = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/answers/getAnswersByUserId/${1}`
+        `http://localhost:8010/answers/getAnswersByUserId/${user.id}`
       );
 
       const cleanedData = result.data.map((answer) => ({

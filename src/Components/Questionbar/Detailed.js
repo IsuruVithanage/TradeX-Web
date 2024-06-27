@@ -6,7 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { showMessage } from "../../Components/Message/Message";
@@ -20,6 +20,14 @@ import {
 const socket = io("/", {
   reconnection: true,
 });
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error("Axios error:", error.response || error);
+    return Promise.reject(error);
+  }
+);
 
 function Detailed() {
   let { id } = useParams();
@@ -39,11 +47,14 @@ function Detailed() {
     likes: 0,
   });
   const [submittedAnswer, setSubmittedAnswer] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [isLike, setIsLike] = useState(false);
   const [isDislike, setIsDislike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
+  const location = useLocation();
+  const [isEditing, setIsEditing] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
   const handleDescriptionChange = (content) => {
     setValues((prevOrder) => ({
       ...prevOrder,
@@ -51,12 +62,10 @@ function Detailed() {
     }));
   };
 
-  // Event handler for incrementing like count
   const handleLikeClick = () => {
     if (isDislike && !isLike) {
       dislike(false);
     }
-
     like(!isLike);
   };
 
@@ -99,29 +108,21 @@ function Detailed() {
       });
   };
 
-  //add favorites
-  const [favorites, setFavorites] = useState([]);
-
   const handleFavorite = async (question) => {
     try {
       const isFav = favorites.some(
         (fav) => fav.questionId === question.questionId
       );
-
-      // Update local state
       setFavorites((prevFavorites) => {
         if (isFav) {
-          // Remove from local state
           return prevFavorites.filter(
             (fav) => fav.questionId !== question.questionId
           );
         } else {
-          // Add to local state
           return [...prevFavorites, question];
         }
       });
 
-      // Send request to backend to add or remove favorite
       await axios.post("http://localhost:8010/forum/addFavorite", {
         questionId: question.questionId,
         userId: 1,
@@ -150,18 +151,89 @@ function Detailed() {
     return favorites.some((fav) => fav.questionId === questionId);
   };
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const edit = searchParams.get("edit");
+    const answerId = searchParams.get("answerId");
+    if (edit === "true" && answerId) {
+      fetchAnswerForEdit(answerId);
+    } else {
+      setValues({
+        answerId: null,
+        questionId: id,
+        username: "",
+        userId: 1,
+        comment: "",
+        likes: 0,
+      });
+      setIsEditing(false);
+    }
+  }, [id, location]);
+
+  const fetchAnswerForEdit = async (answerId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8010/answers/getAnswer/${answerId}`
+      );
+      setValues({
+        ...response.data,
+        answerId: response.data.answerId,
+        questionId: id,
+      });
+      setIsEditing(true);
+    } catch (error) {
+      console.error("Error fetching answer for edit:", error);
+      showMessage("error", "Failed to fetch answer for editing", 1.5);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8010/answers/saveAnswer",
-        values
-      );
-      console.log("Data added success");
-      showMessage("success", "Answer posted", 1.5);
-      setSubmittedAnswer([...submittedAnswer, response.data]); // Update submittedAnswer state to display the submitted answer below
+      let response;
+      if (isEditing) {
+        if (!values.answerId) {
+          throw new Error("No answer ID for editing");
+        }
+        response = await axios.put(
+          `http://localhost:8010/answers/updateAnswer/${values.answerId}`,
+          {
+            ...values,
+            questionId: id,
+          }
+        );
+        showMessage("success", "Answer edited successfully", 1.5);
+        setSubmittedAnswer((prevAnswers) =>
+          prevAnswers.map((answer) =>
+            answer.answerId === values.answerId ? response.data : answer
+          )
+        );
+      } else {
+        response = await axios.post(
+          "http://localhost:8010/answers/saveAnswer",
+          values
+        );
+        showMessage("success", "Answer posted", 1.5);
+        setSubmittedAnswer((prevAnswers) => [...prevAnswers, response.data]);
+      }
+
+      setValues({
+        answerId: null,
+        questionId: id,
+        username: "",
+        userId: 1,
+        comment: "",
+        likes: 0,
+      });
+      setIsEditing(false);
+      fetchAnswers();
     } catch (err) {
-      console.log(err);
+      console.error("Error submitting answer:", err);
+      showMessage(
+        "error",
+        `Failed to ${isEditing ? "update" : "save"} answer: ${err.message}`,
+        1.5
+      );
     }
   };
 
@@ -187,54 +259,14 @@ function Detailed() {
     }
   };
 
-  // add likes and dislikes
-
-  // const [postAddLike, setPostAddLike] = useState([]);
-  // const [postRemoveLike, setPostRemoveLike] = useState([]);
-
-  // const addLike = async (qid, uid) => {
-  //   try {
-  //     const response = await axios.put(
-  //       `http://localhost:8010/forum/addLike/${qid}/${uid}`
-  //     );
-  //     setPosts(response.data.posts);
-  //     // Update the question likes locally for immediate UI feedback
-  //     setQuestion((prevQuestion) => ({
-  //       ...prevQuestion,
-  //       likes: prevQuestion.likes + 1,
-  //     }));
-  //   } catch (error) {
-  //     console.log(error.response ? error.response.data.error : error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   socket.on("add-like", (newPosts) => {
-  //     setPostAddLike(newPosts);
-  //     setPostRemoveLike([]);
-  //   });
-  //   socket.on("remove-like", (newPosts) => {
-  //     setPostRemoveLike(newPosts);
-  //     setPostAddLike([]);
-  //   });
-  // }, []);
-
   useEffect(() => {
     loadQuestions();
     fetchAnswers();
     fetchFavorites(1);
   }, [id]);
 
-  // let uiPosts =
-  //   postAddLike.length > 0
-  //     ? postAddLike
-  //     : postRemoveLike.length > 0
-  //     ? postRemoveLike
-  //     : posts;
-
   return (
     <BasicPage tabs={Tabs}>
-      {/* favorite side bar */}
       <SidePanelWithContainer
         style={{ height: "91vh", width: "50vh" }}
         header={
@@ -244,7 +276,6 @@ function Detailed() {
         }
         sidePanel={
           <div>
-            {/* Rectangle Box */}
             <div className="container">
               <div className="stats">
                 <div className="statItem">
@@ -257,20 +288,8 @@ function Detailed() {
                   <br />
                   71
                 </div>
-                <br></br>
-                {/* <div className="statItem">
-                  Best Answers
-                  <br />
-                  15
-                </div>
-                <div className="statItem">
-                  Users
-                  <br />
-                  37
-                </div> */}
               </div>
             </div>
-
             <div>
               <div
                 className="favorite-header"
@@ -289,31 +308,21 @@ function Detailed() {
         }
       >
         <div>
-          {/* question explain */}
           <div className="ques">
             {question && (
               <>
                 <h3>{question.title}</h3>
                 <br />
                 <p>{question.description}</p>
-
-                {/* add like & dislike */}
-                {/* <AiOutlineLike
-                  className="like-button"
-                  onClick={() => addLike(question.questionId, 1)}
-                />
-                <AiOutlineDislike className="dislike-button" /> */}
                 <div className="prefer-buttons">
                   <div onClick={handleLikeClick} className="like-button">
                     {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
                   </div>
-
                   <div onClick={handleDislikeClick} className="dislike-button">
                     {dislikeCount}{" "}
                     {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
                   </div>
                 </div>
-                {/* add favorites */}
                 {isFavorite(question.questionId) ? (
                   <MdFavorite
                     className="favourite-icon"
@@ -326,19 +335,16 @@ function Detailed() {
                     onClick={() => handleFavorite(question)}
                   />
                 )}
-
                 <p className="author">Created by: {question.author}</p>
               </>
             )}
           </div>
-
-          {/* display answers */}
           {submittedAnswer.length > 0 && (
             <>
               <h2 className="answer-title">Answers</h2>
               {submittedAnswer.map((answer, index) => (
                 <div key={index} className="answer">
-                  <p className="author"> {answer.username}</p>
+                  <p className="author">{answer.username}</p>
                   <p dangerouslySetInnerHTML={{ __html: answer.comment }}></p>
                   <AiOutlineLike className="like-button" />
                   <AiOutlineDislike className="dislike-button" />
@@ -346,10 +352,10 @@ function Detailed() {
               ))}
             </>
           )}
-
-          {/* write an answer */}
           <div className="add-answer">
-            <div className="write-title">Write an Answer</div>
+            <div className="write-title">
+              {isEditing ? "Edit Answer" : "Write an Answer"}
+            </div>
             <form onSubmit={handleSubmit}>
               <div className="text-editor">
                 <ReactQuill
@@ -357,9 +363,14 @@ function Detailed() {
                   name="description"
                   className="quill-editor-my-custom-class"
                   onChange={handleDescriptionChange}
+                  value={values.comment}
                 />
                 <div className="button">
-                  <input type="submit" value="Post" className="post-button" />
+                  <input
+                    type="submit"
+                    value={isEditing ? "Update" : "Post"}
+                    className="post-button"
+                  />
                 </div>
               </div>
             </form>

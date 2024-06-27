@@ -16,18 +16,13 @@ const removeAccessToken = () => {
 
 const setUser = (user) => {
   console.log("userLS", JSON.parse(JSON.stringify(user)));
-  ls.set("user", JSON.parse(JSON.stringify(user))); // Serialize user data as JSON string
+  ls.set("user", JSON.parse(JSON.stringify(user)));
 };
 
 const getUser = () => {
-  try {
-    const userData = ls.get("user");
-    console.log("userData", userData);
-    return userData ? JSON.parse(userData) : null; // Parse the JSON string back to an object
-  } catch (error) {
-    console.error("Error parsing user data from SecureLS:", error);
-    return null;
-  }
+  const userData = ls.get("user");
+  console.log("userData", userData);
+  return userData ? userData : null;
 };
 
 const removeUser = () => {
