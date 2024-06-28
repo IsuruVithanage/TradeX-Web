@@ -3,14 +3,16 @@ import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import NewsItem from '../../Components/NewsBar/NewsItem'; 
 import "./News.css"; 
 import Input from '../../Components/Input/Input'; 
-import axios from 'axios'; 
+import axios from 'axios';
+import {getUser} from "../../Storage/SecureLs";
 
 export default function News() {
   // State to store articles and loading status
   const [articles, setArticles] = useState([]); 
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
-  const userId = 1;
+  const user = getUser();
+  const userId = user.userId;
 
   useEffect(() => {
     setIsLoading(true); 
