@@ -22,22 +22,8 @@ export default function Portfolio() {
   const user = getUser();
   const userId = user && user.id;
 
-  useEffect(() => {
-    setIsLoading(true);
+  
 
-    axios
-      .get(backendApiEndpoint, { params: { userId } })
-
-<<<<<<< HEAD
-      .then((res) => {
-        setAssets(res.data.assets);
-        setPercentages(res.data.percentages);
-        setInitialData(res.data.historyData);
-        setPortfolioValue(res.data.portfolioValue);
-        setUsdBalance(res.data.usdBalance);
-        setIsLoading(false);
-      })
-=======
     useEffect(() => {
         setIsLoading(true);
         
@@ -53,7 +39,6 @@ export default function Portfolio() {
             setUsdBalance(res.data.usdBalance);
             setIsLoading(false);
         })
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 
       .catch((error) => {
         setIsLoading(false);
@@ -119,4 +104,4 @@ export default function Portfolio() {
       </Table>
     </BasicPage>
   );
-}
+  }

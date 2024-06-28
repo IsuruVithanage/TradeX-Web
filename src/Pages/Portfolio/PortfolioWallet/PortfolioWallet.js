@@ -1,147 +1,56 @@
-
 import React, { useState, useEffect } from 'react'
+// import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import { useLocation } from 'react-router-dom'
-import { showMessage } from '../../../Components/Message/Message';
-import { getUser } from '../../../Storage/SecureLs';
-import notificationManager from '../../Alert/notificationManager';
-import Table, { TableRow, Coin } from '../../../Components/Table/Table'
 import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
 import SidePanelWithContainer from '../../../Components/Layouts/SidePanel/SidePanelWithContainer'
-import { MdOutlineAssignment, } from "react-icons/md";
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Modal from '../../../Components/Modal/Modal'
+import Table, { TableRow, Coin } from '../../../Components/Table/Table'
+import { showMessage } from '../../../Components/Message/Message';
 import coins from '../../../Assets/Images/Coin Images.json'
 import axios from 'axios';
 import './PortfolioWallet.css'
 
 
 export default function FundingWallet() {
-  const currentWallet =
-    useLocation().pathname === "/portfolio/fundingWallet"
-      ? "fundingWallet"
-      : "tradingWallet";
-  const [selectedCoin, setSelectedCoin] = useState("");
-  const [selectedQty, setSelectedQty] = useState(null);
-  const [selectedWallet, setSelectedWallet] = useState(null);
-  const [walletAddressValue, setWalletAddressValue] = useState("");
-  const [assets, setAssets] = useState([]);
-  const [usdBalance, setUsdBalance] = useState(null);
-  const [portfolioValue, setPortfolioValue] = useState(null);
-  const [walletAddress, setWalletAddress] = useState(null);
-  const [isInvalid, setIsInvalid] = useState({ status: true, message: null });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRegenerate, setIsRegenerate] = useState(false);
-  const backendApiEndpoint = "http://localhost:8011/portfolio/asset/";
-  const user = getUser();
-  const userId = user && user.id;
-  const userName = user && user.userName;
-
-  useEffect(() => {
-    if (!isModalOpen) setIsRegenerate(false);
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    currentWallet === "tradingWallet"
-      ? setSelectedWallet("fundingWallet")
-      : setSelectedWallet(null);
-    setSelectedCoin(null);
-    setSelectedQty(null);
-    setUsdBalance(null);
-    setPortfolioValue(null);
-    setIsLoading(true);
-    //setAssets([]);
-
-<<<<<<< HEAD
-    axios
-      .get(
-        currentWallet === "tradingWallet"
-          ? backendApiEndpoint + "trading"
-          : backendApiEndpoint + "funding",
-        {
-          params: {
-=======
+    const params = useLocation().pathname === '/portfolio/fundingWallet' ? 'fundingWallet' : 'tradingWallet';
+    const [ currentWallet, SetCurrentWallet ] = useState(params);
+    const [ selectedCoin, setSelectedCoin ] = useState('');
+    const [ selectedQty, setSelectedQty ] = useState(null);
+    const [ selectedWallet, setSelectedWallet ] = useState(undefined);
+    const [ walletAddressValue, setWalletAddressValue ] = useState(null);
+    const [ assets, setAssets ] = useState([]);
+    const [ usdBalance, setUsdBalance ] = useState(null);
+    const [ portfolioValue, setPortfolioValue ] = useState(null);
+    const [ walletAddress, setWalletAddress ] = useState(null);
+    const [ isInvalid, setIsInvalid ] = useState([true, null]);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ showModal, setShowModal ] = useState(false);
+    const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
+    const userId = 1;
+    const userName = 'Kasun Silva';
+    
+    useEffect(()=>{
+        SetCurrentWallet(params)
+    }, [params])
 
     useEffect(() => {
-        currentWallet === 'tradingWallet' ?  
-        setSelectedWallet('fundingWallet') :
-        setSelectedWallet(null);
-        setSelectedCoin(null);
-        setSelectedQty(null);
-        setUsdBalance(null);
-        setPortfolioValue(null);
-        setIsLoading(true);
-        setAssets([]); 
-
-        const getWalletData = async () => {  
-            await axios.get(
-                currentWallet === "tradingWallet" ? 
-                backendApiEndpoint + "trading" :
-                backendApiEndpoint + "funding",
-                {
-                    params: {
-                        userId: userId
-                    }
-                }
-            )
-    
-            .then(res => {
-                console.log(res.data);
-                setAssets(res.data.assets);
-                setUsdBalance(res.data.usdBalance);
-                setPortfolioValue(res.data.portfolioValue);
-                setWalletAddress(res.data.walletAddress);
-            })
-    
-            .catch(error => {
-                setUsdBalance(0);
-                setPortfolioValue(0);
-                console.log("error", error);
-
-                error.response ? 
-                showMessage(error.response.status, error.response.data.message)   :
-                showMessage('error', 'Database connection failed..!') ;
-            });
-        }
-
-        getWalletData().then(() => setIsLoading(false));
-        
-
-        notificationManager.onAppNotification(() => {
-            getWalletData();
-        });
-
-        return () => {
-            notificationManager.onAppNotification(() => {});
-        }
-    }, [ currentWallet, userId ]);
-
-
-
-    useEffect(() => {
-        let status = true;
-        let message = null;
-
         if(currentWallet === 'tradingWallet') {
 
             if ( (selectedCoin && selectedQty) ) {
-                status = false;
-                message = null;
+                setIsInvalid([false, null]);
 
                 const asset = assets.find(asset => asset.symbol === selectedCoin);
 
                 if (selectedQty > asset.tradingBalance) {
-                    status = true;
-                    message = "Insufficient Balance";
+                    setIsInvalid([true, "Insufficient Balance"]);
                 }
             } else {
-                if (selectedCoin || selectedQty) {
-                    status = true;
-                    message = "Please fill all the fields";
+                if ((!(!selectedCoin && !selectedQty))) {
+                    setIsInvalid([true, "Please fill all the fields"]);
                 } else {
-                    status = true;
-                    message = null;
+                    setIsInvalid([true, null]);
                 }
             }
 
@@ -153,36 +62,69 @@ export default function FundingWallet() {
                     ( selectedWallet === 'externalWallet' && 
                     walletAddressValue )
                 ) {
-                    status = false;
-                    message = null;
+                    setIsInvalid([false, null]);
                 } else {
-                    status = true;
-                    message = "Please fill all the fields";
+                    setIsInvalid([true, "Please fill all the fields"]);
                 }
 
                 const asset = assets.find(asset => asset.symbol === selectedCoin);
                 
                 if (selectedQty > asset.fundingBalance) {
-                    status = true;
-                    message = "Insufficient Balance";
+                    setIsInvalid([true, "Insufficient Balance"]);
                 }
             } else {
-                if(selectedCoin || selectedQty  || selectedWallet) {
-                    status = true;
-                    message = "Please fill all the fields";
+                if((!(!selectedCoin && !selectedQty  && !selectedWallet))) {
+                    setIsInvalid([true, "Please fill all the fields"]);
                 } else {
-                    status = true;
-                    message = null;
+                    setIsInvalid([true, null]);
                 }
             }
         }
 
-        if(isInvalid.status !== status || isInvalid.message !== message){
-            setIsInvalid({status, message});
-        }
+    }, [assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
 
-    }, [isInvalid, assets, selectedCoin, selectedQty, selectedWallet, walletAddressValue, currentWallet]);
+    useEffect(() => {
+        currentWallet === 'tradingWallet' ?  
+        setSelectedWallet('fundingWallet') :
+        setSelectedWallet(null);
+        setSelectedCoin(null);
+        setSelectedQty(null);
+        setAssets([]);
+        setUsdBalance(null);
+        setPortfolioValue(null);
+        setIsLoading(true);
+            
+        axios
+            .get(
+                currentWallet === "tradingWallet" ? 
+                backendApiEndpoint + "trading" :
+                backendApiEndpoint + "funding",
+                {
+                    params: {
+                        userId: userId
+                    }
+                }
+            )
+    
+            .then(res => {
+                setAssets(res.data.assets);
+                setUsdBalance(res.data.usdBalance);
+                setPortfolioValue(res.data.portfolioValue);
+                setWalletAddress(res.data.walletAddress);
+                setIsLoading(false);
+            })
+    
+            .catch(error => {
+                setIsLoading(false);
+                setUsdBalance(0);
+                setPortfolioValue(0);
+                console.log("error", error);
 
+                error.response ? 
+                showMessage(error.response.status, error.response.data.message)   :
+                showMessage('error', 'Database connection failed..!') ;
+            });
+    }, [ currentWallet ]);
 
 
     const transfer = () => {
@@ -195,127 +137,85 @@ export default function FundingWallet() {
 
 
         const data = {
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
             userId: userId,
-          },
-        }
-      )
+            coin: selectedCoin,
+            quantity: selectedQty,
+            sendingWallet: selectedWallet === 'externalWallet' ? walletAddress : currentWallet,
+            receivingWallet: selectedWallet === 'externalWallet' ? walletAddressValue : selectedWallet
+        };
 
-      .then((res) => {
-        setAssets(res.data.assets);
-        setUsdBalance(res.data.usdBalance);
-        setPortfolioValue(res.data.portfolioValue);
-        setWalletAddress(res.data.walletAddress);
-        setIsLoading(false);
-      })
 
-      .catch((error) => {
-        setIsLoading(false);
-        setUsdBalance(0);
-        setPortfolioValue(0);
-        console.log("error", error);
+        axios
+        .put(
+            backendApiEndpoint,
+            data,
+            {
+                params: {
+                    userId: userId
+                }
+            }
+        )
 
-        error.response
-          ? showMessage(error.response.status, error.response.data.message)
-          : showMessage("error", "Database connection failed..!");
-      });
-  }, [currentWallet, userId]);
+        .then(res => {
+            setAssets(res.data.assets);
+            setUsdBalance( res.data.usdBalance );
+            setPortfolioValue( res.data.portfolioValue);
+            setIsLoading(false);
+            showMessage('success', 'Transaction Successful..!') ;
+        })
 
-  useEffect(() => {
-    let status = true;
-    let message = null;
-
-    if (currentWallet === "tradingWallet") {
-      if (selectedCoin && selectedQty) {
-        status = false;
-        message = null;
-
-        const asset = assets.find((asset) => asset.symbol === selectedCoin);
-
-        if (selectedQty > asset.tradingBalance) {
-          status = true;
-          message = "Insufficient Balance";
-        }
-      } else {
-        if (selectedCoin || selectedQty) {
-          status = true;
-          message = "Please fill all the fields";
-        } else {
-          status = true;
-          message = null;
-        }
-      }
-    } else if (currentWallet === "fundingWallet") {
-      if (selectedCoin && selectedQty && selectedWallet) {
-        if (
-          selectedWallet === "tradingWallet" ||
-          (selectedWallet === "externalWallet" && walletAddressValue)
-        ) {
-          status = false;
-          message = null;
-        } else {
-          status = true;
-          message = "Please fill all the fields";
-        }
-
-        const asset = assets.find((asset) => asset.symbol === selectedCoin);
-
-        if (selectedQty > asset.fundingBalance) {
-          status = true;
-          message = "Insufficient Balance";
-        }
-      } else {
-        if (selectedCoin || selectedQty || selectedWallet) {
-          status = true;
-          message = "Please fill all the fields";
-        } else {
-          status = true;
-          message = null;
-        }
-      }
+        .catch(error => {
+            setIsLoading(false);
+            console.log("error", error);
+            
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Transaction Failed..!') ;
+        });
     }
 
-    if (isInvalid.status !== status || isInvalid.message !== message) {
-      setIsInvalid({ status, message });
+
+    const regenerateAddress = () => {
+        setIsLoading(true);
+
+        axios
+        .post(
+            'http://localhost:8011/portfolio/address/new',
+            {
+                userId: userId,
+                userName: userName
+            }
+        )
+
+        .then(res => {
+            setWalletAddress(res.data.walletAddress);
+            setIsLoading(false);
+            showMessage('success', 'Wallet Address Regenerated..!') ;
+        })
+
+        .catch(error => {
+            setIsLoading(false);
+            console.log("error", error);
+            
+            error.response ? 
+            showMessage(error.response.status, error.response.data.message)   :
+            showMessage('error', 'Database connection failed..!') ;
+        });
     }
-  }, [
-    isInvalid,
-    assets,
-    selectedCoin,
-    selectedQty,
-    selectedWallet,
-    walletAddressValue,
-    currentWallet,
-  ]);
 
-  const transfer = () => {
-    currentWallet === "tradingWallet"
-      ? setSelectedWallet("fundingWallet")
-      : setSelectedWallet(null);
-    setSelectedCoin(null);
-    setSelectedQty(null);
-    setIsLoading(true);
+ 
+    
+    return (
+        <BasicPage
+            isLoading={isLoading}
 
-    const data = {
-      userId: userId,
-      coin: selectedCoin,
-      quantity: selectedQty,
-      sendingWallet:
-        selectedWallet === "externalWallet" ? walletAddress : currentWallet,
-      receivingWallet:
-        selectedWallet === "externalWallet"
-          ? walletAddressValue
-          : selectedWallet,
-    };
+            tabs={[
+                { label:"Overview", path:"/portfolio"},
+                { label:"History", path:"/portfolio/history"},
+                { label:"Trading Wallet", path:"/portfolio/tradingWallet"},
+                { label:"Funding Wallet", path:"/portfolio/fundingWallet"},
+            ]}> 
 
-<<<<<<< HEAD
-    axios
-      .put(backendApiEndpoint, data, {
-        params: {
-          userId: userId,
-        },
-      })
-=======
             
             <SidePanelWithContainer 
                 style={{height:"91vh", minHeight: selectedWallet !== 'externalWallet' ? "520px" : "620px"}}
@@ -323,131 +223,55 @@ export default function FundingWallet() {
                 sidePanel = {
                     <div>
                         <Input type="dropdown" label='Coin' value={selectedCoin} onChange={setSelectedCoin} options={
-                            assets.map(asset => (asset.symbol ? {
+                            assets.map(asset => ({
                                 value: asset.symbol, 
                                 label: asset.symbol + " - " + coins[asset.symbol].name,
-                            } : null)).filter(option => option !== null)
+                            }))
                         } />
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 
-      .then((res) => {
-        setAssets(res.data.assets);
-        setUsdBalance(res.data.usdBalance);
-        setPortfolioValue(res.data.portfolioValue);
-        setIsLoading(false);
-        showMessage("success", "Transaction Successful..!");
-      })
 
-      .catch((error) => {
-        setIsLoading(false);
-        console.log("error", error);
+                        <Input type="number" value={selectedQty} label='Quantity' min={0} onChange={setSelectedQty} />
 
-        error.response
-          ? showMessage(error.response.status, error.response.data.message)
-          : showMessage("error", "Transaction Failed..!");
-      });
-  };
 
-  const regenerateAddress = () => {
-    setIsLoading(true);
+                        
+                        <Input type="dropdown" label='Receiving Wallet' value={selectedWallet} disabled={currentWallet === 'tradingWallet'} onChange={setSelectedWallet} 
+                            options={[
+                                    { value: 'tradingWallet', label: 'Trading Wallet' },
+                                    { value: 'fundingWallet', label: 'Funding Wallet' },
+                                    { value: 'externalWallet', label: 'External Wallet' },
+                                ].filter(option => option.value !== currentWallet) }
+                        />
 
-    axios
-      .post("http://localhost:8011/portfolio/address/new", {
-        userId: userId,
-        userName: userName,
-      })
 
-      .then((res) => {
-        setWalletAddress(res.data.walletAddress);
-        setIsLoading(false);
-        setIsRegenerate(false);
-        showMessage("success", "Wallet Address Regenerated..!");
-      })
 
-      .catch((error) => {
-        setIsLoading(false);
-        console.log("error", error);
+                        { currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
+                            <div className='hidden-input'>
+                                <div style={{width: "91%"}}>
+                                    <Input type="text" label='Wallet Address' value={walletAddressValue} onChange={(e) => setWalletAddressValue(e.target.value)}/> 
+                                </div>
+                                <div className="paste-text-button" onClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}>
+                                    {/* <AssignmentOutlinedIcon/> */}
+                                </div>
+                                <div className='paste-bottom-layer' />
+                            </div> 
+                        }
 
-        error.response
-          ? showMessage(error.response.status, error.response.data.message)
-          : showMessage("error", "Database connection failed..!");
-      });
-  };
+                        <div className={`traveling-input ${currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' ? "goDown" : ""}`}>
+                            <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{marginTop:"50px"}}/> 
 
-  return (
-    <BasicPage
-      isLoading={isLoading}
-      tabs={[
-        { label: "Overview", path: "/portfolio" },
-        { label: "Trading Wallet", path: "/portfolio/tradingWallet" },
-        { label: "Funding Wallet", path: "/portfolio/fundingWallet" },
-        { label: "History", path: "/portfolio/history" },
-      ]}
-    >
-      <SidePanelWithContainer
-        style={{
-          height: "91vh",
-          minHeight: selectedWallet !== "externalWallet" ? "520px" : "620px",
-        }}
-        header="Transfer"
-        sidePanel={
-          <div>
-            <Input
-              type="dropdown"
-              label="Coin"
-              value={selectedCoin}
-              onChange={setSelectedCoin}
-              options={assets.map((asset) => ({
-                value: asset.symbol,
-                label: asset.symbol + " - " + coins[asset.symbol].name,
-              }))}
-            />
+                            <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > { isInvalid[1] } </p>              
+                        </div>
 
-            <Input
-              type="number"
-              value={selectedQty}
-              label="Quantity"
-              min={0}
-              onChange={setSelectedQty}
-            />
+                        <p className='wallet-address-button' onClick={() => setShowModal(true)} >Wallet Address</p>    
+                    </div>
+                }>
 
-            <Input
-              type="dropdown"
-              label="Receiving Wallet"
-              value={selectedWallet}
-              disabled={currentWallet === "tradingWallet"}
-              onChange={setSelectedWallet}
-              options={[
-                { value: "tradingWallet", label: "Trading Wallet" },
-                { value: "fundingWallet", label: "Funding Wallet" },
-                { value: "externalWallet", label: "External Wallet" },
-              ].filter((option) => option.value !== currentWallet)}
-            />
+                    
+                <ValueBar 
+                    portfolioValue={ portfolioValue }
+                    usdBalance={ usdBalance }
+                />
 
-<<<<<<< HEAD
-            {currentWallet === "fundingWallet" &&
-              selectedWallet === "externalWallet" && (
-                <div className="hidden-input">
-                  <div style={{ width: "91%" }}>
-                    <Input
-                      type="text"
-                      label="Wallet Address"
-                      value={walletAddressValue}
-                      onChange={(e) => setWalletAddressValue(e.target.value)}
-                    />
-                  </div>
-                  <div
-                    className="paste-text-button"
-                    onClick={async () =>
-                      setWalletAddressValue(
-                        await navigator.clipboard.readText()
-                      )
-                    }
-                  >
-                    <MdOutlineAssignment />
-                  </div>
-                  <div className="paste-bottom-layer" />
-=======
                
                 <Table emptyMessage="No Assets to show" restart={assets}>
                     <TableRow data={ currentWallet === "tradingWallet" ? 
@@ -477,14 +301,20 @@ export default function FundingWallet() {
                                 asset.tradingBalance,
                                 asset.holdingBalance,
                                 asset.marketPrice, 
-                                asset.value,
+                                "$ " + asset.value.toLocaleString("en-US", { 
+                                    minimumFractionDigits: 2, 
+                                    maximumFractionDigits: 2,
+                                }),
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ] :
                             [
                                 <Coin>{asset.symbol}</Coin>, 
                                 asset.fundingBalance,
                                 asset.marketPrice, 
-                                asset.value,
+                                "$ " + asset.value.toLocaleString("en-US", { 
+                                    minimumFractionDigits: 2, 
+                                    maximumFractionDigits: 2,
+                                }),
                                 <span style={{ color: asset.RoiColor }}>{asset.ROI}</span>
                             ]
                         }/>
@@ -497,239 +327,31 @@ export default function FundingWallet() {
 
 
 
-            <Modal open={isModalOpen} close={setIsModalOpen}>
+            <Modal open={showModal} close={setShowModal}>
                 <div style={{width:"420px", paddingTop:"15px"}}>
                     <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
                         <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
 
                         <div className='wallet-address' onClick={() =>{
-                            if(!walletAddress){
-                                showMessage('warning', 'Nothing to copy..!');
-                            } else {
-                                navigator.clipboard.writeText(walletAddress); 
-                                showMessage('info', 'Copied to clipboard..!');
-                            }
+                            navigator.clipboard.writeText(walletAddress);
+                            showMessage('info', 'Copied to clipboard..!');
                         }}>
                             <span style={{width: "80%", userSelect: "text", cursor: "text"}}>{walletAddress || 'Wallet Address Not Found..!'}</span>
                         </div>
 
                         <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
-                        {!isRegenerate ?
-                            <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
-                                <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
-                                &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
-                            </p> :
-                            <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "100%"}}>
-                                <i style={{color: "#21db9a", margin: "0"}}>Are you sure?</i>
-                                &ensp;Do you still wish to generate a new wallet address? This action cannot be undone. 
-                            </p>
-                        }
+                        <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
+                            <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
+                            &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
+                        </p>
 
                         <div className="edit-alert-modal-button-container" style={{width: "83%"}}>
-                            <Input 
-                                type="button" style={{width:"120px"}} 
-                                value={!isRegenerate ? "Re-generate" : "Confirm"}
-                                onClick={() => {
-                                    !isRegenerate ?  setIsRegenerate(true) : regenerateAddress();
-                                }} />
-
-                            <Input 
-                                type="button" style={{width:"120px"}} red
-                                value={!isRegenerate ? "Close" : "Cancel"}
-                                onClick={() => {
-                                    !isRegenerate ?  setIsModalOpen(false) : setIsRegenerate(false);
-                                }} />
+                            <Input type="button" style={{width:"120px"}} onClick={regenerateAddress} value="Re-generate"/>
+                            <Input type="button" style={{width:"120px"}} onClick={() => setShowModal(false)} value="Close" red/>
                         </div> 
                     </div>
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
                 </div>
-              )}
-
-            <div
-              className={`traveling-input ${
-                currentWallet === "fundingWallet" &&
-                selectedWallet === "externalWallet"
-                  ? "goDown"
-                  : ""
-              }`}
-            >
-              <Input
-                type="button"
-                value="Transfer"
-                onClick={transfer}
-                disabled={isInvalid.status}
-                style={{ marginTop: "50px" }}
-              />
-
-              <p
-                className={`alert-invalid-message ${
-                  isInvalid.message ? "show" : ""
-                }`}
-              >
-                {" "}
-                {isInvalid.message}{" "}
-              </p>
-            </div>
-
-            <p
-              className="wallet-address-button"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Wallet Address
-            </p>
-          </div>
-        }
-      >
-        <ValueBar portfolioValue={portfolioValue} usdBalance={usdBalance} />
-
-        <Table emptyMessage="No Assets to show" restart={assets}>
-          <TableRow
-            data={
-              currentWallet === "tradingWallet"
-                ? [
-                    "Coin",
-                    "Trading Balance",
-                    "Holding Balance",
-                    "Market Price",
-                    "Value",
-                    "ROI",
-                  ]
-                : ["Coin", "Funding Balance", "Market Price", "Value", "ROI"]
-            }
-          />
-
-          {assets &&
-            (currentWallet === "tradingWallet" ? assets : assets.slice(1)).map(
-              (asset) => (
-                <TableRow
-                  key={asset.symbol}
-                  data={
-                    currentWallet === "tradingWallet"
-                      ? [
-                          <Coin>{asset.symbol}</Coin>,
-                          asset.tradingBalance,
-                          asset.holdingBalance,
-                          asset.marketPrice,
-                          "$ " +
-                            asset.value.toLocaleString("en-US", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
-                          <span style={{ color: asset.RoiColor }}>
-                            {asset.ROI}
-                          </span>,
-                        ]
-                      : [
-                          <Coin>{asset.symbol}</Coin>,
-                          asset.fundingBalance,
-                          asset.marketPrice,
-                          "$ " +
-                            asset.value.toLocaleString("en-US", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
-                          <span style={{ color: asset.RoiColor }}>
-                            {asset.ROI}
-                          </span>,
-                        ]
-                  }
-                />
-              )
-            )}
-        </Table>
-      </SidePanelWithContainer>
-
-      <Modal open={isModalOpen} close={setIsModalOpen}>
-        <div style={{ width: "420px", paddingTop: "15px" }}>
-          <div style={{ width: "320px", margin: "auto", marginBottom: "35px" }}>
-            <h1 style={{ textAlign: "center", marginBottom: "25px" }}>
-              Wallet Address
-            </h1>
-
-            <div
-              className="wallet-address"
-              onClick={() => {
-                if (!walletAddress) {
-                  showMessage("warning", "Nothing to copy..!");
-                } else {
-                  navigator.clipboard.writeText(walletAddress);
-                  showMessage("info", "Copied to clipboard..!");
-                }
-              }}
-            >
-              <span
-                style={{ width: "80%", userSelect: "text", cursor: "text" }}
-              >
-                {walletAddress || "Wallet Address Not Found..!"}
-              </span>
-            </div>
-
-            <p
-              style={{
-                textAlign: "center",
-                marginTop: "18px",
-                color: "#9E9E9E",
-              }}
-            >
-              <i>Click on the address to copy</i>
-            </p>
-            {!isRegenerate ? (
-              <p
-                style={{
-                  textAlign: "center",
-                  margin: "35px auto",
-                  color: "#9E9E9E",
-                  width: "97%",
-                }}
-              >
-                <i style={{ color: "#21db9a", margin: "0" }}>Note:</i>
-                &ensp;If you Regenerate a new wallet Address, your old address
-                is no longer valid for
-                <br /> making transactions.
-              </p>
-            ) : (
-              <p
-                style={{
-                  textAlign: "center",
-                  margin: "35px auto",
-                  color: "#9E9E9E",
-                  width: "100%",
-                }}
-              >
-                <i style={{ color: "#21db9a", margin: "0" }}>Are you sure?</i>
-                &ensp;Do you still wish to generate a new wallet address? This
-                action cannot be undone.
-              </p>
-            )}
-
-            <div
-              className="edit-alert-modal-button-container"
-              style={{ width: "83%" }}
-            >
-              <Input
-                type="button"
-                style={{ width: "120px" }}
-                value={!isRegenerate ? "Re-generate" : "Confirm"}
-                onClick={() => {
-                  !isRegenerate ? setIsRegenerate(true) : regenerateAddress();
-                }}
-              />
-
-              <Input
-                type="button"
-                style={{ width: "120px" }}
-                red
-                value={!isRegenerate ? "Close" : "Cancel"}
-                onClick={() => {
-                  !isRegenerate
-                    ? setIsModalOpen(false)
-                    : setIsRegenerate(false);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </Modal>
-    </BasicPage>
-  );
+            </Modal>
+        </BasicPage>
+    )
 }
