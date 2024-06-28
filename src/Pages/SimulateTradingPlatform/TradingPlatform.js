@@ -140,7 +140,7 @@ export default function TradingPlatform() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error fetching order history');
+            showMessage('error', 'Error', 'Error fetching order history');
         }
     };
 
@@ -342,7 +342,6 @@ export default function TradingPlatform() {
                 showMessage('Error', 'Please enter the quantity!');
                 return;
             }
-            console.log('ob', ob);
 
             fetch(`${apiGateway}/portfolio/asset/trade`, {
                 method: 'POST',

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'; 
 import NewsItem from '../../Components/NewsBar/NewsItem'; 
 import "./News.css"; 
-import Input from '../../Components/Input/Input'; 
-import axios from 'axios';
-import {getUser} from "../../Storage/SecureLs";
+import Input from '../../Components/Input/Input';
+import axios from 'axios'; 
+import {getUser} from '../../Storage/SecureLs';
 
 export default function News() {
   // State to store articles and loading status
@@ -12,13 +12,13 @@ export default function News() {
   const [isLoading, setIsLoading] = useState(true); 
   const [search, setSearch] = useState("");
   const user = getUser();
-  const userId = user.userId;
+  const userId = user && user.id;
 
   useEffect(() => {
     setIsLoading(true); 
 
     // Fetch news articles from the API
-    axios.get('http://localhost:8008/news/' + userId) // ashan gen ahanna
+    axios.get('http://localhost:8008/news/' + userId) 
       .then(res => {
         setArticles(res.data); 
         console.log(res.data)
