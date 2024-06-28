@@ -28,7 +28,7 @@ export default function FundingWallet() {
     const [ walletAddress, setWalletAddress ] = useState(null);
     const [ isInvalid, setIsInvalid ] = useState({status: true, message: null});
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ isModalOpen, setIsModalOpen ] = useState(false);
+    const [ isAddressModalOpen, setIsAddressModalOpen ] = useState(false);
     const [ isRegenerate, setIsRegenerate ] = useState(false);
     const backendApiEndpoint = 'http://localhost:8011/portfolio/asset/';
     const user = getUser();
@@ -37,9 +37,9 @@ export default function FundingWallet() {
     
 
     useEffect(() => {
-        if(!isModalOpen) 
+        if(!isAddressModalOpen) 
         setIsRegenerate(false);
-    }, [isModalOpen]);
+    }, [isAddressModalOpen]);
 
 
 
@@ -301,7 +301,7 @@ export default function FundingWallet() {
                             <p className={`alert-invalid-message ${isInvalid.message ? 'show' : ''}`} > { isInvalid.message } </p>              
                         </div>
 
-                        <p className='wallet-address-button' onClick={() => setIsModalOpen(true)} >Wallet Address</p>    
+                        <p className='wallet-address-button' onClick={() => setIsAddressModalOpen(true)} >Wallet Address</p>    
                     </div>
                 }>
 
@@ -360,7 +360,7 @@ export default function FundingWallet() {
 
 
 
-            <Modal open={isModalOpen} close={setIsModalOpen}>
+            <Modal open={isAddressModalOpen} close={setIsAddressModalOpen}>
                 <div style={{width:"420px", paddingTop:"15px"}}>
                     <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
                         <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
@@ -400,7 +400,7 @@ export default function FundingWallet() {
                                 type="button" style={{width:"120px"}} red
                                 value={!isRegenerate ? "Close" : "Cancel"}
                                 onClick={() => {
-                                    !isRegenerate ?  setIsModalOpen(false) : setIsRegenerate(false);
+                                    !isRegenerate ?  setIsAddressModalOpen(false) : setIsRegenerate(false);
                                 }} />
                         </div> 
                     </div>

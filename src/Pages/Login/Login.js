@@ -80,10 +80,12 @@ function Login() {
     useEffect(() => {
         if(action === "Login"){
             setValues({email: "", password: ""});
+            document.getElementById('email').focus();
         }
 
         if(action === "SignUp"){
             setValues({username: "", email: "", password: ""});
+            document.getElementById('username').focus();
         }
         setErrorMessage('');
     }, [action]);
