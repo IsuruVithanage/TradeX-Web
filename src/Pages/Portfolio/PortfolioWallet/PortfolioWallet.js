@@ -274,24 +274,22 @@ export default function FundingWallet() {
 
 
                         <Input type="dropdown" label='Receiving Wallet' value={selectedWallet} disabled={currentWallet === 'tradingWallet'} onChange={setSelectedWallet}
-                               options={[
-                                   { value: 'tradingWallet', label: 'Trading Wallet' },
-                                   { value: 'fundingWallet', label: 'Funding Wallet' },
-                                   { value: 'externalWallet', label: 'External Wallet' },
-                               ].filter(option => option.value !== currentWallet) }
+                            options={[
+                                { value: 'tradingWallet', label: 'Trading Wallet' },
+                                { value: 'fundingWallet', label: 'Funding Wallet' },
+                                { value: 'externalWallet', label: 'External Wallet' },
+                            ].filter(option => option.value !== currentWallet) }
                         />
 
 
 
                         { currentWallet === "fundingWallet" && selectedWallet === 'externalWallet' &&
                             <div className='hidden-input'>
-                                <div style={{width: "91%"}}>
-                                    <Input type="text" label='Wallet Address' value={walletAddressValue} onChange={(e) => setWalletAddressValue(e.target.value)}/>
-                                </div>
-                                <div className="paste-text-button" onClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}>
-                                    <MdOutlineAssignment/>
-                                </div>
-                                <div className='paste-bottom-layer' />
+                                <Input type="text" label='Wallet Address' value={walletAddressValue} 
+                                    icon={<MdOutlineAssignment className='address-paste-icon'/>}
+                                    onIconClick={async() => setWalletAddressValue(await navigator.clipboard.readText())}
+                                    onChange={(e) => setWalletAddressValue(e.target.value)}
+                                />
                             </div>
                         }
 

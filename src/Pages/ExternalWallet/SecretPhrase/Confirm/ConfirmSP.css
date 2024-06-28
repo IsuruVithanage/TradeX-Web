@@ -16,8 +16,12 @@
     padding: 2px;
 }
 
+.input-cell:focus {
+    border: 1px solid #21DB9A;
+    outline: none;
+}
+
 .clear-button {
-    width: 65px;
     height: 24px;
     background-color: transparent;
     color: #FFFFFF;

@@ -32,14 +32,6 @@ export default function Input(props) {
     };
 
 
-    const renderLoginInput = () => {
-        return (
-            <div style={{position: "relative"}}>
-                <InputField {...props} />
-            </div>
-        );
-    }
-
     return (
         <div className="input-container">
             {props.label && <p className="label-name">{props.label}</p>}
@@ -51,12 +43,12 @@ export default function Input(props) {
 }
 
 function InputField(props) {
-    const {name, register, errors} = props;
+    const {name, register, errors, errorMessage} = props;
 
 
     return (
         <div>
-            <div className={`input-field-item-container ${props.underline ? "login" : ""}`} style={{display: "flex", ...props.style}}>
+            <div className={`input-field-item-container ${props.underline ? "underline" : ""}`} style={{display: "flex", ...props.style}}>
                 <input
                     {...(!register ? {} : register(name))}
                     className={`input-field ${props.className || ''}`}
@@ -70,13 +62,13 @@ function InputField(props) {
                     onChange={props.onChange ? props.onChange : null}
                     onClick={props.onClick}
                     onKeyDown={props.onKeyDown}
-                    autoComplete="off"
+                    autoComplete={props.autoComplete || "on"}
                 />
 
                 { props.icon && <div className="input-icon" onClick={props.onIconClick} >{props.icon}</div>}
             </div>
             
-            <p style={{color: 'red'}}>{!register ? '' : (errors[name]?.message ? errors[name]?.message : '')}</p>
+            {errorMessage !== false && <p style={{color: 'red'}}>{!register ? '' : (errors[name]?.message ? errors[name]?.message : '')}</p>}
         </div>
     );
 }
@@ -84,11 +76,23 @@ function InputField(props) {
 
 function PasswordInput(props) {
     const [showPassword, setShowPassword] = useState(false);
+    const { withConfirm, newInput, ...otherProps } = props;
 
     return (
-        <InputField {...props} 
-            type={!showPassword ? "password" : "text"} 
-            icon={!showPassword ? <PiEyeClosed/> : <PiEye/>} 
-            onIconClick={() => setShowPassword(!showPassword)}/>
+        <div>
+            {withConfirm && 
+            <InputField {...newInput} 
+                type={!showPassword ? "password" : "text"} 
+                autoComplete="off"
+            />
+            }
+
+            <InputField {...otherProps} 
+                type={!showPassword ? "password" : "text"} 
+                autoComplete="off"
+                icon={!showPassword ? <PiEyeClosed/> : <PiEye/>} 
+                onIconClick={() => setShowPassword(!showPassword)}
+            />
+        </div>
     );
 }

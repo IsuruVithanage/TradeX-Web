@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthInterceptor } from "../../Authentication/axiosInstance";
 import { setAccessToken, setUser } from "../../Storage/SecureLs";
-import { PiEye, PiEyeClosed } from "react-icons/pi";
 import { showMessage } from "../../Components/Message/Message";
 import notificationManager from "../Alert/notificationManager";
 import Input from "../../Components/Input/Input";
@@ -15,7 +14,6 @@ function Login() {
     const navigate = useNavigate();
     const axiosInstance = useAuthInterceptor();
     const [isLoading, setIsLoading] = useState();
-    const [showPassword, setShowPassword] = useState(false);
     const [action, setAction] = useState('Login');
     const [errorMessage, setErrorMessage] = useState('');
     const [values, setValues] = useState({});
