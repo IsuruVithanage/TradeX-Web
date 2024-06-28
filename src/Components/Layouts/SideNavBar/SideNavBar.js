@@ -49,7 +49,7 @@ export default function SideNavBar() {
                 {/*  userRole === "admin" &&  */ true &&
                 <div 
                     className={`nav-link ${isActive("/admin")}`}
-                    onClick={() => navigate("/admin")}>
+                    onClick={() => navigate("/admin/AdDashboard")}>
                     <span className="nav-icon"><RiShieldUserLine size={24} /></span>
                     <span className="nav-label">Admin</span>
                 </div>

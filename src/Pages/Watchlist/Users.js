@@ -23,7 +23,7 @@ export default function Users() {
   const loadUsers = async () => {
     try {
       const result = await axios.get(
-        "http://localhost:8004/admin/getAllUsers"
+        "http://localhost:8004/admin/getAllUserDetails"
       );
       setUserList(result.data);
     } catch (error) {
