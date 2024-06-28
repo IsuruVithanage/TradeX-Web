@@ -65,7 +65,7 @@ function Login() {
             })
             .catch((error) => {
                 setIsLoading(false);
-                console.error('Login error:', error);
+                console.log('Login error:', error);
 
                 !error.response ?
                 showMessage('error', action + " Failed, Please try again.") :
