@@ -59,6 +59,7 @@ export default function Suggestions() {
     const [activateDuration, setActivateDuration] = useState("All");
     const [filteredOrderHistory, setFilteredOrderHistory] = useState([]);
 
+
     const loadOrderHistory = async () => {
         try {
             const res = await axiosInstance.get(
@@ -315,11 +316,6 @@ export default function Suggestions() {
                                 <p className='error-message'>Failed to load suggestions.</p>
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
-                            </div>
-                        ) : suggestion && Array.isArray(suggestion.resources) && suggestion.resources.every(item => item && typeof item === 'object' && 'title' in item && 'url' in item) ? (
-                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                                <p className='error-message'>No suggestions available.</p>
-                                <Input type="button" value='Try Again' onClick={getSuggestions} style={{width: '150px'}}/>
                             </div>
                         ) : suggestion && Array.isArray(suggestion.suggestions) && Array.isArray(suggestion.resources) ? (
                             <div>

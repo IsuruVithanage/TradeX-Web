@@ -84,7 +84,7 @@ export default function VerifyUser() {
     const updateUserVerifyStatus = async () => {
         const ob = {
             id: user.id,
-            status: "PendingTrader",
+            status: "Pending",
         }
         try {
             await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
@@ -419,7 +419,6 @@ export default function VerifyUser() {
 
                 </div>
                 <div className='submit-container'>
-                    <img src="" alt=""/>
                     <Input type="button" value='Submit' onClick={uploadSelectedFiles}
                            disabled={selectedFiles.length !== 3}/>
                     <div style={{width: '10px'}}></div>
