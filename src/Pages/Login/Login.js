@@ -106,10 +106,11 @@ function Login() {
                             <Input
                                 type="email"
                                 placeholder="Username"
-                                className="login-input login-username-input"
+                                className="login-username-input"
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
+                                underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
@@ -120,35 +121,26 @@ function Login() {
                             <Input
                                 type="email"
                                 placeholder="E-mail"
-                                className="login-input"
                                 value={values.email || ""}
                                 name="email"
                                 id="email"
+                                underline
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
                             />
 
-                            <div className="login-password-container" style={{ width: "100%", marginTop: "30px" }}>
-                                <div style={{ width: "90%", zIndex: "1" }}>
-                                    <Input
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="Password"
-                                        name="password"
-                                        id="password"
-                                        value={values.password || ""}
-                                        className="login-input"
-                                        onChange={handleInput}
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                </div>
-
-                                <div className="show-password-icon" onClick={() => setShowPassword(!showPassword)}>
-                                    {!showPassword ? <PiEyeClosed /> : <PiEye />}
-                                </div>
-
-                                <div className="login-password-bottom-layer" style={{ width: "100%" }} />
-                            </div>
+                            <Input
+                                type="password"
+                                placeholder="Password"
+                                value={values.password || ""}                                
+                                name="password"
+                                id="password"
+                                underline
+                                style={{ marginTop: "30px" }}
+                                onChange={handleInput}
+                                onKeyDown={handleKeyDown}
+                            />
 
                             {action === "Login" && <div className="login-form-forgot-password">Forgot Password ?</div>}
                         </div>

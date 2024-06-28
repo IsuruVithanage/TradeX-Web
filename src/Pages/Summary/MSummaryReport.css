@@ -1,4 +1,4 @@
-.summary-report {
+.monthly-summary-report {
     font-family: Arial, sans-serif;
     padding: 20px;
     background-color: white;
@@ -13,42 +13,42 @@
 
 
   
-  .summary-report h3 {
+  .monthly-summary-report h3 {
     color: black;
     text-align: center;
     
     margin-bottom: 40px;
   }
-  .summary-report h5{
+  .monthly-summary-report h5{
     color: black;
   }
-  .summary-report h4{
+  .monthly-summary-report h4{
     color: black;
     text-align: center;
     
   }
   
   
-  .summary-report table {
+  .monthly-summary-report table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
   }
   
-  .summary-report th, .summary-report td {
+  .monthly-summary-report th, .monthly-summary-report td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
     color:black;
   }
   
-  .summary-report th {
+  .monthly-summary-report th {
     
     font-size: 12px;
     color: #9E9E9E;
   }
 
-  .summary-report td{
+  .monthly-summary-report td{
     font-size: 11px;
   }
   .coin-image {

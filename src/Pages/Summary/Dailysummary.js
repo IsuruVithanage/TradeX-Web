@@ -30,18 +30,28 @@ function Dailysummary() {
   const [isCoinSelected, setIsCoinSelected] = useState(false);
 
   // create state variable for each toggle
-  const [showTopGainers, setShowTopGainers] = useState(false);
-  const [showTopLosses, setShowTopLosses] = useState(false);
-  const [showTrendingCoin, setShowTrendingCoin] = useState(false);
-  const [showTradingHistory, setShowTradingHistory] = useState(false);
-  const [showTradingSuggestions, setShowTradingSuggestions] = useState(false);
+  const [showTopGainers, setShowTopGainers] = useState(
+    localStorage.getItem("showTopGainers") === "true"
+  );
+  const [showTopLosses, setShowTopLosses] = useState(
+    localStorage.getItem("showTopLosses") === "true"
+  );
+  const [showTrendingCoin, setShowTrendingCoin] = useState(
+    localStorage.getItem("showTrendingCoin") === "true"
+  );
 
-  const [tradingHistory, setTradingHistory] = useState([]);
+  const [isDefaultToggle, setIsDefaultToggle] = useState(
+    localStorage.getItem("isDefaultToggle") === "true"
+  );
+
+  //const [tradingHistory, setTradingHistory] = useState([]);
   const [tradingSuggestions, setTradingSuggestions] = useState([]);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [selectedCoins, setSelectedCoins] = useState([]);
   // for customized coin
   // const [customizedCoins, setCustomizedCoins] = useState([]);
+
+  const [previewContent, setPreviewContent] = useState(null);
 
   // coin table
   useEffect(() => {
@@ -117,24 +127,33 @@ function Dailysummary() {
     symbols[coin.symbol]?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const fetchTradingHistory = async () => {
-    // Replace with your actual API call
-    return [{ coin: "BTC", type: "Buy", price: 50000, date: "2024-01-01" }];
-  };
-
   const fetchTradingSuggestions = async () => {
     // Replace with your actual API call
     return [{ coin: "ETH", action: "Sell", price: 2000, date: "2024-01-02" }];
   };
 
+  // set as default
   useEffect(() => {
-    if (showTradingHistory)
-      fetchTradingHistory().then((history) => setTradingHistory(history));
-    if (showTradingSuggestions)
-      fetchTradingSuggestions().then((suggestions) =>
-        setTradingSuggestions(suggestions)
-      );
-  }, [showTradingHistory, showTradingSuggestions]);
+    if (isDefaultToggle) {
+      localStorage.setItem("showTopGainers", showTopGainers);
+      localStorage.setItem("showTopLosses", showTopLosses);
+      localStorage.setItem("showTrendingCoin", showTrendingCoin);
+    }
+  }, [isDefaultToggle, showTopGainers, showTopLosses, showTrendingCoin]);
+
+  // Generate preview
+  const generatePreview = () => {
+    setPreviewContent(
+      <SummaryReport
+        coins={coins}
+        showTopGainers={showTopGainers}
+        showTopLosses={showTopLosses}
+        showTrendingCoin={showTrendingCoin}
+        selectedCoins={selectedCoins}
+        tradingSuggestions={tradingSuggestions}
+      />
+    );
+  };
 
   //generate pdf
 
@@ -144,6 +163,7 @@ function Dailysummary() {
     reportElement.style.left = "-9999px";
     document.body.appendChild(reportElement);
 
+    // Render the SummaryReport component inside the hidden div
     ReactDOM.render(
       <SummaryReport
         coins={coins}
@@ -151,8 +171,6 @@ function Dailysummary() {
         showTopLosses={showTopLosses}
         showTrendingCoin={showTrendingCoin}
         selectedCoins={selectedCoins}
-        // customizedCoins={customizedCoins}
-        tradingHistory={tradingHistory}
         tradingSuggestions={tradingSuggestions}
       />,
       reportElement,
@@ -163,7 +181,7 @@ function Dailysummary() {
         const canvas = await html2canvas(reportElement, { scale: 2 });
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // A4 size
+        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Legal size
 
         const pdfBlob = pdf.output("blob");
         const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -172,239 +190,231 @@ function Dailysummary() {
         document.body.removeChild(reportElement);
       }
     );
+
+    //2 preview
+    setPreviewContent(
+      <SummaryReport
+        coins={coins}
+        showTopGainers={showTopGainers}
+        showTopLosses={showTopLosses}
+        showTrendingCoin={showTrendingCoin}
+        selectedCoins={selectedCoins}
+        tradingSuggestions={tradingSuggestions}
+      />
+    );
   };
 
   return (
     // daily summary front end
     <BasicPage tabs={Tabs}>
-      <div className="heading">Generate Daily Summary</div>
-      <div className="page-content">
-        <div className="left-side">
-          <div className="add-items">
-            <div className="add-coins">
-              <div>
-                <div
-                  className="tog-name"
-                  style={{
-                    display: "inline-block",
-                    marginLeft: "2rem",
-                    marginTop: "2rem",
-                  }}
-                >
-                  <span>Customize Coins</span>
+      <div className="daily-summary">
+        <div className="heading">Generate Daily Summary</div>
+        <div className="page-content">
+          <div className="left-side">
+            <div className="add-items">
+              <div className="add-coins">
+                <div>
+                  <div
+                    className="tog-name"
+                    style={{
+                      display: "inline-block",
+                      marginLeft: "2rem",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    <span>Customize Coins</span>
+                  </div>
+                  <div
+                    className="coin-button"
+                    style={{ display: "inline-block", marginLeft: "5rem" }}
+                  >
+                    <Input
+                      type="button"
+                      value="Add Coin"
+                      outlined
+                      green
+                      style={{ width: "150px", marginLeft: "15%" }}
+                      onClick={() => setIsDeleteModalOpen(true)}
+                    />
+                  </div>
+                  <Modal
+                    open={isDeleteModalOpen}
+                    close={() => setIsDeleteModalOpen(false)}
+                    onOk={handleOkClick}
+                    okText="OK"
+                    onCancel={() => setIsDeleteModalOpen(false)}
+                  >
+                    <div style={{ width: "450px" }}>
+                      <h2>Select Coin</h2>
+                      <div>
+                        <Input
+                          type="search"
+                          placeholder="Search"
+                          style={{
+                            width: "400px",
+                            float: "right",
+                            marginRight: "50px",
+                          }}
+                          onChange={(e) => setSearch(e.target.value)}
+                        />
+                      </div>
+
+                      <table className="watchlist-table-modal">
+                        <thead
+                          style={{
+                            color: "#dbdbdb",
+                            fontSize: "18px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          <tr>
+                            <td>Coin</td>
+                            <td>Price</td>
+                            <td>Select</td>
+                          </tr>
+                        </thead>
+                        <tbody style={{ marginLeft: "1rem" }}>
+                          {filteredCoins.map((coin) => (
+                            <tr
+                              key={coin.id}
+                              onClick={() => handleRowClick(coin)}
+                            >
+                              <td
+                                style={{
+                                  marginLeft: "100px",
+                                  marginBottom: "50px",
+                                }}
+                              >
+                                <img
+                                  className="coin-image-add"
+                                  src={symbols[coin.symbol].img}
+                                  alt={coin.symbol}
+                                />
+                                <span className="coin-symbol-add">
+                                  {coin.symbol.toUpperCase()}
+                                </span>
+                              </td>
+
+                              <td className="coin-price-add">
+                                {formatCurrency(coin.lastPrice)}
+                              </td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  style={{
+                                    width: "20px",
+                                    height: "20px",
+                                    textAlign: "right",
+                                  }}
+                                  onChange={() => handleCoinSelect(coin)}
+                                  checked={selectedCoins.some(
+                                    (c) => c.symbol === coin.symbol
+                                  )}
+                                ></input>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Modal>
                 </div>
-                <div
-                  className="coin-button"
-                  style={{ display: "inline-block", marginLeft: "6.5rem" }}
-                >
-                  <Input
-                    type="button"
-                    value="Add Coin"
-                    outlined
-                    green
-                    style={{ width: "150px", marginLeft: "120%" }}
-                    onClick={() => setIsDeleteModalOpen(true)}
-                  />
-                </div>
-                <Modal
-                  open={isDeleteModalOpen}
-                  close={() => setIsDeleteModalOpen(false)}
-                  onOk={handleOkClick}
-                  okText="OK"
-                >
-                  <div style={{ width: "450px" }}>
-                    <h2>Select Coin</h2>
-                    <div>
+                <div className="chart-table">
+                  <div className="data">
+                    <div className="tog-name">
+                      <span>Top Gainers</span>
+                    </div>
+                    <div className="tog1">
                       <Input
-                        type="search"
-                        placeholder="Search"
-                        style={{
-                          width: "400px",
-                          float: "right",
-                          marginRight: "50px",
-                        }}
-                        onChange={(e) => setSearch(e.target.value)}
+                        type="toggle"
+                        id="topGainers"
+                        checked={showTopGainers}
+                        onChange={() => setShowTopGainers(!showTopGainers)}
                       />
                     </div>
+                  </div>
 
-                    <table className="watchlist-table-modal">
-                      <thead
-                        style={{
-                          color: "#dbdbdb",
-                          fontSize: "18px",
-                          marginBottom: "20px",
-                        }}
-                      >
-                        <tr>
-                          <td>Coin</td>
-                          <td>Price</td>
-                          <td>Select</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredCoins.map((coin) => (
-                          <tr
-                            key={coin.id}
-                            onClick={() => handleRowClick(coin)}
-                          >
-                            <td
-                              style={{
-                                marginLeft: "100px",
-                                marginBottom: "50px",
-                              }}
-                            >
-                              <img
-                                className="coin-image-add"
-                                src={symbols[coin.symbol].img}
-                                alt={coin.symbol}
-                              />
-                              <span className="coin-symbol-add">
-                                {coin.symbol.toUpperCase()}
-                              </span>
-                            </td>
+                  <div className="data">
+                    <div className="tog-name">
+                      <span>Top Losers</span>
+                    </div>
+                    <div className="tog2">
+                      <Input
+                        type="toggle"
+                        id="topLosses"
+                        checked={showTopLosses}
+                        onChange={() => setShowTopLosses(!showTopLosses)}
+                      />
+                    </div>
+                  </div>
 
-                            <td className="coin-price-add">
-                              {formatCurrency(coin.lastPrice)}
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                style={{
-                                  width: "20px",
-                                  height: "20px",
-                                  textAlign: "right",
-                                }}
-                                onChange={() => handleCoinSelect(coin)}
-                                checked={selectedCoins.some(
-                                  (c) => c.symbol === coin.symbol
-                                )}
-                              ></input>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="data">
+                    <div className="tog-name">
+                      <span>Trending Coin</span>
+                    </div>
+                    <div className="tog3">
+                      <Input
+                        type="toggle"
+                        id=""
+                        checked={showTrendingCoin}
+                        onChange={() => setShowTrendingCoin(!showTrendingCoin)}
+                      />
+                    </div>
                   </div>
-                </Modal>
-              </div>
-              <div className="chart-table">
-                <div className="data">
-                  <div className="tog-name">
-                    <span>Top Gain</span>
-                  </div>
-                  <div className="tog1">
-                    <Input
-                      type="toggle"
-                      id="topGainers"
-                      checked={showTopGainers}
-                      onChange={() => setShowTopGainers(!showTopGainers)}
-                    />
-                  </div>
-                </div>
 
-                <div className="data">
-                  <div className="tog-name">
-                    <span>Top Losses</span>
-                  </div>
-                  <div className="tog2">
-                    <Input
-                      type="toggle"
-                      id="topLosses"
-                      checked={showTopLosses}
-                      onChange={() => setShowTopLosses(!showTopLosses)}
-                    />
-                  </div>
-                </div>
-
-                <div className="data">
-                  <div className="tog-name">
-                    <span>Trending Coin</span>
-                  </div>
-                  <div className="tog3">
-                    <Input
-                      type="toggle"
-                      id=""
-                      checked={showTrendingCoin}
-                      onChange={() => setShowTrendingCoin(!showTrendingCoin)}
-                    />
-                  </div>
-                </div>
-
-                <div className="data">
-                  <div className="tog-name">
-                    <span>Trading History</span>
-                  </div>
-                  <div className="tog4">
-                    <Input
-                      type="toggle"
-                      id=""
-                      checked={showTradingHistory}
-                      onChange={() =>
-                        setShowTradingHistory(!showTradingHistory)
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="data">
-                  <div className="tog-name">
-                    <span>Trading Suggestion History</span>
-                  </div>
-                  <div className="tog5">
-                    <Input type="toggle" id="" />
+                  <div className="data">
+                    <div className="tog-name">
+                      <span>Trading History</span>
+                    </div>
+                    <div className="tog4">
+                      <Input type="toggle" id="" />
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <div className="default">
+                <div className="defaultname">
+                  <span>Set this features as default</span>
+                </div>
+                <div className="tog5">
+                  <Input
+                    type="toggle"
+                    id=""
+                    checked={isDefaultToggle}
+                    onChange={() => setIsDefaultToggle(!isDefaultToggle)}
+                  />
+                </div>
+              </div>
+
+              <div className="box-container"></div>
             </div>
+          </div>
 
-            <div className="default">
-              <div className="defaultname">
-                <span>Set this features as default</span>
-              </div>
-              <div className="tog6">
-                <Input
-                  type="toggle"
-                  id=""
-                  checked={showTradingSuggestions}
-                  onChange={() =>
-                    setShowTradingSuggestions(!showTradingSuggestions)
-                  }
-                />
-              </div>
+          {/* right side */}
+          <div className="right-side">
+            <div className="template">
+              <div className="preview-scroll">{previewContent}</div>
             </div>
-
-            <div className="box-container"></div>
+            <div className="buttons">
+              <Input
+                type="button"
+                value="Generate"
+                className="generate-button"
+                style={{ width: "87px" }}
+                onClick={generatePreview}
+              />
+              <Input
+                type="button"
+                value="Download"
+                className="download-button"
+                onClick={generatePDF}
+                style={{ width: "87px", marginLeft: "28%" }}
+              />
+            </div>
           </div>
         </div>
-
-        {/* right side */}
-        <div className="right-side">
-          <div className="template">
-            {showTopGainers}
-            {showTopLosses}
-            {showTrendingCoin && <TrendingCoinChart />}
-          </div>
-          <div className="buttons">
-            <Input
-              type="button"
-              value="Generate"
-              className="generate-button"
-              style={{ width: "87px" }}
-              onClick={() => setIsPreviewModalOpen(true)}
-            />
-
-            <div className="preview"></div>
-
-            <Input
-              type="button"
-              value="Download"
-              className="download-button"
-              onClick={generatePDF}
-              style={{ width: "87px", marginLeft: "28%" }}
-            />
-          </div>
-        </div>
-      </div>
+      </div>{" "}
       <Modal
         open={isPreviewModalOpen}
         onCancel={() => setIsPreviewModalOpen(false)}
@@ -422,7 +432,6 @@ function Dailysummary() {
           selectedCoins={selectedCoins}
         />
       </Modal>
-      ;
     </BasicPage>
   );
 }

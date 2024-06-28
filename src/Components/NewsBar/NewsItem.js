@@ -102,7 +102,7 @@ const NewsItem = (props) => {
           <div className='news-header-container'>
             {/* Link to the full article */}
             <a href={url} target="_blank" rel="noopener noreferrer">
-              <h1>{title}</h1> {/* Display the news title */}
+              <h1>{title.slice(0,90)}</h1> {/* Display the news title */}
             </a>
             {/* Display the news description */}
             <p>{description ? description.slice() : "In a rare discovery, scientists reveal the oldest piece of fossilized skin - The Washington Post,"}</p>

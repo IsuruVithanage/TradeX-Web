@@ -1,4 +1,5 @@
-import React, {lazy, Suspense} from "react";
+import React, {useState, lazy, Suspense} from "react";
+import { PiEye, PiEyeClosed } from "react-icons/pi";
 import "./Input.css";
 
 const Dropdown = lazy(() => import("./Dropdown/Dropdown"));
@@ -13,6 +14,8 @@ export default function Input(props) {
         switch (props.type) {
             case "number":
                 return <NumberInput {...props} />;
+            case "password":
+                return <PasswordInput {...props} />;
             case "date":
                 return <Date {...props} />;
             case "dropdown":
@@ -28,6 +31,15 @@ export default function Input(props) {
         }
     };
 
+
+    const renderLoginInput = () => {
+        return (
+            <div style={{position: "relative"}}>
+                <InputField {...props} />
+            </div>
+        );
+    }
+
     return (
         <div className="input-container">
             {props.label && <p className="label-name">{props.label}</p>}
@@ -41,30 +53,42 @@ export default function Input(props) {
 function InputField(props) {
     const {name, register, errors} = props;
 
-    const handleChange = (e) => {
-        props.onChange(e);
-    };
 
     return (
         <div>
-            <input
-                {...(!register ? {} : register(name))}
-                className={`input-field ${props.className || ''}`}
-                type={props.type}
-                value={props.value}
-                defaultValue={props.defaultValue}
-                id={props.id}
-                name={props.name}
-                placeholder={props.placeholder}
-                style={props.style}
-                onBlur={props.onBlur}
-                onChange={props.onChange ? handleChange : null}
-                onClick={props.onClick}
-                onKeyDown={props.onKeyDown}
-                autoComplete="off"
-            />
+            <div className={`input-field-item-container ${props.underline ? "login" : ""}`} style={{display: "flex", ...props.style}}>
+                <input
+                    {...(!register ? {} : register(name))}
+                    className={`input-field ${props.className || ''}`}
+                    type={props.type}
+                    value={props.value}
+                    defaultValue={props.defaultValue}
+                    id={props.id}
+                    name={props.name}
+                    placeholder={props.placeholder}
+                    onBlur={props.onBlur}
+                    onChange={props.onChange ? props.onChange : null}
+                    onClick={props.onClick}
+                    onKeyDown={props.onKeyDown}
+                    autoComplete="off"
+                />
+
+                { props.icon && <div className="input-icon" onClick={props.onIconClick} >{props.icon}</div>}
+            </div>
             
             <p style={{color: 'red'}}>{!register ? '' : (errors[name]?.message ? errors[name]?.message : '')}</p>
         </div>
+    );
+}
+
+
+function PasswordInput(props) {
+    const [showPassword, setShowPassword] = useState(false);
+
+    return (
+        <InputField {...props} 
+            type={!showPassword ? "password" : "text"} 
+            icon={!showPassword ? <PiEyeClosed/> : <PiEye/>} 
+            onIconClick={() => setShowPassword(!showPassword)}/>
     );
 }
