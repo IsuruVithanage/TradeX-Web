@@ -1,0 +1,5 @@
+
+.custom-modal .ant-modal-confirm-title,
+.custom-modal .ant-modal-confirm-content {
+  color: white;
+}

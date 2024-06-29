@@ -1,5 +1,5 @@
 import React from 'react'
-import AuthPage from '../../../Components/BasicPage/AuthPage/AuthPage';
+import AuthPage from '../../../Components/Layouts/AuthPage/AuthPage';
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import "./StartPage.css";
@@ -25,7 +25,7 @@ export default function StartPage() {
       description="The multi-chain wallet trusted by millions"
     >
 
-      <div className='create-wallet-container' style={{marginTop: "4vh"}} onClick={navigateToCreateWallet}>
+      <div className='create-wallet-container' style={{marginTop: "5vh"}} onClick={navigateToCreateWallet}>
         <div style={{width: "80%"}}>
           <p className='wallet-start-heading'>Create a new wallet</p>
           <p className='wallet-start-description'>Start fresh with a new wallet</p>

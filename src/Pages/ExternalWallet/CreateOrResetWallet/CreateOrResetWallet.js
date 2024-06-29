@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { showMessage } from '../../../Components/Message/Message';
 import { getUser } from "../../../Storage/SecureLs";
-import { PiEye, PiEyeClosed } from "react-icons/pi";
-import AuthPage from "../../../Components/BasicPage/AuthPage/AuthPage";
+import AuthPage from "../../../Components/Layouts/AuthPage/AuthPage";
 import Input from "../../../Components/Input/Input";
 import axios from "axios";
 import "./CreateOrResetWallet.css";
@@ -12,7 +11,6 @@ import "./CreateOrResetWallet.css";
 export default function CreateWallet() {
   const navigate = useNavigate();
   const action = useLocation().pathname.slice(8);
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false);
 
@@ -116,9 +114,6 @@ export default function CreateWallet() {
 
   }
 
-  function toggleShowPassword() {
-    setShowPassword(!showPassword);
-  }
 
   return (
     <AuthPage
@@ -133,32 +128,26 @@ export default function CreateWallet() {
         type="text"	
         placeholder="Enter user name"
         id="username"
-        className="login-input"
+        errorMessage={false}
+        underline
         style={{marginTop: "2vh", width: "350px"}}
       />
 
       <Input
-        type={showPassword ? "text" : "password"}
-        placeholder="Enter New password"
-        id="password"
-        className="login-input"
+        type="password"
+        placeholder="Confirm your password"
+        id="confirm-password"
+        underline
+        withConfirm
         style={{marginTop: "4vh", width: "350px"}}
+        newInput={{
+          placeholder: "Enter New password",
+          id: "password",
+          underline: true,
+          style: {marginTop: "4vh", width: "350px"}
+        }}
       />
 
-      <div className="login-password-container">
-        <div style={{width: "90%", zIndex: "1"}}><Input
-          type={showPassword ? "text" : "password"}
-          placeholder="Confirm your password"
-          id="confirm-password"
-          className="login-input"/>
-        </div>
-
-        <div className="show-password-icon" onClick={toggleShowPassword}>
-          {!showPassword ? <PiEyeClosed /> : <PiEye />}
-        </div>
-
-        <div className="login-password-bottom-layer"/>
-      </div>
   
       <p className="reset-para">
         {action === 'create' ? "Already have Account? " : "Do you remember the password? "}You can&nbsp;

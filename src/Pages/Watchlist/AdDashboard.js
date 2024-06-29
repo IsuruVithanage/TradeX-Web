@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
@@ -153,7 +153,7 @@ export default function AdDashboard() {
                 {pendingUsers.slice(0,7).map((user) => (
                   <tr key={user.userId}>
                     <td style={{ textAlign: "left" }}>{user.userName}</td>
-                    <td>{user.Date}</td>
+                    <td>{user.requestDate}</td>
                     <td>
                       <Input type="button" value=" Verify" outlined  
                       onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}/>

@@ -63,6 +63,7 @@ export default function ButtonMUI(props){
             outlined={props.outlined ? 'true' : 'false'}
             red={props.red ? 'true' : 'false'}
             disabled={props.disabled && props.disabled}
+            id={props.id}
         >
             {props.icon && <span className="icon">{props.icon}</span>}
             {props.value}

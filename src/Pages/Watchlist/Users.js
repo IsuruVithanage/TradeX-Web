@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import "./Users.css";
 import "./ViewAll.css";
 import axios from "axios";
@@ -23,7 +23,7 @@ export default function Users() {
   const loadUsers = async () => {
     try {
       const result = await axios.get(
-        "http://localhost:8004/admin/getAllUsers"
+        "http://localhost:8004/admin/getAllUserDetails"
       );
       setUserList(result.data);
     } catch (error) {

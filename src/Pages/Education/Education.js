@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import EducationItem from "../../Components/EducationResources/EducationItems";
 import "./Education.css";
 import axios from "axios";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
 import Modal from "../../Components/Modal/Modal";
 import { TextField } from "@mui/material";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
+
 
 function Education() {
   const [educationItems, setEducationItems] = useState([]);

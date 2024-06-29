@@ -1,5 +1,5 @@
 import React from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage'
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
 import { VscSearchStop } from "react-icons/vsc";
 import "./NotFound.css"
 

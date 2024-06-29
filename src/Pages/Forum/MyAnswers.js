@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import { RiSoundModuleLine } from "react-icons/ri";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./forum.css";
 import { useParams } from "react-router-dom";
 import Answerset from "./Answerset";
 import Input from "../../Components/Input/Input";
+
 import axios from "axios";
 import { getUser } from "../../Storage/SecureLs";
 import { get } from "react-hook-form";
 
 export default function MyAnswers() {
   let { id } = useParams();
+
   const user = getUser();
+
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -29,7 +32,7 @@ export default function MyAnswers() {
   const loadAnswers = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8010/answers/getAnswersByUserId/${user.user.id}`
+        `http://localhost:8010/answers/getAnswersByUserId/${user.id}`
       );
 
       const cleanedData = result.data.map((answer) => ({
@@ -117,17 +120,19 @@ export default function MyAnswers() {
           </div>
         }
       >
-        <div className="topic-row">
-          <div className="topic" style={{ marginLeft: "1.2rem" }}>
-            <h4>Topic</h4>
+        <div className="answer-component">
+          <div className="topic-row">
+            <div className="topic" style={{ marginLeft: "1.2rem" }}>
+              <h4>Answers</h4>
+            </div>
           </div>
-        </div>
 
-        {answerlist.length > 0 ? (
-          <Answerset answerlist={answerlist} />
-        ) : (
-          <div></div>
-        )}
+          {answerlist.length > 0 ? (
+            <Answerset answerlist={answerlist} />
+          ) : (
+            <div></div>
+          )}
+        </div>
       </SidePanelWithContainer>
     </BasicPage>
   );
@@ -140,7 +145,7 @@ export default function MyAnswers() {
 // import Input from "../../Components/Input/Input";
 // import './forum.css';
 // import { RiSoundModuleLine } from "react-icons/ri";
-// import SidePanelWithContainer from '../../Components/SidePanel/SidePanelWithContainer'
+// import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer'
 // import { Link } from 'react-router-dom'
 
 //  function MyAnswers() {

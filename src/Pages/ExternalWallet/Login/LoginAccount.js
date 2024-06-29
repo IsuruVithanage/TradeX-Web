@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { showMessage } from '../../../Components/Message/Message';
 import { getUser, setUser } from "../../../Storage/SecureLs";
 import { PiEye, PiEyeClosed } from "react-icons/pi";
-import AuthPage from "../../../Components/BasicPage/AuthPage/AuthPage";
+import AuthPage from "../../../Components/Layouts/AuthPage/AuthPage";
 import Input from "../../../Components/Input/Input";
 import axios from "axios";
 import "./LoginAccount.css";
@@ -92,24 +92,17 @@ export default function LoginAccount () {
         type="text"	
         placeholder="Enter user name"
         id="username"
-        className="login-input"
+        underline
         style={{marginTop: "4vh", width: "350px"}}
       />
 
-      <div className="login-password-container">
-        <div style={{width: "90%", zIndex: "1"}}><Input
-          type={showPassword ? "text" : "password"}
-          placeholder="Enter your password"
-          id="password"
-          className="login-input"/>
-        </div>
-
-        <div className="show-password-icon" onClick={toggleShowPassword}>
-          {!showPassword ? <PiEyeClosed /> : <PiEye />}
-        </div>
-
-        <div className="login-password-bottom-layer"/>
-      </div>
+      <Input
+        type="password"
+        placeholder="Enter your password"
+        id="password"
+        underline
+        style={{marginTop: "4vh", width: "350px"}}
+      />
   
       <p className="reset-para">
         Can't login? here You can&nbsp;

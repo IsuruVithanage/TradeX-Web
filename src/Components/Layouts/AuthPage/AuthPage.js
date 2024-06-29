@@ -1,5 +1,5 @@
 import React from 'react';
-import BasicPage from '../BasicPage';
+import BasicPage from '../BasicPage/BasicPage';
 import WalletImage from "../../../Assets/Images/wallet.png";
 import Input from '../../Input/Input';
 import "./AuthPage.css";

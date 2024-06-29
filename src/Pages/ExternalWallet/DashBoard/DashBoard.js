@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./DashBoard.css";
-import BasicPage from '../../../Components/BasicPage/BasicPage'
-import SidePanelWithContainer from '../../../Components/SidePanel/SidePanelWithContainer'
+import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
+import SidePanelWithContainer from '../../../Components/Layouts/SidePanel/SidePanelWithContainer'
 import Input from '../../../Components/Input/Input'
 import ValueBar from '../../../Components/ValueBar/ValueBar'
 import Table, { TableRow, Coin } from '../../../Components/Table/Table'
@@ -173,15 +173,11 @@ export default function DashBoard() {
 
                         {action === "Send" ?
                             <div>
-                                <div className='address-input'>
-                                    <div style={{width: "91%"}}>
-                                        <Input type="text" label='Wallet Address' value={receivingWallet} onChange={(e) => setReceivingWallet(e.target.value)} /> 
-                                    </div>
-                                    <div className="paste-text-button" onClick={async() => setReceivingWallet(await navigator.clipboard.readText())}>
-                                        <MdOutlineAssignment/>
-                                    </div>
-                                    <div className='paste-bottom-layer' />
-                                </div> 
+                                <Input type="text" label='Wallet Address' value={receivingWallet} 
+                                    icon={<MdOutlineAssignment className='paste-text-icon'/>}
+                                    onIconClick={async() => setReceivingWallet(await navigator.clipboard.readText())}
+                                    onChange={(e) => setReceivingWallet(e.target.value)} 
+                                /> 
 
                                 <Input type="dropdown" label='Coin' value={selectedCoin} onChange={setSelectedCoin} options={
                                     assets.map(asset => (asset.coin ? {
@@ -189,9 +185,8 @@ export default function DashBoard() {
                                         label: asset.coin + " - " + coins[asset.coin].name,
                                     } : null)).filter(option => option !== null)
                                 } />
+
                                 <Input type="number" label='Quantity' min={0} value={quantity} onChange={setQuantity} />
-
-
 
                                 <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{ marginTop: "50px" }} />
 
