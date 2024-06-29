@@ -85,7 +85,7 @@ export default function VerifyUser() {
     const updateUserVerifyStatus = async () => {
         const ob = {
             id: user.id,
-            status: "Pending",
+            status: "PendingTrader",
         }
         try {
             await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
