@@ -103,7 +103,6 @@ export default function Admin() {
                 {label: "Dashboard", path: "/admin/AdDashboard"},
                 {label: "Users", path: "/admin/Users"},
                 {label: "Admin", path: "/admin"},
-                { label: "Education", path: "/admin/AddResources" },
             ]}
         >
             <div>
@@ -131,15 +130,35 @@ export default function Admin() {
                                         marginBottom: "25px",
                                     }}
                                 >
-                                    <h1 style={{textAlign: "center"}}>Create Admin</h1>
+                                    <h1 style={{textAlign: "center", marginBottom:"20px"}}>Create Admin</h1>
                                     <form>
                                         <Input
                                             type="text"
-                                            placeholder="Username"
+                                            placeholder="AdminName"
                                             className="Admin-details"
                                             name="AdminName"
                                             id="AdminName"
                                             value={admin.AdminName}
+                                            onChange={handleChange}
+                                            /*register={register} errors={errors}*/
+                                        />
+                                        <Input
+                                            type="text"
+                                            placeholder="Email"
+                                            className="Admin-details"
+                                            name="Email"
+                                            id="Email"
+                                            value={admin.email}
+                                            onChange={handleChange}
+                                            /*register={register} errors={errors}*/
+                                        />
+                                           <Input
+                                            type="text"
+                                            placeholder="Password"
+                                            className="Admin-details"
+                                            name="Password"
+                                            id="Password"
+                                            value={admin.password}
                                             onChange={handleChange}
                                             /*register={register} errors={errors}*/
                                         />
@@ -160,16 +179,6 @@ export default function Admin() {
                                             name="Contact"
                                             id="Contact"
                                             value={admin.Contact}
-                                            onChange={handleChange}
-                                            /*register={register} errors={errors}*/
-                                        />
-                                        <Input
-                                            type="text"
-                                            placeholder="Age"
-                                            className="Admin-details"
-                                            name="Age"
-                                            id="Age"
-                                            value={admin.Age}
                                             onChange={handleChange}
                                             /*register={register} errors={errors}*/
                                         />

@@ -6,7 +6,7 @@ import "./CustomizeWatchlist.css";
 import Modal from "../../Components/Modal/Modal";
 import symbols from "../../Assets/Images/Coin Images.json";
 import { getUser } from "../../Storage/SecureLs";
-import Table, {TableRow,Coin} from "../../Components/Table/Table";
+import Table, { TableRow, Coin } from "../../Components/Table/Table";
 
 const Watchlist1 = () => {
   const [coins, setCoins] = useState([]);
@@ -18,47 +18,46 @@ const Watchlist1 = () => {
   const [modalFilteredCoins, setModalFilteredCoins] = useState([]);
   const user = getUser();
   const userId = user && user.id;
-  
+
   useEffect(() => {
-
-   if(!isDeleteModalOpen && selectedCoins.length > 0){
-      const customCoins = selectedCoins.map((coin) => coin.symbol)
+    if (!isDeleteModalOpen && selectedCoins.length > 0) {
+      const customCoins = selectedCoins.map((coin) => coin.symbol);
       updateCustomCoins(customCoins);
-
     }
-  }, [selectedCoins,isDeleteModalOpen]);
+  }, [selectedCoins, isDeleteModalOpen]);
 
   const updateCustomCoins = (customCoins) => {
-    axios.post("http://localhost:8007/watchlist", {
-      userId: userId,
-      coins: customCoins
-    })
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.log("coin updating failed", error);
-    })
-
-  }
-
-  useEffect(() => {
-
-    if(coins.length > 0){
-      axios.get("http://localhost:8007/watchlist/" + userId)
-      .then ((res) => {
-        const customSymbols = res.data.coins;
-        const customCoins = coins.filter((coin) => customSymbols.includes(coin.symbol));
-        setSelectedCoins (customCoins);
-        console.log("received coins", res.data);
-        console.log("coins",customCoins);
+    axios
+      .post("http://localhost:8007/watchlist", {
+        userId: userId,
+        coins: customCoins,
+      })
+      .then((res) => {
+        console.log(res.data);
       })
       .catch((error) => {
-        console.log("error getting coins", error);
-      })
-    }
+        console.log("coin updating failed", error);
+      });
+  };
 
-   }, [coins, userId]);
+  useEffect(() => {
+    if (coins.length > 0) {
+      axios
+        .get("http://localhost:8007/watchlist/" + userId)
+        .then((res) => {
+          const customSymbols = res.data.coins;
+          const customCoins = coins.filter((coin) =>
+            customSymbols.includes(coin.symbol)
+          );
+          setSelectedCoins(customCoins);
+          console.log("received coins", res.data);
+          console.log("coins", customCoins);
+        })
+        .catch((error) => {
+          console.log("error getting coins", error);
+        });
+    }
+  }, [coins, userId]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -76,7 +75,6 @@ const Watchlist1 = () => {
             })
             .sort((a, b) => b.quoteVolume - a.quoteVolume);
           setCoins(data);
-
         } else {
           console.error("API response is not an array:", res.data);
         }
@@ -86,8 +84,6 @@ const Watchlist1 = () => {
         console.log(error);
         setIsLoading(false);
       });
-
-      
   }, []);
 
   const handleRowClick = (selectedCoin) => {
@@ -208,21 +204,24 @@ const Watchlist1 = () => {
       </div>
 
       <div className="watchlist-table-container">
-          <div className="btn">
-            <Input
-              type="button"
-              value="Add Coin"
-              green
-              style={{ width: "150px" }}
-              onClick={() => setIsDeleteModalOpen(true)}
-            />
-            <Input
-              type="button"
-              value="Remove All"
-              red
-              style={{ width: "150px", marginLeft: "10px" }}
-              onClick={() => {updateCustomCoins([]); setSelectedCoins([])} }
-            />   
+        <div className="btn">
+          <Input
+            type="button"
+            value="Add Coin"
+            green
+            style={{ width: "150px" }}
+            onClick={() => setIsDeleteModalOpen(true)}
+          />
+          <Input
+            type="button"
+            value="Remove All"
+            red
+            style={{ width: "150px", marginLeft: "10px" }}
+            onClick={() => {
+              updateCustomCoins([]);
+              setSelectedCoins([]);
+            }}
+          />
         </div>
 
         <table className="watchlist-table">
@@ -250,7 +249,9 @@ const Watchlist1 = () => {
                   </td>
                   <td style={{ width: "150px" }}>
                     <div className="coin-name-container">
-                      <span className="coin-name">{symbols[coin.symbol].name}</span>
+                      <span className="coin-name">
+                        {symbols[coin.symbol].name}
+                      </span>
                       <span className="coin-symbol">{coin.symbol}</span>
                     </div>
                   </td>
@@ -258,7 +259,7 @@ const Watchlist1 = () => {
                   <td
                     style={{
                       color:
-                        coin.priceChange> 0
+                        coin.priceChange > 0
                           ? "#21DB9A"
                           : coin.priceChange < 0
                           ? "#FF0000"
@@ -285,48 +286,47 @@ const Watchlist1 = () => {
           </tbody>
         </table>
       </div>
-      <Modal
-                  open={isDeleteModalOpen}
-                  close={() => setIsDeleteModalOpen(false)}
-                
-                >
-                  <div style={{ width: "550px" , paddingTop:"25px"}}>
-                    
-                    <div>
-                      <Input
-                        type="search"
-                        placeholder="Search"
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                    </div>
+      <Modal open={isDeleteModalOpen} close={() => setIsDeleteModalOpen(false)}>
+        <div style={{ width: "550px", paddingTop: "25px" }}>
+          <div>
+            <Input
+              type="search"
+              placeholder="Search"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
-                    
-                      <Table hover={true} style={{height:"65vh", overflowY:"auto"}} tableTop={<h2 style={{textAlign:"center"}}>Select Coin</h2>}>
-                      <TableRow data = {["Coin", "Price", "Select"]}/>
-                      { coins.map((coin) => (
-                      <TableRow key={coin.symbol}
-                            onClick={() => handleRowClick(coin)} 
-                            data = {[
-                              <Coin>{coin.symbol}</Coin>,
-                              formatCurrency(coin.lastPrice),
-                              <input
-                                type="checkbox"
-                                style={{
-                                  width: "20px",
-                                  height: "20px",
-                                  textAlign: "right",
-                                }}
-                                onChange={() => handleCoinSelect(coin)}
-                                checked={selectedCoins.some(
-                                  (c) => c.symbol === coin.symbol
-                                )}
-                              />
-                            ]}/>
-                      ))
-                        }
-                    </Table>
+          <Table
+            hover={true}
+            style={{ height: "65vh", overflowY: "auto" }}
+            tableTop={<h2 style={{ textAlign: "center" }}>Select Coin</h2>}
+          >
+            <TableRow data={["Coin", "Price", "Select"]} />
+            {coins.map((coin) => (
+              <TableRow
+                key={coin.symbol}
+                onClick={() => handleRowClick(coin)}
+                data={[
+                  <Coin>{coin.symbol}</Coin>,
+                  formatCurrency(coin.lastPrice),
+                  <input
+                    type="checkbox"
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      textAlign: "right",
+                    }}
+                    onChange={() => handleCoinSelect(coin)}
+                    checked={selectedCoins.some(
+                      (c) => c.symbol === coin.symbol
+                    )}
+                  />,
+                ]}
+              />
+            ))}
+          </Table>
 
-                    {/* <table className="watchlist-table-modal">
+          {/* <table className="watchlist-table-modal">
                       <thead
                         style={{
                           color: "#dbdbdb",
@@ -383,8 +383,8 @@ const Watchlist1 = () => {
                         ))}
                       </tbody>
                     </table> */}
-                  </div>
-                </Modal>
+        </div>
+      </Modal>
     </BasicPage>
   );
 };
