@@ -4,10 +4,11 @@ import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./AdDashboard.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
+import Table, { TableRow, Coin } from "../../Components/Table/Table";
 
 export default function AdDashboard() {
   const [adminCount, setAdminCount] = useState(0);
@@ -15,6 +16,7 @@ export default function AdDashboard() {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
   const [verificationIssues, setVerificationIssues] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -98,7 +100,6 @@ export default function AdDashboard() {
         { label: "Dashboard", path: "/admin/AdDashboard" },
         { label: "Users", path: "/admin/Users" },
         { label: "Admin", path: "/admin" },
-        { label: "Education", path: "/admin/AddResources" },
       ]}
     >
       <div style={{ display: "flex" }}>
@@ -138,9 +139,9 @@ export default function AdDashboard() {
       </div>
       <div style={{ display: "flex" }}>
         <div className="requests">
-          Verify Requests
+           <p style={{fontSize:"1.75rem", fontWeight:"500"}}>Verify Requests</p>
           <div style={{height:'410px'}}>
-            <table className="verify-table">
+            {/* <table className="verify-table">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -154,12 +155,34 @@ export default function AdDashboard() {
                     <td style={{ textAlign: "left" }}>{user.userName}</td>
                     <td>{user.requestDate}</td>
                     <td>
-                      <Input type="button" value=" Verify" outlined />
+                      <Input type="button" value=" Verify" outlined  
+                      onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}/>
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
+            <Table
+            hover={true}
+            style={{ height: "65vh", overflowY: "auto" , fontSize:"1.25rem" }}
+          >
+            <TableRow data={["Name", "Date", "Status"]} />
+            {pendingUsers.slice(0,7).map((user) => (
+              <TableRow
+                key={user.userId}
+                data={[
+                  user.userName,
+                  user.requestDate,
+                  <Input
+                    type="button"
+                    value=" Verify" 
+                    outlined  
+                      onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
+                  />,
+                ]}
+              />
+            ))}
+          </Table>
           </div>
           <div className="ViewAll-btn">
             <Link to="/admin/ViewAll">
@@ -168,9 +191,31 @@ export default function AdDashboard() {
           </div>
         </div>
         <div className="issues">
-          Verification Issues
+        <p style={{fontSize:"1.75rem", fontWeight:"500"}}> Verification Issues</p>
           <div style={{height:'410px'}}>
-            <table className="verify-table">
+          <Table
+            hover={true}
+            style={{ height: "65vh", overflowY: "auto" , fontSize:"1.25rem" }}
+          >
+            <TableRow data={["Name", "Issue", "Status"]} />
+            {verificationIssues.slice(0,7).map((user) => (
+              <TableRow
+                key={user.userId}
+                data={[
+                  user.userName,
+                  user.issue,
+                  <Input
+                    type="button"
+                    value="Review" 
+                    outlined  
+                    red
+                    onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
+                  />,
+                ]}
+              />
+            ))}
+          </Table>
+            {/* <table className="verify-table">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -189,7 +234,7 @@ export default function AdDashboard() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
           </div>
           <div className="ViewAll-btn">
             <Link to="/admin/ViewIssues">
