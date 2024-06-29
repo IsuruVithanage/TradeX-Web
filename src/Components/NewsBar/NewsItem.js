@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import defaultImage from '../../Assets/Images/image.jpg'; 
 import axios from 'axios'; 
 import { FaRegHeart, FaHeart } from 'react-icons/fa'; 
@@ -12,6 +12,7 @@ import './NewsItem.css';
 import { showMessage } from '../Message/Message';
 
 
+
 const NewsItem = (props) => {
   const { newsId, url, title, description, image, isFavorite, isLiked, isDisliked, userId, publishedAt } = props;
   const [isHeartFilled, setIsHeartFilled] = useState(isFavorite || false);
@@ -19,6 +20,12 @@ const NewsItem = (props) => {
   const [isDislike, setIsDislike ] = useState(isDisliked || false);  
   const [likeCount, setLikeCount] = useState(props.likeCount || 0);
   const [dislikeCount, setDislikeCount] = useState(props.dislikeCount || 0);
+
+
+
+  useEffect(() => {
+    startWebSocket();
+  }, []); 
 
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
@@ -38,6 +45,31 @@ const NewsItem = (props) => {
       });
     
   };
+
+  const startWebSocket = () =>{
+    const ws = new WebSocket('ws://localhost:8082');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type ) {
+              console.log("data",data)
+              if (data.type === 'liked' && data.likeDetail.newsId === newsId) {
+                setLikeCount(parseInt(data.likeDetail.likeCount.likeCount));
+              }else if(data.type === 'disLiked' && data.disLikeDetail.newsId === newsId){
+                console.log("dislike",data.disLikeDetail.likeCount.dislikeCount);
+                setDislikeCount(parseInt(data.disLikeDetail.likeCount.dislikeCount));
+
+              }         
+             } 
+        };
+        return () => {
+            ws.close();
+        };
+  }
 
   // Event handler for incrementing like count
   const handleLikeClick = () => {
@@ -120,7 +152,6 @@ const NewsItem = (props) => {
           <div className='like-icon-container'>
             <div onClick={handleLikeClick}>
               {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
-
             </div>
             <div onClick={handleDislikeClick}>
               {dislikeCount} {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
