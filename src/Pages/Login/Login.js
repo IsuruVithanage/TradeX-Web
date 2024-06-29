@@ -57,7 +57,7 @@ function Login() {
                 await notificationManager.getToken();
                 setIsLoading(false);
 
-                if (user.role === 'User' || (user.role === 'Trader' && user.hasTakenQuiz)) {
+                if (user.role === 'User' || user.role === 'PendingTrader' || (user.role === 'Trader' && user.hasTakenQuiz)) {
                     navigate('/watchlist');
                 } else if (user.role === 'Admin') {
                     navigate('/admin/AdDashboard');
