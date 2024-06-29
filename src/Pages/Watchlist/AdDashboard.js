@@ -152,7 +152,7 @@ export default function AdDashboard() {
                 {pendingUsers.slice(0,7).map((user) => (
                   <tr key={user.userId}>
                     <td style={{ textAlign: "left" }}>{user.userName}</td>
-                    <td>{user.Date}</td>
+                    <td>{user.requestDate}</td>
                     <td>
                       <Input type="button" value=" Verify" outlined />
                     </td>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'; 
 import NewsItem from '../../Components/NewsBar/NewsItem'; 
 import "./News.css"; 
-import Input from '../../Components/Input/Input'; 
+import Input from '../../Components/Input/Input';
 import axios from 'axios'; 
 import {getUser} from '../../Storage/SecureLs';
 
