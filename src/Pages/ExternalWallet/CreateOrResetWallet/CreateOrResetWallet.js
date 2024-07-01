@@ -11,9 +11,8 @@ import "./CreateOrResetWallet.css";
 export default function CreateWallet() {
   const navigate = useNavigate();
   const action = useLocation().pathname.slice(8);
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState(action === 'create' && getUser().walletId ? 'Already have Wallet' : '')
   const [isLoading, setIsLoading] = useState(false);
-
 
   function navigateToSecretPhrase(user) {
     setIsLoading(false);
@@ -121,6 +120,7 @@ export default function CreateWallet() {
       description="This password is used to protect your wallet and provide access to the browser web wallet."
       isLoading={isLoading}
       errorMessage={errorMessage}
+      isNextActive={action === 'create' && getUser().walletId ? false : true }
       onNext={register}
       onBack={goBack}
     >

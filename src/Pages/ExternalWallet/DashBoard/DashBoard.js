@@ -11,8 +11,10 @@ import { MdOutlineAssignment, } from "react-icons/md";
 import coins from '../../../Assets/Images/Coin Images.json';
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
+import { useNavigate } from 'react-router-dom';
 
 export default function DashBoard() {
+    const navigate = useNavigate();
     const user = getUser();
     const userId = user && user.id;
     const walletId = user && user.walletId;
@@ -30,7 +32,7 @@ export default function DashBoard() {
 
     // initial data fetching
     useEffect(() => {
-        
+
         const getWalletData = async () => {
             setIsLoading(true);
             
@@ -57,8 +59,12 @@ export default function DashBoard() {
             });
         }
 
-        getWalletData();
-
+        if(!walletId){
+            navigate('/wallet');
+         }else{
+            getWalletData(); 
+         }
+         
         notificationManager.onAppNotification(() => {
             getWalletData();
         });
@@ -196,7 +202,7 @@ export default function DashBoard() {
                             <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                 <div style={{ marginTop: "30px" }}>
                                     <p style={{ color: "#9e9e9e", fontSize: "17px", fontWeight: "bold" }}>Wallet Address:</p>
-                                    <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                                    <p className='address1'>{walletAddress || "wallet Address not found"}</p>
                                 </div>
                                 <Input type="button" value="Copy" style={{ marginTop: "20px" }} onClick={() => {
                                     navigator.clipboard.writeText(walletAddress);

@@ -63,21 +63,10 @@
 
 }
 .custom-button {
-    border-radius: 8px;
-    background: #21db9a;
-    width: 126px;
-    height: 42px;
-    flex-shrink: 0;
+   
     position: fixed;
     top: 67%;
     left: 2%;
     transform: translate(40%, -75%);
-    color: #FFF;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-    letter-spacing: -0.34px;
-    border: none;
+    
 }
