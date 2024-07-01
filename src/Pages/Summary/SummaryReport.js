@@ -54,10 +54,10 @@ const SummaryReport = ({
 
   const topGainers = coins
     .sort((a, b) => b.priceChangePercent - a.priceChangePercent)
-    .slice(0, 4);
+    .slice(0, 5);
   const topLosers = coins
     .sort((a, b) => a.priceChangePercent - b.priceChangePercent)
-    .slice(0, 4);
+    .slice(0, 5);
 
   const formatCurrency = (amount) => {
     return (
