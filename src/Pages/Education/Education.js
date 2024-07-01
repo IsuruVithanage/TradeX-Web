@@ -18,6 +18,7 @@ function Education() {
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
   const userId = 1;
 
   const loadResources = async (e) => {
@@ -59,21 +60,18 @@ function Education() {
       setDescription("");
       setImage("");
       setUrl("");
+      setIsdeleteModalOpen(false);
+      loadResources(); 
+     
     } catch (error) {
       console.error("Error adding resource", error);
       setMessage("Error adding resource");
     }
   };
 
-  // const handleDelete = async (eduId) => {
-  //   try {
-  //     await axios.delete(`http://localhost:8009/education/deleteEduResources/${eduId}`);
-  //     setEducationItems(educationItems.filter((resource) => resource.id !== eduId));
-  //   } catch (error) {
-  //     console.error("Error deleting resource", error);
-  //     // Handle error state or display an error message
-  //   }
-  // };
+  const filteredEducationItems = educationItems.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <BasicPage
@@ -111,7 +109,7 @@ function Education() {
         </div>}> */}
       <div style={{ display: "flex" }}>
         <div className="search">
-          <Input type={"search"} placeholder={"search"} />
+          <Input type={"search"} placeholder={"search"} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <div>
           <Input
@@ -136,8 +134,8 @@ function Education() {
                   marginBottom: "25px",
                 }}
               >
-                <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-                  Add Education Resources
+                <h1 style={{ textAlign: "center", marginBottom: "20px", color:"white" }}>
+                  Add Educational Resources
                 </h1>
                 <form style={{ marginLeft: "3px" }}>
                   <Input
@@ -250,7 +248,7 @@ function Education() {
         </div>
       </div>
       <div className="education-resources">
-      {educationItems.map(resource => (
+      {filteredEducationItems.map(resource => (
         <EducationItem
           key={resource.eduId}
           eduId={resource.eduId}

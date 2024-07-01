@@ -5,8 +5,6 @@ import axios from "axios";
 import "./EducationItems.css";
 import {RiDeleteBin6Line} from "react-icons/ri";
 
-
-
 const EducationItem = (props) => {
   const { eduId, userId, title, description, image, url, isFavorite, load } = props
   const [isHeartFilled, setIsHeartFilled] = useState(isFavorite);

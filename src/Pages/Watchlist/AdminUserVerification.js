@@ -29,7 +29,7 @@ export default function AdminUserVerification() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: id }),
+          body: JSON.stringify({ id: id }),
         }
       );
       const data = await response.json();
@@ -54,7 +54,7 @@ export default function AdminUserVerification() {
           body: JSON.stringify(ob),
         });
         if (response.ok) {
-          showMessage("success", "Issue added successfully!");
+          showMessage("warning", "Issue added successfully!");
           navigate(`/admin/ViewAll/`);
         }
       } else {
@@ -73,8 +73,9 @@ export default function AdminUserVerification() {
           }
         );
         if (response.ok) {
-          showMessage("warning", "User verified successfully!");
-          navigate(`/admin/ViewAll/`);
+          showMessage("success", "User verified successfully!");
+          navigate(`/admin/AdDashboard/`);
+          
         }
       }
     } catch (error) {
