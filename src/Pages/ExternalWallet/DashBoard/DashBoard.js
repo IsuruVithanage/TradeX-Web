@@ -11,14 +11,16 @@ import { MdOutlineAssignment, } from "react-icons/md";
 import coins from '../../../Assets/Images/Coin Images.json';
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
+import { useNavigate } from 'react-router-dom';
 
 export default function DashBoard() {
+    const navigate = useNavigate();
     const user = getUser();
     const userId = user && user.id;
     const walletId = user && user.walletId;
     const [action, setAction] = useState("Send")
     const [assets, setAssets] = useState([])
-    const [portfolioValue, setPortfolioValue] = useState(0)
+    const [walletValue, setWalletValue] = useState(0)
     const [usdBalance, setUsdBalance] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
     const [receivingWallet, setReceivingWallet] = useState("")
@@ -30,7 +32,7 @@ export default function DashBoard() {
 
     // initial data fetching
     useEffect(() => {
-        
+
         const getWalletData = async () => {
             setIsLoading(true);
             
@@ -40,7 +42,7 @@ export default function DashBoard() {
             .then(res => {
                 console.log(res.data);
                 setWalletAddress(res.data.address)
-                setPortfolioValue(res.data.portfolioValue)
+                setWalletValue(res.data.walletValue)
                 setUsdBalance(res.data.usdBalance)
                 setAssets(res.data.assets)
                 setIsLoading(false)
@@ -57,8 +59,12 @@ export default function DashBoard() {
             });
         }
 
-        getWalletData();
-
+        if(!walletId){
+            navigate('/wallet');
+         }else{
+            getWalletData(); 
+         }
+         
         notificationManager.onAppNotification(() => {
             getWalletData();
         });
@@ -95,7 +101,7 @@ export default function DashBoard() {
                 console.log(res.data)
                 setAssets(res.data.assets);
                 setUsdBalance(res.data.usdBalance);
-                setPortfolioValue(res.data.portfolioValue);
+                setWalletValue(res.data.walletValue);
                 setReceivingWallet("");
                 setSelectedCoin(null);
                 setQuantity(null);
@@ -142,7 +148,7 @@ export default function DashBoard() {
             if (asset && quantity > asset.balance) {
                 setIsInvalid([true, "Insufficient Balance"]);
             }
-        } else {
+        }else {
             if (selectedCoin || quantity || receivingWallet) {
                 setIsInvalid([true, "Please fill all the fields"]);
             } else {
@@ -196,7 +202,7 @@ export default function DashBoard() {
                             <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                 <div style={{ marginTop: "30px" }}>
                                     <p style={{ color: "#9e9e9e", fontSize: "17px", fontWeight: "bold" }}>Wallet Address:</p>
-                                    <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                                    <p className='address1'>{walletAddress || "wallet Address not found"}</p>
                                 </div>
                                 <Input type="button" value="Copy" style={{ marginTop: "20px" }} onClick={() => {
                                     navigator.clipboard.writeText(walletAddress);
@@ -217,7 +223,7 @@ export default function DashBoard() {
                     </div>
                 }>
 
-                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue} />
+                <ValueBar usdBalance={usdBalance} value={walletValue} type = 'wallet' />
 
                 <Table emptyMessage="No Holdings to Show">
                     <TableRow data={[
