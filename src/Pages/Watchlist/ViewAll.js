@@ -85,9 +85,9 @@ export default function ViewAll() {
   return (
     <BasicPage
       tabs={[
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
+        { label: "Dashboard", path: "/admin/AdDashboard" },
+        { label: "Users", path: "/admin/Users" },
+        { label: "Admin", path: "/admin/Admin" },
       ]}
     >
       <div style={{ display: "flex" }}>
@@ -158,9 +158,6 @@ export default function ViewAll() {
           </table>
         </div>
       </div>
-      <Link to="/Admin/AdminUserVerification">
-        <Input type="button" value="View" style={{ width: "90px" }} />
-      </Link>
     </BasicPage>
   );
 }

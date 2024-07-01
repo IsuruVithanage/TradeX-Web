@@ -80,3 +80,10 @@ a {
     text-decoration: none;
   }
   
+  .delete-icon-container {
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    margin-top: 55px;
+    font-size: 20px;
+}
