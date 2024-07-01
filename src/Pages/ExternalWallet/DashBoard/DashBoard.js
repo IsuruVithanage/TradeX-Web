@@ -11,6 +11,7 @@ import { MdOutlineAssignment, } from "react-icons/md";
 import coins from '../../../Assets/Images/Coin Images.json';
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
+import Modal from '../../../Components/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
 
 export default function DashBoard() {
@@ -28,6 +29,8 @@ export default function DashBoard() {
     const [quantity, setQuantity] = useState(null)
     const [isInvalid, setIsInvalid] = useState([true, null])
     const [walletAddress, setWalletAddress] = useState("")
+    const [ isConfirmModalOpen, setIsConfirmModalOpen ] = useState(false);
+
 
 
     // initial data fetching
@@ -50,6 +53,8 @@ export default function DashBoard() {
             })
             .catch(error => {
                 console.log(error);
+                setWalletValue(0)
+                setUsdBalance(0)
                 setIsLoading(false)
 
                 error.response ?
@@ -194,7 +199,7 @@ export default function DashBoard() {
 
                                 <Input type="number" label='Quantity' min={0} value={quantity} onChange={setQuantity} />
 
-                                <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{ marginTop: "50px" }} />
+                                <Input type="button" value="Transfer" onClick={() => setIsConfirmModalOpen(true)} disabled={isInvalid[0]} style={{ marginTop: "50px" }} />
 
                                 <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > {isInvalid[1]} </p>
                             </div>
@@ -251,6 +256,60 @@ export default function DashBoard() {
                     ))}
                 </Table>
             </SidePanelWithContainer>
+
+
+            <Modal open={isConfirmModalOpen} close={setIsConfirmModalOpen}>
+                <div style={{width:"420px", paddingTop:"15px"}}>
+                    <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
+                        <div>
+                            <h1 style={{color: "#FFFFFF"}}>Transfer Confirmation</h1>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "25px"}}>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <img src={selectedCoin && coins[selectedCoin].img} alt={selectedCoin} width="30px"/>
+                                    <div style={{marginLeft: "10px"}}>
+                                        <p style={{margin: "0", fontSize: "16px"}}>{selectedCoin && coins[selectedCoin].name}</p>
+                                        <p style={{margin: "0", color: "#9E9E9E", fontWeight: "600"}}>{selectedCoin}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                                    <span style={{color: "#FF0000", fontWeight: "700"}}>{
+                                        selectedCoin && quantity && assets.find(asset => asset.coin === selectedCoin) &&
+                                        (quantity / assets.find(asset => asset.coin === selectedCoin).balance * 100).toFixed(2)
+                                    } %</span>
+                                    <p style={{color: "#9E9E9E", marginTop: "3px"}}>of Your Balance</p>
+                                </div>
+                            </div>
+
+                            <div style={{marginTop: "50px", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <span style={{color: "#FFFFFF", fontWeight: "600"}}>To</span>
+                                <span style={{color: "#9E9E9E", width: "65%", textAlign: "center", fontSize: "12px"}}>{receivingWallet}</span>
+                            </div>
+
+                            <hr style={{borderColor: "#6D6D6D", margin: "25px 0"}}/>
+
+                            <div style={{marginTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <span style={{color: "#FFFFFF", fontWeight: "600"}}>Quantity</span>
+                                <span style={{color: "#9E9E9E", width: "65%", textAlign: "right"}}>{quantity}</span>
+                            </div>
+                        </div>
+
+                        <div className="edit-alert-modal-button-container" style={{width: "83%"}}>
+                            <Input
+                                type="button" 
+                                style={{width:"120px"}}
+                                value="Confirm"
+                                onClick={() => {setIsConfirmModalOpen(false); transfer()}} 
+                            />
+
+                            <Input
+                                type="button" style={{width:"120px"}} red
+                                value="Cancel"
+                                onClick={() => setIsConfirmModalOpen(false)} />
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </BasicPage>
     )
 

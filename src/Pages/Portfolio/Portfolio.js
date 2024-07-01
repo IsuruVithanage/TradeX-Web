@@ -69,7 +69,7 @@ export default function Portfolio() {
                 style={{height: '75vh'}}
                 header="Composition"
                 sidePanel={<BarChart bars={percentages}/>}>
-                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue}/>
+                <ValueBar usdBalance={usdBalance} value={portfolioValue} type="portfolio"/>
                 <LineChart data={initialData} lineType={2}></LineChart>
             </SidePanelWithContainer>
 
