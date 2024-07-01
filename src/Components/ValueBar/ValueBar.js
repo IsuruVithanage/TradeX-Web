@@ -3,11 +3,11 @@ import './ValueBar.css';
 
 export default function ValueBar(props) {
     const formatCurrency = (amount) => {
-        return amount !== null ?
+        return amount === null || amount === undefined ? '' :
          ('$ ' + amount.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
-        })) : ' ';
+        }));
     }
 
     const usd = formatCurrency(props.usdBalance);
