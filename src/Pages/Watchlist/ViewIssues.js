@@ -9,12 +9,14 @@ import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminUserVerification";
+import Table, { TableRow } from "../../Components/Table/Table";
 
 export default function ViewAll() {
   const [adminCount, setAdminCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
+  const [verificationIssues, setVerificationIssues] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,21 +32,6 @@ export default function ViewAll() {
     };
 
     fetchAdminCount();
-  }, []);
-
-  useEffect(() => {
-    const fetchPendingUsers = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8004/admin/getPendingUsers"
-        );
-        setPendingUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching pending users:", error);
-      }
-    };
-
-    fetchPendingUsers();
   }, []);
 
   useEffect(() => {
@@ -75,6 +62,22 @@ export default function ViewAll() {
     };
 
     fetchVerifiedUserCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchVerificationIssues = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/admin/getUsersWithVerificationIssues"
+        );
+        setVerificationIssues(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching verification issues:", error);
+      }
+    };
+
+    fetchVerificationIssues();
   }, []);
 
   const viewDetails = (id) => {
@@ -127,7 +130,7 @@ export default function ViewAll() {
       </div>
       <div>
         <div className="info">
-          <table className="info-table">
+          {/* <table className="info-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -155,7 +158,30 @@ export default function ViewAll() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Table
+              hover={true}
+              style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
+            >
+              <TableRow data={["Name", "Email", "Contact", "Issue", "Upload Materials"]} />
+              {verificationIssues.map((user) => (
+                <TableRow
+                  key={user.userId}
+                  data={[
+                    user.userName,
+                    user.email,
+                    user.phoneNumber,
+                    user.issue,
+                    <Input
+                    type="button"
+                    value=" View"
+                    style={{ width: "90px" }}
+                    onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
+                    />,
+                  ]}
+                />
+              ))}
+            </Table>
         </div>
       </div>
     </BasicPage>

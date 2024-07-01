@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
-import React, { useEffect, useRef, useState } from "react";
 import Input from "../../Components/Input/Input";
 import { useParams, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
@@ -30,7 +29,7 @@ export default function AdminUserVerification() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: id }),
+          body: JSON.stringify({ id: id }),
         }
       );
       const data = await response.json();
@@ -55,7 +54,7 @@ export default function AdminUserVerification() {
           body: JSON.stringify(ob),
         });
         if (response.ok) {
-          showMessage("success", "Issue added successfully!");
+          showMessage("warning", "Issue added successfully!");
           navigate(`/admin/ViewAll/`);
         }
       } else {
@@ -74,8 +73,9 @@ export default function AdminUserVerification() {
           }
         );
         if (response.ok) {
-          showMessage("warning", "User verified successfully!");
-          navigate(`/admin/ViewAll/`);
+          showMessage("success", "User verified successfully!");
+          navigate(`/admin/AdDashboard/`);
+          
         }
       }
     } catch (error) {
