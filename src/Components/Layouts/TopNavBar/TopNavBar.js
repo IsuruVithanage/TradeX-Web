@@ -108,7 +108,7 @@ function ProfileMenu (props){
                 <span className='row-icon'><HiOutlineUserCircle size={28}/></span>
                 <span className='row-name'>Profile</span>
             </div>
-            {user && user.isVerified === "No" &&
+            {user && user.role === "User" &&
                 <div className='profile-raw' onClick={() => navigate('/verify')}>
                     <span className='row-icon'><PiUserFocus size={30} fill='#6D6D6D'/></span>
                     <span className='row-name'>Verify User</span>
