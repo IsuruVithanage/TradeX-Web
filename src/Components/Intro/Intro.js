@@ -1,26 +1,16 @@
 import React from 'react'
+import './Intro.css'
 
 export default function Intro(props) {
-    const { image, title, description } = props;
+    const { left, image, title } = props;
     return (
-        <div className='intro-container'>
-            <div className='intro-inner-container'>
-                { left && <ImgContainer image={image}/> }
-                <div className='intro-text-container'>
-                    <h1>{title}</h1>
-                    <p>{description}</p>
-                </div>
-                { right && <ImgContainer image={image}/> }
+        <div className='intro-container' style={props.style}>
+            { !left && <img className='intro-image' src={image} alt='image' /> }
+            <div className='intro-text-container'>
+                <h1 className='intro-title'>{title}</h1>
+                <p className='intro-description'>{props.children}</p>
             </div>
-        </div>
-    )
-}
-
-
-function ImgContainer({image}){
-    return(
-        <div className='intro-img-container'>
-            <img className='intro-image' src={image} alt='image' />
+            { left && <img className='intro-image' src={image} alt='image' /> }
         </div>
     )
 }

@@ -106,7 +106,6 @@ function Login() {
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
-                                autoComplete="username"
                                 underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}
@@ -135,6 +134,7 @@ function Login() {
                                 name="password"
                                 id="password"
                                 underline
+                                autoComplete="password"
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
