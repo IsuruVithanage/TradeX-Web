@@ -18,7 +18,7 @@ export default function DashBoard() {
     const walletId = user && user.walletId;
     const [action, setAction] = useState("Send")
     const [assets, setAssets] = useState([])
-    const [portfolioValue, setPortfolioValue] = useState(0)
+    const [walletValue, setWalletValue] = useState(0)
     const [usdBalance, setUsdBalance] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
     const [receivingWallet, setReceivingWallet] = useState("")
@@ -40,7 +40,7 @@ export default function DashBoard() {
             .then(res => {
                 console.log(res.data);
                 setWalletAddress(res.data.address)
-                setPortfolioValue(res.data.portfolioValue)
+                setWalletValue(res.data.walletValue)
                 setUsdBalance(res.data.usdBalance)
                 setAssets(res.data.assets)
                 setIsLoading(false)
@@ -95,7 +95,7 @@ export default function DashBoard() {
                 console.log(res.data)
                 setAssets(res.data.assets);
                 setUsdBalance(res.data.usdBalance);
-                setPortfolioValue(res.data.portfolioValue);
+                setWalletValue(res.data.walletValue);
                 setReceivingWallet("");
                 setSelectedCoin(null);
                 setQuantity(null);
@@ -142,7 +142,7 @@ export default function DashBoard() {
             if (asset && quantity > asset.balance) {
                 setIsInvalid([true, "Insufficient Balance"]);
             }
-        } else {
+        }else {
             if (selectedCoin || quantity || receivingWallet) {
                 setIsInvalid([true, "Please fill all the fields"]);
             } else {
@@ -217,7 +217,7 @@ export default function DashBoard() {
                     </div>
                 }>
 
-                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue} />
+                <ValueBar usdBalance={usdBalance} value={walletValue} type = 'wallet' />
 
                 <Table emptyMessage="No Holdings to Show">
                     <TableRow data={[
