@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { Modal, message } from "antd";
@@ -28,7 +28,7 @@ function Answerset(props) {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
+      onOk() { 
         handleDelete(answerId);
       },
       onCancel() {
@@ -59,35 +59,30 @@ function Answerset(props) {
       {answerlist &&
         answerlist.map((record) => (
           <div className="question-answer-container" key={record.answerId}>
-            <h5 className="question-title">
-              Question:{" "}
-              {record.question ? record.question.title : "Unknown Title"}
-            </h5>
-            <div className="answer-content">
-              <Link to={`/forum/discussion/${record.questionId}`}>
-                <p className="answer-text">{record.comment}</p>
-                <div className="action-buttons">
-                  <button
-                    className="edit-button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleEdit(record.answerId, record.questionId);
-                    }}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      showDeleteConfirm(record.answerId);
-                    }}
-                  >
-                    <MdDelete />
-                  </button>
-                </div>
-              </Link>
-            </div>
+            <Link to={`/forum/discussion/${record.questionId}`}>
+              <h4 className="question-title">{record.questionTitle}</h4>
+              <p className="answer-text">{record.comment}</p>
+              <div className="action-buttons">
+                <button
+                  className="edit-button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleEdit(record.answerId, record.questionId);
+                  }}
+                >
+                  <FaRegEdit />
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    showDeleteConfirm(record.answerId);
+                  }}
+                >
+                  <MdDelete />
+                </button>
+              </div>
+            </Link>
           </div>
         ))}
     </div>

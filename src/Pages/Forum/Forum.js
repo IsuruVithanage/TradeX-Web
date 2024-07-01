@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 import "./forum.css";
@@ -13,6 +19,7 @@ import axios from "axios";
 
 export default function Forum() {
   let { id } = useParams();
+  const navigate = useNavigate();
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
@@ -20,6 +27,8 @@ export default function Forum() {
   ];
 
   const [questionlist, setQuestionList] = useState([]);
+
+  const [search, setSearch] = useState("");
 
   const loadQuestions = async () => {
     try {
@@ -91,6 +100,10 @@ export default function Forum() {
     return favorites.some((fav) => fav.questionId === questionId);
   };
 
+  const filteredQuestions = questionlist.filter((question) =>
+    question.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <BasicPage tabs={Tabs}>
       <SidePanelWithContainer
@@ -99,7 +112,11 @@ export default function Forum() {
         sidePanel={
           <div>
             {favorites.map((fav) => (
-              <p key={fav.id} className="sub-title">
+              <p
+                key={fav.id}
+                className="sub-title"
+                onClick={() => navigate(`/forum/discussion/${fav.questionId}`)}
+              >
                 {fav.title}
               </p>
             ))}
@@ -110,20 +127,17 @@ export default function Forum() {
           <Input
             type="search"
             placeholder="Search"
-            style={{ width: "600px", marginLeft: "20px" }}
+            style={{ width: "45rem", marginLeft: "20px", marginTop: "0.6rem" }}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <Link to="/forum/AskQuestion">
             <Input
               type="button"
               value="Ask Question"
               className="question_button"
-              style={{ width: "130px", marginLeft: "15%" }}
+              style={{ width: "130px", marginLeft: "15%", marginTop: "0.6rem" }}
             />
           </Link>
-          <RiSoundModuleLine
-            className="filter-icon"
-            style={{ color: "#6D6D6D", marginLeft: "15%", size: "20px" }}
-          ></RiSoundModuleLine>
         </div>
 
         <div className="topic-row">
@@ -141,8 +155,8 @@ export default function Forum() {
           </div>
         </div>
 
-        {questionlist ? (
-          <Questionset questionlist={questionlist} />
+        {filteredQuestions ? (
+          <Questionset questionlist={filteredQuestions} />
         ) : (
           <div></div>
         )}

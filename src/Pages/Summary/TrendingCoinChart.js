@@ -44,7 +44,7 @@ const TrendingCoinChart = () => {
         return data.filter((_, index) => index % interval === 0);
       };
 
-      const sampledPrices = sampleData(coinData.prices, 10); // Adjust the interval as needed
+      const sampledPrices = sampleData(coinData.prices, 10);
 
       const labels = sampledPrices.map((price) => {
         const date = new Date(price[0]);

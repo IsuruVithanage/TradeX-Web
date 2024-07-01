@@ -11,7 +11,8 @@
 }
 .ask-ques-container h2{
     padding: 0px 0px 20px 0px;
-    color: white;
+    color: #21DB9A;
+    margin-left: 3.4rem;
 }
 .ask-ques-title p{
     font-size: 12px;
@@ -23,11 +24,11 @@
 .ask-ques-title h3{
     color: white;
     font-size: 20px;
-
+    margin-left: 3.4rem;
 }
 .body h3{
     color: white;
-    
+    margin-left: 3.4rem;
 }
 .body p{
     color: #9e9e9e ;
@@ -35,20 +36,18 @@
 }
 
 
-.text-editor{
-   
-    
-}
-.text-editor p {
-    
+
+.body  .text-editor p {
+    margin-left: 2.3rem;
     font-size: 16px;
-    height: 35vh;
+    height: 20vh;
     background-color:#3c3c3c ;
+    border-radius: 5px;
   }
 .ql-toolbar.ql-snow{
     color: #9e9e9e;
     border: none !important;
-    
+    margin-left: 2.3rem;
 }
 .text-editor  .ql-stroke{
     color: #9e9e9e;
@@ -79,7 +78,7 @@ Input::placeholder {
         width: 70px;
         height:35px;
         font-size: 15px;
-        margin-left: 1rem;
+        margin-left: 4rem;
     }
 
     .submit-buttons{

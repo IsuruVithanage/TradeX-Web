@@ -1,32 +1,27 @@
-
 import React from "react";
 import TopNavBar from "../TopNavBar/TopNavBar";
 import SideNavBar from "../SideNavBar/SideNavBar";
 import { PageLoading } from "../../Loading/Loading";
-import './BasicPage.css'
-
+import "./BasicPage.css";
 
 function BasicPage(props) {
-    return (
-        <div>
-            {props.sideNavBar !== false && <SideNavBar/>}
-            {props.topNavBar !== false && <TopNavBar {...props}/>}
+  return (
+    <div>
+      {props.sideNavBar !== false && <SideNavBar />}
+      {props.topNavBar !== false && <TopNavBar {...props} />}
 
+      {props.isLoading && <PageLoading />}
+      {props.isLoading && <div className="page-loading-dimmer" />}
 
-            {props.isLoading && <PageLoading/>}
-            {props.isLoading && <div className="page-loading-dimmer"/>}
-
-
-            <div className={
-                `main-container 
-                ${props.sideNavBar === false && 'full-width'}
-                ${props.topNavBar === false && 'full-height'}`
-            }>
-
-                {props.children}
-            </div>
-        </div>
-    )
+      <div
+        className={`main-container 
+                ${props.sideNavBar === false && "full-width"}
+                ${props.topNavBar === false && "full-height"}`}
+      >
+        {props.children}
+      </div>
+    </div>
+  );
 }
 
 export default BasicPage;
