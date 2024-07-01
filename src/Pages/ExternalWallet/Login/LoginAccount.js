@@ -92,6 +92,7 @@ export default function LoginAccount () {
         type="text"	
         placeholder="Enter user name"
         id="username"
+        autoComplete="wallet-username"
         underline
         style={{marginTop: "4vh", width: "350px"}}
       />
@@ -100,6 +101,7 @@ export default function LoginAccount () {
         type="password"
         placeholder="Enter your password"
         id="password"
+        autoComplete="wallet-password"
         underline
         style={{marginTop: "4vh", width: "350px"}}
       />
