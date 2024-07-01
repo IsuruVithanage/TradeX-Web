@@ -128,6 +128,7 @@ export default function CreateWallet() {
         type="text"	
         placeholder="Enter user name"
         id="username"
+        autoComplete="wallet-username"
         errorMessage={false}
         underline
         style={{marginTop: "2vh", width: "350px"}}
@@ -143,6 +144,7 @@ export default function CreateWallet() {
         newInput={{
           placeholder: "Enter New password",
           id: "password",
+          autoComplete: "wallet-password",
           underline: true,
           style: {marginTop: "4vh", width: "350px"}
         }}
