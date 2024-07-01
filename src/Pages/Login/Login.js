@@ -78,12 +78,10 @@ function Login() {
     useEffect(() => {
         if(action === "Login"){
             setValues({email: "", password: ""});
-            document.getElementById('email').focus();
         }
 
         if(action === "SignUp"){
             setValues({username: "", email: "", password: ""});
-            document.getElementById('username').focus();
         }
         setErrorMessage('');
     }, [action]);
@@ -108,6 +106,7 @@ function Login() {
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
+                                autoComplete="username"
                                 underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}
@@ -122,6 +121,7 @@ function Login() {
                                 value={values.email || ""}
                                 name="email"
                                 id="email"
+                                autoComplete="email"
                                 underline
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}

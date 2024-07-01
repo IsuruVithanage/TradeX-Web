@@ -39,7 +39,10 @@ export default function App() {
                 />
             </div>
 
-            <div className='home-details-container'>
+
+            
+
+            {/* <div className='home-details-container'>
                 <div className='home-anchor-container'>
                     <Anchor items={items} replace={true} />
                 </div>
@@ -56,7 +59,7 @@ export default function App() {
                     <Documentation id='suggestions'></Documentation>
                     <Documentation id='wallet'></Documentation>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
