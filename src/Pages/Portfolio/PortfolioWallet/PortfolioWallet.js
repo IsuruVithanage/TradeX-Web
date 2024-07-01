@@ -361,7 +361,7 @@ export default function FundingWallet() {
             <Modal open={isAddressModalOpen} close={setIsAddressModalOpen}>
                 <div style={{width:"420px", paddingTop:"15px"}}>
                     <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
-                        <h1 style={{textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
+                        <h1 style={{color: "#FFFFFF", textAlign:"center", marginBottom: "25px"}}>Wallet Address</h1>
 
                         <div className='wallet-address' onClick={() =>{
                             if(!walletAddress){
@@ -375,16 +375,12 @@ export default function FundingWallet() {
                         </div>
 
                         <p style={{textAlign:"center", marginTop:"18px", color: "#9E9E9E"}}><i>Click on the address to copy</i></p>
-                        {!isRegenerate ?
+                        
                             <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "97%"}}>
-                                <i style={{color: "#21db9a", margin: "0"}}>Note:</i>
-                                &ensp;If you Regenerate a new wallet Address, your old address is no longer valid for<br/> making transactions.
-                            </p> :
-                            <p style={{textAlign:"center", margin:"35px auto", color: "#9E9E9E", width: "100%"}}>
-                                <i style={{color: "#21db9a", margin: "0"}}>Are you sure?</i>
-                                &ensp;Do you still wish to generate a new wallet address? This action cannot be undone.
+                                <i style={{color: !isRegenerate ? "#21db9a" : "#FF0000", fontWeight: "600", margin: "0"}}>{ !isRegenerate ? "Note: " : "Are you sure? " }</i>
+                                &ensp;{ !isRegenerate ? "If you Regenerate a new wallet Address, your old address is no longer valid for making transactions." :
+                                "Do you still wish to generate a new wallet address? This action cannot be undone." }
                             </p>
-                        }
 
                         <div className="edit-alert-modal-button-container" style={{width: "83%"}}>
                             <Input
