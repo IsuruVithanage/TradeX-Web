@@ -6,7 +6,7 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 import { PiUserFocus } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
 import { BiShieldX } from "react-icons/bi";
-import { getUser } from "../../../Storage/SecureLs";
+import { getUser, setUser } from "../../../Storage/SecureLs";
 import AppNotification from '../../AppNotification/AppNotification';
 import wallet from '../../../Assets/Images/wallet.png'
 import './TopNavBar.css';
@@ -14,14 +14,14 @@ import './TopNavBar.css';
 
 export default function TopNavBar(props) {
     const currentLocation = useLocation().pathname + useLocation().search;
+    const isWallet = useLocation().pathname.startsWith('/wallet');
     const [activePage, setActivePage] = useState(props.subPages ? props.subPages.pages[0].value : undefined);
     const [activeLink, setActiveLink] = useState(currentLocation);
     const [isProfileMenuVisible, setProfileMenuVisible] = useState(false);
 
     const navigate = useNavigate();
     const user = getUser();
-    const userName = user ? user.userName : 'Kamal Silva';
-   
+    const userName = !isWallet ? user.userName : user.walletUserName;   
 
     const handleSubPagesClick = (page) => {
         setActivePage(page);
@@ -75,7 +75,7 @@ export default function TopNavBar(props) {
                             <BiSolidUserRectangle className="top-nav-profile-icon"/>
                         </div>
 
-                        <ProfileMenu {...{isProfileMenuVisible, user}}/>
+                        <ProfileMenu {...{isProfileMenuVisible, user, userName, isWallet}}/>
                     </div>
 
                     <AppNotification user={user} />
@@ -88,33 +88,47 @@ export default function TopNavBar(props) {
 
 
 function ProfileMenu (props){
-    const {isProfileMenuVisible, user} = props;
+    const {isProfileMenuVisible, user, userName, isWallet} = props;
 
     const navigate = useNavigate();
 
     function logoutUser() {
-        localStorage.removeItem('user');
-        localStorage.removeItem('access-token');
-        navigate('/');
+
+        if(!isWallet){
+            localStorage.removeItem('user');
+            localStorage.removeItem('access-token');
+            navigate('/');
+
+        }else{
+            delete user.walletId;
+            delete user.walletUserName;
+            setUser(user);
+            navigate('/wallet');
+        }
+        
     }
 
     return(
         <div className={`floating-container ${isProfileMenuVisible ? "active" : ""}`} style={{width: "200px"}} >
-            <div className='profile-raw' >
-                <span className='row-icon'><FaUserLarge size={22} fill='#21DB9A'/></span>
-                <span className='row-name'>{user ? user.userName : "Kasun Silva"}</span>
-            </div>
-            <div className='profile-raw' onClick={() => navigate('/profile')}>
-                <span className='row-icon'><HiOutlineUserCircle size={28}/></span>
-                <span className='row-name'>Profile</span>
-            </div>
-            {user && user.isVerified === "No" &&
+            {!isWallet && 
+                <div className='profile-raw' >
+                    <span className='row-icon'><FaUserLarge size={22} fill='#21DB9A'/></span>
+                    <span className='row-name'>{userName}</span>
+                </div>
+            }
+            {!isWallet && 
+                <div className='profile-raw' onClick={() => navigate('/profile')}>
+                    <span className='row-icon'><HiOutlineUserCircle size={28}/></span>
+                    <span className='row-name'>Profile</span>
+                </div>
+            }
+            {!isWallet && user && user.role === "User" &&
                 <div className='profile-raw' onClick={() => navigate('/verify')}>
                     <span className='row-icon'><PiUserFocus size={30} fill='#6D6D6D'/></span>
                     <span className='row-name'>Verify User</span>
                 </div>
             }
-            {/* {user && user.role !== "User" &&  */ true &&
+            { /* {user && user.role !== "User" &&  */ !isWallet &&
                 <div className='profile-raw' onClick={() => window.open('/wallet', '_blank')}>
                     <span className='row-icon'><BiShieldX size={29}/></span>
                     <span className='row-name'>TradeX Wallet</span>

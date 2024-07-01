@@ -1,52 +1,86 @@
+import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
-import React, { useEffect, useRef, useState } from "react";
-import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
-import Modal from "../../Components/Modal/Modal";
+import { useParams, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 import "./AdminUserVerification.css";
-import { ImCamera } from "react-icons/im";
-import { validationSchema } from "../../Validation/UserValidation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import AWS from "aws-sdk";
-import { v4 as uuidv4 } from "uuid";
-import { Upload } from "antd";
 import { showMessage } from "../../Components/Message/Message";
-import { useLocation, useParams } from 'react-router-dom';
 
 export default function AdminUserVerification() {
-  
-
-  const {id} = useParams();
-  useEffect(() => {
-    console.log(id);
-  }, []);
-
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [issue, setIssue] = useState("");
   const [userDetail, setUserDetail] = useState({
     userId: id,
   });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log(id);
     getData();
   }, []);
 
   const getData = async () => {
-    fetch("http://localhost:8004/admin/getUserVerificationDetails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userDetail),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setUser(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    try {
+      const response = await fetch(
+        "http://localhost:8004/admin/getUserVerificationDetails",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: id }),
+        }
+      );
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const verifyUser = async () => {
+    try {
+      if (issue) {
+        const ob = {
+          id: id,
+          issue: issue,
+        };
+        const response = await fetch("http://localhost:8004/admin/addIssue", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(ob),
+        });
+        if (response.ok) {
+          showMessage("warning", "Issue added successfully!");
+          navigate(`/admin/ViewAll/`);
+        }
+      } else {
+        const ob = {
+          id: id,
+          status: "Trader",
+        };
+        const response = await fetch(
+          "http://localhost:8004/admin/changeUserRole",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ob),
+          }
+        );
+        if (response.ok) {
+          showMessage("success", "User verified successfully!");
+          navigate(`/admin/AdDashboard/`);
+          
+        }
+      }
+    } catch (error) {
+      console.error("Error allocating starting fund:", error);
+    }
   };
 
   return (
@@ -64,7 +98,7 @@ export default function AdminUserVerification() {
                   label="First Name"
                   name="firstName"
                   type="text"
-                  value={user?user.firstName:""}
+                  value={user ? user.firstName : ""}
                 />
               </td>
               <td>
@@ -72,14 +106,15 @@ export default function AdminUserVerification() {
                   label="Last Name"
                   name="lastName"
                   type="text"
-                  value={user?user.lastName:""}
+                  value={user ? user.lastName : ""}
                 />
               </td>
               <td>
-                <Input label="Age" 
-                name="age" 
-                type="text" 
-                value={user?user.age:""}
+                <Input
+                  label="Age"
+                  name="age"
+                  type="text"
+                  value={user ? user.age : ""}
                 />
               </td>
             </tr>
@@ -89,15 +124,16 @@ export default function AdminUserVerification() {
                   label="Phone Number"
                   name="phoneNumber"
                   type="text"
-                  value={user?user.phoneNumber:""}
+                  value={user ? user.phoneNumber : ""}
                 />
               </td>
               <td>
-                <Input label="NIC" 
-                name="nic" 
-                type="text" 
-                value={user?user.nic:""}
-                 />
+                <Input
+                  label="NIC"
+                  name="nic"
+                  type="text"
+                  value={user ? user.nic : ""}
+                />
               </td>
             </tr>
             <tr>
@@ -105,8 +141,8 @@ export default function AdminUserVerification() {
                 <Input
                   label="Date of Birth"
                   name="dateOfBirth"
-                  type="date"
-                  value={user?user.dateOfBirth:""}
+                  type="text"
+                  value={user ? user.dateOfBirth : ""}
                 />
               </td>
             </tr>
@@ -125,7 +161,7 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              <img src={user?.user.userImg} />
+              <img src={user ? user.userImg : ""} width={620} height={250} />
             </div>
           </div>
           <div className="material-div">
@@ -139,7 +175,7 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              <img src={user?.user.nicImg1} />
+              <img src={user ? user.nicImg1 : ""} width={620} height={250} />
             </div>
           </div>
         </div>
@@ -156,7 +192,7 @@ export default function AdminUserVerification() {
               Identification Upload
             </span>
             <div className="upload-container">
-              <img src={user?.user.nicImg2} />
+              <img src={user ? user.nicImg2 : ""} width={620} height={250} />
             </div>
           </div>
 
@@ -170,14 +206,29 @@ export default function AdminUserVerification() {
             >
               Issue
             </span>
-            <div className="upload-container"></div>
+            <div className="upload-container">
+              <TextField
+                className="custom-textfield"
+                style={{ width: "620px", height: "250px" }}
+                multiline
+                rows={9}
+                variant="outlined"
+                value={issue}
+                onChange={(e) => setIssue(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
         <div className="submit-container">
-          <Input type="button" value="Submit" />
+          <Input type="button" value="Submit" onClick={verifyUser} />
           <div style={{ width: "10px" }}></div>
-          <Input type="button" value="Cancel" red />
+          <Input
+            type="button"
+            value="Cancel"
+            red
+            onClick={() => navigate(`/admin/ViewAll/`)}
+          />
         </div>
       </div>
     </BasicPage>

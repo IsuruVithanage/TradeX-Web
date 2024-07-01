@@ -3,6 +3,7 @@ import "./Home.css";
 import TradeImage from "../../../Assets/Images/trade.png";
 import WalletImage from "../../../Assets/Images/wallet.png";
 import { useNavigate } from 'react-router-dom';
+import Input from '../../../Components/Input/Input';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ export default function Home() {
             trading strategies.Join us today and start your journey towards financial independence and expertise.
            </p> 
       </div>
-      <div >
-      <button className='custom-button' onClick={navigateToStart}>GET START</button>
+      <div className='custom-button' >
+        <Input type = 'button' value = 'Get Started' onClick={navigateToStart} style = {{width:'150px'}} /> 
       </div>
 
         <img src={WalletImage} alt="Wallet Description" className='wallet-image' />

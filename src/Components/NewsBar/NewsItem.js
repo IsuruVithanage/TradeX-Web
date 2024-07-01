@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import defaultImage from "../../Assets/Images/image.jpg";
 import axios from "axios";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -30,6 +30,10 @@ const NewsItem = (props) => {
   const [likeCount, setLikeCount] = useState(props.likeCount || 0);
   const [dislikeCount, setDislikeCount] = useState(props.dislikeCount || 0);
 
+  useEffect(() => {
+    startWebSocket();
+  }, []);
+
   // Event handler for toggling heart icon
   const handleHeartClick = () => {
     axios
@@ -46,6 +50,33 @@ const NewsItem = (props) => {
       .catch((error) => {
         showMessage("success", error);
       });
+  };
+
+  const startWebSocket = () => {
+    const ws = new WebSocket("ws://localhost:8082");
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type) {
+        console.log("data", data);
+        if (data.type === "liked" && data.likeDetail.newsId === newsId) {
+          setLikeCount(parseInt(data.likeDetail.likeCount.likeCount));
+        } else if (
+          data.type === "disLiked" &&
+          data.disLikeDetail.newsId === newsId
+        ) {
+          console.log("dislike", data.disLikeDetail.likeCount.dislikeCount);
+          setDislikeCount(parseInt(data.disLikeDetail.likeCount.dislikeCount));
+        }
+      }
+    };
+    return () => {
+      ws.close();
+    };
   };
 
   // Event handler for incrementing like count
@@ -111,7 +142,7 @@ const NewsItem = (props) => {
           <div className="news-header-container">
             {/* Link to the full article */}
             <a href={url} target="_blank" rel="noopener noreferrer">
-              <h1>{title}</h1> {/* Display the news title */}
+              <h1>{title.slice(0, 90)}</h1> {/* Display the news title */}
             </a>
             {/* Display the news description */}
             <p>

@@ -92,24 +92,19 @@ export default function LoginAccount () {
         type="text"	
         placeholder="Enter user name"
         id="username"
-        className="login-input"
+        autoComplete="wallet-username"
+        underline
         style={{marginTop: "4vh", width: "350px"}}
       />
 
-      <div className="login-password-container">
-        <div style={{width: "90%", zIndex: "1"}}><Input
-          type={showPassword ? "text" : "password"}
-          placeholder="Enter your password"
-          id="password"
-          className="login-input"/>
-        </div>
-
-        <div className="show-password-icon" onClick={toggleShowPassword}>
-          {!showPassword ? <PiEyeClosed /> : <PiEye />}
-        </div>
-
-        <div className="login-password-bottom-layer"/>
-      </div>
+      <Input
+        type="password"
+        placeholder="Enter your password"
+        id="password"
+        autoComplete="wallet-password"
+        underline
+        style={{marginTop: "4vh", width: "350px"}}
+      />
   
       <p className="reset-para">
         Can't login? here You can&nbsp;
