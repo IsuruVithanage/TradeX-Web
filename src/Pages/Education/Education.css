@@ -32,44 +32,24 @@ ul li {
 
 }
 
-.Add-edu::placeholder {
+.custom-textarea::placeholder {
     color: #21DB9A;
 }
 
-.custom-textfield {
-    margin-bottom: 15px;
-    width:400px;
+  .custom-textarea {
+    background-color: #3c3c3c;
+    color:  #21DB9A;
+    border-radius: 8px; /* Adjust the value for more or less rounded corners */
+    padding: 10px; /* Optional: Adds some padding inside the textarea */
+    border: 1px solid #21DB9A;
+    resize: none; 
+    margin-bottom: 15px;/* Optional: Adds a border with a light gray color */
+  }
+
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 2px;
   }
   
-  .custom-textfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border-color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInputBase-input {
-    color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInputBase-input.Mui-focused {
-    color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInputLabel-root {
-    color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInputLabel-root.Mui-focused {
-    color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInput-underline:before {
-    border-bottom-color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInput-underline:hover:before {
-    border-bottom-color: #21DB9A;
-  }
-  
-  .custom-textfield .MuiInput-underline:after {
-    border-bottom-color: #21DB9A;
-  }
   

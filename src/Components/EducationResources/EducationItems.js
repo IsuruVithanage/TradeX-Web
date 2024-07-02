@@ -6,7 +6,7 @@ import "./EducationItems.css";
 import {RiDeleteBin6Line} from "react-icons/ri";
 
 const EducationItem = (props) => {
-  const { eduId, userId, title, description, image, url, isFavorite, load } = props
+  const { eduId, userId, title, description, image, url, isFavorite, load, deleteItem } = props
   const [isHeartFilled, setIsHeartFilled] = useState(isFavorite);
 
   const handleHeartClick = () => {
@@ -42,18 +42,20 @@ const EducationItem = (props) => {
         <div style={{ display: "flex" }}>
           <div className="news-header-container">
             <a href={url} target="_blank" rel="noopener noreferrer">
-              <h1>{title}</h1>
+              <h1 style={{fontSize:"1.6rem", marginTop:"3px", marginLeft:"10px"}}>{title}</h1>
             </a>
-            <p>
+            <p style={{marginLeft:"10px"}}>
               {description
-                ? description
+                ? description 
                 : "Cryptocurrency is digital money that doesn't require a bank or financial institution to verify transactions and can be used for purchases or as an investment."}
             </p>
           </div>
           <div className="favorite-icon-container" onClick={handleHeartClick}>
             {isHeartFilled ? <FaHeart /> : <FaRegHeart />}
           </div>
-          <div className="delete-icon-container" onClick={handleDeleteClick}><RiDeleteBin6Line/></div>
+          {deleteItem && 
+           <div className="delete-icon-container" onClick={handleDeleteClick}><RiDeleteBin6Line/></div>
+          }
         </div>
       </div>
     </div>
