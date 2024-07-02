@@ -1,57 +1,78 @@
-import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import React, { useEffect, useState } from "react";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import "./Admin.css";
 import "./ViewAll.css";
 import Modal from "../../Components/Modal/Modal";
 import axios from "axios";
-import {RiDeleteBin6Line} from "react-icons/ri";
-import {validationSchema} from "../../Validation/AdminValidation";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import Table, { TableRow } from "../../Components/Table/Table";
 
 export default function Admin() {
-    const currentDate = new Date().toISOString();
-    console.log(currentDate);
-
-    const {handleSubmit, register, formState: {errors}} = useForm({
-        resolver: yupResolver(validationSchema)
-    });
 
     const onSubmit = (data) => {
         console.log(data);
     }
 
+    const [password, setPassword] = useState("");
     const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
     const [adminList, setAdminList] = useState([]);
     const [admin, setAdmin] = useState({
+        AdminId: "A001",
         AdminName: "",
-        Date: currentDate,
+        password: password,
         NIC: "",
         Contact: "",
-        Age: "",
+        email: "",
+    });
+
+    const [errors, setErrors] = useState({
+        AdminName: "",
+        email: "",
+        NIC: "",
+        Contact: "",
     });
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setAdmin((prevState) => ({
             ...prevState,
             [name]: value,
         }));
+
+        // Validation logic
+        let error = "";
+        switch (name) {
+            case "AdminName":
+                if (!value) error = "Admin Name is required.";
+                break;
+            case "email":
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) error = "Invalid email format.";
+                break;
+            case "NIC":
+                if (!value) error = "NIC is required.";
+                break;
+            case "Contact":
+                const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number
+                if (!phoneRegex.test(value)) error = "Invalid contact number.";
+                break;
+            default:
+                break;
+        }
+        setErrors((prevState) => ({
+            ...prevState,
+            [name]: error,
+        }));
     };
 
-    const handledSubmit = async (e) => {
-        const currentDate = new Date().toISOString();
-        console.log(currentDate);
-
-        setAdmin({
-            AdminName: document.getElementById("AdminName").value,
-            NIC: document.getElementById("NIC").value,
-            Contact: document.getElementById("Contact").value,
-            Age: document.getElementById("Age").value,
-        });
-
-        console.log(admin);
+    const handledSubmit = async () => {
+        const isFormValid = Object.values(errors).every((err) => err === "") &&
+                            Object.values(admin).every((field) => field !== "");
+        if (!isFormValid) {
+            console.error("Validation errors:", errors);
+            return;
+        }
 
         try {
             const response = await fetch("http://localhost:8003/admin/saveAdmin", {
@@ -67,10 +88,10 @@ export default function Admin() {
 
                 setAdmin({
                     AdminName: "",
-                    Date: "",
                     NIC: "",
                     Contact: "",
-                    Age: "",
+                    email: "",
+                    password: "",
                 });
                 await loadAdmins();
             } else {
@@ -81,12 +102,23 @@ export default function Admin() {
         }
     };
 
+    const generatePassword = (length = 5) => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        setPassword(password);
+        console.log(password);
+    };
+
     const loadAdmins = async () => {
         try {
             const result = await axios.get(
                 "http://localhost:8003/admin/getAllAdmins"
             );
             setAdminList(result.data);
+            console.log(result.data);
         } catch (error) {
             console.error("Error fetching Admins", error);
         }
@@ -94,14 +126,29 @@ export default function Admin() {
 
     useEffect(() => {
         loadAdmins();
+        generatePassword();
     }, []);
+
+    const deleteAdmin = async (AdminId) => {
+        try {
+            await axios.delete(`http://localhost:8003/admin/${AdminId}`);
+            setAdminList(adminList.filter(admin => admin.AdminId !== AdminId));
+        } catch (error) {
+            console.error("Error deleting admin", error);
+        }
+    };
+
+    useEffect(() => {
+        loadAdmins();
+    }, []);
+
 
     return (
         <BasicPage
             tabs={[
-                {label: "Dashboard", path: "/admin/AdDashboard"},
-                {label: "Users", path: "/admin/Users"},
-                {label: "Admin", path: "/admin"},
+                { label: "Dashboard", path: "/admin/AdDashboard" },
+                { label: "Users", path: "/admin/Users" },
+                { label: "Admin", path: "/admin" },
             ]}
         >
             <div>
@@ -110,7 +157,7 @@ export default function Admin() {
                         <Input
                             type="button"
                             value="Create Account"
-                            style={{width: "150px", marginLeft: "85%"}}
+                            style={{ width: "150px", marginLeft: "85%" }}
                             onClick={() => setIsdeleteModalOpen(true)}
                         />
                         <Modal
@@ -124,23 +171,37 @@ export default function Admin() {
                             >
                                 <div
                                     style={{
-                                        width: "300px",
+                                        width: "335px",
                                         margin: "auto",
                                         marginBottom: "25px",
                                     }}
                                 >
-                                    <h1 style={{textAlign: "center"}}>Create Admin</h1>
+                                    <h1 style={{ textAlign: "center", marginBottom: "20px", color: "white" }}>Create Admin</h1>
                                     <form>
                                         <Input
                                             type="text"
-                                            placeholder="Username"
+                                            placeholder="AdminName"
                                             className="Admin-details"
                                             name="AdminName"
                                             id="AdminName"
                                             value={admin.AdminName}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            underline
+                                            style={{marginBottom:"20px"}}
                                         />
+                                        {errors.AdminName && <p className="error">{errors.AdminName}</p>}
+                                        <Input
+                                            type="text"
+                                            placeholder="Email"
+                                            className="Admin-details"
+                                            name="email"
+                                            id="Email"
+                                            value={admin.email}
+                                            onChange={handleChange}
+                                            underline
+                                            style={{marginBottom:"20px"}}
+                                        />
+                                        {errors.email && <p className="error">{errors.email}</p>}
                                         <Input
                                             type="text"
                                             placeholder="NIC"
@@ -149,8 +210,10 @@ export default function Admin() {
                                             id="NIC"
                                             value={admin.NIC}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            underline
+                                            style={{marginBottom:"20px"}}
                                         />
+                                        {errors.NIC && <p className="error">{errors.NIC}</p>}
                                         <Input
                                             type="text"
                                             placeholder="Contact"
@@ -159,64 +222,50 @@ export default function Admin() {
                                             id="Contact"
                                             value={admin.Contact}
                                             onChange={handleChange}
-                                            register={register} errors={errors}
+                                            underline
+                                            style={{marginBottom:"20px"}}
                                         />
-                                        <Input
-                                            type="text"
-                                            placeholder="Age"
-                                            className="Admin-details"
-                                            name="Age"
-                                            id="Age"
-                                            value={admin.Age}
-                                            onChange={handleChange}
-                                            register={register} errors={errors}
-                                        />
+                                        {errors.Contact && <p className="error">{errors.Contact}</p>}
 
                                         <div className="create-admin-btn">
                                             <Input
                                                 type="button"
-                                                style={{width: "110px"}}
+                                                style={{ width: "110px" }}
                                                 value="Submit"
-                                                onClick={handleSubmit(handledSubmit)}
+                                                onClick={handledSubmit}
                                             />
                                             <Input
                                                 type="button"
-                                                style={{width: "110px"}}
+                                                style={{ width: "110px" }}
                                                 onClick={() => setIsdeleteModalOpen(false)}
                                                 value="Cancel"
                                                 red
                                             />
-
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </Modal>
                     </div>
-                    <table className="Admin-table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Date</th>
-                            <th>NIC</th>
-                            <th>Contact</th>
-                            <th>Age</th>
-                            <th>Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {adminList.map((admin, index) => (
-                            <tr key={index}>
-                                <td>{admin.AdminName}</td>
-                                <td>{new Date(admin.Date).toLocaleDateString()}</td>
-                                <td>{admin.NIC}</td>
-                                <td>{admin.Contact}</td>
-                                <td>{admin.Age}</td>
-                                <td><RiDeleteBin6Line/></td>
-                            </tr>
+                    <Table
+                        hover={true}
+                        style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
+                    >
+                        <TableRow data={["Name", "Email", "NIC", "Contact", "Delete"]} />
+                        {adminList.map((admin) => (
+                            <TableRow
+                                key={admin.AdminId}
+                                data={[
+                                    admin.AdminName,
+                                    admin.email,
+                                    admin.NIC,
+                                    admin.Contact,
+                                    <RiDeleteBin6Line onClick={() => deleteAdmin(admin.AdminId)}
+                                        style={{ cursor: "pointer" }} />
+                                ]}
+                            />
                         ))}
-                        </tbody>
-                    </table>
+                    </Table>
                 </div>
             </div>
         </BasicPage>

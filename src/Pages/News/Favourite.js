@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage'
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage'
 import NewsItem from '../../Components/NewsBar/NewsItem'
 import "./News.css"
 import Input from '../../Components/Input/Input'
 import axios from 'axios'
+import {getUser} from '../../Storage/SecureLs';
+
 
 
 
 export default function News() {
-  const userId = 1;
+
   const [articles,setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const user = getUser();
+  const userId = user && user.id;
 
   useEffect(()=>{
     setIsLoading(true);

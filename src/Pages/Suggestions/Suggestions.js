@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import Table, {Coin, TableRow} from "../../Components/Table/Table";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
@@ -71,7 +71,7 @@ export default function Suggestions() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error', 'Error fetching order history');
+            showMessage('error', 'Error fetching order history');
         }
     };
 
@@ -207,7 +207,7 @@ export default function Suggestions() {
                 image: symbols[coin].img,
             }));
         } catch (error) {
-            showMessage('error', 'Error', 'Error fetching coin data');
+            showMessage('error', 'Error fetching coin data');
         }
     };
 
@@ -293,7 +293,7 @@ export default function Suggestions() {
                 line={false}
                 sidePanel={
                     <div className="side-panel-container">
-                        <div style={{display: 'flex', marginBottom: '20px'}}>
+                        <div style={{display: 'flex', margin: "0"}}>
                             <h1 style={{fontSize: '1.5rem'}}>Suggestions</h1>
                             {suggestion && (
                                 <LuRefreshCw style={{
@@ -317,48 +317,55 @@ export default function Suggestions() {
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
                             </div>
-                        ) : suggestion ? (
+                        ) : suggestion && Array.isArray(suggestion.suggestions) && Array.isArray(suggestion.resources) ? (
                             <div>
-                                <div style={{display: 'flex'}}>
+                                <div style={{display: 'flex', marginTop:'1rem'}}>
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: '#21DB9A',
                                             marginRight: '0.5rem',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            marginTop:'0'
                                         }}>{formatCurrency(suggestion.bestPrice)}</p>
                                     </div>
+                                    <div style={{width:'2rem'}}></div>
                                     <div>
                                         <p className='s-lables'>Profit</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: 'red',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            marginTop:'0'
                                         }}>{formatCurrency(suggestion.profitFromBestPrice)}</p>
                                     </div>
                                 </div>
                                 <div>
                                     <p className='s-lables'>Suggestions</p>
-                                    <ul className='s-data'>
-                                        {suggestion.suggestions.map((item, index) => (
-                                            <li key={index} style={{marginBottom: '10px'}}>{"• " + item}</li>
-                                        ))}
-                                    </ul>
+                                    {Array.isArray(suggestion.suggestions) && (
+                                        <ul className='s-data'>
+                                            {suggestion.suggestions.map((item, index) => (
+                                                <li key={index} style={{marginBottom: '10px'}}>{"• " + item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                                 <div>
                                     <p className='s-lables'>Resources</p>
-                                    <ul className='s-data'>
-                                        {suggestion.resources.map((item, index) => (
-                                            <li key={index} style={{
-                                                marginBottom: '10px',
-                                                fontWeight: 'normal',
-                                                color: '#21DB9A'
-                                            }}>
-                                                <a href={item} target="_blank" rel="noopener noreferrer">{item}</a>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    {Array.isArray(suggestion.resources) && (
+                                        <ul className='s-data'>
+                                            {suggestion.resources.map((item, index) => (
+                                                <li key={index} style={{
+                                                    marginBottom: '10px',
+                                                    fontWeight: 'normal',
+                                                    color: '#21DB9A'
+                                                }}>
+                                                    <a href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                             </div>
                         ) : (

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import BasicPage from '../../Components/BasicPage/BasicPage';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import {TradingChart} from "../../Components/SimulateChart/TradingChart";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import CoinBar from "../../Components/SimulateChart/CoinBar";
 import './TradingPlatForm.css'
 import ButtonSet from "../../Components/SimulateChart/ButtonSet";
@@ -52,7 +52,6 @@ export default function TradingPlatform() {
     });
 
     useEffect(() => {
-        console.log("user",user[0])
         const savedState = localStorage.getItem('tradingPlatformState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
@@ -141,7 +140,7 @@ export default function TradingPlatform() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error', 'Error fetching order history');
+            showMessage('error', 'Error fetching order history');
         }
     };
 
@@ -479,7 +478,7 @@ export default function TradingPlatform() {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Success', 'Order deleted successfully');
+                    showMessage('success', 'Order deleted successfully');
                     fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
                     showMessage('Error', 'Failed to delete order');
@@ -550,6 +549,7 @@ export default function TradingPlatform() {
 
                 {limitOrder.map(order => (
                     <TableRow
+                        key = {order.orderId}
                         data={[
                             <Coin>{order.coin}</Coin>,
                             order.type,

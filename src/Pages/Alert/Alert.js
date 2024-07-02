@@ -2,13 +2,13 @@ import React, {useState, useEffect, useRef} from "react";
 import notificationManager from "./notificationManager";
 import {showMessage} from "../../Components/Message/Message";
 import { getUser } from "../../Storage/SecureLs";
-import BasicPage from '../../Components/BasicPage/BasicPage';
+import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
 import Input from '../../Components/Input/Input';
 import Table, {TableRow, Coin} from '../../Components/Table/Table';
 import Modal from '../../Components/Modal/Modal';
 import alertServices from "./alertServices";
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import coins from "../../Assets/Images/Coin Images.json";
+import { MdDelete, MdDeleteSweep } from "react-icons/md";
 import './Alert.css';
 
 
@@ -168,7 +168,47 @@ export default function Alert() {
             }}>  
 
 
-            <AlertsTable {...{alerts, selectedPage, openAddAlertModal, setAddOrEditAlert, setDeleteOrClearAlert, setCurrentAlert, isRegistered, call}} />
+            <Table 
+                restart={alerts} 
+                emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}
+                tableTop= {
+                    <div style={{display: "flex", alignItems: "center", position: "relative"}}>
+                        <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
+                        <div style={{width: "130px", marginLeft: "auto", margin: "8px 0"}}>
+                            <Input 
+                                type='button' 
+                                value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
+                                red={selectedPage === 'Notified'}
+                                onClick={() => selectedPage === 'Running' ?  openAddAlertModal() : setDeleteOrClearAlert('clearAll')}
+                                disabled={selectedPage === 'Notified' && alerts.length === 0}
+                                />
+                        </div>
+                    </div>
+                }>
+                    
+                <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Actions']} />
+
+                { alerts.map((alert, index) => {
+                    return (
+                        <TableRow 
+                            key={index} 
+                            data={[
+                                <Coin>{alert.coin}</Coin>, 
+                                '$ ' + alert.price.toLocaleString(),
+                                alert.condition, 
+                                (alert.emailActiveStatus) ? "On" : "Off", 
+                                <div className="alert-table-action-button-container">
+                                    { selectedPage === "Running" ?
+                                    <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => {setAddOrEditAlert('Edit'); setCurrentAlert(alert)}} outlined/>  :
+                                    <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => call('restoreAlert', alert.alertId)} outlined/>
+                                    }
+                                    <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setDeleteOrClearAlert('deleteAlert'); setCurrentAlert({alertId: alert.alertId})}} outlined red/>
+                                </div>
+                            ]}
+                        />
+                    )
+                })}
+            </Table>
 
             <AddOrEditModal {...{addOrEditAlert, setAddOrEditAlert, call, currentAlert, setCurrentAlert, isInvalid}} />
 
@@ -180,73 +220,19 @@ export default function Alert() {
 
 
 
-function AlertsTable (props) {
-    const { alerts, selectedPage, openAddAlertModal, setAddOrEditAlert, setDeleteOrClearAlert, setCurrentAlert, isRegistered, call } = props;
-
-    return(
-        <Table 
-            restart={alerts} 
-            emptyMessage={!isRegistered ? "Allow Notifications to show alerts" : "No alerts to show"}
-            tableTop= {
-                <div style={{display: "flex", alignItems: "center", position: "relative"}}>
-                    <h2 style={{color: "#21DB9A", fontSize: "24px", width: "100%", textAlign: "center"}}>{selectedPage + " Alerts"}</h2>
-                    <div style={{width: "130px", marginLeft: "auto", margin: "8px 0"}}>
-                        <Input 
-                            type='button' 
-                            value={selectedPage === 'Running' ? 'Add Alert' : 'Clear All'} 
-                            red={selectedPage === 'Notified'}
-                            onClick={() => selectedPage === 'Running' ?  openAddAlertModal() : setDeleteOrClearAlert('clearAll')}
-                            disabled={selectedPage === 'Notified' && alerts.length === 0}
-                            />
-                    </div>
-                </div>
-            }>
-                
-            <TableRow data={['Coin', 'Price Threshold', 'Condition', 'Email Notifications', 'Actions']} />
-
-            { alerts.map((alert, index) => {
-                return (
-                    <TableRow 
-                        key={index} 
-                        data={[
-                            <Coin>{alert.coin}</Coin>, 
-                            '$ ' + alert.price.toLocaleString(),
-                            alert.condition, 
-                            (alert.emailActiveStatus) ? "On" : "Off", 
-                            <div className="alert-table-action-button-container">
-                                { selectedPage === "Running" ?
-                                <Input type="button" value="Edit" style={{width:"90px"}} onClick={() => {setAddOrEditAlert('Edit'); setCurrentAlert(alert)}} outlined/>  :
-                                <Input type="button" value="Restore" style={{width:"90px"}} onClick={() => call('restoreAlert', alert.alertId)} outlined/>
-                                }
-                                <Input type="button" value="Delete" style={{width:"90px"}} onClick={() => { setDeleteOrClearAlert('deleteAlert'); setCurrentAlert({alertId: alert.alertId})}} outlined red/>
-                            </div>
-                        ]}
-                    />
-                )
-            })}
-        </Table>
-    )
-}
-
-
 
 function AddOrEditModal (props) {
     const { addOrEditAlert, setAddOrEditAlert, call, currentAlert, setCurrentAlert, isInvalid } = props;
     
-    const options = [
-        { value: 'BTC', label: 'BTC' },
-        { value: 'ETH', label: 'ETH' },
-        { value: 'DOGE', label: 'DOGE' },
-        { value: 'ADA', label: 'ADA' },
-        { value: 'BNB', label: 'BNB' },
-        { value: 'XRP', label: 'XRP' },
-      ];
+    const options = Object.keys(coins)
+        .filter((coin) => coin !== 'USD')
+        .map(coin => ({value: coin, label: coin + " - " + coins[coin].name}));
 
     return(
         <Modal open={addOrEditAlert} close={setAddOrEditAlert}>
-            <div style={{width:"400px", WebkitUserSelect: "none", userSelect: "none"}}>
+            <div style={{width:"430px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
-                    <h1 style={{textAlign:"center"}}>{`${ addOrEditAlert } Alert`}</h1>
+                    <h1 style={{textAlign:"center", color: "#FFFFFF"}}>{`${ addOrEditAlert } Alert`}</h1>
                     <Input 
                         type="dropdown" 
                         label='Coin' 
@@ -325,13 +311,12 @@ function DeleteOrClearModal (props) {
         <Modal open={deleteOrClearAlert} close={setDeleteOrClearAlert}>
             <div style={{width:"350px"}}>
                 <div style={{width:"300px", margin:"0 auto 30px auto"}}>
-                    <h1 style={{textAlign:"center"}}>{deleteOrClearAlert === 'clearAll' ? 'Clear All Alerts' : 'Delete the Alert'}</h1>
+                    <h1 style={{textAlign:"center", color: "#FFFFFF"}}>{deleteOrClearAlert === 'clearAll' ? 'Clear All Alerts' : 'Delete the Alert'}</h1>
                     <p style={{textAlign:"center", marginTop: "10px", color: "#9e9e9e"}}>{deleteOrClearAlert === 'clearAll' ? 'Are you sure you want to clear all alerts?' : 'Are you sure you want to delete the alert?'}</p>
                     <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>{
-                        // deleteOrClearAlert === 'clearAll' ? 
-                        // <DeleteSweepIcon style={{color: '#49494980', fontSize: '80px'}}/> : 
-                        // <DeleteIcon style={{color: '#49494980', fontSize: '70px'}}/>
-                        <div>Icon</div>
+                        deleteOrClearAlert === 'clearAll' ? 
+                        <MdDeleteSweep style={{color: '#49494980', fontSize: '80px'}}/> : 
+                        <MdDelete style={{color: '#49494980', fontSize: '70px'}}/>
                     }</div>
                     <div className="edit-alert-modal-button-container" style={{width: '250px', marginTop: '30px'}}>
                         <Input type="button" style={{width:"110px"}} onClick={() => call(deleteOrClearAlert)} value={deleteOrClearAlert === 'clearAll' ? 'Clear All' : 'Delete'} red/>

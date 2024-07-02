@@ -1,4 +1,4 @@
-{/*import BasicPage from "../../Components/BasicPage/BasicPage";
+{/*import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import React, {useState, useRef} from "react";
 import { UploadButton } from "@bytescale/upload-widget-react";
 

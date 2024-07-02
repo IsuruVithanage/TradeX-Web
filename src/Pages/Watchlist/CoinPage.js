@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import coinList from "../../Assets/Images/Coin Images.json";
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import SidePanelWithContainer from "../../Components/SidePanel/SidePanelWithContainer";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
+import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import LineChart from "../../Components/Charts/LineChart/LineChar";
 import axios from "axios";
 import Converter from "../../Components/Converter/Converter";
@@ -139,7 +139,7 @@ export default function Suggestions() {
         <BasicPage tabs={Tabs} isLoading={isLoading}>
             <SidePanelWithContainer
                 header="Crypto Converter"
-                sidePanel={<Converter/>}
+                sidePanel={<Converter symbol={pageSymbol}/>}
                 style={{height: '91vh'}}
             >
 

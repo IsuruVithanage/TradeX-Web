@@ -1,0 +1,22 @@
+.word-box{
+    width: 68%;
+    min-height: 215px;
+    background-color: #21212394;
+    display: flex;
+    border-radius: 10px;
+    margin-top: 1vh;
+    padding: 10px;
+}
+
+.word-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.word-cell {
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: bold;
+    color: #FFFFFFBB;
+}

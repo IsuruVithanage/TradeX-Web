@@ -12,9 +12,9 @@ export default function Loading() {
                 <div className='loading-logo-container'>
                     <img src={logo} alt="TradeX" className="loading-logo" />
                 </div>
-                
+
                 <div className='loader-container'>
-                    <LinearLoader variant="indeterminate" type={"loader"}/>
+                    <LinearLoader variant="indeterminate" type={"loader"} />
                 </div>
             </div>
         </div>
@@ -25,8 +25,8 @@ export default function Loading() {
 
 
 export function PageLoading() {
-    return (      
-        <div className='page-loader-container'>        
+    return (
+        <div className='page-loader-container'>
             <LinearLoader variant="indeterminate" type={"page-loader"} />
         </div>
     );
@@ -36,13 +36,13 @@ export function PageLoading() {
 
 
 const LinearLoader = styled(LinearProgress)((props) => ({
-  height: 3,
-  borderRadius: 3,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: props.type === 'loader' ? '#3C3C3C' : '#0E0E0F',
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: props.type === 'loader' ? '#21DB9A' : '#0B9364',
-  },
+    height: 3,
+    borderRadius: 3,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+        backgroundColor: props.type === 'loader' ? '#3C3C3C' : '#0E0E0F',
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+        borderRadius: 5,
+        backgroundColor: props.type === 'loader' ? '#21DB9A' : '#0B9364',
+    },
 }));

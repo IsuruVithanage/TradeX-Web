@@ -11,11 +11,22 @@
     overflow-y: auto;
     box-sizing: border-box;
 }
-.address{
-    width: 270px;
+
+.paste-text-icon{
+    font-size: 18px;
+    transform: translateX(-10%);
+}
+
+.address1{
     user-select: text;
     word-wrap: break-word;
     text-align: center;
-    margin-top: 20px;
+    color: white;
+    background-color: #242424;
+    border: 2px solid #9E9E9F50;
+    text-align: center;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 13px;
 
 }

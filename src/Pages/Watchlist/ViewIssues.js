@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import AdminCard from "../../Components/Admin/AdminCard";
 import "./ViewAll.css";
@@ -7,12 +7,17 @@ import axios from "axios";
 import { FaUsers } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import "./AdminUserVerification";
+import Table, { TableRow } from "../../Components/Table/Table";
 
 export default function ViewAll() {
   const [adminCount, setAdminCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
+  const [verificationIssues, setVerificationIssues] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -30,25 +35,10 @@ export default function ViewAll() {
   }, []);
 
   useEffect(() => {
-    const fetchPendingUsers = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8004/user/getPendingUsers"
-        );
-        setPendingUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching pending users:", error);
-      }
-    };
-
-    fetchPendingUsers();
-  }, []);
-
-  useEffect(() => {
     const fetchUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getUserCount"
+          "http://localhost:8004/admin/getUserCount"
         );
         setUserCount(response.data.count);
       } catch (error) {
@@ -63,7 +53,7 @@ export default function ViewAll() {
     const fetchVerifiedUserCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8004/user/getVerifiedUserCount"
+          "http://localhost:8004/admin/getVerifiedUserCount"
         );
         setVerifiedUserCount(response.data.count);
       } catch (error) {
@@ -74,23 +64,44 @@ export default function ViewAll() {
     fetchVerifiedUserCount();
   }, []);
 
+  useEffect(() => {
+    const fetchVerificationIssues = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8004/admin/getUsersWithVerificationIssues"
+        );
+        setVerificationIssues(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching verification issues:", error);
+      }
+    };
+
+    fetchVerificationIssues();
+  }, []);
+
+  const viewDetails = (id) => {
+    navigate(`/Admin/AdminUserVerification/${id}`);
+
+  }
+
   return (
     <BasicPage
       tabs={[
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
+        { label: "Dashboard", path: "/admin/AdDashboard" },
+        { label: "Users", path: "/admin/Users" },
+        { label: "Admin", path: "/admin/Admin" },
       ]}
     >
       <div style={{ display: "flex" }}>
-      <AdminCard>
+        <AdminCard>
           <div style={{ display: "flex" }}>
             <div>
               <div className="Dash-card">Users</div>
               <div className="count">{userCount}</div>
             </div>
             <div className="user-icon">
-            <FaUsers />
+              <FaUsers />
             </div>
           </div>
         </AdminCard>
@@ -101,7 +112,7 @@ export default function ViewAll() {
               <div className="count">{verifiedUserCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCheck />
+              <FaUserCheck />
             </div>
           </div>
         </AdminCard>
@@ -112,21 +123,20 @@ export default function ViewAll() {
               <div className="count">{adminCount}</div>
             </div>
             <div className="user-icon">
-            <FaUserCog />
+              <FaUserCog />
             </div>
           </div>
         </AdminCard>
       </div>
       <div>
         <div className="info">
-          <table className="info-table">
+          {/* <table className="info-table">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Date</th>
-                <th>NIC</th>
-                <th>Contact</th>
-                <th>Age</th>
+                <th>Email</th>
+                <th>Level</th>
+                <th>Quiz Taken</th>
                 <th>Upload Materials</th>
               </tr>
             </thead>
@@ -134,21 +144,44 @@ export default function ViewAll() {
               {pendingUsers.map((user) => (
                 <tr key={user.userId}>
                   <td style={{ textAlign: "left" }}>{user.userName}</td>
-                  <td>{user.Date}</td>
-                  <td>{user.NIC}</td>
-                  <td>{user.Contact}</td>
-                  <td>{user.Age}</td>
+                  <td>{user.email}</td>
+                  <td>{user.level}</td>
+                  <td>{user.hasTakenQuiz}</td>
                   <td>
                     <Input
                       type="button"
                       value=" View"
                       style={{ width: "90px" }}
+                      onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
                     />
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Table
+              hover={true}
+              style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
+            >
+              <TableRow data={["Name", "Email", "Contact", "Issue", "Upload Materials"]} />
+              {verificationIssues.map((user) => (
+                <TableRow
+                  key={user.userId}
+                  data={[
+                    user.userName,
+                    user.email,
+                    user.phoneNumber,
+                    user.issue,
+                    <Input
+                    type="button"
+                    value=" View"
+                    style={{ width: "90px" }}
+                    onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
+                    />,
+                  ]}
+                />
+              ))}
+            </Table>
         </div>
       </div>
     </BasicPage>

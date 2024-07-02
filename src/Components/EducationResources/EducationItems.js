@@ -3,11 +3,10 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import crypto from "../../Assets/Images/crypto.png";
 import axios from "axios";
 import "./EducationItems.css";
-
-
+import {RiDeleteBin6Line} from "react-icons/ri";
 
 const EducationItem = (props) => {
-  const { eduId, userId, title, description, image, url, isFavorite } = props
+  const { eduId, userId, title, description, image, url, isFavorite, load } = props
   const [isHeartFilled, setIsHeartFilled] = useState(isFavorite);
 
   const handleHeartClick = () => {
@@ -23,6 +22,17 @@ const EducationItem = (props) => {
     
   };
 
+  const handleDeleteClick = () => {
+    axios
+      .delete(`http://localhost:8009/admin/deleteEduResources/${eduId}`)
+      .then((res) => {
+        load();
+      })
+      .catch((error) => {
+        console.log("Error deleting resource", error);
+      });
+  };
+
   return (
     <div style={{ display: "flex" }}><div className="education-container">
       <div className="img-container">
@@ -36,13 +46,14 @@ const EducationItem = (props) => {
             </a>
             <p>
               {description
-                ? description.slice(0, 90)
+                ? description
                 : "Cryptocurrency is digital money that doesn't require a bank or financial institution to verify transactions and can be used for purchases or as an investment."}
             </p>
           </div>
           <div className="favorite-icon-container" onClick={handleHeartClick}>
             {isHeartFilled ? <FaHeart /> : <FaRegHeart />}
           </div>
+          <div className="delete-icon-container" onClick={handleDeleteClick}><RiDeleteBin6Line/></div>
         </div>
       </div>
     </div>

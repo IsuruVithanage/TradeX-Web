@@ -1,0 +1,19 @@
+.reset-wallet-button{
+    color: #21DB9A;
+    cursor: pointer;
+}
+
+.reset-wallet-button:hover{
+    text-decoration: underline;
+}
+
+.reset-para{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #6d6d6d;
+    font-size: 13px;
+    height: 16px;
+    margin-top: 4vh;
+}

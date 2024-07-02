@@ -1,4 +1,4 @@
-import BasicPage from "../../Components/BasicPage/BasicPage";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import React, {useEffect, useRef, useState} from "react";
 import Webcam from "react-webcam";
 import Input from "../../Components/Input/Input";
@@ -43,7 +43,8 @@ export default function VerifyUser() {
         dateOfBirth: '',
         userImg: '',
         nicImg1: '',
-        nicImg2: ''
+        nicImg2: '',
+        requestDate: new Date().toISOString()
     });
 
     const saveData = async () => {
@@ -84,7 +85,7 @@ export default function VerifyUser() {
     const updateUserVerifyStatus = async () => {
         const ob = {
             id: user.id,
-            status: "Pending",
+            status: "PendingTrader",
         }
         try {
             await fetch("http://localhost:8004/user/updateUserVerifyStatus", {
@@ -252,7 +253,7 @@ export default function VerifyUser() {
             console.log('Saving user detail:', userDetail);
             saveData().then(r => {
                 setIsSubmit(false);
-                showMessage('Success', 'Data saved successfully');
+                showMessage('success', 'Data saved successfully');
                 updateUserVerifyStatus().then(r => navigate('/watchList'));
             });
 
