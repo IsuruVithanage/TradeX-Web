@@ -129,36 +129,7 @@ export default function ViewAll() {
         </AdminCard>
       </div>
       <div>
-        <div className="info">
-          {/* <table className="info-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Level</th>
-                <th>Quiz Taken</th>
-                <th>Upload Materials</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pendingUsers.map((user) => (
-                <tr key={user.userId}>
-                  <td style={{ textAlign: "left" }}>{user.userName}</td>
-                  <td>{user.email}</td>
-                  <td>{user.level}</td>
-                  <td>{user.hasTakenQuiz}</td>
-                  <td>
-                    <Input
-                      type="button"
-                      value=" View"
-                      style={{ width: "90px" }}
-                      onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
+        <div>
           <Table
               hover={true}
               style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}

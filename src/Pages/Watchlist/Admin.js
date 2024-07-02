@@ -14,13 +14,10 @@ export default function Admin() {
         console.log(data);
     }
 
-    const [password, setPassword] = useState("");
     const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
     const [adminList, setAdminList] = useState([]);
     const [admin, setAdmin] = useState({
-        AdminId: "A001",
         AdminName: "",
-        password: password,
         NIC: "",
         Contact: "",
         email: "",
@@ -69,18 +66,20 @@ export default function Admin() {
     const handledSubmit = async () => {
         const isFormValid = Object.values(errors).every((err) => err === "") &&
                             Object.values(admin).every((field) => field !== "");
-        if (!isFormValid) {
-            console.error("Validation errors:", errors);
-            return;
-        }
+        // if (!isFormValid) {
+        //     console.error("Validation errors:", errors);
+        //     return;
+        // }
 
+        const body = {...admin, password: generatePassword()};
+        
         try {
             const response = await fetch("http://localhost:8003/admin/saveAdmin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(admin),
+                body: JSON.stringify(body),
             });
 
             if (response.ok) {
@@ -102,14 +101,16 @@ export default function Admin() {
         }
     };
 
-    const generatePassword = (length = 5) => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+    const generatePassword = () => {
+        const length = 15;
+        const chars = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz', '0123456789@'];
         let password = '';
         for (let i = 0; i < length; i++) {
-            password += chars.charAt(Math.floor(Math.random() * chars.length));
+            password += chars[i % 3].charAt(Math.floor(Math.random() * chars[i % 3].length));
         }
-        setPassword(password);
+
         console.log(password);
+        return password;
     };
 
     const loadAdmins = async () => {
@@ -126,7 +127,6 @@ export default function Admin() {
 
     useEffect(() => {
         loadAdmins();
-        generatePassword();
     }, []);
 
     const deleteAdmin = async (AdminId) => {
@@ -152,12 +152,12 @@ export default function Admin() {
             ]}
         >
             <div>
-                <div className="info">
+                <div>
                     <div>
                         <Input
                             type="button"
                             value="Create Account"
-                            style={{ width: "150px", marginLeft: "85%" }}
+                            style={{ width: "150px", marginLeft: "85%", marginBottom:"15px", marginTop:"15px"}}
                             onClick={() => setIsdeleteModalOpen(true)}
                         />
                         <Modal
@@ -249,7 +249,6 @@ export default function Admin() {
                     </div>
                     <Table
                         hover={true}
-                        style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
                     >
                         <TableRow data={["Name", "Email", "NIC", "Contact", "Delete"]} />
                         {adminList.map((admin) => (
@@ -261,7 +260,7 @@ export default function Admin() {
                                     admin.NIC,
                                     admin.Contact,
                                     <RiDeleteBin6Line onClick={() => deleteAdmin(admin.AdminId)}
-                                        style={{ cursor: "pointer" }} />
+                                        style={{ cursor: "pointer" , fontSize:"20px" , color:"red" }} />
                                 ]}
                             />
                         ))}
