@@ -4,9 +4,11 @@ import "./Users.css";
 import "./ViewAll.css";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Table, { TableRow } from "../../Components/Table/Table";
 
 
 export default function Users() {
+
   const getVerifiedCellStyle = (isVerified) => {
     return isVerified ? { color: "#21DB9A" } : { color: "red" };
   };
@@ -35,6 +37,20 @@ export default function Users() {
     loadUsers();
   }, []);
 
+  const deleteUser = async (userId) => {
+    try {
+      await axios.delete(`http://localhost:8004/admin/deleteUser/${userId}`);
+      setUserList(userList.filter(user => user.userId !== userId));
+    } catch (error) {
+      console.error("Error deleting user", error);
+    }
+  };
+
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
   return (
     <BasicPage
       tabs={[
@@ -46,30 +62,26 @@ export default function Users() {
     >
       <div>
         <div className="info">
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Verification Status</th>
-                <th>Levels</th>
-                <th>Quiz Taken</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-            {userList.map((user, index) => (
-                <tr key={index}>
-                  <td>{user.userName}</td>
-                  <td>{user.email}</td>
-                  <td>{user.isVerified}</td>
-                  <td>{user.level}</td>
-                  <td>{user.hasTakenQuiz}</td>
-                  <td><RiDeleteBin6Line /></td>
-                </tr>
+          <Table
+              hover={true}
+            >
+              <TableRow data={["Name", "Email", "Role", "NIC", "Contact", "Delete"]} classes={["col1","col2","col3","col4", "col5","col6"]}/>
+              {userList.map((user) => (
+                <TableRow 
+                  classes={["col1","col2","col3","col4", "col5","col6"]}
+                  key={user.userId}
+                  data={[
+                    user.userName,
+                    <span style={{width: "50px"}}>{user.email}</span>,
+                    user.role,
+                    user.nic,
+                    user.phoneNumber,
+                    <RiDeleteBin6Line onClick={() => deleteUser(user.userId)}
+                    style={{ cursor: "pointer" }} />
+                  ]}
+                />
               ))}
-            </tbody>
-          </table>
+            </Table>
         </div>
       </div>
     </BasicPage>

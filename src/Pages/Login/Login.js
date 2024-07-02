@@ -106,6 +106,7 @@ function Login() {
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
+                                autoComplete="off"
                                 underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}

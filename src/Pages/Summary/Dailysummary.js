@@ -30,27 +30,17 @@ function Dailysummary() {
   const [isCoinSelected, setIsCoinSelected] = useState(false);
 
   // create state variable for each toggle
-  const [showTopGainers, setShowTopGainers] = useState(
-    localStorage.getItem("showTopGainers") === "true"
-  );
-  const [showTopLosses, setShowTopLosses] = useState(
-    localStorage.getItem("showTopLosses") === "true"
-  );
-  const [showTrendingCoin, setShowTrendingCoin] = useState(
-    localStorage.getItem("showTrendingCoin") === "true"
-  );
+  const [showTopGainers, setShowTopGainers] = useState(false);
+  const [showTopLosses, setShowTopLosses] = useState(false);
+  const [showTrendingCoin, setShowTrendingCoin] = useState(false);
 
-  const [isDefaultToggle, setIsDefaultToggle] = useState(
-    localStorage.getItem("isDefaultToggle") === "true"
-  );
+  const [isDefaultToggle, setIsDefaultToggle] = useState(false);
 
   //const [tradingHistory, setTradingHistory] = useState([]);
   const [tradingSuggestions, setTradingSuggestions] = useState([]);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [selectedCoins, setSelectedCoins] = useState([]);
-  // for customized coin
-  // const [customizedCoins, setCustomizedCoins] = useState([]);
-
+  const [isDefaultEnabled, setIsDefaultEnabled] = useState(false);
   const [previewContent, setPreviewContent] = useState(null);
 
   // coin table
@@ -155,6 +145,16 @@ function Dailysummary() {
     );
   };
 
+  useEffect(() => {
+    const savedToggles = JSON.parse(localStorage.getItem("savedToggles"));
+    if (savedToggles) {
+      setShowTopGainers(savedToggles.showTopGainers);
+      setShowTopLosses(savedToggles.showTopLosses);
+      setShowTrendingCoin(savedToggles.showTrendingCoin);
+      setIsDefaultEnabled(true);
+    }
+  }, []);
+
   //generate pdf
 
   const generatePDF = async () => {
@@ -204,6 +204,24 @@ function Dailysummary() {
     );
   };
 
+  // Handle default toggle change
+  const handleDefaultToggleChange = () => {
+    if (!isDefaultEnabled) {
+      const currentToggles = {
+        showTopGainers,
+        showTopLosses,
+        showTrendingCoin,
+      };
+      localStorage.setItem("savedToggles", JSON.stringify(currentToggles));
+    } else {
+      localStorage.removeItem("savedToggles");
+      setShowTopGainers(false);
+      setShowTopLosses(false);
+      setShowTrendingCoin(false);
+    }
+    setIsDefaultEnabled(!isDefaultEnabled);
+  };
+
   return (
     // daily summary front end
     <BasicPage tabs={Tabs}>
@@ -218,11 +236,11 @@ function Dailysummary() {
                     className="tog-name"
                     style={{
                       display: "inline-block",
-                      marginLeft: "2rem",
+                      marginLeft: "1rem",
                       marginTop: "2rem",
                     }}
                   >
-                    <span>Customize Coins</span>
+                    <span style={{ marginLeft: "4rem" }}>Customize Coins</span>
                   </div>
                   <div
                     className="coin-button"
@@ -370,20 +388,20 @@ function Dailysummary() {
                       <Input type="toggle" id="" />
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="default">
-                <div className="defaultname">
-                  <span>Set this features as default</span>
-                </div>
-                <div className="tog5">
-                  <Input
-                    type="toggle"
-                    id=""
-                    checked={isDefaultToggle}
-                    onChange={() => setIsDefaultToggle(!isDefaultToggle)}
-                  />
+                  <div className="default">
+                    <div className="defaultname" style={{ marginLeft: "3rem" }}>
+                      <span>Set this features as default</span>
+                    </div>
+                    <div className="tog5" style={{ marginRight: "21.5rem" }}>
+                      <Input
+                        type="toggle"
+                        id="setDefault"
+                        checked={isDefaultEnabled}
+                        onChange={handleDefaultToggleChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
