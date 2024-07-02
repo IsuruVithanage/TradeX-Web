@@ -72,7 +72,7 @@ export default function Users() {
                   key={user.userId}
                   data={[
                     user.userName,
-                    <span style={{width: "50px"}}>{user.email}</span>,
+                    <span style={{width: "200px", textAlign: "center"}}>{user.email}</span>,
                     user.role,
                     user.nic,
                     user.phoneNumber,

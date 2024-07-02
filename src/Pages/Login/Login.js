@@ -43,7 +43,7 @@ function Login() {
 
         if (!error) {
             setIsLoading(true);
-            const endPoint = action === "Login" ? '/user/login' : '/user/register';
+            const endPoint = action === "Login" ? '/admin/login' : '/user/register';
 
             await axiosInstance.post(endPoint, values)
             .then(async(res) => {
