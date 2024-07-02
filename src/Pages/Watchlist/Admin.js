@@ -102,11 +102,11 @@ export default function Admin() {
     };
 
     const generatePassword = () => {
-        const length = 10;
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+        const length = 15;
+        const chars = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz', '0123456789@'];
         let password = '';
         for (let i = 0; i < length; i++) {
-            password += chars.charAt(Math.floor(Math.random() * chars.length));
+            password += chars[i % 3].charAt(Math.floor(Math.random() * chars[i % 3].length));
         }
 
         console.log(password);
