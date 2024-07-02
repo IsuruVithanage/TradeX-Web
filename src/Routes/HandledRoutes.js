@@ -1,12 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "../App";
+import Home from "../Pages/Home/Home";
 import Simulation from "../Pages/SimulateTradingPlatform/TradingPlatform";
 import Alert from "../Pages/Alert/Alert";
 import Suggestions from "../Pages/Suggestions/Suggestions";
 import Quiz from "../Pages/Quiz/Quiz";
 import VerifyUser from "../Pages/User/VerifyUser";
-import Signup from "../Pages/Login&Signin/Signup";
-import Login from "../Pages/Login&Signin/Login";
+import Login from "../Pages/Login/Login";
 import NotFound from "../Pages/NotFound/NotFound"
 
 import AdminRoutes from "./Sub-Routes/AdminRoutes";
@@ -30,14 +29,9 @@ export default function Router() {
             element: <Login />,
             behavior: "Redirect",
         },
-        {
-            path: "/signup",
-            element: <Signup />,
-            behavior: "Redirect",
-        },
         { 
             path: "/", 
-            element: <App />, 
+            element: <Home />, 
             behavior: "Redirect at beginning"
         }
     ]);
