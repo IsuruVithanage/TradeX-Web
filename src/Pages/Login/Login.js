@@ -8,6 +8,7 @@ import Input from "../../Components/Input/Input";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Validation from "./Validation";
 import "./Login.css";
+import axios from "axios";
 
 
 function Login() {
@@ -43,9 +44,9 @@ function Login() {
 
         if (!error) {
             setIsLoading(true);
-            const endPoint = action === "Login" ? '/admin/login' : '/user/register';
+            const endPoint = action === "Login" ? 'http://localhost:8080/admin/login' : 'http://localhost:8080/user/register';
 
-            await axiosInstance.post(endPoint, values)
+            await axios.post(endPoint, values)
             .then(async(res) => {
                 const token = res.data.accessToken;
                 const user = res.data.user;
