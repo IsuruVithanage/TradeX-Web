@@ -14,13 +14,10 @@ export default function Admin() {
         console.log(data);
     }
 
-    const [password, setPassword] = useState("");
     const [isdeleteModalOpen, setIsdeleteModalOpen] = useState(false);
     const [adminList, setAdminList] = useState([]);
     const [admin, setAdmin] = useState({
-        AdminId: "A001",
         AdminName: "",
-        password: password,
         NIC: "",
         Contact: "",
         email: "",
@@ -74,13 +71,15 @@ export default function Admin() {
         //     return;
         // }
 
+        const body = {...admin, password: generatePassword()};
+        
         try {
             const response = await fetch("http://localhost:8003/admin/saveAdmin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(admin),
+                body: JSON.stringify(body),
             });
 
             if (response.ok) {
@@ -102,14 +101,16 @@ export default function Admin() {
         }
     };
 
-    const generatePassword = (length = 5) => {
+    const generatePassword = () => {
+        const length = 10;
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
         let password = '';
         for (let i = 0; i < length; i++) {
             password += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        setPassword(password);
+
         console.log(password);
+        return password;
     };
 
     const loadAdmins = async () => {
@@ -126,7 +127,6 @@ export default function Admin() {
 
     useEffect(() => {
         loadAdmins();
-        generatePassword();
     }, []);
 
     const deleteAdmin = async (AdminId) => {
