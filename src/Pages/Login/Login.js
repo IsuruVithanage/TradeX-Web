@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthInterceptor } from "../../Authentication/axiosInstance";
 import { setAccessToken, setUser } from "../../Storage/SecureLs";
 import { showMessage } from "../../Components/Message/Message";
 import notificationManager from "../Alert/notificationManager";
 import Input from "../../Components/Input/Input";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Validation from "./Validation";
+import axios from "axios";
 import "./Login.css";
 
 
 function Login() {
+    const baseurl = process.env.REACT_APP_API_GATEWAY;
     const navigate = useNavigate();
-    const axiosInstance = useAuthInterceptor();
     const [isLoading, setIsLoading] = useState();
     const [action, setAction] = useState('Login');
     const [errorMessage, setErrorMessage] = useState('');
@@ -37,6 +37,40 @@ function Login() {
     }
 
 
+    const handleResponse = async (res) => {
+        const token = res.data.accessToken;
+        const user = res.data.user;
+        setUser(user);
+        setAccessToken(token);
+
+        await notificationManager.getToken();
+        setIsLoading(false);
+
+        if (user.role === 'User' || 
+            user.role === 'PendingTrader' || 
+            (user.role === 'Trader' && user.hasTakenQuiz)
+        ) {
+            navigate('/watchlist');
+        } else if (user.role === 'Admin') {
+            navigate('/admin/AdDashboard');
+        } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
+            navigate('/quiz');
+        }
+    }
+
+
+    const handleError = (error) => {
+        setIsLoading(false);
+        console.log('Login error:', error);
+
+        !error.response ?
+        showMessage('error', action + " Failed, Please try again.") :
+        error.response.status === 502 ?
+        showMessage('error', action + " Failed, Please try again.") :
+        showMessage('error', error.response.data.message);
+    }
+
+
     const handleSubmit = async () => {
         const error = Validation(values);
         setErrorMessage(error);
@@ -45,31 +79,17 @@ function Login() {
             setIsLoading(true);
             const endPoint = action === "Login" ? '/admin/login' : '/user/register';
 
-            await axiosInstance.post(endPoint, values)
-            .then(async(res) => {
-                const token = res.data.accessToken;
-                const user = res.data.user;
-                setUser(user);
-                setAccessToken(token);
-
-                await notificationManager.getToken();
-                setIsLoading(false);
-
-                if (user.role === 'User' || user.role === 'PendingTrader' || (user.role === 'Trader' && user.hasTakenQuiz)) {
-                    navigate('/watchlist');
-                } else if (user.role === 'Admin') {
-                    navigate('/admin/AdDashboard');
-                } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
-                    navigate('/quiz');
-                }
-            })
+            await axios.post(baseurl.concat(endPoint), values)
+            .then((res) => handleResponse(res))
             .catch((error) => {
-                setIsLoading(false);
-                console.log('Login error:', error);
-
-                !error.response ?
-                showMessage('error', action + " Failed, Please try again.") :
-                showMessage('error', error.response.data.message);
+                if(action === "Login" && (error.response && error.response.status === 404)){
+                    axios.post(baseurl + '/user/login', values)
+                    .then((res) => handleResponse(res))
+                    .catch((error) => handleError(error));
+                }
+                else{
+                    handleError(error);
+                }
             });
         }
     };
