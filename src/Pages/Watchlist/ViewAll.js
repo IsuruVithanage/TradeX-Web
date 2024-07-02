@@ -127,7 +127,7 @@ export default function ViewAll() {
         </AdminCard>
       </div>
       <div>
-        <div className="info">
+        <div>
           {/* <table className="info-table">
             <thead>
               <tr>
@@ -161,15 +161,15 @@ export default function ViewAll() {
               hover={true}
               style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
             >
-              <TableRow data={["Name", "Email", "Role", "Quiz Taken", "Upload Materials"]} />
+              <TableRow data={["Name", "Email", "NIC", "Contact", "Upload Materials"]} />
               {pendingUsers.map((user) => (
                 <TableRow
                   key={user.userId}
                   data={[
                     user.userName,
                     user.email,
-                    user.role,
-                    user.hasTakenQuiz,
+                    user.nic,
+                    user.phoneNumber,
                     <Input
                     type="button"
                     value=" View"

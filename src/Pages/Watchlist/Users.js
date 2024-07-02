@@ -61,10 +61,11 @@ export default function Users() {
       ]}
     >
       <div>
-        <div className="info">
+        <div>
           <Table
               hover={true}
-              style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
+              style={{marginTop:"15px"}}
+              
             >
               <TableRow data={["Name", "Email", "Role", "NIC", "Contact", "Delete"]} classes={["col1","col2","col3","col4", "col5","col6"]}/>
               {userList.map((user) => (
@@ -78,7 +79,7 @@ export default function Users() {
                     user.nic,
                     user.phoneNumber,
                     <RiDeleteBin6Line onClick={() => deleteUser(user.userId)}
-                    style={{ cursor: "pointer" }} />
+                    style={{ cursor: "pointer", fontSize:"20px" , color:"red"}} />
                   ]}
                 />
               ))}

@@ -69,10 +69,10 @@ export default function Admin() {
     const handledSubmit = async () => {
         const isFormValid = Object.values(errors).every((err) => err === "") &&
                             Object.values(admin).every((field) => field !== "");
-        if (!isFormValid) {
-            console.error("Validation errors:", errors);
-            return;
-        }
+        // if (!isFormValid) {
+        //     console.error("Validation errors:", errors);
+        //     return;
+        // }
 
         try {
             const response = await fetch("http://localhost:8003/admin/saveAdmin", {
@@ -152,12 +152,12 @@ export default function Admin() {
             ]}
         >
             <div>
-                <div className="info">
+                <div>
                     <div>
                         <Input
                             type="button"
                             value="Create Account"
-                            style={{ width: "150px", marginLeft: "85%" }}
+                            style={{ width: "150px", marginLeft: "85%", marginBottom:"15px", marginTop:"15px"}}
                             onClick={() => setIsdeleteModalOpen(true)}
                         />
                         <Modal
@@ -261,7 +261,7 @@ export default function Admin() {
                                     admin.NIC,
                                     admin.Contact,
                                     <RiDeleteBin6Line onClick={() => deleteAdmin(admin.AdminId)}
-                                        style={{ cursor: "pointer" }} />
+                                        style={{ cursor: "pointer" , fontSize:"20px" , color:"red" }} />
                                 ]}
                             />
                         ))}
