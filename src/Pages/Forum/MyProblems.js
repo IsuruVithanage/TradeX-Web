@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 import "./forum.css";
 import { useParams } from "react-router-dom";
@@ -13,6 +19,7 @@ import { getUser } from "../../Storage/SecureLs";
 
 export default function MyProblems() {
   let { id } = useParams();
+  const navigate = useNavigate();
   const user = getUser();
   const Tabs = [
     { label: "Latest", path: "/forum" },
@@ -99,13 +106,15 @@ export default function MyProblems() {
         header="Favourites"
         sidePanel={
           <div>
-            <Link to="/forum/discussion">
-              {favorites.map((fav) => (
-                <p key={fav.id} className="sub-title">
-                  {fav.title}
-                </p>
-              ))}
-            </Link>
+            {favorites.map((fav) => (
+              <p
+                key={fav.id}
+                className="sub-title"
+                onClick={() => navigate(`/forum/discussion/${fav.questionId}`)}
+              >
+                {fav.title}
+              </p>
+            ))}
           </div>
         }
       >
@@ -113,19 +122,15 @@ export default function MyProblems() {
           <Input
             type="search"
             placeholder="Search"
-            style={{ width: "600px", marginLeft: "20px" }}
+            style={{ width: "45rem", marginLeft: "20px", marginTop: "0.6rem" }}
           />
           <Link to="/forum/AskQuestion">
             <Input
               type="button"
               value="Ask Question"
-              style={{ width: "130px", marginLeft: "15%" }}
+              style={{ width: "130px", marginLeft: "15%", marginTop: "0.6rem" }}
             />
           </Link>
-          <RiSoundModuleLine
-            className="filter-icon"
-            style={{ color: "#6D6D6D", marginLeft: "15%", size: "20px" }}
-          ></RiSoundModuleLine>
         </div>
 
         <div className="topic-row">

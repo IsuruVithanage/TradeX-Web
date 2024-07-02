@@ -42,7 +42,7 @@
 }
 
 .desc-container h1 p {
-    margin: 0;
+    margin-left: 0;
     color: white;
 }
 
@@ -80,3 +80,11 @@ a {
     text-decoration: none;
   }
   
+  .delete-icon-container {
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    font-size: 25px;
+    color:red;
+}

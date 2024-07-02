@@ -17,8 +17,7 @@
     transform: translateX(-10%);
 }
 
-.address{
-    width: 270px;
+.address1{
     user-select: text;
     word-wrap: break-word;
     text-align: center;

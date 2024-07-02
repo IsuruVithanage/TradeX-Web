@@ -75,12 +75,23 @@
     color: #FFF;
     
 }
+.side-panel-header{
+    color: #21DB9A;
+}
+
+
 .sub-title{
     color: #FFF;
     margin-top: 0%;
     font-size: 10px;
+    
 }
+.sub-title::before{
+    content: "•";
+    color: #FFF;
+    margin-right: 0.5rem;
 
+}
 .topic-row .topic{
     width: 480px;
     color:#21DB9A;
@@ -100,14 +111,14 @@ display: flex;
 */
 .topic-row{
     background-color: #151517;
-    margin: 1.1rem;
+    margin: 0.8rem;
     /*grid-template-columns: repeat(3,50px) 1fr;*/
     color: #FFF;
     display: flex;
     border-radius: 0.625rem;
 }
-.topic h4{
-    margin-top: 0.01rem;
+.topic-row .topic h4 {
+    margin-top: 0.5rem;
     
 }
 .questionarea{
@@ -118,24 +129,24 @@ display: flex;
     font-size: 13px;
     margin-top: 0.6rem;
 }
-.topic-stat h4{
+.topic-stat {
     margin-right: 4.5rem;
     text-align: right;
-    margin-top: 1.3rem;
+    margin-top: 0.5rem;
   
 
 }
-.topic-stat-likes h4{
+.topic-stat-likes {
     margin-right: 3.5rem;
     text-align: right;
-    margin-top: 1.3rem;
+    margin-top: 0.5rem;
 
     
 }
 .topic-stat-replies{
    
     text-align: right;
-    margin-top: 1.3rem;
+    margin-top: 0.5rem;
 
 }
 .question-stat .replies{
@@ -183,6 +194,50 @@ display: flex;
     color:#FFF ;
     padding-top: 2%;
     margin-left: 1.063rem;
+}
+
+/* Answerset.css */
+
+.question-answer-container{
+    background-color: #151517;
+    margin: 1.25rem;
+    grid-template-columns: repeat(3,50px) 1fr;
+    color: #FFF;
+    display:inherit;
+    border-radius: 0.938rem;
+    margin-bottom: 1%;
+    
+}
+
+.question-answer-container .question-title{
+    width: 30rem;
+    color:#FFF ;
+    padding-top: 1%;
+    margin-left: 1.063rem;
+}
+
+.answer-component.topic-row .topic {
+    width: 75% !important;
+    height: 15%;
+}
+.answer-text{
+    font-size: 15px;
+    margin-left: 1rem;
+    color:#6D6D6D;
+    margin-top: -0.5rem;
+}
+
+.action-buttons button{
+    margin-left: 1rem;
+    background: transparent;
+  border: none;
+  padding: 0;
+  
+  color:#21DB9A;
+}
+button.edit-button{
+    
+   
 }
 
 /*

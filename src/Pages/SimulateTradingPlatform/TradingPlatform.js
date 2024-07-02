@@ -141,7 +141,7 @@ export default function TradingPlatform() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error', 'Error fetching order history');
+            showMessage('error', 'Error fetching order history');
         }
     };
 
@@ -558,6 +558,7 @@ export default function TradingPlatform() {
 
                 {limitOrder.map(order => (
                     <TableRow
+                        key = {order.orderId}
                         data={[
                             <Coin>{order.coin}</Coin>,
                             order.type,

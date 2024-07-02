@@ -21,3 +21,35 @@ h4 {
 ul li {
     color: #bdbdbd;
 }
+
+
+.Add-edu {
+    margin-bottom: 15px;
+    color: white;
+    border-bottom: 2px solid #21DB9A;
+    margin-left: -20px;
+    width: 350px;
+
+}
+
+.custom-textarea::placeholder {
+    color: #21DB9A;
+}
+
+  .custom-textarea {
+    background-color: #3c3c3c;
+    color:  #21DB9A;
+    border-radius: 8px; /* Adjust the value for more or less rounded corners */
+    padding: 10px; /* Optional: Adds some padding inside the textarea */
+    border: 1px solid #21DB9A;
+    resize: none; 
+    margin-bottom: 15px;/* Optional: Adds a border with a light gray color */
+  }
+
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 2px;
+  }
+  
+  

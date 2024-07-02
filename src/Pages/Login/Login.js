@@ -43,7 +43,7 @@ function Login() {
 
         if (!error) {
             setIsLoading(true);
-            const endPoint = action === "Login" ? '/user/login' : '/user/register';
+            const endPoint = action === "Login" ? '/admin/login' : '/user/register';
 
             await axiosInstance.post(endPoint, values)
             .then(async(res) => {
@@ -78,12 +78,10 @@ function Login() {
     useEffect(() => {
         if(action === "Login"){
             setValues({email: "", password: ""});
-            document.getElementById('email').focus();
         }
 
         if(action === "SignUp"){
             setValues({username: "", email: "", password: ""});
-            document.getElementById('username').focus();
         }
         setErrorMessage('');
     }, [action]);
@@ -108,6 +106,7 @@ function Login() {
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
+                                autoComplete="off"
                                 underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}
@@ -122,6 +121,7 @@ function Login() {
                                 value={values.email || ""}
                                 name="email"
                                 id="email"
+                                autoComplete="email"
                                 underline
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}
@@ -135,6 +135,7 @@ function Login() {
                                 name="password"
                                 id="password"
                                 underline
+                                autoComplete="password"
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
