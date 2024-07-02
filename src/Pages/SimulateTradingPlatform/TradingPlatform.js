@@ -25,6 +25,7 @@ export default function TradingPlatform() {
     const [latestPrice, setLatestPrice] = useState(0);
     const [latestTime, setLatestTime] = useState(0);
     const [walletBalance, setWalletBalance] = useState(0);
+
     const [balanceSymble, setBalanceSymble] = useState('$');
     const [balancePr, setBalancePr] = useState(0);
     const [limitOrder, setLimitOrder] = useState([]);
@@ -33,7 +34,7 @@ export default function TradingPlatform() {
     const [isError, setIsError] = useState(null);
     const [selectedCoin, setSelectedCoin] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const priceLimits = ['Limit', 'Market', 'Stop Limit'];
     const apiGateway = process.env.REACT_APP_API_GATEWAY;
 
@@ -321,8 +322,6 @@ export default function TradingPlatform() {
         }
 
 
-        setIsLoading(false);
-
         if (order.category !== 'Stop Limit') {
             const ob = {
                 userId: user.id,
@@ -343,6 +342,7 @@ export default function TradingPlatform() {
                 return;
             }
 
+            setIsLoading(true);
             fetch(`${apiGateway}/portfolio/asset/trade`, {
                 method: 'POST',
                 headers: {
@@ -362,9 +362,9 @@ export default function TradingPlatform() {
 
                     const res= await axiosInstance.post('/order', placeOrder());
                     if (res) {
-                        setIsLoading(true);
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
+                        setIsLoading(false);
                         if (order.category === 'Limit') {
                             fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                         }
@@ -387,9 +387,9 @@ export default function TradingPlatform() {
             })
                 .then(response => {
                     if (response.ok) {
-                        setIsLoading(true);
                         showMessage('success', 'The order has been placed successfully!');
                         getWalletBalance();
+                        setIsLoading(false);
                         if (selectedType === 'Stop Limit') {
                             fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), 'Stop Limit');
                         }
@@ -469,6 +469,7 @@ export default function TradingPlatform() {
 
 
     const confirm = (orderId) => {
+        setIsLoading(true);
         fetch(`${apiGateway}/order/deleteOrder/${orderId}`, {
             method: 'DELETE',
             headers: {
@@ -478,9 +479,11 @@ export default function TradingPlatform() {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Success', 'Order deleted successfully');
+                    setIsLoading(false);
+                    showMessage('success', 'Order deleted successfully');
                     fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
+                    setIsLoading(false);
                     showMessage('Error', 'Failed to delete order');
                 }
             })
@@ -491,16 +494,22 @@ export default function TradingPlatform() {
     };
 
     return (
-        <BasicPage tabs={Tabs}>
+        <BasicPage tabs={Tabs} isLoading={isLoading}>
             <SidePanelWithContainer
                 line={false}
                 style={{paddingTop: "22px"}}
                 sidePanel={
                     <div>
                         <div style={{display: 'flex'}}>
-                            <h1 className="tradeHeader" style={{marginRight: '3.3rem'}}>Trade</h1>
-                            <h1 className="tradeHeader"
-                                style={{color: '#21db9a'}}>{balanceSymble + " "}{formatTo6Decimal(walletBalance)}</h1>
+                            <div>
+                                <h1 className="tradeHeader" style={{marginRight: '3.3rem'}}>Trade</h1>
+                            </div>
+                            <div style={{width:"2rem"}}></div>
+                            <div>
+                                <h1 className="tradeHeader"
+                                    style={{color: '#21db9a'}}>{balanceSymble + " "}{formatTo6Decimal(walletBalance)}</h1>
+                            </div>
+
                         </div>
                         <ButtonSet priceLimits={priceLimits} setOrderCatagory={setOrderCatagory}
                                    selectedType={selectedType}/>
