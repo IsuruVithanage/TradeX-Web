@@ -60,30 +60,36 @@ const Watchlist1 = () => {
   }, [coins, userId]);
 
   useEffect(() => {
-    setIsLoading(true);
+    const fetchMarketData = () => {
+      setIsLoading(true);
+      axios
+        .get(
+          `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
+        )
+        .then((res) => {
+          if (Array.isArray(res.data)) {
+            const data = res.data
+              .map((coin) => {
+                coin.symbol = coin.symbol.slice(0, -4);
+                return coin;
+              })
+              .sort((a, b) => b.quoteVolume - a.quoteVolume);
+            setCoins(data);
+          } else {
+            console.error("API response is not an array:", res.data);
+          }
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
+    };
 
-    axios
-      .get(
-        `https://api.binance.com/api/v3/ticker/24hr?symbols=${symbols.coinsList}`
-      )
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          const data = res.data
-            .map((coin) => {
-              coin.symbol = coin.symbol.slice(0, -4);
-              return coin;
-            })
-            .sort((a, b) => b.quoteVolume - a.quoteVolume);
-          setCoins(data);
-        } else {
-          console.error("API response is not an array:", res.data);
-        }
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+    fetchMarketData();
+    const intervalId = setInterval(fetchMarketData, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleRowClick = (selectedCoin) => {
@@ -147,12 +153,13 @@ const Watchlist1 = () => {
     });
     return "$ " + amountString;
   };
-
+  
+  
   const filteredCoins = coins.filter((coin) =>
     symbols[coin.symbol]?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const top4Coins = filteredCoins.slice(0, 4);
+  const top4Coins = coins.slice(0, 4);
 
   return (
     <BasicPage
@@ -302,7 +309,7 @@ const Watchlist1 = () => {
             tableTop={<h2 style={{ textAlign: "center" }}>Select Coin</h2>}
           >
             <TableRow data={["Coin", "Price", "Select"]} />
-            {coins.map((coin) => (
+            {filteredCoins.map((coin) => (
               <TableRow
                 key={coin.symbol}
                 onClick={() => handleRowClick(coin)}
