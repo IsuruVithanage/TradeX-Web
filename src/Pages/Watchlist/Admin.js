@@ -116,10 +116,20 @@ export default function Admin() {
     loadAdmins();
   }, []);
 
+<<<<<<< HEAD
   const confirmDeleteAdmin = (AdminId) => {
     setAdminToDelete(AdminId);
     setIsConfirmDeleteModalOpen(true);
   };
+=======
+    const generatePassword = () => {
+        const length = 15;
+        const chars = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz', '0123456789@'];
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            password += chars[i % 3].charAt(Math.floor(Math.random() * chars[i % 3].length));
+        }
+>>>>>>> 7b6c75cc358004a72e137481594075e5760a7ec8
 
   const deleteAdmin = async () => {
     try {

@@ -46,7 +46,7 @@ export default function SideNavBar() {
             </div>
 
             <nav className="icon-container">
-                {/*  userRole === "admin" &&  */ true &&
+                {userRole === "admin" &&
                 <div 
                     className={`nav-link ${isActive("/admin")}`}
                     onClick={() => navigate("/admin/AdDashboard")}>
