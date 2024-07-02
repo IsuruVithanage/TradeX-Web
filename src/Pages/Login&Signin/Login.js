@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import notificationManager from "../Alert/notificationManager";
 import trade from "../../Assets/Images/trade.png";
-<<<<<<< HEAD
-import BasicPage from "../../Components/BasicPage/BasicPage";
-import { useAuthInterceptor } from "../../Authentication/axiosInstance";
-import { setAccessToken, setUser } from "../../Storage/SecureLs";
-=======
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import {useAuthInterceptor} from "../../Authentication/axiosInstance";
 import {setAccessToken, setUser, getUser} from "../../Storage/SecureLs";
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
 import "./Login.css";
 
 function Login() {
@@ -42,15 +36,6 @@ function Login() {
 
       notificationManager.getToken();
 
-<<<<<<< HEAD
-      console.log("Login success");
-
-      if (user.role === "User") {
-        if (user.hasTakenQuiz) {
-          navigate("/watchlist");
-        } else {
-          navigate("/quiz");
-=======
             await notificationManager.getToken();
 
             console.log('Login success');
@@ -64,14 +49,7 @@ function Login() {
             }
         } catch (err) {
             console.error('Login error:', err);
->>>>>>> cdde2f59dc332014889ca9e24cd066c500d7f438
         }
-      } else {
-        navigate("/admin/AdDashboard");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-    }
   };
 
   return (

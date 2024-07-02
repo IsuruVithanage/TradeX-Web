@@ -253,9 +253,9 @@ export default function VerifyUser() {
             console.log('Saving user detail:', userDetail);
             saveData().then(r => {
                 setIsSubmit(false);
-                showMessage('success', 'Data saved successfully');
-                updateUserVerifyStatus().then(r => navigate('/watchList'));
+                updateUserVerifyStatus().then(r => showMessage('success', 'Data saved successfully'));
             });
+            navigate("/watchlist");
 
         }
     }, [userDetail.userImg, userDetail.nicImg1, userDetail.nicImg2]);
