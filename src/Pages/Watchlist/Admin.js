@@ -249,7 +249,6 @@ export default function Admin() {
                     </div>
                     <Table
                         hover={true}
-                        style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
                     >
                         <TableRow data={["Name", "Email", "NIC", "Contact", "Delete"]} />
                         {adminList.map((admin) => (

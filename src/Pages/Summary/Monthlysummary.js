@@ -1,11 +1,9 @@
-
-import React from 'react'
-import './Monthlysummary.css'
-import BasicPage from '../../Components/Layouts/BasicPage/BasicPage';
+import React from "react";
+import "./Monthlysummary.css";
+import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Input from "../../Components/Input/Input";
 import Modal from "antd/es/modal/Modal";
 import { useState, useEffect } from "react";
-
 import symbols from "../../Assets/Images/Coin Images.json";
 import axios from "axios";
 import MSummaryReport from "./MSummaryReport";
@@ -15,7 +13,6 @@ import html2canvas from "html2canvas";
 import MonthlyTrendingCoinChart from "./MonthlyTrendingCoinChart";
 
 function Monthlysummary() {
-  // create the tabs
   const Tabs = [
     { label: "Daily", path: "/summary/daily" },
     { label: "Monthly", path: "/summary/monthly" },
@@ -26,12 +23,12 @@ function Monthlysummary() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // create state variable for each toggle
   const [showMonthlyPerformance, setShowMonthlyPerformance] = useState(false);
   const [showTopGainers, setShowTopGainers] = useState(false);
   const [showTopLosers, setShowTopLosers] = useState(false);
   const [showTrendingCoin, setShowTrendingCoin] = useState(false);
   const [showTradingSuggestions, setShowTradingSuggestions] = useState(false);
+  const [isDefaultEnabled, setIsDefaultEnabled] = useState(false);
 
   const [tradingSuggestions, setTradingSuggestions] = useState([]);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
@@ -39,7 +36,7 @@ function Monthlysummary() {
 
   const [previewContent, setPreviewContent] = useState(null);
 
-  // coin table
+  // Coin table
   useEffect(() => {
     setIsLoading(true);
 
@@ -121,6 +118,18 @@ function Monthlysummary() {
       );
   }, [showTradingSuggestions]);
 
+  // Load the saved toggle states from local storage when the component mounts
+  useEffect(() => {
+    const savedToggles = JSON.parse(localStorage.getItem("savedToggles"));
+    if (savedToggles) {
+      setShowTopGainers(savedToggles.showTopGainers);
+      setShowTopLosers(savedToggles.showTopLosers);
+      setShowTrendingCoin(savedToggles.showTrendingCoin);
+      setShowTradingSuggestions(savedToggles.showTradingSuggestions);
+      setIsDefaultEnabled(true);
+    }
+  }, []);
+
   // Generate preview
   const generatePreview = () => {
     setPreviewContent(
@@ -135,7 +144,7 @@ function Monthlysummary() {
     );
   };
 
-  // generate pdf
+  // Generate PDF
   const generatePDF = async () => {
     const reportElement = document.createElement("div");
     reportElement.style.position = "absolute";
@@ -170,8 +179,26 @@ function Monthlysummary() {
         document.body.removeChild(reportElement);
       }
     );
+  };
 
-    // Preview
+  // Handle default toggle change
+  const handleDefaultToggleChange = () => {
+    if (!isDefaultEnabled) {
+      const currentToggles = {
+        showTopGainers,
+        showTopLosers,
+        showTrendingCoin,
+        showTradingSuggestions,
+      };
+      localStorage.setItem("savedToggles", JSON.stringify(currentToggles));
+    } else {
+      localStorage.removeItem("savedToggles");
+      setShowTopGainers(false);
+      setShowTopLosers(false);
+      setShowTrendingCoin(false);
+      setShowTradingSuggestions(false);
+    }
+    setIsDefaultEnabled(!isDefaultEnabled);
   };
 
   return (
@@ -191,7 +218,9 @@ function Monthlysummary() {
                       marginTop: "2rem",
                     }}
                   >
-                    <span>Customize Coins</span>
+                    <span style={{ marginLeft: "3.2rem" }}>
+                      Customize Coins
+                    </span>
                   </div>
                   <div
                     className="coin-button"
@@ -221,36 +250,61 @@ function Monthlysummary() {
                           placeholder="Search"
                           style={{
                             width: "400px",
-                            float: "right",
-                            marginRight: "50px",
+                            float: "left",
+                            height: "38px",
                           }}
                           onChange={(e) => setSearch(e.target.value)}
                         />
                       </div>
-
-                      <table className="watchlist-table-modal">
-                        <thead
-                          style={{
-                            color: "#dbdbdb",
-                            fontSize: "18px",
-                            marginBottom: "20px",
-                          }}
-                        >
+                      <table
+                        style={{
+                          width: "420px",
+                          height: "300px",
+                          overflowY: "scroll",
+                          display: "inline-block",
+                        }}
+                      >
+                        <thead>
                           <tr>
-                            <td>Coin</td>
-                            <td>Price</td>
-                            <td>Select</td>
+                            <th
+                              style={{
+                                padding: "10px",
+                                backgroundColor: "#f2f2f2",
+                              }}
+                            >
+                              Coin
+                            </th>
+                            <th
+                              style={{
+                                padding: "10px",
+                                backgroundColor: "#f2f2f2",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              style={{
+                                padding: "10px",
+                                backgroundColor: "#f2f2f2",
+                              }}
+                            >
+                              Select
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           {filteredCoins.map((coin) => (
                             <tr
-                              key={coin.id}
+                              key={coin.symbol}
                               onClick={() => handleRowClick(coin)}
+                              style={{
+                                cursor: "pointer",
+                                textAlign: "center",
+                              }}
                             >
                               <td
                                 style={{
-                                  marginLeft: "100px",
+                                  padding: "10px",
                                   marginBottom: "50px",
                                 }}
                               >
@@ -349,11 +403,16 @@ function Monthlysummary() {
               </div>
 
               <div className="default">
-                <div className="defaultname">
+                <div className="defaultname" style={{ marginLeft: "5rem" }}>
                   <span>Set these features as default</span>
                 </div>
-                <div className="tog5">
-                  <Input type="toggle" id="setDefault" />
+                <div className="tog5" style={{ marginRight: "20.2rem" }}>
+                  <Input
+                    type="toggle"
+                    id="setDefault"
+                    checked={isDefaultEnabled}
+                    onChange={handleDefaultToggleChange}
+                  />
                 </div>
               </div>
 

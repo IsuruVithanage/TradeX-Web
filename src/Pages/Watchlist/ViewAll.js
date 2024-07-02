@@ -159,7 +159,6 @@ export default function ViewAll() {
           </table> */}
           <Table
               hover={true}
-              style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
             >
               <TableRow data={["Name", "Email", "NIC", "Contact", "Upload Materials"]} />
               {pendingUsers.map((user) => (

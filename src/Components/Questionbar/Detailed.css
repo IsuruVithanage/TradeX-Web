@@ -3,42 +3,89 @@ body{
     
 }
 .ques{
-width: 85%;
+width: 94%;
 height: auto;
 flex-shrink: 0;
-margin-top: 20px;
+margin-top: 10 px;
 border-radius: 15px;
 background: #151517;
-padding:0% 0% 3% 2%;
+padding:0% 0% 0% 2%;
+margin-left: 1rem;
 box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
 }
-.quill-editor-my-custom-class {
-    /* Add styles specific to the text area */
-    height: 8rem;
-    
-  }
-.text-editor{
-    width: 70%;
-    
-    color: #151517;
+
+.q-title{
+  margin-left: 1.9rem;
+font-size: 21px;
+color: #21DB9A;
+margin-top: -0.05rem;
 }
+
+.quill-editor-my-custom-class {
+  height: 150px;  /* Set a fixed height */
+  margin-bottom: 20px;
+}
+
+.quill-editor-my-custom-class .ql-container {
+  height: calc(100% - 42px);  /* Adjust for toolbar height */
+  overflow-y: auto;  /* Add vertical scrollbar */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.quill-editor-my-custom-class .ql-editor {
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px;
+}
+.add-answer .text-editor p {
+    
+  font-size: 16px;
+  height: 15vh;
+  background-color:#3c3c3c ;
+}
+
+
+
+.detailed-post-button {
+  background-color: #21DB9A;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  
+}
+
+.add-answer .button{
+  text-align: right;
+  margin-right: 1rem;
+}
+.post-button:hover {
+  background-color: #1cb681;
+}
+
 .text-editor p{
-    height: 5rem;
+  height: 5rem;
+  color: #bdbdbd;
+}
+
+.ques.text-editor p{
+    
+    color: #bdbdbd;
 }
 .write-title{
     padding-left: 2%;
-    color: #21DB9A;
+    color: #bdbdbd;
     padding-top: 1rem;
     margin-bottom: 1rem;
     font-weight: bold;
 }
-.add-answer .button{
-    margin-left: 32.5rem;
-    margin-top: 1.5rem;
-}
+
 h3{
-    color: aliceblue;
+    color: #bdbdbd;
     padding-left: 0%;
     padding-top: 2%;
 }
@@ -52,11 +99,10 @@ h5{
     margin-top: 0.6rem;
 }
 .answer-title{
-    margin-left: 0.5rem;
-
+    margin-left: 1.9rem;
     margin-top: 2.5rem;
     font-size: 21px;
-
+    color: #21DB9A;
 }
 p{
     color: aliceblue;
@@ -67,52 +113,60 @@ p{
     display: -webkit-inline-box;
 }
  .like-button{
-    
-    color: aliceblue;
-    padding-top: 4%;
-    height: 3rem !important;
+     color:#21DB9A;
+     height: 3rem !important;
     width: 3rem !important;
 }
  .dislike-button{
-    
-    color: white;
-    padding-top: 4%;
-    
+    color:#21DB9A;   
     height: 3rem !important;
     width: 3rem !important;
 }
+
 .favourite-icon{
-    color: white;
-    padding-top: 4%;
-    
-    height: 3rem !important;
-    width: 3rem !important;
+    color:#21DB9A;
+    padding-top: 1%;
+    height: 1.2rem !important;
+    width: 1.2rem !important;
 }
 .add-answer{
-    width: 75%;
-    height: auto;
+    width: 94%;
+    height:auto;
     flex-shrink: 0;
     margin-top: 1rem;
-    border-radius: 15px;
+    border-radius: 10px;
     background: #151517;
     padding:0% 0% 2% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
     margin-left: 1rem;
 
 }
+.answer .like-button{
+  height: 1.2rem !important;
+  width: 1.2rem !important;
+  margin-right: 1rem;
+}
+
+.answer .dislike-button{
+  height: 1.2rem !important;
+  width: 1.2rem !important;
+}
+
 .count{
     display: flex;
 }
-.author{
+.ques .author{
     font-size: 10px;
-    padding-left: 500px;
+    position: absolute;
     display: inline;
+    margin-left: 35rem;
+    color: #21DB9A;
 }
 h2{
     color: aliceblue;
 }
 .answer{
-    width: 85%;
+    width: 94%;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
@@ -120,7 +174,7 @@ h2{
     background: #151517;
     padding:1% 0% 3% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
-    margin-left: 0.5rem;
+    margin-left: 1rem;
 
 }
 
@@ -133,27 +187,8 @@ h2{
     color: white;
   }
   
-  .add-question-btn {
-    background-color: #21DB9A;
-    color: white;
-    padding: 10px 80px;
-    margin-left: .5rem;
-    margin-bottom: 20px;
-  }
   
-  .stats {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-  }
   
-  .statItem {
-    background-color: #424242;
-    padding: 10px;
-    text-align: center;
-    flex: 1;
-  }
   
   .statItem:not(:last-child) {
     margin-right: 10px;
@@ -163,6 +198,10 @@ h2{
     width: 100%;
   }
   
+  .ques h3{
+    margin-bottom: 1.5rem;
+    
+  }
   .question {
     background-color: #424242;
     padding: 10px;
@@ -182,14 +221,7 @@ h2{
   .questionText {
     margin: 0;
   }
-  
-  .answersCount {
-    background-color: #3f51b5;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 10px;
-    margin-left: auto;
-  }
+
   .favorite-separator {
     border: none;
     height: 1px;
