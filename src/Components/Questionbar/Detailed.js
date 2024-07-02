@@ -6,16 +6,20 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { showMessage } from "../../Components/Message/Message";
+import Input from "../../Components/Input/Input";
 import {
   MdThumbUp,
   MdThumbDown,
   MdOutlineThumbUp,
   MdOutlineThumbDown,
 } from "react-icons/md";
+import { getUser } from "../../Storage/SecureLs";
+import { set } from "react-hook-form";
+import { fontWeight } from "@mui/system";
 
 const socket = io("/", {
   reconnection: true,
@@ -31,20 +35,24 @@ axios.interceptors.response.use(
 
 function Detailed() {
   let { id } = useParams();
+  const navigate = useNavigate();
   const Tabs = [
     { label: "Latest", path: "/forum" },
     { label: "My Problems", path: "/forum/myProblems" },
     { label: "My Answers", path: "/forum/myAnswers" },
   ];
 
+  const user = getUser();
+  const userId = user && user.id;
   const [question, setQuestion] = useState({});
   const [values, setValues] = useState({
-    answerId: null,
     questionId: id,
-    username: "",
-    userId: 1,
+    questionTitle: "",
+    username: user.userName,
+    userId: user.id,
     comment: "",
     likes: 0,
+    dislikes: 0,
   });
   const [submittedAnswer, setSubmittedAnswer] = useState([]);
   const [isLike, setIsLike] = useState(false);
@@ -54,6 +62,7 @@ function Detailed() {
   const location = useLocation();
   const [isEditing, setIsEditing] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [showAddAnswer, setShowAddAnswer] = useState(false);
 
   const handleDescriptionChange = (content) => {
     setValues((prevOrder) => ({
@@ -77,7 +86,7 @@ function Detailed() {
         isLike: likeStatus,
       })
       .then((res) => {
-        setLikeCount(parseInt(res.data.likeCount, 10) || 0);
+        setLikeCount(!isLike ? likeCount + 1 : likeCount - 1);
         setIsLike(likeStatus);
       })
       .catch((error) => {
@@ -86,7 +95,8 @@ function Detailed() {
   };
 
   const handleDislikeClick = () => {
-    if (isDislike && !isLike) {
+    if (isLike) {
+      setIsLike(false);
       like(false);
     }
     dislike(!isDislike);
@@ -161,8 +171,9 @@ function Detailed() {
       setValues({
         answerId: null,
         questionId: id,
-        username: "",
-        userId: 1,
+        questionTitle: "",
+        username: user.userName,
+        userId: user.id,
         comment: "",
         likes: 0,
       });
@@ -185,6 +196,65 @@ function Detailed() {
       console.error("Error fetching answer for edit:", error);
       showMessage("error", "Failed to fetch answer for editing", 1.5);
     }
+  };
+
+  const checkUserIsLiked = async () => {
+    axios
+      .post("http://localhost:8010/forum/userIsLiked", {
+        questionId: id,
+        userId: 1,
+      })
+      .then((res) => {
+        setIsLike(res.data.like);
+        setIsDislike(res.data.dislike);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const startWebSocket = () => {
+    const ws = new WebSocket("ws://localhost:8083");
+
+    ws.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type) {
+        console.log("data", data);
+        if (data.type === "liked" && data.likeDetail.questionId === id) {
+          setLikeCount(parseInt(data.likeDetail.likeCount.likeCount));
+        } else if (
+          data.type === "disLiked" &&
+          data.disLikeDetail.questionId === id
+        ) {
+          console.log("dislike", data.disLikeDetail.likeCount.dislikeCount);
+          setDislikeCount(parseInt(data.disLikeDetail.likeCount.dislikeCount));
+        }
+      }
+    };
+    return () => {
+      ws.close();
+    };
+  };
+
+  useEffect(() => {
+    startWebSocket();
+  }, []);
+
+  const addUserView = async () => {
+    axios
+      .post("http://localhost:8010/forum/userIsViewd", {
+        questionId: id,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleSubmit = async (event) => {
@@ -243,6 +313,12 @@ function Detailed() {
         `http://localhost:8010/forum/getQuestionsByQuestionId/${id}`
       );
       setQuestion(result.data[0]);
+      setValues((prevOrder) => ({
+        ...prevOrder,
+        questionTitle: result.data[0].title,
+      }));
+      setLikeCount(result.data[0].likes);
+      setDislikeCount(result.data[0].dislike);
     } catch (error) {
       console.error("Error fetching questions", error);
     }
@@ -254,6 +330,7 @@ function Detailed() {
         `http://localhost:8010/answers/getAnswersByQuestionId/${id}`
       );
       setSubmittedAnswer(response.data);
+      console.log("question:", response.data);
     } catch (error) {
       console.error("Error fetching answers:", error);
     }
@@ -263,6 +340,8 @@ function Detailed() {
     loadQuestions();
     fetchAnswers();
     fetchFavorites(1);
+    checkUserIsLiked();
+    addUserView();
   }, [id]);
 
   return (
@@ -271,35 +350,44 @@ function Detailed() {
         style={{ height: "91vh", width: "50vh" }}
         header={
           <div className="header-container">
-            <button className="add-question-btn">Add Answer</button>
+            <Input
+              type="button"
+              className="add-answer-btn"
+              value={showAddAnswer ? "Hide Answer Form" : "Add Answer"}
+              style={{
+                width: "12rem",
+                height: "2.6rem",
+                fontWeight: "bold",
+                marginLeft: "2rem",
+              }}
+              onClick={() => setShowAddAnswer(!showAddAnswer)}
+            />
           </div>
         }
         sidePanel={
           <div>
-            <div className="container">
-              <div className="stats">
-                <div className="statItem">
-                  Answers
-                  <br />
-                  22
-                </div>
-                <div className="statItem">
-                  Best Answers
-                  <br />
-                  71
-                </div>
-              </div>
-            </div>
             <div>
               <div
                 className="favorite-header"
-                style={{ fontSize: "20px", marginTop: "3rem" }}
+                style={{
+                  fontSize: "20px",
+                  marginTop: "3rem",
+                  color: "#21DB9A",
+                  fontWeight: 700,
+                }}
               >
-                Favorites
+                Favourites
               </div>
-              <hr className="favorite-separator"></hr>
+              <br></br>
+
               {favorites.map((fav) => (
-                <p key={fav.id} className="sub-title">
+                <p
+                  key={fav.id}
+                  className="sub-title"
+                  onClick={() =>
+                    navigate(`/forum/discussion/${fav.questionId}`)
+                  }
+                >
                   {fav.title}
                 </p>
               ))}
@@ -308,18 +396,18 @@ function Detailed() {
         }
       >
         <div>
+          <h3 className="q-title">Question</h3>
           <div className="ques">
             {question && (
               <>
                 <h3>{question.title}</h3>
-                <br />
                 <p>{question.description}</p>
                 <div className="prefer-buttons">
                   <div onClick={handleLikeClick} className="like-button">
                     {likeCount} {isLike ? <MdThumbUp /> : <MdOutlineThumbUp />}
                   </div>
                   <div onClick={handleDislikeClick} className="dislike-button">
-                    {dislikeCount}{" "}
+                    {dislikeCount === -1 ? 0 : dislikeCount}{" "}
                     {isDislike ? <MdThumbDown /> : <MdOutlineThumbDown />}
                   </div>
                 </div>
@@ -335,7 +423,7 @@ function Detailed() {
                     onClick={() => handleFavorite(question)}
                   />
                 )}
-                <p className="author">Created by: {question.author}</p>
+                <p className="author">Created by: {question.userName}</p>
               </>
             )}
           </div>
@@ -344,37 +432,40 @@ function Detailed() {
               <h2 className="answer-title">Answers</h2>
               {submittedAnswer.map((answer, index) => (
                 <div key={index} className="answer">
-                  <p className="author">{answer.username}</p>
+                  {/* <p className="author">{answer.userName}</p> */}
                   <p dangerouslySetInnerHTML={{ __html: answer.comment }}></p>
-                  <AiOutlineLike className="like-button" />
-                  <AiOutlineDislike className="dislike-button" />
+                  {/* <MdThumbUp className="like-button" />
+                  <MdThumbDown className="dislike-button" /> */}
+                  <p className="author">Created by: {answer.username}</p>
                 </div>
               ))}
             </>
           )}
-          <div className="add-answer">
-            <div className="write-title">
-              {isEditing ? "Edit Answer" : "Write an Answer"}
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="text-editor">
-                <ReactQuill
-                  theme="snow"
-                  name="description"
-                  className="quill-editor-my-custom-class"
-                  onChange={handleDescriptionChange}
-                  value={values.comment}
-                />
-                <div className="button">
-                  <input
-                    type="submit"
-                    value={isEditing ? "Update" : "Post"}
-                    className="post-button"
-                  />
-                </div>
+          {showAddAnswer && (
+            <div className="add-answer">
+              <div className="write-title">
+                {isEditing ? "Edit Answer" : "Write an Answer"}
               </div>
-            </form>
-          </div>
+              <form onSubmit={handleSubmit}>
+                <div className="text-editor">
+                  <ReactQuill
+                    theme="snow"
+                    name="description"
+                    className="quill-editor-my-custom-class"
+                    onChange={handleDescriptionChange}
+                    value={values.comment}
+                  />
+                  <div className="button">
+                    <input
+                      type="submit"
+                      value={isEditing ? "Update" : "Post"}
+                      className="detailed-post-button"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </SidePanelWithContainer>
     </BasicPage>

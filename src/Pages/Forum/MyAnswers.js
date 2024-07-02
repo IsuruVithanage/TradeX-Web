@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import { RiSoundModuleLine } from "react-icons/ri";
 import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import "./forum.css";
 import { useParams } from "react-router-dom";
 import Answerset from "./Answerset";
@@ -14,7 +20,7 @@ import { get } from "react-hook-form";
 
 export default function MyAnswers() {
   let { id } = useParams();
-
+  const navigate = useNavigate();
   const user = getUser();
 
   const Tabs = [
@@ -108,12 +114,16 @@ export default function MyAnswers() {
   return (
     <BasicPage tabs={Tabs}>
       <SidePanelWithContainer
-        style={{ height: "91vh" }}
+        style={{ height: "91vh", width: "53rem" }}
         header="Favourites"
         sidePanel={
           <div>
             {favorites.map((fav) => (
-              <p key={fav.id} className="sub-title">
+              <p
+                key={fav.id}
+                className="sub-title"
+                onClick={() => navigate(`/forum/discussion/${fav.questionId}`)}
+              >
                 {fav.title}
               </p>
             ))}
