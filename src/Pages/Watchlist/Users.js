@@ -64,7 +64,6 @@ export default function Users() {
         <div className="info">
           <Table
               hover={true}
-              style={{ height: "65vh", overflowY: "auto", fontSize: "1.10rem" }}
             >
               <TableRow data={["Name", "Email", "Role", "NIC", "Contact", "Delete"]} classes={["col1","col2","col3","col4", "col5","col6"]}/>
               {userList.map((user) => (
@@ -73,7 +72,7 @@ export default function Users() {
                   key={user.userId}
                   data={[
                     user.userName,
-                    user.email,
+                    <span style={{width: "50px"}}>{user.email}</span>,
                     user.role,
                     user.nic,
                     user.phoneNumber,

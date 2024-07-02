@@ -1,4 +1,4 @@
-.user-table {
+/* .user-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 30px;
@@ -22,23 +22,29 @@
 .user-table th:first-child,
 .user-table td:first-child {
     text-align: left;
-}
+} */
 
-/* .col1{
+.col1{
     width: 15%;
+    background-color: antiquewhite;
 }
 .col2{
     width: 15%; 
+    background-color: aquamarine;
 }
 .col3{
     width: 15%; 
+    background-color: brown;
 }
 .col4{
     width: 15%;
+    background-color: burlywood;
 }
 .col5{
     width: 15%;
+    background-color: cornflowerblue;
 }
 .col6{
     width: 15%;
-} */
+    background-color: darkgrey;
+}

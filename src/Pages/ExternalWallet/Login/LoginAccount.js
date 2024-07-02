@@ -34,14 +34,14 @@ export default function LoginAccount () {
   }
 
   function clearFields() {
-    document.getElementById("username").value = '';
-    document.getElementById("password").value = '';
+    document.getElementById("wallet-username").value = '';
+    document.getElementById("wallet-password").value = '';
   }
   
 
   function login() {
-    const userName = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const userName = document.getElementById("wallet-username").value.trim();
+    const password = document.getElementById("wallet-password").value.trim();
 
     if (!userName || !password) {
       setErrorMessage("All fields are required. Please fill in all the fields.");
@@ -91,7 +91,8 @@ export default function LoginAccount () {
       <Input
         type="text"	
         placeholder="Enter user name"
-        id="username"
+        id="wallet-username"
+        name="wallet-username"
         autoComplete="wallet-username"
         underline
         style={{marginTop: "4vh", width: "350px"}}
@@ -100,7 +101,8 @@ export default function LoginAccount () {
       <Input
         type="password"
         placeholder="Enter your password"
-        id="password"
+        id="wallet-password"
+        name="wallet-password"
         autoComplete="wallet-password"
         underline
         style={{marginTop: "4vh", width: "350px"}}

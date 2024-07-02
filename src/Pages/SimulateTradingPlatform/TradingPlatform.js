@@ -140,7 +140,7 @@ export default function TradingPlatform() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error', 'Error fetching order history');
+            showMessage('error', 'Error fetching order history');
         }
     };
 
@@ -478,7 +478,7 @@ export default function TradingPlatform() {
         })
             .then(response => {
                 if (response.ok) {
-                    showMessage('Success', 'Order deleted successfully');
+                    showMessage('success', 'Order deleted successfully');
                     fetchOrderByCoinAndCate(selectedCoin.symbol.toUpperCase(), order.category);
                 } else {
                     showMessage('Error', 'Failed to delete order');
@@ -549,6 +549,7 @@ export default function TradingPlatform() {
 
                 {limitOrder.map(order => (
                     <TableRow
+                        key = {order.orderId}
                         data={[
                             <Coin>{order.coin}</Coin>,
                             order.type,
