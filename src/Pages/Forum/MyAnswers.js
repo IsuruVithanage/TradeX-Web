@@ -122,7 +122,7 @@ export default function MyAnswers() {
               <p
                 key={fav.id}
                 className="sub-title"
-                onClick={() => navigate(`/forum/discussion/${fav.questionId}`)}
+                onClick={() => navigate(`/forum/discussion/${fav.questionId}/${fav.likes}/${fav.dislike}`)}
               >
                 {fav.title}
               </p>
@@ -148,110 +148,3 @@ export default function MyAnswers() {
   );
 }
 
-// import React, { useEffect,useState } from "react";
-// import BasicPage from '../../Components/BasicPage/BasicPage';
-// import Detailed from "../../Components/Questionbar/Detailed";
-// import axios from "axios";
-// import Input from "../../Components/Input/Input";
-// import './forum.css';
-// import { RiSoundModuleLine } from "react-icons/ri";
-// import SidePanelWithContainer from '../../Components/Layouts/SidePanel/SidePanelWithContainer'
-// import { Link } from 'react-router-dom'
-
-//  function MyAnswers() {
-
-//   const Tabs = [
-//     { label: "Latest", path: "/forum" },
-//     { label: "My Problems", path: "/forum/myProblems" },
-//     { label: "My Answers", path: "/forum/myAnswers" },
-
-//   ];
-
-//      const [answerlist, setAnswerlist]=useState([]);
-
-//     // const loadAnswers =async () => {
-//     //     try{
-//     //       const result=await axios.get(`http://localhost:8010/forum/saveAnswer`);
-//     //       console.log(result.data);
-//     //         setAnswerlist(result.data);
-
-//     //         }catch(error){
-//     //       console.error("Error fetching questions",error);
-//     //     }
-
-//     //   };
-
-//     //   useEffect(()=>{
-//     //     loadAnswers();
-//     //   },[])
-
-//     //   console.log(answerlist);
-
-//     const loadAnswers = async () => {
-//         try {
-//           const result = await axios.get(`http://localhost:8010/forum/saveAnswer`);
-//           setAnswerlist(result.data);
-//         } catch (error) {
-//           console.error("Error fetching answers", error);
-//         }
-//       };
-
-//       const postAnswer = async (newAnswer) => {
-//         try {
-//           // Assuming your backend API endpoint for posting answers is "/forum/postAnswer"
-//           const response = await axios.post(
-//             "http://localhost:8010/forum/postAnswer",
-//             newAnswer
-//           );
-//           // Assuming the backend returns the newly posted answer with its ID
-//           const postedAnswer = response.data;
-//           // Update the answerlist state with the new answer
-//           setAnswerlist([...answerlist, postedAnswer]);
-//         } catch (error) {
-//           console.error("Error posting answer", error);
-//         }
-//       };
-
-//   return (
-//     <BasicPage tabs={Tabs}>
-
-//     <Answerset answerlist={answerlist} />
-
-//     <SidePanelWithContainer
-//         style={{height:"91vh"}}
-//         header = "Favourites"
-//         sidePanel ={
-//             <div >
-//                 <p className='sub-title'>Technical Analysis</p>
-//                 <p className='sub-title'>Understanding cryptocurrency</p>
-//                 <p className='sub-title'>Understanding cryptocurrency wallet</p>
-
-//             </div>
-//         }>
-
-//     </SidePanelWithContainer>
-
-// </BasicPage>
-
-//   )
-
-//   function Answerset(props) {
-//     console.log(props);
-//     return (
-//       <div>
-//      <div>
-//       {props.answerlist.map((answer) => (
-//         <div key={answer.answerId}>
-//           <p>{answer.content}</p>
-//           {/* Render other answer details as needed */}
-//         </div>
-//       ))}
-//     </div>
-// </div>
-
-//     )
-//   }
-
-// }
-
-// export default MyAnswers

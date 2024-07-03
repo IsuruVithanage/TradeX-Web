@@ -25,7 +25,7 @@ const SummaryReport = ({
     const now = new Date();
     const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     return tradingHistory.filter(
-      (order) => new Date(order.date).toDateString() !== now.toDateString()
+      (order) => new Date(order.date).toDateString() === now.toDateString()
     );
   };
 

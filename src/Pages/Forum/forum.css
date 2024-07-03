@@ -1,6 +1,5 @@
 
-
-.component1{
+.component1 {
     width: 900px;
     height: 100vh;
     flex-shrink: 0;
@@ -14,10 +13,10 @@
     display: flex;
     flex-direction: column;
     padding: 1.8%;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
-.component2{
+.component2 {
     width: 12.5rem;
     height: 100vh;
     background-color: #0E0E0F;
@@ -30,9 +29,10 @@
     display: flex;
     flex-direction: column;
     padding: 1.8%;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
-.bar{
+
+.bar {
     width: 32.5rem;
     height: 1.563rem;
     flex-shrink: 0;
@@ -41,7 +41,8 @@
     color: white;
     margin-top: 1.25rem;
 }
-.ques-button{
+
+.ques-button {
     color: #FFF;
     font-family: Inter;
     font-size: 13px;
@@ -61,42 +62,46 @@
     flex-shrink: 0;
 }
 
-.bar{
+.bar {
     margin: right 2.5rem;
 }
 
-.filter-icon{
+.filter-icon {
     color: #6D6D6D;
     padding-top: 0.625rem;
     margin-right: 2.5rem;
-    size:30;
+    size: 30;
 }
-.fav-title{
+
+.fav-title {
     color: #FFF;
-    
+
 }
-.side-panel-header{
+
+.side-panel-header {
     color: #21DB9A;
 }
 
 
-.sub-title{
+.sub-title {
     color: #FFF;
     margin-top: 0%;
     font-size: 10px;
-    
+
 }
-.sub-title::before{
+
+.sub-title::before {
     content: "•";
     color: #FFF;
     margin-right: 0.5rem;
 
 }
-.topic-row .topic{
+
+.topic-row .topic {
     width: 480px;
-    color:#21DB9A;
-    margin: 2% 0% 2% 7.5% ;
-    
+    color: #21DB9A;
+    margin: 2% 0% 2% 7.5%;
+
 }
 
 
@@ -109,109 +114,116 @@ display: flex;
     line-height: normal;
     margin-top: -2px;
 */
-.topic-row{
+.topic-row {
     background-color: #151517;
     margin: 0.8rem;
     /*grid-template-columns: repeat(3,50px) 1fr;*/
     color: #FFF;
     display: flex;
     border-radius: 0.625rem;
+    align-items: center;
 }
-.topic-row .topic h4 {
-    margin-top: 0.5rem;
-    
-}
-.questionarea{
+
+.questionarea {
     display: inline-block;
 }
 
-.sub-title{
+.sub-title {
     font-size: 13px;
     margin-top: 0.6rem;
 }
+
 .topic-stat {
     margin-right: 4.5rem;
     text-align: right;
     margin-top: 0.5rem;
-  
+    margin-left: 3rem;
+
 
 }
+
 .topic-stat-likes {
     margin-right: 3.5rem;
     text-align: right;
     margin-top: 0.5rem;
 
-    
 }
-.topic-stat-replies{
-   
+
+.topic-stat-replies {
     text-align: right;
     margin-top: 0.5rem;
 
 }
-.question-stat .replies{
-   margin-right: 2.5rem;   
+
+.question-stat .replies {
+    margin-right: 2.5rem;
 }
+
 .question-stat {
-    margin-left: auto;
-   text-align: right;    
+    margin-left: 7rem;
+
 }
-.question-row .author{
+
+.question-row .author {
     color: #21DB9A;
     font-size: 7px;
     margin-left: 0.188rem;
 }
-.question-stat p{
+
+.question-stat p {
     color: #21DB9A;
     margin-top: 1.8rem;
     margin-right: 1.5rem;
-       
+
 }
 
-.question-title h4{
+.question-title h4 {
     margin-left: 0.625rem;
     font-weight: bold;
 }
-.question-title p{
+
+.question-title p {
     font-size: 12px;
     margin-left: 0.188rem;
-    color:#a5b1c2;
+    color: #a5b1c2;
 }
-.question-row{
+
+.question-row {
     background-color: #151517;
     margin: 1.25rem;
-    grid-template-columns: repeat(3,50px) 1fr;
+    grid-template-columns: repeat(3, 50px) 1fr;
     color: #FFF;
     display: flex;
     border-radius: 0.938rem;
     margin-bottom: 1%;
-    
-    
+
+
 }
-.question-title{
+
+.question-title {
     display: inline-block;
     width: 30rem;
-    color:#FFF ;
+    color: #FFF;
     padding-top: 2%;
     margin-left: 1.063rem;
 }
 
 /* Answerset.css */
 
-.question-answer-container{
+.question-answer-container {
     background-color: #151517;
     margin: 1.25rem;
-    grid-template-columns: repeat(3,50px) 1fr;
+    grid-template-columns: repeat(3, 50px) 1fr;
     color: #FFF;
-    display:inherit;
+    display: inherit;
     border-radius: 0.938rem;
     margin-bottom: 1rem;
     width: 58.5rem;
 }
 
-.question-answer-container .question-title{
+.question-answer-container .question-title {
     width: 30rem;
-    color:#FFF ;
+    color: #FFF;
     padding-top: 1%;
     margin-left: 1.063rem;
 }
@@ -220,78 +232,81 @@ display: flex;
     width: 75% !important;
     height: 15%;
 }
-.answer-text{
+
+.answer-text {
     font-size: 15px;
     margin-left: 1rem;
-    color:#a4b0be;
+    color: #a4b0be;
     margin-top: -0.5rem;
 }
 
-.action-buttons button{
+.action-buttons button {
     margin-left: 1rem;
     background: transparent;
-  border: none;
-  padding: 0;
- 
-  color:#21DB9A;
+    border: none;
+    padding: 0;
+
+    color: #21DB9A;
 }
-.action-buttons .delete-button{
+
+.action-buttons .delete-button {
     margin-left: 1rem;
     background: transparent;
-  border: none;
-  padding: 0;
-  color:#21DB9A;
+    border: none;
+    padding: 0;
+    color: #21DB9A;
 }
 
 .custom-delete-modal .ant-modal-content {
     background-color: #1e1e1e;
     border-radius: 8px;
-  }
-  
-  .custom-delete-modal .ant-modal-body {
+}
+
+.custom-delete-modal .ant-modal-body {
     padding: 24px;
-  }
-  
-  .custom-delete-modal .ant-modal-confirm-title {
+}
+
+.custom-delete-modal .ant-modal-confirm-title {
     color: white;
     font-size: 18px;
     text-align: center;
     margin-bottom: 24px;
     margin-top: 1.5rem;
-  }
-  
-  .custom-delete-modal .ant-modal-confirm-btns {
+}
+
+.custom-delete-modal .ant-modal-confirm-btns {
     display: flex;
     justify-content: center;
     gap: 16px;
     margin-bottom: 2rem;
     flex-direction: row-reverse;
-  }
-  
-  .custom-delete-modal .delete-btn {
+}
+
+.custom-delete-modal .delete-btn {
     background-color: #00d68f;
     border-color: #00d68f;
     color: white;
     font-weight: bold;
-  }
-  
-  .custom-delete-modal .cancel-btn {
-    background-color: #ff4d4f;
-    border-color: #ff4d4f;
+}
+
+.custom-delete-modal .cancel-btn {
+    background-color: #ff2429;
+    border-color: #ff292b;
     color: white;
     font-weight: bold;
-  }
-  
-  .custom-delete-modal .ant-btn {
+}
+
+.custom-delete-modal .ant-btn {
     border-radius: 4px;
     height: 40px;
     padding: 0 24px;
     font-size: 16px;
-  }
-  
-  .custom-delete-modal .ant-modal-close {
+}
+
+.custom-delete-modal .ant-modal-close {
     color: white;
-  }
+}
+
 /*
 
 .ask-question{

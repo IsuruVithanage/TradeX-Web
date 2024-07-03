@@ -1,5 +1,4 @@
 import "./Detailed.css";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import SidePanelWithContainer from "../../Components/Layouts/SidePanel/SidePanelWithContainer";
 import ReactQuill from "react-quill";
@@ -7,9 +6,8 @@ import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-import { showMessage } from "../../Components/Message/Message";
+import { showMessage } from "../Message/Message";
 import Input from "../../Components/Input/Input";
 import {
   MdThumbUp,
@@ -18,12 +16,6 @@ import {
   MdOutlineThumbDown,
 } from "react-icons/md";
 import { getUser } from "../../Storage/SecureLs";
-import { set } from "react-hook-form";
-import { fontWeight } from "@mui/system";
-
-const socket = io("/", {
-  reconnection: true,
-});
 
 axios.interceptors.response.use(
   (response) => response,
@@ -82,7 +74,7 @@ function Detailed() {
     axios
       .post("http://localhost:8010/forum/like", {
         questionId: id,
-        userId: 1,
+        userId: user.id,
         isLike: likeStatus,
       })
       .then((res) => {
@@ -106,7 +98,7 @@ function Detailed() {
     axios
       .post("http://localhost:8010/forum/dislike", {
         questionId: id,
-        userId: 1,
+        userId: user.id,
         isDislike: dislikeStatus,
       })
       .then((res) => {
@@ -135,7 +127,7 @@ function Detailed() {
 
       await axios.post("http://localhost:8010/forum/addFavorite", {
         questionId: question.questionId,
-        userId: 1,
+        userId: user.id,
         title: question.title,
       });
     } catch (error) {
@@ -202,7 +194,7 @@ function Detailed() {
     axios
       .post("http://localhost:8010/forum/userIsLiked", {
         questionId: id,
-        userId: 1,
+        userId: user.id,
       })
       .then((res) => {
         setIsLike(res.data.like);

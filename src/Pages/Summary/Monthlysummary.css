@@ -54,7 +54,7 @@
 .monthly-summary .template {
   width: 500px;
   height: 500px;
-  background-color:#2d3436;
+  background-color: rgba(71, 71, 71, 0.15);
   margin-top: 8%;
   color: #FFF;
   border-radius: 0.938rem;
