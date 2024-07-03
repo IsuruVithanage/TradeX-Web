@@ -33,7 +33,7 @@ function Login() {
                 case 'password': document.getElementById('submit').click();   break;
                 default : break;
             }
-        } 
+        }
     }
 
 
@@ -47,8 +47,8 @@ function Login() {
         await notificationManager.getToken();
         setIsLoading(false);
 
-        if (user.role === 'User' || 
-            user.role === 'PendingTrader' || 
+        if (user.role === 'User' ||
+            user.role === 'PendingTrader' ||
             (user.role === 'Trader' && user.hasTakenQuiz)
         ) {
             navigate('/watchlist');
@@ -65,10 +65,10 @@ function Login() {
         console.log('Login error:', error);
 
         !error.response ?
-        showMessage('error', action + " Failed, Please try again.") :
-        error.response.status === 502 ?
-        showMessage('error', action + " Failed, Please try again.") :
-        showMessage('error', error.response.data.message);
+            showMessage('error', action + " Failed, Please try again.") :
+            error.response.status === 502 ?
+                showMessage('error', action + " Failed, Please try again.") :
+                showMessage('error', error.response.data.message);
     }
 
 
@@ -81,17 +81,17 @@ function Login() {
             const endPoint = action === "Login" ? '/admin/login' : '/user/register';
 
             await axios.post(baseurl.concat(endPoint), values)
-            .then((res) => handleResponse(res))
-            .catch((error) => {
-                if(action === "Login" && (error.response && error.response.status === 404)){
-                    axios.post(baseurl + '/user/login', values)
-                    .then((res) => handleResponse(res))
-                    .catch((error) => handleError(error));
-                }
-                else{
-                    handleError(error);
-                }
-            });
+                .then((res) => handleResponse(res))
+                .catch((error) => {
+                    if(action === "Login" && (error.response && error.response.status === 404)){
+                        axios.post(baseurl + '/user/login', values)
+                            .then((res) => handleResponse(res))
+                            .catch((error) => handleError(error));
+                    }
+                    else{
+                        handleError(error);
+                    }
+                });
         }
     };
 
@@ -152,7 +152,7 @@ function Login() {
                             <Input
                                 type="password"
                                 placeholder="Password"
-                                value={values.password || ""}                                
+                                value={values.password || ""}
                                 name="password"
                                 id="password"
                                 underline
