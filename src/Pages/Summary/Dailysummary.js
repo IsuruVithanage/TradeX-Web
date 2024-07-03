@@ -10,10 +10,9 @@ import axios from "axios";
 import SummaryReport from "./SummaryReport";
 import ReactDOM from "react-dom";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import TrendingCoinChart from "./TrendingCoinChart";
 import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {getUser} from "../../Storage/SecureLs";
+import html2canvas from "html2canvas";
 
 function Dailysummary() {
     // create the tabs
@@ -141,6 +140,7 @@ function Dailysummary() {
 
     useEffect(() => {
         if (showTradingHistory) {
+            console.log("Fetching trading history...");
             fetchTradingHistory();
         }
     }, [showTradingHistory]);

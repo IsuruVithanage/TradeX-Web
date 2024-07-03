@@ -110,7 +110,7 @@ export default function MyProblems() {
               <p
                 key={fav.id}
                 className="sub-title"
-                onClick={() => navigate(`/forum/discussion/${fav.questionId}`)}
+                onClick={() => navigate(`/forum/discussion/${fav.questionId}/${fav.likes}/${fav.dislike}`)}
               >
                 {fav.title}
               </p>
