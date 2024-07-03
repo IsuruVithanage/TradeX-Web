@@ -9,6 +9,7 @@ import Portfolio from '../../Assets/Images/Portfolio.png';
 import Platform from '../../Assets/Images/Platform.png';
 import Alert from '../../Assets/Images/Alert.png';
 import Summary from '../../Assets/Images/Summary.png';
+import Education from '../../Assets/Images/Education.png';
 import Forum from '../../Assets/Images/Forum.png';
 import News from '../../Assets/Images/News.png';
 import Suggestions from '../../Assets/Images/Suggestions.png';
@@ -45,6 +46,7 @@ export default function App() {
             </div>
 
             <div className='home-intro-container'>
+                <h1 className='home-intro-heading'>Features</h1>
                 <Intro left={true} image={Watchlist} title="Watchlist">
                     The Watchlist provides real-time market data on cryptocurrencies. Users can access 
                     detailed information about specific coins, including historical data and a currency 
@@ -79,7 +81,7 @@ export default function App() {
                     and losses, enhancing users' understanding of the cryptocurrency landscape.
                 </Intro>
 
-                <Intro left={false} image={Alert} title="Educational Resources">
+                <Intro left={false} image={Education} title="Educational Resources">
                     The Educational Resources feature provides a curated collection of videos to enhance user's 
                     understanding of cryptocurrencies and their trading strategies. Also, Users can select specific 
                     resources for a tailored learning experience and save favorites for easy access.

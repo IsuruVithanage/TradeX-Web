@@ -1,6 +1,6 @@
 .home-entry-container{
     width: 100%;
-    height: 100vh;
+    height: 90vh;
     padding: 6% 0 0 6%;
     background-image: url("../../Assets//Images/coverx.png");
     background-color: #000000;
@@ -13,7 +13,15 @@
 
 .home-intro-container{
     background-color: #050505;
-    padding: 10vh 0;
+    padding-bottom: 10vh;
+}
+
+.home-intro-heading{
+    color: #CACACA;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 10vh 0;
 }
 
 .home-details-container{
