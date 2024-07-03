@@ -170,12 +170,12 @@ display: flex;
 
 .question-title h4{
     margin-left: 0.625rem;
-    
+    font-weight: bold;
 }
 .question-title p{
     font-size: 12px;
     margin-left: 0.188rem;
-    color:#6D6D6D;
+    color:#a5b1c2;
 }
 .question-row{
     background-color: #151517;
@@ -205,8 +205,8 @@ display: flex;
     color: #FFF;
     display:inherit;
     border-radius: 0.938rem;
-    margin-bottom: 1%;
-    
+    margin-bottom: 1rem;
+    width: 58.5rem;
 }
 
 .question-answer-container .question-title{
@@ -223,7 +223,7 @@ display: flex;
 .answer-text{
     font-size: 15px;
     margin-left: 1rem;
-    color:#6D6D6D;
+    color:#a4b0be;
     margin-top: -0.5rem;
 }
 
@@ -232,14 +232,66 @@ display: flex;
     background: transparent;
   border: none;
   padding: 0;
-  
+ 
   color:#21DB9A;
 }
-button.edit-button{
-    
-   
+.action-buttons .delete-button{
+    margin-left: 1rem;
+    background: transparent;
+  border: none;
+  padding: 0;
+  color:#21DB9A;
 }
 
+.custom-delete-modal .ant-modal-content {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+  }
+  
+  .custom-delete-modal .ant-modal-body {
+    padding: 24px;
+  }
+  
+  .custom-delete-modal .ant-modal-confirm-title {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 24px;
+    margin-top: 1.5rem;
+  }
+  
+  .custom-delete-modal .ant-modal-confirm-btns {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 2rem;
+    flex-direction: row-reverse;
+  }
+  
+  .custom-delete-modal .delete-btn {
+    background-color: #00d68f;
+    border-color: #00d68f;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .custom-delete-modal .cancel-btn {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .custom-delete-modal .ant-btn {
+    border-radius: 4px;
+    height: 40px;
+    padding: 0 24px;
+    font-size: 16px;
+  }
+  
+  .custom-delete-modal .ant-modal-close {
+    color: white;
+  }
 /*
 
 .ask-question{

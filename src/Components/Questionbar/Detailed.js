@@ -347,7 +347,7 @@ function Detailed() {
   return (
     <BasicPage tabs={Tabs}>
       <SidePanelWithContainer
-        style={{ height: "91vh", width: "50vh" }}
+        style={{ height: "91vh", width: "22rem" }}
         header={
           <div className="header-container">
             <Input

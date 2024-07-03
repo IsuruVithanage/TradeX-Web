@@ -14,10 +14,23 @@ const SummaryReport = ({
   showTopLosses,
   showTrendingCoin,
   customizedCoins,
-  trendingPrices,
-  tradingSuggestions,
+  tradingHistory,
   selectedCoins,
+  showTradingHistory,
 }) => {
+  const getRecentTradingHistory = () => {
+    if (!Array.isArray(tradingHistory)) {
+      return [];
+    }
+    const now = new Date();
+    const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    return tradingHistory.filter(
+      (order) => new Date(order.date).toDateString() !== now.toDateString()
+    );
+  };
+
+  const recentTradingHistory = getRecentTradingHistory();
+  console.log("Recent Trading History:", recentTradingHistory);
   const [symbols, setSymbols] = useState({});
 
   useEffect(() => {
@@ -69,6 +82,15 @@ const SummaryReport = ({
     );
   };
 
+  useEffect(() => {
+    console.log("showTradingHistory:", showTradingHistory);
+    console.log("tradingHistory:", tradingHistory);
+    if (tradingHistory) {
+      console.log("tradingHistory length:", tradingHistory.length);
+      console.log("First trading history item:", tradingHistory[0]);
+    }
+  }, [showTradingHistory, tradingHistory]);
+
   // Chart data for selected coins
   const selectedCoinsChartData = {
     labels: selectedCoins.map((coin) => coin.symbol),
@@ -82,7 +104,9 @@ const SummaryReport = ({
         // ),
         backgroundColor: "#00d2d3",
         borderColor: "white",
-        borderWidth: 1,
+        borderWidth: 2,
+        borderRadius: 5,
+        hoverBackgroundColor: "#54a0ff",
       },
     ],
   };
@@ -98,6 +122,7 @@ const SummaryReport = ({
           display: true,
           text: "Price (USD)",
           font: { weight: "bold" },
+          color: "#ffffff",
         },
         ticks: {
           callback: (value) => formatCurrency(value),
@@ -108,6 +133,7 @@ const SummaryReport = ({
           display: true,
           text: "Coin",
           font: { weight: "bold" },
+          color: "#ffffff",
         },
       },
     },
@@ -116,20 +142,23 @@ const SummaryReport = ({
         display: true,
         text: "Selected Coins Average Prices",
         font: { size: 16, weight: "bold" },
+        color: "#ffffff",
       },
       tooltip: {
         callbacks: {
           label: (context) => `Price: ${formatCurrency(context.parsed.y)}`,
+          color: "#ffffff",
         },
       },
 
       datalabels: {
-        anchor: "end",
-        align: "end",
-        formatter: (value) => formatCurrency(value),
+        color: "white",
         font: {
           weight: "bold",
+          size: 12,
         },
+        anchor: "end",
+        align: "top",
       },
     },
   };
@@ -137,10 +166,15 @@ const SummaryReport = ({
   return (
     <div className="summary-report">
       <div className="summary-header">
+        <img
+          src={trade}
+          width="65px"
+          alt="tradex"
+          style={{ float: "right", marginTop: "-1.5rem" }}
+        />
         <h3>
           Daily Summary Report <br /> {new Date().toISOString().split("T")[0]}
         </h3>
-        {/* <img src={trade} width="50px" alt="tradex" /> */}
       </div>
       <div className="tables">
         {showTopGainers && (
@@ -255,119 +289,34 @@ const SummaryReport = ({
           </div>
         </div>
       )}
-      {/* {showTrendingCoin && trendingPrices.length > 0 && (
-        <div className="trending-coin" style={{ height: "400px" }}>
-          <h3>Trending Coin: {customizedCoins[0]?.name || "Unknown"}</h3>
-          <Line
-            data={{
-              labels: trendingPrices.map((_, index) => {
-                const date = new Date();
-                date.setHours(
-                  date.getHours() - (trendingPrices.length - index - 1)
-                );
-                return date.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                });
-              }),
-              datasets: [
-                {
-                  label: `${
-                    customizedCoins[0]?.symbol.toUpperCase() || "COIN"
-                  } Price`,
-                  data: trendingPrices,
-                  borderColor: "rgb(54, 162, 235)",
-                  backgroundColor: "rgba(54, 162, 235, 0.2)",
-                  borderWidth: 2,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
-                  tension: 0.3,
-                  fill: true,
-                },
-              ],
-            }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: "Time",
-                    font: { weight: "bold" },
-                  },
-                  grid: { display: false },
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: "Price ($)",
-                    font: { weight: "bold" },
-                  },
-                  beginAtZero: false,
-                  ticks: {
-                    callback: (value) => formatCurrency(value),
-                  },
-                },
-              },
-              plugins: {
-                tooltip: {
-                  callbacks: {
-                    label: (context) =>
-                      `Price: ${formatCurrency(context.parsed.y)}`,
-                  },
-                },
-                legend: {
-                  labels: {
-                    boxWidth: 0,
-                    font: { weight: "bold" },
-                  },
-                },
-              },
-            }}
-          />
+
+      {showTradingHistory && recentTradingHistory.length > 0 && (
+        <div className="trading-history">
+          <h4>Trading History</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentTradingHistory.map((trade, index) => (
+                <tr key={index}>
+                  <td>{trade.coin}</td>
+                  <td>{trade.type}</td>
+                  <td>{formatCurrency(trade.totalPrice)}</td>
+                  <td>{formatCurrency(trade.price)}</td>
+                  <td>{new Date(trade.date).toDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )} */}
-      {/* {customizedCoins.length > 0 && (
-        <div className="customized-coins">
-          <h3>Customized Coins</h3>
-          <Bar
-            data={{
-              labels: customizedCoins.map((coin) => coin.name),
-              datasets: [
-                {
-                  label: "Price",
-                  data: customizedCoins.map((coin) =>
-                    parseFloat(coin.price.replace("$", "").trim())
-                  ),
-                  backgroundColor: customizedCoins.map(
-                    (coin) => `url(${symbols[coin.symbol]?.img})`
-                  ),
-                },
-              ],
-            }}
-            options={{
-              scales: { y: { beginAtZero: true } },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-                tooltip: {
-                  callbacks: {
-                    title: (context) => {
-                      const coin = customizedCoins[context[0].dataIndex];
-                      return `${coin.name} (${coin.symbol.toUpperCase()})`;
-                    },
-                    label: (context) =>
-                      `Price: ${formatCurrency(context.parsed.y)}`,
-                  },
-                },
-              },
-            }} */}
-      {/* />
-        </div>
-      )} */}
-      {/* Add sections for tradingHistory and tradingSuggestions if needed */}
+      )}
     </div>
   );
 };

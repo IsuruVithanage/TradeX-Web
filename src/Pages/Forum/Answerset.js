@@ -6,7 +6,7 @@ import axios from "axios";
 import { Modal, message } from "antd";
 import { showMessage } from "../../Components/Message/Message";
 import "./customModal.css";
-
+import { RiDeleteBin6Line } from "react-icons/ri";
 const { confirm } = Modal;
 
 function Answerset(props) {
@@ -24,17 +24,18 @@ function Answerset(props) {
   const showDeleteConfirm = (answerId) => {
     confirm({
       title: "Are you sure you want to delete this answer?",
-      content: "This action cannot be undone.",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() { 
+      icon: null,
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: { className: "delete-btn" },
+      cancelButtonProps: { className: "cancel-btn" },
+      onOk() {
         handleDelete(answerId);
       },
       onCancel() {
         console.log("Cancel");
       },
-      className: "custom-modal",
+      className: "custom-delete-modal",
     });
   };
 
@@ -72,15 +73,14 @@ function Answerset(props) {
                 >
                   <FaRegEdit />
                 </button>
-                <button
+
+                <RiDeleteBin6Line
                   className="delete-button"
                   onClick={(event) => {
                     event.preventDefault();
                     showDeleteConfirm(record.answerId);
                   }}
-                >
-                  <MdDelete />
-                </button>
+                />
               </div>
             </Link>
           </div>
