@@ -162,7 +162,6 @@ function Login() {
                                 onKeyDown={handleKeyDown}
                             />
 
-                            {action === "Login" && <div className="login-form-forgot-password">Forgot Password ?</div>}
                         </div>
                     </div>
 
