@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { showMessage } from "../../Message/Message";
 import { getUser } from "../../../Storage/SecureLs";
 import { VscListUnordered } from "react-icons/vsc";
 import { FaRegBell } from "react-icons/fa";
@@ -23,6 +24,7 @@ export default function SideNavBar() {
     const currentLocation = useLocation().pathname;
     const navigate = useNavigate();
     const [activeIcon, setActiveIcon] = useState(currentLocation);
+    const permitted = userRole !== 'Trader' && userRole !== 'Admin' ? " not-permitted" : "";
 
 
     useEffect(() => {
@@ -46,12 +48,14 @@ export default function SideNavBar() {
             </div>
 
             <nav className="icon-container">
-                {/*  userRole === "admin" &&  */ true &&
+                {userRole === "Admin" &&
                 <div 
-                    className={`nav-link ${isActive("/admin")}`}
-                    onClick={() => navigate("/admin/AdDashboard")}>
-                    <span className="nav-icon"><RiShieldUserLine size={24} /></span>
-                    <span className="nav-label">Admin</span>
+                    className={`nav-link ${isActive("/admin/AdDashboard")}` + permitted}
+                    onClick={() => !permitted ? 
+                        navigate("/admin/AdDashboard") : 
+                        showMessage("warning", "You are not allowed to view Admin")}>
+                    <span className={"nav-icon" + permitted}><RiShieldUserLine size={24} /></span>
+                    <span className={"nav-label" + permitted}>Admin</span>
                 </div>
                 }
 
@@ -63,17 +67,21 @@ export default function SideNavBar() {
                 </div>
 
                 <div 
-                    className={`nav-link ${isActive("/portfolio")}`}
-                    onClick={() => navigate("/portfolio")}>
-                    <span className="nav-icon"><MdAutoGraph size={23} /></span>
-                    <span className="nav-label">Portfolio</span>
+                    className={`nav-link ${isActive("/portfolio")}` + permitted}
+                    onClick={() => !permitted ? 
+                        navigate("/portfolio") : 
+                        showMessage("warning", "You are not allowed to view Portfolio")}>
+                    <span className={"nav-icon" + permitted}><MdAutoGraph size={23} /></span>
+                    <span className={"nav-label" + permitted}>Portfolio</span>
                 </div>
 
                 <div 
-                    className={`nav-link ${isActive("/simulate")}`}
-                    onClick={() => navigate("/simulate")}>
-                    <span className="nav-icon"><MdOutlineCandlestickChart size={26} /></span>
-                    <span className="nav-label">Trading Platform</span>
+                    className={`nav-link ${isActive("/simulate")}` + permitted}
+                    onClick={() => !permitted ? 
+                        navigate("/simulate") : 
+                        showMessage("warning", "You are not allowed to view Trading Platform")}>
+                    <span className={"nav-icon" + permitted}><MdOutlineCandlestickChart size={26} /></span>
+                    <span className={"nav-label" + permitted}>Trading Platform</span>
                 </div>
 
                 <div 
@@ -98,10 +106,12 @@ export default function SideNavBar() {
                 </div>
 
                 <div 
-                    className={`nav-link ${isActive("/forum")}`}
-                    onClick={() => navigate("/forum")}>
-                    <span className="nav-icon"><BsChatText size={21} /></span>
-                    <span className="nav-label">Support Forum</span>
+                    className={`nav-link ${isActive("/forum")}` + permitted}
+                    onClick={() => !permitted ? 
+                        navigate("/forum") : 
+                        showMessage("warning", "You are not allowed to view Support Forum")}>
+                    <span className={"nav-icon" + permitted}><BsChatText size={21} /></span>
+                    <span className={"nav-label" + permitted}>Support Forum</span>
                 </div>
 
                 <div 
@@ -112,10 +122,12 @@ export default function SideNavBar() {
                 </div>
 
                 <div 
-                    className={`nav-link ${isActive("/suggestion")}`}
-                    onClick={() => navigate("/suggestion")}>
-                    <span className="nav-icon" ><MdOutlineTipsAndUpdates size={24} style={{marginLeft: "3px"}} /></span>
-                    <span className="nav-label">Suggestions</span>
+                    className={`nav-link ${isActive("/suggestion")}` + permitted}
+                    onClick={() => !permitted ? 
+                        navigate("/suggestion") : 
+                        showMessage("warning", "You are not allowed to view Suggestions")}>
+                    <span className={"nav-icon" + permitted} ><MdOutlineTipsAndUpdates size={24} style={{marginLeft: "3px"}} /></span>
+                    <span className={"nav-label" + permitted}>Suggestions</span>
                 </div>
             </nav>
         </div>

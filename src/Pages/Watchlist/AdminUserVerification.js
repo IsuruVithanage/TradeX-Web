@@ -55,7 +55,7 @@ export default function AdminUserVerification() {
         });
         if (response.ok) {
           showMessage("warning", "Issue added successfully!");
-          navigate(`/admin/ViewAll/`);
+          navigate(`/admin/AdDashboard/`);
         }
       } else {
         const ob = {
@@ -202,6 +202,7 @@ export default function AdminUserVerification() {
                 color: "#9E9E9E",
                 fontWeight: "bold",
                 marginBottom: "12px",
+                marginTop:"20px"
               }}
             >
               Issue
@@ -215,6 +216,7 @@ export default function AdminUserVerification() {
                 variant="outlined"
                 value={issue}
                 onChange={(e) => setIssue(e.target.value)}
+
               />
             </div>
           </div>

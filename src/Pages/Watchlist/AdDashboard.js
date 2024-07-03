@@ -17,7 +17,6 @@ export default function AdDashboard() {
   const [verifiedUserCount, setVerifiedUserCount] = useState(0);
   const [verificationIssues, setVerificationIssues] = useState([]);
   const navigate = useNavigate();
-  const currentDate = new Date().toISOString();
 
   useEffect(() => {
     const fetchAdminCount = async () => {
@@ -27,7 +26,7 @@ export default function AdDashboard() {
         );
         setAdminCount(response.data.count);
       } catch (error) {
-        console.error("Error fetching admin count:", error);
+        console.log("Error fetching admin count:", error);
       }
     };
 
@@ -87,7 +86,7 @@ export default function AdDashboard() {
           "http://localhost:8004/admin/getUsersWithVerificationIssues"
         );
         setVerificationIssues(response.data);
-        console.log(response.data);
+        console.log("issue:",response.data);
       } catch (error) {
         console.error("Error fetching verification issues:", error);
       }
@@ -95,6 +94,14 @@ export default function AdDashboard() {
 
     fetchVerificationIssues();
   }, []);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid Date";
+    }
+    return date.toISOString().split("T")[0];
+  };
 
   return (
     <BasicPage
@@ -155,7 +162,7 @@ export default function AdDashboard() {
                   key={user.userId}
                   data={[
                     user.userName,
-                    user.requestDate,
+                    formatDate(user.requestDate),
                     <Input
                       type="button"
                       style={{ width: "100px" }}

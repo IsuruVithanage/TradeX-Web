@@ -13,11 +13,10 @@
     transition: background-color 0.2s;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-track {
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider .ant-slider-track {
     background-color: #21db9a;
     border-radius: 2px;
 }
-
 
 
 
@@ -36,7 +35,7 @@
     background-color: #21db9a5e;
 }
 
-:where(.css-dev-only-do-not-override-zg0ahe).ant-slider .ant-slider-dot {
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider .ant-slider-dot {
     background-color: #21db9a;
     border: 2px solid #21db9a;
 }
@@ -47,18 +46,8 @@
     margin: 1rem 0.6rem;
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle::after {
-    content: "";
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    width: 10px;
-    height: 10px;
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider .ant-slider-handle::after {
     background-color: #21db9a;
-    box-shadow: 0 0 0 2px #21db9a;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: inset-inline-start 0.2s, inset-block-start 0.2s, width 0.2s, height 0.2s, box-shadow 0.2s;
 }
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider .ant-slider-handle:focus::after {
@@ -77,6 +66,18 @@
 
 :where(.css-dev-only-do-not-override-1b0bdye).ant-slider:hover .ant-slider-track {
     background-color: #21db9a;
+}
+
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider:hover .ant-slider-track {
+    background-color: #21db9a;
+}
+
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider:hover .ant-slider-rail {
+    background-color: #21db9a4a;
+}
+
+:where(.css-dev-only-do-not-override-1fumvat).ant-slider .ant-slider-rail {
+    background-color: #21db9a4a;
 }
 
 .percentage-span {

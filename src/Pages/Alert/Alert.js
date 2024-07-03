@@ -224,13 +224,15 @@ export default function Alert() {
 function AddOrEditModal (props) {
     const { addOrEditAlert, setAddOrEditAlert, call, currentAlert, setCurrentAlert, isInvalid } = props;
     
-    const options = Object.keys(coins).map(coin => ({value: coin, label: coin + " - " + coins[coin].name}));
+    const options = Object.keys(coins)
+        .filter((coin) => coin !== 'USD')
+        .map(coin => ({value: coin, label: coin + " - " + coins[coin].name}));
 
     return(
         <Modal open={addOrEditAlert} close={setAddOrEditAlert}>
             <div style={{width:"430px", WebkitUserSelect: "none", userSelect: "none"}}>
                 <div style={{width:"300px", margin:"auto", marginBottom:"25px"}}>
-                    <h1 style={{textAlign:"center"}}>{`${ addOrEditAlert } Alert`}</h1>
+                    <h1 style={{textAlign:"center", color: "#FFFFFF"}}>{`${ addOrEditAlert } Alert`}</h1>
                     <Input 
                         type="dropdown" 
                         label='Coin' 
@@ -309,7 +311,7 @@ function DeleteOrClearModal (props) {
         <Modal open={deleteOrClearAlert} close={setDeleteOrClearAlert}>
             <div style={{width:"350px"}}>
                 <div style={{width:"300px", margin:"0 auto 30px auto"}}>
-                    <h1 style={{textAlign:"center"}}>{deleteOrClearAlert === 'clearAll' ? 'Clear All Alerts' : 'Delete the Alert'}</h1>
+                    <h1 style={{textAlign:"center", color: "#FFFFFF"}}>{deleteOrClearAlert === 'clearAll' ? 'Clear All Alerts' : 'Delete the Alert'}</h1>
                     <p style={{textAlign:"center", marginTop: "10px", color: "#9e9e9e"}}>{deleteOrClearAlert === 'clearAll' ? 'Are you sure you want to clear all alerts?' : 'Are you sure you want to delete the alert?'}</p>
                     <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px'}}>{
                         deleteOrClearAlert === 'clearAll' ? 
