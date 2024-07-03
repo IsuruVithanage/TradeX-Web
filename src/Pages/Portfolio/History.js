@@ -255,7 +255,7 @@ export default function History() {
             data={
               selectedSection === "Transaction"
                 ? ["Coin", "Date", "From", "To", "Quantity"]
-                : ["Coin", "Date", "Type", "Price", "Quantity", "Total", "PNL"]
+                : ["Coin", "Date", "Type", "Price", "Quantity", "Total"]
             }
           />
 
@@ -314,19 +314,7 @@ export default function History() {
                         row.quantity,
                         `$ ${
                           row.totalPrice && row.totalPrice.toLocaleString()
-                        }`,
-                        <span
-                          style={{
-                            color:
-                              row.PNL < 0
-                                ? "#FF0000"
-                                : row.PNL > 0
-                                ? "#21DB9A"
-                                : "",
-                          }}
-                        >
-                          {`${row.PNL} %`}
-                        </span>,
+                        }`
                       ]
                 }
               />
