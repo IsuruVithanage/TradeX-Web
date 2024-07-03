@@ -12,17 +12,18 @@ import ReactDOM from "react-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import TrendingCoinChart from "./TrendingCoinChart";
+import Table, {TableRow, Coin} from "../../Components/Table/Table";
 import {getUser} from "../../Storage/SecureLs";
 
 function Dailysummary() {
     // create the tabs
+    const user = getUser();
     const Tabs = [
         {label: "Daily", path: "/summary/daily"},
         {label: "Monthly", path: "/summary/monthly"},
     ];
     // imported
     const label = {inputProps: {"aria-label": "Switch demo"}};
-    const user = getUser();
 
     const [coins, setCoins] = useState([]);
     const [search, setSearch] = useState("");
@@ -30,12 +31,12 @@ function Dailysummary() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isCoinSelected, setIsCoinSelected] = useState(false);
-
+    const [tradingHistory, setTradingHistory] = useState([]);
     // create state variable for each toggle
     const [showTopGainers, setShowTopGainers] = useState(false);
     const [showTopLosses, setShowTopLosses] = useState(false);
     const [showTrendingCoin, setShowTrendingCoin] = useState(false);
-
+    const [showTradingHistory, setShowTradingHistory] = useState(false);
     const [isDefaultToggle, setIsDefaultToggle] = useState(false);
 
     //const [tradingHistory, setTradingHistory] = useState([]);
@@ -124,14 +125,45 @@ function Dailysummary() {
         return [{coin: "ETH", action: "Sell", price: 2000, date: "2024-01-02"}];
     };
 
+    const fetchTradingHistory = async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8005/order/getAllOrdersByIdAndCato/Buy/${user.id}`
+            );
+            const data = response.data ? response.data : [];
+            setTradingHistory(data);
+            console.log("Trading history:", data);
+        } catch (error) {
+            console.error("Error fetching trading history:", error);
+            setTradingHistory([]);
+        }
+    };
+
+    useEffect(() => {
+        if (showTradingHistory) {
+            fetchTradingHistory();
+        }
+    }, [showTradingHistory]);
+
+    useEffect(() => {
+        console.log("Updated tradingHistory in Dailysummary:", tradingHistory);
+    }, [tradingHistory]);
+
     // set as default
     useEffect(() => {
         if (isDefaultToggle) {
             localStorage.setItem("showTopGainers", showTopGainers);
             localStorage.setItem("showTopLosses", showTopLosses);
             localStorage.setItem("showTrendingCoin", showTrendingCoin);
+            localStorage.setItem("showTradingHistory", showTradingHistory);
         }
-    }, [isDefaultToggle, showTopGainers, showTopLosses, showTrendingCoin]);
+    }, [
+        isDefaultToggle,
+        showTopGainers,
+        showTopLosses,
+        showTrendingCoin,
+        showTradingHistory,
+    ]);
 
     // Generate preview
     const generatePreview = () => {
@@ -143,6 +175,8 @@ function Dailysummary() {
                 showTrendingCoin={showTrendingCoin}
                 selectedCoins={selectedCoins}
                 tradingSuggestions={tradingSuggestions}
+                tradingHistory={tradingHistory}
+                showTradingHistory={showTradingHistory}
             />
         );
     };
@@ -153,6 +187,7 @@ function Dailysummary() {
             setShowTopGainers(savedToggles.showTopGainers);
             setShowTopLosses(savedToggles.showTopLosses);
             setShowTrendingCoin(savedToggles.showTrendingCoin);
+            setShowTradingHistory(savedToggles.showTradingHistory);
             setIsDefaultEnabled(true);
         }
     }, []);
@@ -161,11 +196,17 @@ function Dailysummary() {
 
     const generatePDF = async () => {
         const reportElement = document.createElement("div");
-        reportElement.style.position = "absolute";
+        reportElement.style.position = "fixed";
         reportElement.style.left = "-9999px";
         document.body.appendChild(reportElement);
 
-        // Render the SummaryReport component inside the hidden div
+        // Create a new link element for the print styles
+        const printStyleLink = document.createElement("link");
+        printStyleLink.rel = "stylesheet";
+        printStyleLink.href = "SummaryReport.css";
+        printStyleLink.media = "print";
+        document.head.appendChild(printStyleLink);
+
         ReactDOM.render(
             <SummaryReport
                 coins={coins}
@@ -173,27 +214,55 @@ function Dailysummary() {
                 showTopLosses={showTopLosses}
                 showTrendingCoin={showTrendingCoin}
                 selectedCoins={selectedCoins}
-                tradingSuggestions={tradingSuggestions}
+                tradingHistory={tradingHistory || []}
+                showTradingHistory={showTradingHistory}
             />,
             reportElement,
             async () => {
                 // Wait for a moment to ensure all charts are rendered
                 await new Promise((resolve) => setTimeout(resolve, 3000));
 
-                const canvas = await html2canvas(reportElement, {scale: 2});
+                // Force a repaint to apply print styles
+                window.dispatchEvent(new Event("beforeprint"));
+                const canvas = await html2canvas(reportElement, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: true,
+                    onclone: (clonedDoc) => {
+                        clonedDoc.querySelector("body").classList.add("print-preview");
+                        const style = clonedDoc.createElement("style");
+                        style.textContent = `
+              .tables {
+              
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                
+              }
+              .top-gainers, .top-losers {
+                width: 48% !important;
+                margin-bottom: 0 !important;
+              }
+
+            `;
+                        clonedDoc.head.appendChild(style);
+                    },
+                });
+
+                window.dispatchEvent(new Event("afterprint"));
+
                 const imgData = canvas.toDataURL("image/png");
                 const pdf = new jsPDF("p", "mm", "a4");
-                pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Legal size
+                pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // A4 size
 
                 const pdfBlob = pdf.output("blob");
                 const pdfUrl = URL.createObjectURL(pdfBlob);
                 window.open(pdfUrl);
 
                 document.body.removeChild(reportElement);
+                document.head.removeChild(printStyleLink);
             }
         );
-
-        //2 preview
         setPreviewContent(
             <SummaryReport
                 coins={coins}
@@ -202,9 +271,12 @@ function Dailysummary() {
                 showTrendingCoin={showTrendingCoin}
                 selectedCoins={selectedCoins}
                 tradingSuggestions={tradingSuggestions}
+                showTradingHistory={showTradingHistory}
             />
         );
     };
+
+    //2 preview
 
     // Handle default toggle change
     const handleDefaultToggleChange = () => {
@@ -264,61 +336,30 @@ function Dailysummary() {
                                         okText="OK"
                                         onCancel={() => setIsDeleteModalOpen(false)}
                                     >
-                                        <div style={{width: "450px"}}>
-                                            <h2>Select Coin</h2>
+                                        <div style={{width: "550px", paddingTop: "25px"}}>
                                             <div>
                                                 <Input
                                                     type="search"
                                                     placeholder="Search"
-                                                    style={{
-                                                        width: "400px",
-                                                        float: "right",
-                                                        marginRight: "50px",
-                                                    }}
                                                     onChange={(e) => setSearch(e.target.value)}
                                                 />
                                             </div>
 
-                                            <table className="watchlist-table-modal">
-                                                <thead
-                                                    style={{
-                                                        color: "#dbdbdb",
-                                                        fontSize: "18px",
-                                                        marginBottom: "20px",
-                                                    }}
-                                                >
-                                                <tr>
-                                                    <td>Coin</td>
-                                                    <td>Price</td>
-                                                    <td>Select</td>
-                                                </tr>
-                                                </thead>
-                                                <tbody style={{marginLeft: "1rem"}}>
+                                            <Table
+                                                hover={true}
+                                                style={{height: "65vh", overflowY: "auto"}}
+                                                tableTop={
+                                                    <h2 style={{textAlign: "center"}}>Select Coin</h2>
+                                                }
+                                            >
+                                                <TableRow data={["Coin", "Price", "Select"]}/>
                                                 {filteredCoins.map((coin) => (
-                                                    <tr
-                                                        key={coin.id}
+                                                    <TableRow
+                                                        key={coin.symbol}
                                                         onClick={() => handleRowClick(coin)}
-                                                    >
-                                                        <td
-                                                            style={{
-                                                                marginLeft: "100px",
-                                                                marginBottom: "50px",
-                                                            }}
-                                                        >
-                                                            <img
-                                                                className="coin-image-add"
-                                                                src={symbols[coin.symbol].img}
-                                                                alt={coin.symbol}
-                                                            />
-                                                            <span className="coin-symbol-add">
-                                  {coin.symbol.toUpperCase()}
-                                </span>
-                                                        </td>
-
-                                                        <td className="coin-price-add">
-                                                            {formatCurrency(coin.lastPrice)}
-                                                        </td>
-                                                        <td>
+                                                        data={[
+                                                            <Coin>{coin.symbol}</Coin>,
+                                                            formatCurrency(coin.lastPrice),
                                                             <input
                                                                 type="checkbox"
                                                                 style={{
@@ -330,12 +371,11 @@ function Dailysummary() {
                                                                 checked={selectedCoins.some(
                                                                     (c) => c.symbol === coin.symbol
                                                                 )}
-                                                            ></input>
-                                                        </td>
-                                                    </tr>
+                                                            />,
+                                                        ]}
+                                                    />
                                                 ))}
-                                                </tbody>
-                                            </table>
+                                            </Table>
                                         </div>
                                     </Modal>
                                 </div>
@@ -382,13 +422,20 @@ function Dailysummary() {
                                         </div>
                                     </div>
 
-                                    {user.role === 'Trader' &&
+                                    {user.role === "Trader" &&
                                         <div className="data">
                                             <div className="tog-name">
                                                 <span>Trading History</span>
                                             </div>
                                             <div className="tog4">
-                                                <Input type="toggle" id=""/>
+                                                <Input
+                                                    type="toggle"
+                                                    id=""
+                                                    checked={showTradingHistory}
+                                                    onChange={() =>
+                                                        setShowTradingHistory(!showTradingHistory)
+                                                    }
+                                                />
                                             </div>
                                         </div>
                                     }

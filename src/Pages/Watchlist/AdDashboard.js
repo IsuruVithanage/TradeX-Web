@@ -26,7 +26,7 @@ export default function AdDashboard() {
         );
         setAdminCount(response.data.count);
       } catch (error) {
-        console.error("Error fetching admin count:", error);
+        console.log("Error fetching admin count:", error);
       }
     };
 

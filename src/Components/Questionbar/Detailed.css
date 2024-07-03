@@ -3,13 +3,14 @@ body{
     
 }
 .ques{
-width: 94%;
+display:inline-block;
+width: 53.5rem;
 height: auto;
 flex-shrink: 0;
 margin-top: 10 px;
 border-radius: 15px;
 background: #151517;
-padding:0% 0% 0% 2%;
+padding:0% 3% 0% 2%;
 margin-left: 1rem;
 box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
 
@@ -85,7 +86,7 @@ margin-top: -0.05rem;
 }
 
 h3{
-    color: #bdbdbd;
+    color:#fff;
     padding-left: 0%;
     padding-top: 2%;
 }
@@ -104,8 +105,9 @@ h5{
     font-size: 21px;
     color: #21DB9A;
 }
+.answer p{}
 p{
-    color: aliceblue;
+    color: #a5b1c2;
    
 
 }
@@ -162,19 +164,28 @@ p{
     margin-left: 35rem;
     color: #21DB9A;
 }
+
+.answer .author{
+    font-size: 10px;
+    position: absolute;
+    display: inline;
+    margin-left: 42rem;
+    color: #21DB9A;
+}
 h2{
     color: aliceblue;
 }
 .answer{
-    width: 94%;
+    width: 53.5rem;
     height: auto;
     flex-shrink: 0;
     margin-top: 1rem;
     border-radius: 15px;
     background: #151517;
-    padding:1% 0% 3% 2%;
+    padding:1% 3% 5% 2%;
     box-shadow: 8px 9px 6.8px 1px rgba(0, 0, 0, 0.25);
     margin-left: 1rem;
+    line-height: 28px;
 
 }
 

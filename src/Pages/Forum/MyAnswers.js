@@ -114,7 +114,7 @@ export default function MyAnswers() {
   return (
     <BasicPage tabs={Tabs}>
       <SidePanelWithContainer
-        style={{ height: "91vh", width: "53rem" }}
+        style={{ height: "91vh", width: "21.2rem" }}
         header="Favourites"
         sidePanel={
           <div>
