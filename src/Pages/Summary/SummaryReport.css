@@ -1,64 +1,136 @@
+
+
 .summary-report {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: white;
-    color: black;
-    border: 10px solid black;
-  }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
   
-  /* .summary-report h2 {
-    text-align: center;
-    color: #333;
-  } */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
+.summary-header h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #21DB9A;
+}
 
-  
-  .summary-report h3 {
-    color: black;
-    text-align: center;
-    
+.tables {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.top-gainers, .top-losers {
+  width: 100%;
+  margin-bottom: 20px; /* Add space between tables */
+  background-color: rgba(42, 42, 42, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media print {
+  .tables {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 40px;
   }
-  .summary-report h5{
-    color: black;
-  }
-  .summary-report h4{
-    color: black;
-    text-align: center;
-    
-  }
-  
-  
-  .summary-report table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  .summary-report th, .summary-report td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-    color:black;
-  }
-  
-  .summary-report th {
-    
-    font-size: 12px;
-    color: #9E9E9E;
-  }
 
-  .summary-report td{
-    font-size: 11px;
+  .top-gainers, .top-losers {
+    width: 48%; /* Adjust as needed */
+    margin-bottom: 0;
+
+    
   }
-  .coin-image {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    vertical-align: middle;
-  }
+}
+.top-gainers h5, .top-losers h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #21DB9A;
+  text-align: center;
+}
+
+.summary-report table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.summary-report th {
+  font-size: 14px;
+  color: #9E9E9E;
+  font-weight: 600;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.summary-report td {
+  font-size: 14px;
+  background-color: rgba(51, 51, 51, 0.7);
+  padding: 12px;
+  border-radius: 5px;
+  color: white;
+}
+
+
+
+.trending-coin, .selected-coins {
+  background-color: rgba(42, 42, 42, 0.7);
+  border-radius: 10px;
+  padding: 25px;
+  margin-top: 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width:90%;
+  text-align: center;
   
-  .coin-symbol {
-    font-weight: bold;
-    vertical-align: middle;
-  }
+}
+.trending-coin h4, .selected-coins h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #21DB9A;
+  text-align: center;
+}
+
+.chart-container {
+  width: 100%;
+  height: 400px; /* Increase the height as needed */
+  margin-top: 20px;
+}
+.trading-history table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.trading-history h4{
+  color: #21DB9A;
+  text-align: center;
+}
+
+.trading-history th,
+.trading-history td {
+  font-size: 14px;
+  background-color: rgba(51, 51, 51, 0.7);
+  padding: 12px;
+  border-radius: 5px;
+  color: white;
+  text-align: left;
+}
+
+.trading-history th {
+  font-size: 14px;
+  color: #9E9E9E;
+  font-weight: 600;
+  padding: 10px;
+  text-transform: uppercase;
+  background-color:  rgba(42, 42, 42, 0.7);
+}
+
+
