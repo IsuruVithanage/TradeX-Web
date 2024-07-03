@@ -121,7 +121,7 @@ export default function Suggestions() {
     }, [geminiData]);
 
     const getBoughtPrice = async (coin) => {
-        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${coin === '$' ? 'USD' : coin}`)
+        fetch(`http://localhost:8011/portfolio/asset/${user.id}/${coin === '$' ? 'USD' : coin}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Wallet balance:', data[0]);
@@ -473,6 +473,7 @@ export default function Suggestions() {
 
                     {filteredOrderHistory
                         .filter(order => order.category !== 'Limit' || (order.category === 'Limit' && order.orderStatus === 'Completed'))
+                        .reverse()
                         .map(order => (
                             <TableRow
                                 key={order.orderId}
@@ -488,6 +489,7 @@ export default function Suggestions() {
                                 onClick={() => handleRowClick(order)}
                             />
                         ))}
+
                 </Table>
 
             </SidePanelWithContainer>
