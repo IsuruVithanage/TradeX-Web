@@ -42,6 +42,7 @@ function Login() {
         const user = res.data.user;
         setUser(user);
         setAccessToken(token);
+        console.log('User:', user);
 
         await notificationManager.getToken();
         setIsLoading(false);

@@ -27,12 +27,10 @@ export default function Router() {
         {
             path: "/login",
             element: <Login />,
-            behavior: "Redirect",
         },
         { 
             path: "/", 
             element: <Home />, 
-            behavior: "Redirect at beginning"
         }
     ]);
 
@@ -67,7 +65,7 @@ export default function Router() {
         { 
             path: "/summary/*", 
             element: <SummaryRoutes />, 
-            permittedRole: "Trader" 
+            permittedRole: "User" 
         },
         { 
             path: "/education/*", 

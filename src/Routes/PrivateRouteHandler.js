@@ -8,7 +8,7 @@ const PrivateRouteHandler = ({ permittedRole, children }) => {
     const token = getAccessToken();
     const user = getUser();
     const role = user ? user.role : "Guest";
-    const levelOf = { "Guest": 0, "User": 1, "Trader": 2, "Admin": 3 };
+    const levelOf = { "Guest": 0, "User": 1, "PendingTrader": 1, "Trader": 2, "Admin": 3 };
 
 
     if (!token || role === 'Guest'){
@@ -16,7 +16,7 @@ const PrivateRouteHandler = ({ permittedRole, children }) => {
     }
 
     else if (permittedRole === 'OnlyUser'){
-        if(role === "User") {
+        if(role === "Trader" || role === "PendingTrader") {
             return children;
         }
         else {

@@ -3,7 +3,7 @@ import './Message.css';
 
 
 export const showMessage = (type, content, duration) => {
-    duration = (!duration) ? 1.5 : duration;
+    duration = (!duration) ? 2 : duration;
 
     switch (type) {
         case 'success':
