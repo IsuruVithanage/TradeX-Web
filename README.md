@@ -5,7 +5,10 @@
 </a>
 
 ---
-https://github.com/user-attachments/assets/d37b387b-8b30-472d-a050-136726e779e2
+## Trailer
+
+https://github.com/user-attachments/assets/e335e7a5-f9cd-4b1d-a77d-f08e41147aaa
+---
 
 # Getting Started with Create React App
 
