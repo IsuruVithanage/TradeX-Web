@@ -4,7 +4,7 @@ import Loading from './Components/Loading/Loading';
 import './index.css';
 
 
-const Router = lazy(() => import('./Routes/Router'));
+const Router = lazy(() => import('./Routes/HandledRoutes'));
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
