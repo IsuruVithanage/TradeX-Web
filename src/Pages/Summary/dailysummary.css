@@ -57,7 +57,7 @@
 .daily-summary .template {
   width: 500px;
   height: 500px;
-  background-color:#6D6D6D;
+  background-color: rgba(50, 50, 50, 0.18);
   margin-top: 8%;
   color: #FFF;
   border-radius: 0.938rem;

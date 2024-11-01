@@ -18,6 +18,17 @@
     flex-wrap: wrap;
 }
 
+:where(.css-dev-only-do-not-override-1fumvat).ant-spin .ant-spin-dot-holder {
+    width: 1em;
+    height: 1em;
+    font-size: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: 50% 50%;
+    line-height: 1;
+    color: #21db9a;
+}
+
 :where(.css-dev-only-do-not-override-1b0bdye).ant-spin .ant-spin-dot-item {
     background-color: #21db9a;
 
