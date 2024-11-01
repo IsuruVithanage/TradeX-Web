@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthInterceptor } from "../../Authentication/axiosInstance";
 import { setAccessToken, setUser } from "../../Storage/SecureLs";
-import { PiEye, PiEyeClosed } from "react-icons/pi";
 import { showMessage } from "../../Components/Message/Message";
 import notificationManager from "../Alert/notificationManager";
 import Input from "../../Components/Input/Input";
 import BasicPage from "../../Components/Layouts/BasicPage/BasicPage";
 import Validation from "./Validation";
+import axios from "axios";
 import "./Login.css";
 
 
 function Login() {
+    const baseurl = process.env.REACT_APP_API_GATEWAY;
+    // const baseurl = 'http://localhost:8004'
     const navigate = useNavigate();
-    const axiosInstance = useAuthInterceptor();
     const [isLoading, setIsLoading] = useState();
-    const [showPassword, setShowPassword] = useState(false);
     const [action, setAction] = useState('Login');
     const [errorMessage, setErrorMessage] = useState('');
     const [values, setValues] = useState({});
@@ -35,7 +34,42 @@ function Login() {
                 case 'password': document.getElementById('submit').click();   break;
                 default : break;
             }
-        } 
+        }
+    }
+
+
+    const handleResponse = async (res) => {
+        const token = res.data.accessToken;
+        const user = res.data.user;
+        setUser(user);
+        setAccessToken(token);
+        console.log('User:', user);
+
+        await notificationManager.getToken();
+        setIsLoading(false);
+
+        if (user.role === 'User' ||
+            user.role === 'PendingTrader' ||
+            (user.role === 'Trader' && user.hasTakenQuiz)
+        ) {
+            navigate('/watchlist');
+        } else if (user.role === 'Admin') {
+            navigate('/admin/AdDashboard');
+        } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
+            navigate('/quiz');
+        }
+    }
+
+
+    const handleError = (error) => {
+        setIsLoading(false);
+        console.log('Login error:', error);
+
+        !error.response ?
+            showMessage('error', action + " Failed, Please try again.") :
+            error.response.status === 502 ?
+                showMessage('error', action + " Failed, Please try again.") :
+                showMessage('error', error.response.data.message);
     }
 
 
@@ -45,34 +79,20 @@ function Login() {
 
         if (!error) {
             setIsLoading(true);
-            const endPoint = action === "Login" ? '/user/login' : '/user/register';
+            const endPoint = action === "Login" ? '/admin/login' : '/user/register';
 
-            await axiosInstance.post(endPoint, values)
-            .then(async(res) => {
-                const token = res.data.accessToken;
-                const user = res.data.user;
-                setUser(user);
-                setAccessToken(token);
-
-                await notificationManager.getToken();
-                setIsLoading(false);
-
-                if (user.role === 'User' || (user.role === 'Trader' && user.hasTakenQuiz)) {
-                    navigate('/watchlist');
-                } else if (user.role === 'Admin') {
-                    navigate('/admin/AdDashboard');
-                } else if (user.role === 'Trader' && !user.hasTakenQuiz) {
-                    navigate('/quiz');
-                }
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                console.error('Login error:', error);
-
-                !error.response ?
-                showMessage('error', action + " Failed, Please try again.") :
-                showMessage('error', error.response.data.message);
-            });
+            await axios.post(baseurl.concat(endPoint), values)
+                .then((res) => handleResponse(res))
+                .catch((error) => {
+                    if(action === "Login" && (error.response && error.response.status === 404)){
+                        axios.post(baseurl + '/user/login', values)
+                            .then((res) => handleResponse(res))
+                            .catch((error) => handleError(error));
+                    }
+                    else{
+                        handleError(error);
+                    }
+                });
         }
     };
 
@@ -104,10 +124,12 @@ function Login() {
                             <Input
                                 type="email"
                                 placeholder="Username"
-                                className="login-input login-username-input"
+                                className="login-username-input"
                                 value={values.username || ""}
                                 name="username"
                                 id="username"
+                                autoComplete="off"
+                                underline
                                 style={{ display: action === 'SignUp' ? 'block' : 'none' }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
@@ -118,37 +140,29 @@ function Login() {
                             <Input
                                 type="email"
                                 placeholder="E-mail"
-                                className="login-input"
                                 value={values.email || ""}
                                 name="email"
                                 id="email"
+                                autoComplete="email"
+                                underline
                                 style={{ marginTop: "30px" }}
                                 onChange={handleInput}
                                 onKeyDown={handleKeyDown}
                             />
 
-                            <div className="login-password-container" style={{ width: "100%", marginTop: "30px" }}>
-                                <div style={{ width: "90%", zIndex: "1" }}>
-                                    <Input
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="Password"
-                                        name="password"
-                                        id="password"
-                                        value={values.password || ""}
-                                        className="login-input"
-                                        onChange={handleInput}
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                </div>
+                            <Input
+                                type="password"
+                                placeholder="Password"
+                                value={values.password || ""}
+                                name="password"
+                                id="password"
+                                underline
+                                autoComplete="password"
+                                style={{ marginTop: "30px" }}
+                                onChange={handleInput}
+                                onKeyDown={handleKeyDown}
+                            />
 
-                                <div className="show-password-icon" onClick={() => setShowPassword(!showPassword)}>
-                                    {!showPassword ? <PiEyeClosed /> : <PiEye />}
-                                </div>
-
-                                <div className="login-password-bottom-layer" style={{ width: "100%" }} />
-                            </div>
-
-                            {action === "Login" && <div className="login-form-forgot-password">Forgot Password ?</div>}
                         </div>
                     </div>
 

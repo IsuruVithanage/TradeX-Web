@@ -43,7 +43,8 @@ export default function VerifyUser() {
         dateOfBirth: '',
         userImg: '',
         nicImg1: '',
-        nicImg2: ''
+        nicImg2: '',
+        requestDate: new Date().toISOString()
     });
 
     const saveData = async () => {
@@ -252,9 +253,9 @@ export default function VerifyUser() {
             console.log('Saving user detail:', userDetail);
             saveData().then(r => {
                 setIsSubmit(false);
-                showMessage('Success', 'Data saved successfully');
-                updateUserVerifyStatus().then(r => navigate('/watchList'));
+                updateUserVerifyStatus().then(r => showMessage('success', 'Data saved successfully'));
             });
+            navigate("/watchlist");
 
         }
     }, [userDetail.userImg, userDetail.nicImg1, userDetail.nicImg2]);
@@ -419,7 +420,6 @@ export default function VerifyUser() {
 
                 </div>
                 <div className='submit-container'>
-                    <img src="" alt=""/>
                     <Input type="button" value='Submit' onClick={uploadSelectedFiles}
                            disabled={selectedFiles.length !== 3}/>
                     <div style={{width: '10px'}}></div>

@@ -88,9 +88,9 @@
 
 .price-top {
   font-size: 29px;
-  margin-top: 29px;
   text-align: center;
   font-weight: bold;
+  margin: 0;
 }
 
 .price-change-top {

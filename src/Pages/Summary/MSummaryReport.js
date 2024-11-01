@@ -14,6 +14,8 @@ const MSummaryReport = ({
   showTrendingCoin,
   selectedCoins = [],
   monthlySuggestions = [],
+  tradingHistory = [],
+  showTradingHistory,
 }) => {
   const [topGainers, setTopGainers] = useState([]);
   const [topLosers, setTopLosers] = useState([]);
@@ -283,27 +285,35 @@ const MSummaryReport = ({
         </div>
       )}
 
-      {monthlySuggestions && monthlySuggestions.length > 0 && (
-        <div className="monthly-suggestions">
-          <h4>Monthly Trading Suggestions</h4>
+      {showTradingHistory && tradingHistory.length > 0 && (
+        <div className="trading-history">
+          <h4>Trading History</h4>
           <table>
             <thead>
               <tr>
                 <th>Coin</th>
-                <th>Action</th>
+                <th>Type</th>
                 <th>Price</th>
-                <th>Date</th>
+                <th>Amount</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
-              {monthlySuggestions.map((suggestion, index) => (
-                <tr key={index}>
-                  <td>{suggestion.coin}</td>
-                  <td>{suggestion.action}</td>
-                  <td>{formatCurrency(suggestion.price)}</td>
-                  <td>{suggestion.date}</td>
+              {tradingHistory && tradingHistory.length > 0 ? (
+                tradingHistory.map((trade, index) => (
+                  <tr key={index}>
+                    <td>{trade.coin}</td>
+                    <td>{trade.type}</td>
+                    <td>{formatCurrency(trade.price)}</td>
+                    <td>{formatCurrency(trade.totalPrice)}</td>
+                    <td>{new Date(trade.date).toDateString()}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5">No trading history available</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -101,3 +101,17 @@
     width: 100%;
     padding: 1rem;
 }
+
+.custom-textfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: #21DB9A;
+  }
+  
+  .custom-textfield .MuiInputBase-input {
+    color:  #21DB9A;
+  }
+  
+  .custom-textfield .MuiInputBase-input.Mui-focused {
+    color:  #21DB9A;
+  }
+  
+  

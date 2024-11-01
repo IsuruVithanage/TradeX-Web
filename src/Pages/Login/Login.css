@@ -78,19 +78,6 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.login-form-forgot-password{
-    margin-top: 2vh;
-    color: #6D6D6D;
-    text-align: right;
-    font-size: 0.85rem;
-}
-
-.login-form-forgot-password:hover{
-    color: #21DB9A;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .login-form-error-message{
     height: 16px;
     color: #FF0000;

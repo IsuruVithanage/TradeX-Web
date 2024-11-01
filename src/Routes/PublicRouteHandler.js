@@ -3,23 +3,17 @@ import { Navigate } from "react-router-dom";
 import { getUser, getAccessToken } from "../Storage/SecureLs";
 
 
-const PublicRouteHandler = ({ behavior, children }) => {
+const PublicRouteHandler = ({ children }) => {
     const token = getAccessToken();
     const user = getUser();
-    const path = (user && user.role === "admin") ? "/admin" : "/watchlist";
 
-
-    switch(behavior){
-        case "Redirect": {
-            return !token ? children : <Navigate to={ path } replace/> ;
-        }
-
-        case "Redirect at beginning": {
-            return !token ? children : <Navigate to={ path } replace/> ;
-        }
-
-        default: {
-            return children;
+    if(!token || !user){
+        return children;
+    } else {
+        if(user.role === "admin"){
+            return <Navigate to="/admin" replace/>
+        } else {
+            return <Navigate to="/watchlist" replace/>
         }
     }
 };

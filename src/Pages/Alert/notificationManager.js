@@ -32,6 +32,7 @@ class NotificationManager {
                 this.connectWebSocket();
 
                 onMessage(this.messaging, (payload) => this.runOnMessageFunctions(payload));
+       
             }
         });  
     }
@@ -43,7 +44,7 @@ class NotificationManager {
             .then(() => {
                 navigator.serviceWorker.addEventListener('message', (e) => {
                     if (e.data && e.data.msg === 'onBackground') {
-                        this.runOnMessageFunctions(e.data);
+                        this.runOnMessageFunctions(e.data, "serviceWorker");
                     }
                 });
             })

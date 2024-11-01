@@ -20,8 +20,8 @@ export default function AppNotification({ user }) {
     const [badgeVisible, setBadgeVisible] = useState(false);
     const [notifications, setNotifications] = useState([]);
 
-    const isVerified = user ? user.isVerified === "Yes" : false;
     const userId = user && user.id;
+    const userRole = user && user.role;
 
     
     const verifyAccountNotification = {
@@ -102,9 +102,9 @@ export default function AppNotification({ user }) {
             </div>
 
             <div className={`app-notification-container ${isAppNotificationsVisible ? "active" : ""}`} >
-                {(notifications && notifications.length > 0) || !isVerified ?
+                {(notifications && notifications.length > 0) || userRole === 'User'  ?
                     <div style={{ overflowY: "auto", maxHeight: "348px" }}>
-                        {!isVerified && <AppNotificationRow {...verifyAccountNotification} />}
+                        {userRole === 'User' && <AppNotificationRow {...verifyAccountNotification} />}
                         {notifications.map((notification, index) => <AppNotificationRow key={index} {...notification} />)}
                     </div> :
                     <p className="app-notification-empty-message">No new Notifications</p>

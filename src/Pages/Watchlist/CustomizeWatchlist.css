@@ -63,11 +63,6 @@
   margin-bottom: 60px;
 }
 
-.coin-image-add {
-  width: 30px;
-  height: 30px;
-
-}
 
 .coin-symbol-add {
   font-size: 17px;
@@ -76,9 +71,6 @@
   margin-left: 10px;
 }
 
-.watchlist-table-modal tbody td {
-  padding-top: 10px;
-}
 
 .coin-price-add {
   font-size: 17px;

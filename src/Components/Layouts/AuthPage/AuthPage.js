@@ -6,8 +6,7 @@ import "./AuthPage.css";
 
 
 export default function AuthPage(props) {
-    const { isLoading, title, description, errorMessage, buttons, nextButton, onNext, onBack } = props;
-    
+    const { isLoading, title, description, errorMessage, buttons, isNextActive, nextButton, onNext, onBack } = props;
   return (
     <BasicPage
         isLoading={isLoading}
@@ -36,7 +35,7 @@ export default function AuthPage(props) {
                     {(buttons === undefined || buttons ) &&
                     <div className='auth-form-button-container'>
                         <button className='auth-form-back-button' onClick={onBack}>Back</button>
-                        <Input type='button' value={nextButton || 'Next'} style={{width: "120px"}} onClick={onNext}/>
+                        <Input type='button' value={nextButton || 'Next'} disabled = {isNextActive === false} style={{width: "120px"}} onClick={onNext}/>
                     </div>}
                 </div>
             </div>

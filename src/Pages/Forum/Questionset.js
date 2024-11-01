@@ -16,9 +16,9 @@ function Questionset(props) {
                   {record.title}
                   <br />
 
-                  <p>{record.description}</p>
+                  <p style={{ fontSize: "15px" }}>{record.description}</p>
                   <p style={{ width: "600px", color: "#21DB9A" }}>
-                    {record.auther}
+                    {/* {record.userName} */}
                   </p>
                 </div>
               </Link>

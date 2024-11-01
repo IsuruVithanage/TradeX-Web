@@ -3,15 +3,15 @@ import './ValueBar.css';
 
 export default function ValueBar(props) {
     const formatCurrency = (amount) => {
-        return amount !== null ?
+        return amount === null || amount === undefined ? '' :
          ('$ ' + amount.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
-        })) : ' ';
+        }));
     }
 
     const usd = formatCurrency(props.usdBalance);
-    const value = formatCurrency(props.portfolioValue);
+    const value = formatCurrency(props.value);
 
     return (
         <div className='value-bar'>
@@ -21,7 +21,7 @@ export default function ValueBar(props) {
             </div>
 
             <div className='value-card'>
-                <span className='value-card-label'>Portfolio Value</span>
+                <span className='value-card-label'>{props.type === 'wallet' ? 'Wallet ' : 'Portfolio '} Value</span>
                 <span className='value-card-amount'>{value}</span>
             </div>
         </div>

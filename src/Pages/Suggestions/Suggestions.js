@@ -59,6 +59,7 @@ export default function Suggestions() {
     const [activateDuration, setActivateDuration] = useState("All");
     const [filteredOrderHistory, setFilteredOrderHistory] = useState([]);
 
+
     const loadOrderHistory = async () => {
         try {
             const res = await axiosInstance.get(
@@ -70,7 +71,7 @@ export default function Suggestions() {
 
         } catch (error) {
             console.log(error);
-            showMessage('error', 'Error', 'Error fetching order history');
+            showMessage('error', 'Error fetching order history');
         }
     };
 
@@ -120,7 +121,7 @@ export default function Suggestions() {
     }, [geminiData]);
 
     const getBoughtPrice = async (coin) => {
-        fetch(`http://localhost:8011/portfolio/asset/${user.user.id}/${coin === '$' ? 'USD' : coin}`)
+        fetch(`http://localhost:8011/portfolio/asset/${user.id}/${coin === '$' ? 'USD' : coin}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Wallet balance:', data[0]);
@@ -206,7 +207,7 @@ export default function Suggestions() {
                 image: symbols[coin].img,
             }));
         } catch (error) {
-            showMessage('error', 'Error', 'Error fetching coin data');
+            showMessage('error', 'Error fetching coin data');
         }
     };
 
@@ -292,7 +293,7 @@ export default function Suggestions() {
                 line={false}
                 sidePanel={
                     <div className="side-panel-container">
-                        <div style={{display: 'flex', marginBottom: '20px'}}>
+                        <div style={{display: 'flex', margin: "0"}}>
                             <h1 style={{fontSize: '1.5rem'}}>Suggestions</h1>
                             {suggestion && (
                                 <LuRefreshCw style={{
@@ -316,29 +317,27 @@ export default function Suggestions() {
                                 <Input type="button" value='Try Again' onClick={getSuggestions}
                                        style={{width: '150px'}}/>
                             </div>
-                        ) : suggestion && Array.isArray(suggestion.resources) && suggestion.resources.every(item => item && typeof item === 'object' && 'title' in item && 'url' in item) ? (
-                            <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                                <p className='error-message'>No suggestions available.</p>
-                                <Input type="button" value='Try Again' onClick={getSuggestions} style={{width: '150px'}}/>
-                            </div>
                         ) : suggestion && Array.isArray(suggestion.suggestions) && Array.isArray(suggestion.resources) ? (
                             <div>
-                                <div style={{display: 'flex'}}>
+                                <div style={{display: 'flex', marginTop:'1rem'}}>
                                     <div>
                                         <p className='s-lables'>Best Price</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: '#21DB9A',
                                             marginRight: '0.5rem',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            marginTop:'0'
                                         }}>{formatCurrency(suggestion.bestPrice)}</p>
                                     </div>
+                                    <div style={{width:'2rem'}}></div>
                                     <div>
                                         <p className='s-lables'>Profit</p>
                                         <p className='s-data' style={{
                                             fontSize: '1.5rem',
                                             color: 'red',
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            marginTop:'0'
                                         }}>{formatCurrency(suggestion.profitFromBestPrice)}</p>
                                     </div>
                                 </div>
@@ -362,7 +361,7 @@ export default function Suggestions() {
                                                     fontWeight: 'normal',
                                                     color: '#21DB9A'
                                                 }}>
-                                                    <a href={item} target="_blank" rel="noopener noreferrer">{item}</a>
+                                                    <a href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>
                                                 </li>
                                             ))}
                                         </ul>
@@ -474,6 +473,7 @@ export default function Suggestions() {
 
                     {filteredOrderHistory
                         .filter(order => order.category !== 'Limit' || (order.category === 'Limit' && order.orderStatus === 'Completed'))
+                        .reverse()
                         .map(order => (
                             <TableRow
                                 key={order.orderId}
@@ -489,6 +489,7 @@ export default function Suggestions() {
                                 onClick={() => handleRowClick(order)}
                             />
                         ))}
+
                 </Table>
 
             </SidePanelWithContainer>

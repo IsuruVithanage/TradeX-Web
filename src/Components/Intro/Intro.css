@@ -1,0 +1,34 @@
+.intro-container{
+    width: 80%;
+    height: 50vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto 20vh;
+    padding: 3vh;
+    box-sizing: border-box;
+}
+
+.intro-image{
+    width: 40%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 30px #033121;
+}
+
+.intro-text-container{
+    width: 45%;
+    transform: translateY(-10%);
+}
+
+.intro-title{
+    font-size: 2.7rem;
+    font-weight: 700;
+    color: #21DB9A;
+}
+
+.intro-description{
+    text-align: justify;
+    color: #FFFFFFDD;
+    line-height: 25px;
+}

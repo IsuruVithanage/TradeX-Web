@@ -38,6 +38,7 @@ export default function Quiz() {
     }
 
     function checkAnswers() {
+        console.log(answers);
         questions.forEach((question, index) => {
             const choosedAnswer = answers[index];
             if (question.correct_answer === choosedAnswer) {
@@ -115,6 +116,7 @@ export default function Quiz() {
     }
 
     const getAnswers = (value) => {
+        console.log("v",value);
         setAnswers((prevAnswers) => {
             const newAnswers = [...prevAnswers];
             newAnswers[value.index] = value.answer;

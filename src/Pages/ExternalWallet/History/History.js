@@ -3,11 +3,12 @@ import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
 import BasicPage from '../../../Components/Layouts/BasicPage/BasicPage'
 import Table, { TableRow,Coin } from '../../../Components/Table/Table';
-
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function History() {
+    const navigate = useNavigate();
     const user = getUser();
     const walletId = user && user.walletId;
     const [historyData,setHistoryData] = useState([])
@@ -33,8 +34,11 @@ export default function History() {
                 setIsLoading(false)
             });
         }   
-
-        getHistoryData();
+        if(!walletId){
+            navigate('/wallet');
+         }else{
+            getHistoryData();
+        }
 
         notificationManager.onAppNotification(() => {
             getHistoryData();

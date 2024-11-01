@@ -44,7 +44,7 @@ const TrendingCoinChart = () => {
         return data.filter((_, index) => index % interval === 0);
       };
 
-      const sampledPrices = sampleData(coinData.prices, 10); // Adjust the interval as needed
+      const sampledPrices = sampleData(coinData.prices, 10);
 
       const labels = sampledPrices.map((price) => {
         const date = new Date(price[0]);
@@ -88,10 +88,14 @@ const TrendingCoinChart = () => {
         plugins: {
           legend: {
             position: "top",
+            labels: {
+              color: "#ffffff", // Set legend text color to white
+            },
           },
           title: {
             display: true,
             text: "Trending Coin Price Fluctuations (Today)",
+            color: "#ffffff",
           },
           tooltip: {
             callbacks: {
@@ -106,12 +110,14 @@ const TrendingCoinChart = () => {
             title: {
               display: true,
               text: "Time (HH:MM)",
+              color: "#ffffff",
             },
           },
           y: {
             title: {
               display: true,
               text: "Price (USD)",
+              color: "#ffffff",
             },
             ticks: {
               callback: function (value) {

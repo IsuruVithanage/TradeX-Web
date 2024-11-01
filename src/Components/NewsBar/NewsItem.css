@@ -6,6 +6,7 @@
     margin: 5px;
     padding: 5px;
     border-radius: 23px;
+    margin-left: -10px;
 }
 
 .img-container {
@@ -29,6 +30,7 @@
     color: white;
     padding-left: 10px;
     display: flex;
+    margin-left: 10px;
 
 }
 .news-header-container{

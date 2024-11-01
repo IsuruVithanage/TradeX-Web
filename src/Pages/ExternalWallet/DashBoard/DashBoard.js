@@ -11,14 +11,17 @@ import { MdOutlineAssignment, } from "react-icons/md";
 import coins from '../../../Assets/Images/Coin Images.json';
 import { getUser } from '../../../Storage/SecureLs';
 import notificationManager from '../../Alert/notificationManager';
+import Modal from '../../../Components/Modal/Modal';
+import { useNavigate } from 'react-router-dom';
 
 export default function DashBoard() {
+    const navigate = useNavigate();
     const user = getUser();
     const userId = user && user.id;
     const walletId = user && user.walletId;
     const [action, setAction] = useState("Send")
     const [assets, setAssets] = useState([])
-    const [portfolioValue, setPortfolioValue] = useState(0)
+    const [walletValue, setWalletValue] = useState(0)
     const [usdBalance, setUsdBalance] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
     const [receivingWallet, setReceivingWallet] = useState("")
@@ -26,11 +29,13 @@ export default function DashBoard() {
     const [quantity, setQuantity] = useState(null)
     const [isInvalid, setIsInvalid] = useState([true, null])
     const [walletAddress, setWalletAddress] = useState("")
+    const [ isConfirmModalOpen, setIsConfirmModalOpen ] = useState(false);
+
 
 
     // initial data fetching
     useEffect(() => {
-        
+
         const getWalletData = async () => {
             setIsLoading(true);
             
@@ -40,7 +45,7 @@ export default function DashBoard() {
             .then(res => {
                 console.log(res.data);
                 setWalletAddress(res.data.address)
-                setPortfolioValue(res.data.portfolioValue)
+                setWalletValue(res.data.walletValue)
                 setUsdBalance(res.data.usdBalance)
                 setAssets(res.data.assets)
                 setIsLoading(false)
@@ -48,6 +53,8 @@ export default function DashBoard() {
             })
             .catch(error => {
                 console.log(error);
+                setWalletValue(0)
+                setUsdBalance(0)
                 setIsLoading(false)
 
                 error.response ?
@@ -57,8 +64,12 @@ export default function DashBoard() {
             });
         }
 
-        getWalletData();
-
+        if(!walletId){
+            navigate('/wallet');
+         }else{
+            getWalletData(); 
+         }
+         
         notificationManager.onAppNotification(() => {
             getWalletData();
         });
@@ -95,7 +106,7 @@ export default function DashBoard() {
                 console.log(res.data)
                 setAssets(res.data.assets);
                 setUsdBalance(res.data.usdBalance);
-                setPortfolioValue(res.data.portfolioValue);
+                setWalletValue(res.data.walletValue);
                 setReceivingWallet("");
                 setSelectedCoin(null);
                 setQuantity(null);
@@ -142,7 +153,7 @@ export default function DashBoard() {
             if (asset && quantity > asset.balance) {
                 setIsInvalid([true, "Insufficient Balance"]);
             }
-        } else {
+        }else {
             if (selectedCoin || quantity || receivingWallet) {
                 setIsInvalid([true, "Please fill all the fields"]);
             } else {
@@ -173,15 +184,11 @@ export default function DashBoard() {
 
                         {action === "Send" ?
                             <div>
-                                <div className='address-input'>
-                                    <div style={{width: "91%"}}>
-                                        <Input type="text" label='Wallet Address' value={receivingWallet} onChange={(e) => setReceivingWallet(e.target.value)} /> 
-                                    </div>
-                                    <div className="paste-text-button" onClick={async() => setReceivingWallet(await navigator.clipboard.readText())}>
-                                        <MdOutlineAssignment/>
-                                    </div>
-                                    <div className='paste-bottom-layer' />
-                                </div> 
+                                <Input type="text" label='Wallet Address' value={receivingWallet} 
+                                    icon={<MdOutlineAssignment className='paste-text-icon'/>}
+                                    onIconClick={async() => setReceivingWallet(await navigator.clipboard.readText())}
+                                    onChange={(e) => setReceivingWallet(e.target.value)} 
+                                /> 
 
                                 <Input type="dropdown" label='Coin' value={selectedCoin} onChange={setSelectedCoin} options={
                                     assets.map(asset => (asset.coin ? {
@@ -189,11 +196,10 @@ export default function DashBoard() {
                                         label: asset.coin + " - " + coins[asset.coin].name,
                                     } : null)).filter(option => option !== null)
                                 } />
+
                                 <Input type="number" label='Quantity' min={0} value={quantity} onChange={setQuantity} />
 
-
-
-                                <Input type="button" value="Transfer" onClick={transfer} disabled={isInvalid[0]} style={{ marginTop: "50px" }} />
+                                <Input type="button" value="Transfer" onClick={() => setIsConfirmModalOpen(true)} disabled={isInvalid[0]} style={{ marginTop: "50px" }} />
 
                                 <p className={`alert-invalid-message ${isInvalid[1] ? 'show' : ''}`} > {isInvalid[1]} </p>
                             </div>
@@ -201,7 +207,7 @@ export default function DashBoard() {
                             <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                 <div style={{ marginTop: "30px" }}>
                                     <p style={{ color: "#9e9e9e", fontSize: "17px", fontWeight: "bold" }}>Wallet Address:</p>
-                                    <p className='address'>{walletAddress || "wallet Address not found"}</p>
+                                    <p className='address1'>{walletAddress || "wallet Address not found"}</p>
                                 </div>
                                 <Input type="button" value="Copy" style={{ marginTop: "20px" }} onClick={() => {
                                     navigator.clipboard.writeText(walletAddress);
@@ -222,7 +228,7 @@ export default function DashBoard() {
                     </div>
                 }>
 
-                <ValueBar usdBalance={usdBalance} portfolioValue={portfolioValue} />
+                <ValueBar usdBalance={usdBalance} value={walletValue} type = 'wallet' />
 
                 <Table emptyMessage="No Holdings to Show">
                     <TableRow data={[
@@ -250,6 +256,60 @@ export default function DashBoard() {
                     ))}
                 </Table>
             </SidePanelWithContainer>
+
+
+            <Modal open={isConfirmModalOpen} close={setIsConfirmModalOpen}>
+                <div style={{width:"420px", paddingTop:"15px"}}>
+                    <div style={{width:"320px", margin:"auto", marginBottom:"35px"}}>
+                        <div>
+                            <h1 style={{color: "#FFFFFF"}}>Transfer Confirmation</h1>
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "25px"}}>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <img src={selectedCoin && coins[selectedCoin].img} alt={selectedCoin} width="30px"/>
+                                    <div style={{marginLeft: "10px"}}>
+                                        <p style={{margin: "0", fontSize: "16px"}}>{selectedCoin && coins[selectedCoin].name}</p>
+                                        <p style={{margin: "0", color: "#9E9E9E", fontWeight: "600"}}>{selectedCoin}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                                    <span style={{color: "#FF0000", fontWeight: "700"}}>{
+                                        selectedCoin && quantity && assets.find(asset => asset.coin === selectedCoin) &&
+                                        (quantity / assets.find(asset => asset.coin === selectedCoin).balance * 100).toFixed(2)
+                                    } %</span>
+                                    <p style={{color: "#9E9E9E", marginTop: "3px"}}>of Your Balance</p>
+                                </div>
+                            </div>
+
+                            <div style={{marginTop: "50px", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <span style={{color: "#FFFFFF", fontWeight: "600"}}>To</span>
+                                <span style={{color: "#9E9E9E", width: "65%", textAlign: "center", fontSize: "12px"}}>{receivingWallet}</span>
+                            </div>
+
+                            <hr style={{borderColor: "#6D6D6D", margin: "25px 0"}}/>
+
+                            <div style={{marginTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <span style={{color: "#FFFFFF", fontWeight: "600"}}>Quantity</span>
+                                <span style={{color: "#9E9E9E", width: "65%", textAlign: "right"}}>{quantity}</span>
+                            </div>
+                        </div>
+
+                        <div className="edit-alert-modal-button-container" style={{width: "83%"}}>
+                            <Input
+                                type="button" 
+                                style={{width:"120px"}}
+                                value="Confirm"
+                                onClick={() => {setIsConfirmModalOpen(false); transfer()}} 
+                            />
+
+                            <Input
+                                type="button" style={{width:"120px"}} red
+                                value="Cancel"
+                                onClick={() => setIsConfirmModalOpen(false)} />
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </BasicPage>
     )
 

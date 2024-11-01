@@ -1,22 +1,21 @@
-:where(.css-dev-only-do-not-override-zg0ahe).ant-popover .ant-popover-inner {
+:where(.css-dev-only-do-not-override-1fumvat).ant-popover .ant-popover-inner {
     background-color: #151517;
 }
 
-:where(.css-dev-only-do-not-override-zg0ahe).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-title {
-    font-weight: 700;
+:where(.css-dev-only-do-not-override-1fumvat).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-title {
     color: rgb(255 255 255 / 88%);
 }
 
-:where(.css-dev-only-do-not-override-zg0ahe).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
-    margin-top: 4px;
+:where(.css-dev-only-do-not-override-1fumvat).ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
     color: rgb(255 255 255 / 88%);
 }
 
-:where(.css-dev-only-do-not-override-zg0ahe).ant-btn-primary {
+:where(.css-dev-only-do-not-override-1fumvat).ant-btn-primary {
     color: #fff;
     background: #21db9a;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
 }
 
-:where(.css-dev-only-do-not-override-1b0bdye).ant-popover {
+:where(.css-dev-only-do-not-override-1fumvat).ant-popover {
     --antd-arrow-background-color: rgba(255, 255, 255, 0.1);
 }

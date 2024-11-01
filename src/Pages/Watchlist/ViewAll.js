@@ -9,6 +9,7 @@ import { FaUserCheck } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminUserVerification";
+import Table, { TableRow } from "../../Components/Table/Table";
 
 export default function ViewAll() {
   const [adminCount, setAdminCount] = useState(0);
@@ -85,9 +86,9 @@ export default function ViewAll() {
   return (
     <BasicPage
       tabs={[
-        { label: "Dashboard", path: "/watchlist/AdDashboard" },
-        { label: "Users", path: "/watchlist/Users" },
-        { label: "Admin", path: "/watchlist/Admin" },
+        { label: "Dashboard", path: "/admin/AdDashboard" },
+        { label: "Users", path: "/admin/Users" },
+        { label: "Admin", path: "/admin/Admin" },
       ]}
     >
       <div style={{ display: "flex" }}>
@@ -126,8 +127,8 @@ export default function ViewAll() {
         </AdminCard>
       </div>
       <div>
-        <div className="info">
-          <table className="info-table">
+        <div>
+          {/* <table className="info-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -155,12 +156,31 @@ export default function ViewAll() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Table
+              hover={true}
+            >
+              <TableRow data={["Name", "Email", "NIC", "Contact", "Upload Materials"]} />
+              {pendingUsers.map((user) => (
+                <TableRow
+                  key={user.userId}
+                  data={[
+                    user.userName,
+                    user.email,
+                    user.nic,
+                    user.phoneNumber,
+                    <Input
+                    type="button"
+                    value=" View"
+                    style={{ width: "90px" }}
+                    onClick={() => navigate(`/Admin/AdminUserVerification/${user.userId}`)}
+                    />,
+                  ]}
+                />
+              ))}
+            </Table>
         </div>
       </div>
-      <Link to="/Admin/AdminUserVerification">
-        <Input type="button" value="View" style={{ width: "90px" }} />
-      </Link>
     </BasicPage>
   );
 }

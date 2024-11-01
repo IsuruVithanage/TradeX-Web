@@ -52,6 +52,11 @@
     box-shadow: 0 0 15px 3px #0b0b0b;
 }
 
+.nav-label.not-permitted{
+    color: #6d6d6d;
+    background-color: #1a1508;
+}
+
 .nav-icon svg {
     transition: fill 0.3s ease;
     transform: translate(-50%, -50%);
@@ -65,6 +70,28 @@
 .nav-link.active svg {
     fill: #21DB9A;
     color: #21DB9A;
+}
+
+.nav-link.not-permitted,
+.nav-link.not-permitted {
+    fill: #6D6D6D70;
+    color: #6D6D6D70;
+}
+
+.nav-link:hover.not-permitted svg,
+.nav-link.active.not-permitted svg {
+    fill: #966c00;
+    color: #966c00;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    cursor: pointer;
+}
+
+.nav-link:hover.not-permitted,
+.nav-link.active.not-permitted {
+    cursor: not-allowed;
 }
 
 .logo-container {
