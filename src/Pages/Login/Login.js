@@ -12,6 +12,7 @@ import "./Login.css";
 
 function Login() {
     const baseurl = process.env.REACT_APP_API_GATEWAY;
+    // const baseurl = 'http://localhost:8004'
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState();
     const [action, setAction] = useState('Login');

@@ -19,6 +19,7 @@ export default function Portfolio() {
   const backendApiEndpoint = "http://localhost:8011/portfolio/asset/overview";
   const user = getUser();
   const userId = user && user.id;
+  console.log(userId)
 
   useEffect(() => {
     setIsLoading(true);
@@ -93,11 +94,10 @@ export default function Portfolio() {
                 asset.fundingBalance,
                 asset.totalBalance,
                 asset.marketPrice,
-                "$ " +
-                  asset.value.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }),
+                asset.value.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }),
               ]}
             />
           ))}
